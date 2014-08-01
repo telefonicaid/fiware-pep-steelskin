@@ -25,6 +25,7 @@
 
 var serverMocks = require('../tools/serverMocks'),
     proxyLib = require('../../lib/fiware-orion-pep'),
+    orionPlugin = require('../../lib/services/OrionPlugin'),
     config = require('../../config'),
     utils = require('../tools/utils'),
     should = require('should'),
@@ -59,6 +60,8 @@ describe('Extract Context Broker action from request', function() {
     beforeEach(function (done) {
         proxyLib.start(function (error, proxyObj) {
             proxy = proxyObj;
+
+            proxy.middlewares.push(orionPlugin.extractCBAction);
 
             serverMocks.start(config.resource.original.port, function (error, server, app) {
                 mockServer = server;
