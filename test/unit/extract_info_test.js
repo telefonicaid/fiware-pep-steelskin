@@ -89,7 +89,23 @@ describe('Extract information from requests', function() {
             });
         });
         it('should guess the action looking to the URL and the body an add it to an attribute in the request');
-        it('should extract the user token to an attribute in the request');
+        it('should extract the user token to an attribute in the request', function (done) {
+            var extractionExecuted = false;
+
+            var testExtraction = function (req, res, callback) {
+                should.exist(req.userId);
+                req.userId.should.equal('UAidNA9uQJiIVYSCg0IQ8Q');
+                extractionExecuted = true;
+                callback(null, req, res);
+            };
+
+            proxy.middlewares.push(testExtraction);
+
+            request(options, function (error, response, body) {
+                extractionExecuted.should.equal(true);
+                done();
+            });
+        });
         it('should proxy the request to the target URL');
     });
 
