@@ -23,15 +23,16 @@
 
 'use strict';
 
-var tdigitalNodeBoilerplate = require('../../');
+var fs = require('fs');
 
-describe('Validate action with Access Control', function() {
-    describe('When a request to the CSB arrives to the proxy with appropriate permissions', function () {
-        it('should send a validation request to Access Control');
-        it('should proxy the request to the destination');
-    });
+function readExampleFile(name, raw) {
+    var text = fs.readFileSync(name, 'UTF8');
 
-    describe('When a request to the CSB arrives for a user with wrong permissions', function () {
-        it ('should reject the request with a 403 error code');
-    });
-});
+    if (raw) {
+        return text;
+    } else {
+        return JSON.parse(text);
+    }
+}
+
+exports.readExampleFile = readExampleFile;

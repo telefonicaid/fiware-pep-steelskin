@@ -23,15 +23,45 @@
 
 'use strict';
 
-var tdigitalNodeBoilerplate = require('../../');
+var express = require('express'),
+    http = require('http'),
+    https = require('https');
 
-describe('Validate action with Access Control', function() {
-    describe('When a request to the CSB arrives to the proxy with appropriate permissions', function () {
-        it('should send a validation request to Access Control');
-        it('should proxy the request to the destination');
-    });
+function startMock(port, callback) {
+    var app = express(),
+        mocks;
 
-    describe('When a request to the CSB arrives for a user with wrong permissions', function () {
-        it ('should reject the request with a 403 error code');
+    app.set('port', port);
+    app.set('host', '0.0.0.0');
+    app.use(express.json());
+    app.use(express.urlencoded());
+    app.use(app.router);
+
+    var server = http.createServer(app);
+
+    server.listen(app.get('port'), app.get('host'), function (error) {
+        callback(error, server, app);
     });
-});
+}
+
+function stopMock(server, callback) {
+    server.close(callback);
+}
+
+function mock(code) {
+    return function(req, res) {
+        res.json(code, {});
+    };
+}
+
+function mockPath(url, app, callback) {
+    app.delete(url, mock(200));
+    app.get(url, mock(200));
+    app.post(url, mock(200));
+    app.put(url, mock(200));
+    callback();
+}
+
+exports.start = startMock;
+exports.stop = stopMock;
+exports.mockPath = mockPath;
