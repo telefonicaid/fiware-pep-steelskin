@@ -88,7 +88,9 @@ describe('Extract information from requests', function() {
                 done();
             });
         });
+
         it('should guess the action looking to the URL and the body an add it to an attribute in the request');
+
         it('should extract the user token to an attribute in the request', function (done) {
             var extractionExecuted = false;
 
@@ -106,7 +108,20 @@ describe('Extract information from requests', function() {
                 done();
             });
         });
-        it('should proxy the request to the target URL');
+
+        it('should proxy the request to the target URL', function (done) {
+            var mockExecuted = false;
+
+            mockApp.handler = function (req, res) {
+                mockExecuted = true;
+                res.json(200, {});
+            };
+
+            request(options, function (error, response, body) {
+                mockExecuted.should.equal(true);
+                done();
+            });
+        });
     });
 
     describe('When a request arrives to the CSB without a user token', function () {

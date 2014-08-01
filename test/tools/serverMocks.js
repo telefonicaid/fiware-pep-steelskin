@@ -48,17 +48,19 @@ function stopMock(server, callback) {
     server.close(callback);
 }
 
-function mock(code) {
-    return function(req, res) {
-        res.json(code, {});
-    };
-}
-
 function mockPath(url, app, callback) {
-    app.delete(url, mock(200));
-    app.get(url, mock(200));
-    app.post(url, mock(200));
-    app.put(url, mock(200));
+    function mock(req, res) {
+        if (app.handler) {
+            app.handler(req, res);
+        } else {
+            res.json(200, {});
+        }
+    }
+
+    app.delete(url, mock);
+    app.get(url, mock);
+    app.post(url, mock);
+    app.put(url, mock);
     callback();
 }
 
