@@ -89,8 +89,6 @@ describe('Extract information from requests', function() {
             });
         });
 
-        it('should guess the action looking to the URL and the body an add it to an attribute in the request');
-
         it('should extract the user token to an attribute in the request', function (done) {
             var extractionExecuted = false;
 
