@@ -53,7 +53,7 @@ describe('Extract Context Broker action from request', function() {
                 extractionExecuted.should.equal(true);
                 done();
             });
-        }
+        };
     }
 
     beforeEach(function (done) {

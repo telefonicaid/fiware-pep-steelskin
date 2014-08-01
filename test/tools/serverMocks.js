@@ -24,12 +24,10 @@
 'use strict';
 
 var express = require('express'),
-    http = require('http'),
-    https = require('https');
+    http = require('http');
 
 function startMock(port, callback) {
-    var app = express(),
-        mocks;
+    var app = express();
 
     app.set('port', port);
     app.set('host', '0.0.0.0');
