@@ -292,4 +292,54 @@ describe('Extract Context Broker action from request', function() {
         it('should add the action attribute with value "subscribe-availability" to the request',
             testAction('subscribe-availability', options));
     });
+
+    describe('When a update action arrives with JSON payload without the \'updateAction\' attribute', function () {
+        var options = {
+            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Fiware-Service': 'frn:contextbroker:551:::',
+                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
+            },
+            json: utils.readExampleFile('./test/orionErrorRequests/entityUpdateNoAttribute.json')
+        };
+
+        beforeEach(function (done) {
+            serverMocks.mockPath('/NGSI10/queryContext', mockApp, done);
+        });
+
+        it('should reject the request with an Unauthorized code', function (done) {
+            request(options, function (error, response, body) {
+                response.statusCode.should.equal(403);
+                done();
+            });
+        });
+    });
+
+    describe('When a update action arrives with XML payload without the \'updateAction\' attribute', function () {
+        var options = {
+            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/xml',
+                'Accept': 'application/xml',
+                'Fiware-Service': 'frn:contextbroker:551:::',
+                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
+            },
+            body: utils.readExampleFile('./test/orionErrorRequests/entityUpdateNoAttribute.xml', true)
+        };
+
+        beforeEach(function (done) {
+            serverMocks.mockPath('/NGSI10/queryContext', mockApp, done);
+        });
+
+        it('should reject the request with an Unauthorized code', function (done) {
+            request(options, function (error, response, body) {
+                response.statusCode.should.equal(403);
+                done();
+            });
+        });
+    });
 });
