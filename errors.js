@@ -33,6 +33,14 @@ var errors= {
     'ACTION_NOT_FOUND': {
         exceptionId: 'ACTION_NOT_FOUND',
         exceptionMessage: 'The system wasn\'t able to guess the action type or the request'
+    },
+    'WRONG_XML_PAYLOAD': {
+        exceptionId: 'WRONG_XML_PAYLOAD',
+        exceptionMessage: 'The system wasn\'t able to parse the given XML payload'
+    },
+    'WRONG_JSON_PAYLOAD': {
+        exceptionId: 'WRONG_JSON_PAYLOAD',
+        exceptionMessage: 'The system wasn\'t able to parse the given JSON payload (either it was empty or wrong)'
     }
 };
 
