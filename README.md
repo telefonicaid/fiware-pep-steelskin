@@ -1,6 +1,12 @@
 # fiware-orion-pep
 
-FiWare Policy Enforcement Point
+The FiWare Policy Enforcement Point is a proxy meant to secure independent FiWare components, by intercepting every request sent to the component, validating it against the Keystone proxy. This validation is based in three pieces of data:
+
+* User token: comes from the OAuth authorization server and is taken from the `x-auth-token` header.
+* Organization: is read from the `fiware-service header` and identifies the protected component.
+* Action: the PEP guess the action for a particular request by checking the path or inspecting the body. The logic for performing such actions depends on the component that is being secured, so the PEP will need a plugin for each of this components.
+
+Communication with the Keystone proxy is based on the XACML protocol.
 
 ## Development documentation
 ### Project build
