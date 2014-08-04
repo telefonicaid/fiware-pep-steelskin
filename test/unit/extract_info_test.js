@@ -123,6 +123,78 @@ describe('Extract information from requests', function() {
     });
 
     describe('When a request arrives to the CSB without a user token', function () {
-        it ('should reject the request with a 401 error code');
+        var options = {
+            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Fiware-Service': 'frn:contextbroker:551:::'
+            },
+            json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
+        };
+
+        beforeEach(function (done) {
+            serverMocks.mockPath('/NGSI10/updateContext', mockApp, done);
+        });
+
+        it ('should reject the request with a 403 error code', function (done) {
+            request(options, function (error, response, body) {
+                response.statusCode.should.equal(403);
+                done();
+            });
+        });
+
+        it ('should not proxy the request', function (done) {
+            var mockExecuted = false;
+
+            mockApp.handler = function (req, res) {
+                mockExecuted = true;
+                res.json(200, {});
+            };
+
+            request(options, function (error, response, body) {
+                mockExecuted.should.equal(false);
+                done();
+            });
+        });
+    });
+
+    describe('When a request arrives to the CSB without a Fiware Service', function() {
+        var options = {
+            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
+            },
+            json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
+        };
+
+        beforeEach(function (done) {
+            serverMocks.mockPath('/NGSI10/updateContext', mockApp, done);
+        });
+
+        it ('should reject the request with a 403 error code', function (done) {
+            request(options, function (error, response, body) {
+                response.statusCode.should.equal(403);
+                done();
+            });
+        });
+
+        it ('should not proxy the request', function (done) {
+            var mockExecuted = false;
+
+            mockApp.handler = function (req, res) {
+                mockExecuted = true;
+                res.json(200, {});
+            };
+
+            request(options, function (error, response, body) {
+                mockExecuted.should.equal(false);
+                done();
+            });
+        });
     });
 });
