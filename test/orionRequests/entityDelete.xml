@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<updateContextRequest>
+    <contextElementList>
+        <contextElement>
+            <entityId type="T" isPattern="false">
+                <id>E1</id>
+            </entityId>
+            <contextAttributeList/>
+        </contextElement>
+    </contextElementList>
+    <updateAction>DELETE</updateAction>
+</updateContextRequest>

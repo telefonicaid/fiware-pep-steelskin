@@ -24,7 +24,8 @@
   "dependencies": {
     "async": "*",
     "express": "3.5.1",
-    "request": "*"
+    "request": "*",
+    "sax": "*"
   },
   "devDependencies": {
     "grunt-contrib-jshint": "~0.6.4",

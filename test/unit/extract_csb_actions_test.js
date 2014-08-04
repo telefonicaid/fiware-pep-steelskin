@@ -77,7 +77,7 @@ describe('Extract Context Broker action from request', function() {
         });
     });
 
-    describe('When a create action arrives', function () {
+    describe('When a create action arrives with JSON payload', function () {
         var options = {
             uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
             method: 'POST',
@@ -96,7 +96,8 @@ describe('Extract Context Broker action from request', function() {
 
         it('should add the action attribute with value "create" to the request', testAction('create', options));
     });
-    describe('When a update action arrives', function () {
+
+    describe('When a update action arrives with JSON payload', function () {
         var options = {
             uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
             method: 'POST',
@@ -115,7 +116,7 @@ describe('Extract Context Broker action from request', function() {
 
         it('should add the action attribute with value "update" to the request', testAction('update', options));
     });
-    describe('When a delete action arrives', function () {
+    describe('When a delete action arrives with JSON payload', function () {
         var options = {
             uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
             method: 'POST',
@@ -134,6 +135,66 @@ describe('Extract Context Broker action from request', function() {
 
         it('should add the action attribute with value "delete" to the request', testAction('delete', options));
     });
+
+    describe('When a create action arrives with XML payload', function () {
+        var options = {
+            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/xml',
+                'Accept': 'application/xml',
+                'Fiware-Service': 'frn:contextbroker:551:::',
+                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
+            },
+            body: utils.readExampleFile('./test/orionRequests/entityCreation.xml', true)
+        };
+
+        beforeEach(function (done) {
+            serverMocks.mockPath('/NGSI10/queryContext', mockApp, done);
+        });
+
+        it('should add the action attribute with value "create" to the request', testAction('create', options));
+    });
+
+    describe('When a update action arrives with XML payload', function () {
+        var options = {
+            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/xml',
+                'Accept': 'application/xml',
+                'Fiware-Service': 'frn:contextbroker:551:::',
+                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
+            },
+            body: utils.readExampleFile('./test/orionRequests/entityUpdate.xml', true)
+        };
+
+        beforeEach(function (done) {
+            serverMocks.mockPath('/NGSI10/queryContext', mockApp, done);
+        });
+
+        it('should add the action attribute with value "update" to the request', testAction('update', options));
+    });
+    describe('When a delete action arrives with XML payload', function () {
+        var options = {
+            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/xml',
+                'Accept': 'application/xml',
+                'Fiware-Service': 'frn:contextbroker:551:::',
+                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
+            },
+            body: utils.readExampleFile('./test/orionRequests/entityDelete.xml', true)
+        };
+
+        beforeEach(function (done) {
+            serverMocks.mockPath('/NGSI10/queryContext', mockApp, done);
+        });
+
+        it('should add the action attribute with value "delete" to the request', testAction('delete', options));
+    });
+
     describe('When a read action arrives', function () {
         var options = {
             uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/queryContext',
@@ -153,6 +214,7 @@ describe('Extract Context Broker action from request', function() {
 
         it('should add the action attribute with value "read" to the request', testAction('read', options));
     });
+
     describe('When a subscribe action arrives', function () {
         var options = {
             uri: 'http://localhost:' + config.resource.proxy.port + '/ngsi10/subscribeContext',
