@@ -342,4 +342,29 @@ describe('Extract Context Broker action from request', function() {
             });
         });
     });
+
+    describe('When a update action arrives with a URL that it\'s not recognized by the system', function () {
+        var options = {
+            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/falsePath',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/xml',
+                'Accept': 'application/xml',
+                'Fiware-Service': 'frn:contextbroker:551:::',
+                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
+            },
+            body: utils.readExampleFile('./test/orionRequests/entityUpdate.xml', true)
+        };
+
+        beforeEach(function (done) {
+            serverMocks.mockPath('/NGSI10/queryContext', mockApp, done);
+        });
+
+        it('should reject the request with an Unauthorized code', function (done) {
+            request(options, function (error, response, body) {
+                response.statusCode.should.equal(403);
+                done();
+            });
+        });
+    });
 });
