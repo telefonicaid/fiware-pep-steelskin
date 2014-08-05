@@ -28,7 +28,6 @@ var serverMocks = require('../tools/serverMocks'),
     orionPlugin = require('../../lib/services/OrionPlugin'),
     config = require('../../config'),
     utils = require('../tools/utils'),
-    should = require('should'),
     request = require('request');
 
 describe('Validate action with Access Control', function() {
