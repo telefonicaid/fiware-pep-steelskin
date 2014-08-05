@@ -22,11 +22,11 @@
     "test": "grunt test"
   },
   "dependencies": {
-    "async": "*",
+    "async": "0.9.0",
     "express": "3.5.1",
-    "request": "*",
-    "sax": "*",
-    "mustache": "*"
+    "request": "2.39.0",
+    "sax": "0.6.0",
+    "mustache": "0.8.2"
   },
   "devDependencies": {
     "grunt-contrib-jshint": "~0.6.4",
