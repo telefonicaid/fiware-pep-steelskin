@@ -30,7 +30,9 @@ var serverMocks = require('../tools/serverMocks'),
     utils = require('../tools/utils'),
     request = require('request');
 
-describe('Validate action with Access Control', function() {
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"
+
+describe('HTTPS Options', function() {
     var proxy,
         mockTarget,
         mockTargetApp,
@@ -38,6 +40,10 @@ describe('Validate action with Access Control', function() {
         mockAccessApp;
 
     beforeEach(function (done) {
+        config.ssl.active = true;
+        config.ssl.certFile = 'test/certs/pepTest.crt';
+        config.ssl.keyFile = 'test/certs/pepTest.key';
+
         proxyLib.start(function (error, proxyObj) {
             proxy = proxyObj;
 
@@ -56,16 +62,16 @@ describe('Validate action with Access Control', function() {
     });
 
     afterEach(function (done) {
+        config.ssl.active = false;
         proxyLib.stop(proxy, function(error) {
             serverMocks.stop(mockTarget, function () {
                 serverMocks.stop(mockAccess, done);
             });
         });
     });
-
-    describe('When a request to the CB arrives to the proxy with appropriate permissions', function () {
+    describe('When a request to the CB arrives to the proxy with HTTPS', function () {
         var options = {
-            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+            uri: 'https://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -79,21 +85,6 @@ describe('Validate action with Access Control', function() {
         beforeEach(function (done) {
             serverMocks.mockPath('/validate', mockAccessApp, done);
             serverMocks.mockPath('/NGSI10/updateContext', mockTargetApp, done);
-        });
-
-        it('should send a validation request to Access Control', function (done) {
-            var mockExecuted = false;
-
-            mockAccessApp.handler = function (req, res) {
-                mockExecuted = true;
-                res.set('Content-Type', 'application/xml');
-                res.send(utils.readExampleFile('./test/accessControlResponses/permitResponse.xml', true));
-            };
-
-            request(options, function (error, response, body) {
-                mockExecuted.should.equal(true);
-                done();
-            });
         });
 
         it('should proxy the request to the destination', function (done) {
@@ -111,45 +102,6 @@ describe('Validate action with Access Control', function() {
 
             request(options, function (error, response, body) {
                 mockExecuted.should.equal(true);
-                done();
-            });
-        });
-    });
-
-    describe('When a request to the CB arrives for a user with wrong permissions', function () {
-        var options = {
-            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Fiware-Service': 'frn:contextbroker:551:::',
-                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
-            },
-            json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
-        };
-
-        beforeEach(function (done) {
-            serverMocks.mockPath('/validate', mockAccessApp, done);
-            serverMocks.mockPath('/NGSI10/updateContext', mockTargetApp, done);
-        });
-
-        it ('should reject the request with a 403 error code', function (done) {
-            var mockExecuted = false;
-
-            mockAccessApp.handler = function (req, res) {
-                res.set('Content-Type', 'application/xml');
-                res.send(utils.readExampleFile('./test/accessControlResponses/denyResponse.xml', true));
-            };
-
-            mockTargetApp.handler = function (req, res) {
-                mockExecuted = true;
-                res.json(200, {});
-            };
-
-            request(options, function (error, response, body) {
-                mockExecuted.should.equal(false);
-                response.statusCode.should.equal(403);
                 done();
             });
         });
