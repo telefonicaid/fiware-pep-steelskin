@@ -11,7 +11,7 @@ Communication with the Keystone proxy is based on the XACML protocol.
 
 ## License
 
-Orion Context Broker is licensed under Affero General Public License (GPL) version 3.
+FiWare Policy Enforcement Point is licensed under Affero General Public License (GPL) version 3.
 
 ## Development documentation
 ### Project build
