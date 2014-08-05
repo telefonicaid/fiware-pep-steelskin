@@ -67,7 +67,7 @@ describe('Extract information from requests', function() {
         });
     });
 
-    describe('When a request to the CSB arrives to the proxy with all the information', function () {
+    describe('When a request to the CB arrives to the proxy with all the information', function () {
         var options = {
             uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
             method: 'POST',
@@ -135,7 +135,7 @@ describe('Extract information from requests', function() {
         });
     });
 
-    describe('When a request arrives to the CSB without a user token', function () {
+    describe('When a request arrives to the CB without a user token', function () {
         var options = {
             uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
             method: 'POST',
@@ -173,7 +173,7 @@ describe('Extract information from requests', function() {
         });
     });
 
-    describe('When a request arrives to the CSB without a Fiware Service', function() {
+    describe('When a request arrives to the CB without a Fiware Service', function() {
         var options = {
             uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
             method: 'POST',
