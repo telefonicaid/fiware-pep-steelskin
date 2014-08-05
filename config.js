@@ -12,6 +12,7 @@ config.resource = {
 };
 
 config.access = {
+    protocol: 'http',
     host: 'localhost',
     port: 7000,
     path: '/validate'
