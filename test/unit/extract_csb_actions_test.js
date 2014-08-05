@@ -35,7 +35,9 @@ var serverMocks = require('../tools/serverMocks'),
 describe('Extract Context Broker action from request', function() {
     var proxy,
         mockServer,
-        mockApp;
+        mockApp,
+        mockAccess,
+        mockAccessApp;
 
     function testAction(action, options) {
         return function (done) {
@@ -66,14 +68,25 @@ describe('Extract Context Broker action from request', function() {
             serverMocks.start(config.resource.original.port, function (error, server, app) {
                 mockServer = server;
                 mockApp = app;
-                done();
+                serverMocks.start(config.access.port, function (error, serverAccess, appAccess) {
+                    mockAccess = serverAccess;
+                    mockAccessApp = appAccess;
+                    mockAccessApp.handler = function (req, res) {
+                        res.set('Content-Type', 'application/xml');
+                        res.send(utils.readExampleFile('./test/accessControlResponses/permitResponse.xml', true));
+                    };
+
+                    serverMocks.mockPath('/validate', mockAccessApp, done);
+                });
             });
         });
     });
 
     afterEach(function (done) {
         proxyLib.stop(proxy, function(error) {
-            serverMocks.stop(mockServer, done);
+            serverMocks.stop(mockServer, function () {
+                serverMocks.stop(mockAccess, done);
+            });
         });
     });
 

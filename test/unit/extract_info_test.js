@@ -34,7 +34,9 @@ var serverMocks = require('../tools/serverMocks'),
 describe('Extract information from requests', function() {
     var proxy,
         mockServer,
-        mockApp;
+        mockApp,
+        mockAccess,
+        mockAccessApp;
 
     beforeEach(function (done) {
         proxyLib.start(function (error, proxyObj) {
@@ -43,14 +45,25 @@ describe('Extract information from requests', function() {
             serverMocks.start(config.resource.original.port, function (error, server, app) {
                 mockServer = server;
                 mockApp = app;
-                done();
+                serverMocks.start(config.access.port, function (error, serverAccess, appAccess) {
+                    mockAccess = serverAccess;
+                    mockAccessApp = appAccess;
+                    mockAccessApp.handler = function (req, res) {
+                        res.set('Content-Type', 'application/xml');
+                        res.send(utils.readExampleFile('./test/accessControlResponses/permitResponse.xml', true));
+                    };
+
+                    serverMocks.mockPath('/validate', mockAccessApp, done);
+                });
             });
         });
     });
 
     afterEach(function (done) {
         proxyLib.stop(proxy, function(error) {
-            serverMocks.stop(mockServer, done);
+            serverMocks.stop(mockServer, function () {
+                serverMocks.stop(mockAccess, done);
+            });
         });
     });
 
