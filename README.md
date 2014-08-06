@@ -7,7 +7,79 @@ The FiWare Policy Enforcement Point is a proxy meant to secure independent FiWar
 * Organization: is read from the `fiware-service header` and identifies the protected component.
 * Action: the PEP guess the action for a particular request by checking the path or inspecting the body. The logic for performing such actions depends on the component that is being secured, so the PEP will need a plugin for each of this components.
 
-Communication with the Keystone proxy is based on the XACML protocol.
+Communication with the Keystone proxy is based on the [http://docs.oasis-open.org/xacml/3.0/xacml-3.0-core-spec-os-en.html](XACML protocol).
+
+## Usage
+The PEP Proxy can be started executing the following command from the project root:
+
+```
+bin/pep-proxy.js
+```
+
+## Configuration
+All the configuration of the proxy is stored in the `config.js` file in the root of the project folder.
+
+### Basic Configuration
+In order to have the proxy running, there are two basic pieces of information to fill:
+* `config.resource.proxy`: The information of the server proxy itself (mainly the port).
+* `config.resource.original`: The address and port of the proxied server.
+
+### SSL Configuration
+If SSL Termination is not available, the PEP Proxy can be configured to listen HTTPS instead of plain HTTP. To activate the SSL:
+
+* Create the appropiate public keys and certificates and store them in the PEP Proxy machine.
+* In the `config.js` file, change the `config.ssl.active` flag to true.
+* In the same ssl object in the configuration, fill the path to the key and cert files.
+
+## API With Keystone Proxy
+The validation of each request si done connecting with a Keyston Proxy, who, using the information provided by the PEP Proxy, decides whether the user can execute the selected action in this organization or not. The following is a summary of this interaction with some examples.
+
+
+### Request
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<Request xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17 http://docs.oasis-open.org/xacml/3.0/xacml-core-v3-schema-wd-17.xsd"
+         ReturnPolicyIdList="false">
+    <!-- X-Auth-Token-->
+    <Attributes Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject">
+        <Attribute IncludeInResult="false"
+                   AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id">
+            <AttributeValue
+                    DataType="http://www.w3.org/2001/XMLSchema#int">UAidNA9uQJiIVYSCg0IQ8Q</AttributeValue>
+        </Attribute>
+    </Attributes>
+    <!-- fiware resource name being accessed: organization id -->
+    <Attributes
+            Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource">
+        <Attribute IncludeInResult="false"
+                   AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">frn:contextbroker:551:::</AttributeValue>
+        </Attribute>
+    </Attributes>
+    <!-- action performed -->
+    <Attributes
+            Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action">
+        <Attribute IncludeInResult="false"
+                   AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">create</AttributeValue>
+        </Attribute>
+    </Attributes>
+</Request>
+```
+
+### Response
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<Response xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17 http://docs.oasis-open.org/xacml/3.0/xacml-core-v3-schema-wd-17.xsd">
+    <Result>
+        <Decision>Permit</Decision>
+    </Result>
+</Response>
+```
+
+## Customizing PEP Proxy for other components
 
 ## License
 
