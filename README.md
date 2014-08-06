@@ -36,6 +36,7 @@ The validation of each request si done connecting with a Keyston Proxy, who, usi
 
 
 ### Request
+The XACML Request maps the information extracted from the request (user token, organization ID and action) to XACML categories (`access-subject`, `resource and action`, `respectively`). 
 ```
 <?xml version="1.0" encoding="UTF-8"?>
 <Request xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
@@ -70,6 +71,11 @@ The validation of each request si done connecting with a Keyston Proxy, who, usi
 ```
 
 ### Response
+The XACML Response returns a `Decision` element that can have the following values: “Permit”, “Deny”, “NotApplicable” or “Indeterminate”. The subset of allowable values understood by the PEP Proxy is:
+* `Permit`: allows the request to continue its way to the Context Broker.
+* `Deny`: rejects the request, returning a 403 error to the requestor.
+
+
 ```
 <?xml version="1.0" encoding="UTF-8"?>
 <Response xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17 http://docs.oasis-open.org/xacml/3.0/xacml-core-v3-schema-wd-17.xsd">
@@ -78,6 +84,83 @@ The validation of each request si done connecting with a Keyston Proxy, who, usi
     </Result>
 </Response>
 ```
+## Rules to determine the Context Broker action from the request
+
+### Standard operations
+* `create`: URL contains `/ngsi10/updateContext` and the `actionType` attribute of the payload (either with XML or JSON) is `APPEND`.
+* `update`: URL contains `/ngsi10/updateContext` and the `actionType` attribute of the payload (either with XML or JSON) is `UPDATE`.
+* `delete`: URL contains `/ngsi10/updateContext` and the `actionType` attribute of the payload (either with XML or JSON) is “DELETE”.
+* `read`: URL contains `/ngsi10/queryContext`.
+* `subscribe`: URL contains  `/ngsi10/subscribeContext`, `/ngsi10/updateContextSubscription` o `/ngsi10/unsubscribeContext`.
+* `register`: URL contains `/ngsi9/registerContext`.
+* `discover`: URL contains `/nsgi9/discoverContextAvailability`.
+* `subscribe-availability`: URL contains `/ngsi9/subscribeContextAvailability`, `/ngsi9/updateContextAvailabilitySubscription` o `/ngsi9/unsubscribeContextAvailability`.
+
+### Convenience operations
+The following tables show the rules for detemining the action based on Method and path of the request. The actions are shown as an abbreviature following this table:
+
+| Action | Abbreviature |
+| ------ |:------------:|
+| create | C            |
+| update | U            |
+| delete | D            |
+| read | R            |
+| subscribe | S            |
+| register | Reg           |
+| discover | Dis            |
+| subscribe-availability | S-A            |
+
+
+#### NGSI9 (context information availability)
+| Method | Path                                                                                     | Action |
+| ------ |:--------------------------------------------------------------------------------------- | ---:|
+| GET    | /ngsi9/contextEntities/{EntityId}                                                      	| Dis |
+| POST   | /ngsi9/contextEntities/{EntityId}                                                      	| Reg |
+| GET    | /ngsi9/contextEntities/{EntityId}/attributes                                           	| -   |
+| POST   | /ngsi9/contextEntities/{EntityId}/attributes                                           	| -   |
+| GET    | /ngsi9/contextEntities/{EntityId}/attributes/{attributeName}                           	| Dis |
+| POST   | /ngsi9/contextEntities/{EntityId}/attributes/{attributeName}                          	| Reg |
+| GET    | /ngsi9/contextEntities/{EntityId}/attributeDomains/{attributeDomainName}               	| Dis |
+| POST   | /ngsi9/contextEntities/{EntityId}/attributeDomains/{attributeDomainName}               	| Reg |
+| GET    | /ngsi9/contextEntityTypes/{typeName}                                                   	| Dis |
+| POST   | /ngsi9/contextEntityTypes/{typeName}                                                   	| Reg |
+| GET    | /ngsi9/contextEntityTypes/{typeName}/attributes                                        	| -   |
+| POST   | /ngsi9/contextEntityTypes/{typeName}/attributes                                        	| -   |
+| GET    | /ngsi9/contextEntityTypes/{typeName}/attributes/{attributeName}                        	| Dis |
+| POST   | /ngsi9/contextEntityTypes/{typeName}/attributes/{attributeName}                        	| Reg |
+| GET    | /ngsi9/contextEntityTypes/{typeName}/attributeDomains/{attributeDomainName}            	| Dis |
+| POST   | /ngsi9/contextEntityTypes/{typeName}/attributeDomains/{attributeDomainName}            	| Reg |
+| POST   | /ngsi9/contextAvailabilitySubscriptions                                                	| S-A |
+| PUT    | /ngsi9/contextAvailabilitySubscriptions/{subscriptionId}                               	| S-A |
+| DELETE | /ngsi9/contextAvailabilitySubscriptions/{subscriptionId}                               	| S-A |
+
+#### NGS10 (context information availability)
+| Method | Path                                                                                     | Action |
+| ------ |:--------------------------------------------------------------------------------------- | ---:|
+| GET    | /ngsi10/contextEntities/{EntityID}                                                     	| R |
+| PUT    | /ngsi10/contextEntities/{EntityID}                                                     	| U |
+| POST   | /ngsi10/contextEntities/{EntityID}                                                     	| C |
+| DELETE | /ngsi10/contextEntities/{EntityID}                                                     	| D |
+| GET    | /ngsi10/contextEntities/{EntityID}/attributes                                          	| - |
+| PUT    | /ngsi10/contextEntities/{EntityID}/attributes                                          	| - |
+| POST   | /ngsi10/contextEntities/{EntityID}/attributes                                          	| - |
+| DELETE | /ngsi10/contextEntities/{EntityID}/attributes                                          	| - |
+| GET    | /ngsi10/contextEntities/{EntityID}/attributes/{attributeName}                          	| R |
+| POST   | /ngsi10/contextEntities/{EntityID}/attributes/{attributeName}                          	| C |
+| PUT    | /ngsi10/contextEntities/{EntityID}/attributes/{attributeName}                          	| U |
+| DELETE | /ngsi10/contextEntities/{EntityID}/attributes/{attributeName}                          	| D |
+| GET    | /ngsi10/contextEntities/{EntityID}/attributes/{attributeName}/{valueID}                	| R |
+| PUT    | /ngsi10/contextEntities/{EntityID}/attributes/{attributeName}/{valueID}                	| U |
+| DELETE | /ngsi10/contextEntities/{EntityID}/attributes/{attributeName}/{valueID}                	| D |
+| GET    | /ngsi10/contextEntities/{EntityID}/attributeDomains/{attributeDomainName}              	| R |
+| GET    | /ngsi10/contextEntityTypes/{typeName}                                                  	| R |
+| GET    | /ngsi10/contextEntityTypes/{typeName}/attributes                                       	| - |
+| GET    | /ngsi10/contextEntityTypes/{typeName}/attributes/{attributeName}                       	| R |
+| GET    | /ngsi10/contextEntityTypes/{typeName}/attributeDomains/{attributeDomainName}           	| R |
+| POST   | /ngsi10/contextSubscriptions                                                           	| S |
+| PUT    | /ngsi10/contextSubscriptions/{subscriptionID}                                          	| S |
+| DELETE | /ngsi10/contextSubscriptions/{subscriptionID}                                          	| S |
+
 
 ## Customizing PEP Proxy for other components
 
