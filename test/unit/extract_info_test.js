@@ -38,17 +38,17 @@ describe('Extract information from requests', function() {
         mockAccess,
         mockAccessApp;
 
-    beforeEach(function (done) {
-        proxyLib.start(function (error, proxyObj) {
+    beforeEach(function(done) {
+        proxyLib.start(function(error, proxyObj) {
             proxy = proxyObj;
 
-            serverMocks.start(config.resource.original.port, function (error, server, app) {
+            serverMocks.start(config.resource.original.port, function(error, server, app) {
                 mockServer = server;
                 mockApp = app;
-                serverMocks.start(config.access.port, function (error, serverAccess, appAccess) {
+                serverMocks.start(config.access.port, function(error, serverAccess, appAccess) {
                     mockAccess = serverAccess;
                     mockAccessApp = appAccess;
-                    mockAccessApp.handler = function (req, res) {
+                    mockAccessApp.handler = function(req, res) {
                         res.set('Content-Type', 'application/xml');
                         res.send(utils.readExampleFile('./test/accessControlResponses/permitResponse.xml', true));
                     };
@@ -59,15 +59,15 @@ describe('Extract information from requests', function() {
         });
     });
 
-    afterEach(function (done) {
+    afterEach(function(done) {
         proxyLib.stop(proxy, function(error) {
-            serverMocks.stop(mockServer, function () {
+            serverMocks.stop(mockServer, function() {
                 serverMocks.stop(mockAccess, done);
             });
         });
     });
 
-    describe('When a request to the CB arrives to the proxy with all the information', function () {
+    describe('When a request to the CB arrives to the proxy with all the information', function() {
         var options = {
             uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
             method: 'POST',
@@ -80,14 +80,14 @@ describe('Extract information from requests', function() {
             json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
         };
 
-        beforeEach(function (done) {
+        beforeEach(function(done) {
             serverMocks.mockPath('/NGSI10/updateContext', mockApp, done);
         });
 
-        it('should extract the organization to an attribute in the request', function (done) {
+        it('should extract the organization to an attribute in the request', function(done) {
             var extractionExecuted = false;
 
-            var testExtraction = function (req, res, callback) {
+            var testExtraction = function(req, res, callback) {
                 should.exist(req.organization);
                 req.organization.should.equal('frn:contextbroker:551:::');
                 extractionExecuted = true;
@@ -96,16 +96,16 @@ describe('Extract information from requests', function() {
 
             proxy.middlewares.push(testExtraction);
 
-            request(options, function (error, response, body) {
+            request(options, function(error, response, body) {
                 extractionExecuted.should.equal(true);
                 done();
             });
         });
 
-        it('should extract the user token to an attribute in the request', function (done) {
+        it('should extract the user token to an attribute in the request', function(done) {
             var extractionExecuted = false;
 
-            var testExtraction = function (req, res, callback) {
+            var testExtraction = function(req, res, callback) {
                 should.exist(req.userId);
                 req.userId.should.equal('UAidNA9uQJiIVYSCg0IQ8Q');
                 extractionExecuted = true;
@@ -114,28 +114,28 @@ describe('Extract information from requests', function() {
 
             proxy.middlewares.push(testExtraction);
 
-            request(options, function (error, response, body) {
+            request(options, function(error, response, body) {
                 extractionExecuted.should.equal(true);
                 done();
             });
         });
 
-        it('should proxy the request to the target URL', function (done) {
+        it('should proxy the request to the target URL', function(done) {
             var mockExecuted = false;
 
-            mockApp.handler = function (req, res) {
+            mockApp.handler = function(req, res) {
                 mockExecuted = true;
                 res.json(200, {});
             };
 
-            request(options, function (error, response, body) {
+            request(options, function(error, response, body) {
                 mockExecuted.should.equal(true);
                 done();
             });
         });
     });
 
-    describe('When a request arrives to the CB without a user token', function () {
+    describe('When a request arrives to the CB without a user token', function() {
         var options = {
             uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
             method: 'POST',
@@ -147,26 +147,26 @@ describe('Extract information from requests', function() {
             json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
         };
 
-        beforeEach(function (done) {
+        beforeEach(function(done) {
             serverMocks.mockPath('/NGSI10/updateContext', mockApp, done);
         });
 
-        it ('should reject the request with a 403 error code', function (done) {
-            request(options, function (error, response, body) {
+        it('should reject the request with a 403 error code', function(done) {
+            request(options, function(error, response, body) {
                 response.statusCode.should.equal(403);
                 done();
             });
         });
 
-        it ('should not proxy the request', function (done) {
+        it('should not proxy the request', function(done) {
             var mockExecuted = false;
 
-            mockApp.handler = function (req, res) {
+            mockApp.handler = function(req, res) {
                 mockExecuted = true;
                 res.json(200, {});
             };
 
-            request(options, function (error, response, body) {
+            request(options, function(error, response, body) {
                 mockExecuted.should.equal(false);
                 done();
             });
@@ -185,26 +185,26 @@ describe('Extract information from requests', function() {
             json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
         };
 
-        beforeEach(function (done) {
+        beforeEach(function(done) {
             serverMocks.mockPath('/NGSI10/updateContext', mockApp, done);
         });
 
-        it ('should reject the request with a 403 error code', function (done) {
-            request(options, function (error, response, body) {
+        it('should reject the request with a 403 error code', function(done) {
+            request(options, function(error, response, body) {
                 response.statusCode.should.equal(403);
                 done();
             });
         });
 
-        it ('should not proxy the request', function (done) {
+        it('should not proxy the request', function(done) {
             var mockExecuted = false;
 
-            mockApp.handler = function (req, res) {
+            mockApp.handler = function(req, res) {
                 mockExecuted = true;
                 res.json(200, {});
             };
 
-            request(options, function (error, response, body) {
+            request(options, function(error, response, body) {
                 mockExecuted.should.equal(false);
                 done();
             });

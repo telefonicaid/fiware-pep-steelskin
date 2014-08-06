@@ -37,16 +37,16 @@ describe('Validate action with Access Control', function() {
         mockAccess,
         mockAccessApp;
 
-    beforeEach(function (done) {
-        proxyLib.start(function (error, proxyObj) {
+    beforeEach(function(done) {
+        proxyLib.start(function(error, proxyObj) {
             proxy = proxyObj;
 
             proxy.middlewares.push(orionPlugin.extractCBAction);
 
-            serverMocks.start(config.resource.original.port, function (error, server, app) {
+            serverMocks.start(config.resource.original.port, function(error, server, app) {
                 mockTarget = server;
                 mockTargetApp = app;
-                serverMocks.start(config.access.port, function (error, serverAccess, appAccess) {
+                serverMocks.start(config.access.port, function(error, serverAccess, appAccess) {
                     mockAccess = serverAccess;
                     mockAccessApp = appAccess;
                     done();
@@ -55,15 +55,15 @@ describe('Validate action with Access Control', function() {
         });
     });
 
-    afterEach(function (done) {
+    afterEach(function(done) {
         proxyLib.stop(proxy, function(error) {
-            serverMocks.stop(mockTarget, function () {
+            serverMocks.stop(mockTarget, function() {
                 serverMocks.stop(mockAccess, done);
             });
         });
     });
 
-    describe('When a request to the CB arrives to the proxy with appropriate permissions', function () {
+    describe('When a request to the CB arrives to the proxy with appropriate permissions', function() {
         var options = {
             uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
             method: 'POST',
@@ -76,47 +76,47 @@ describe('Validate action with Access Control', function() {
             json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
         };
 
-        beforeEach(function (done) {
+        beforeEach(function(done) {
             serverMocks.mockPath('/validate', mockAccessApp, done);
             serverMocks.mockPath('/NGSI10/updateContext', mockTargetApp, done);
         });
 
-        it('should send a validation request to Access Control', function (done) {
+        it('should send a validation request to Access Control', function(done) {
             var mockExecuted = false;
 
-            mockAccessApp.handler = function (req, res) {
+            mockAccessApp.handler = function(req, res) {
                 mockExecuted = true;
                 res.set('Content-Type', 'application/xml');
                 res.send(utils.readExampleFile('./test/accessControlResponses/permitResponse.xml', true));
             };
 
-            request(options, function (error, response, body) {
+            request(options, function(error, response, body) {
                 mockExecuted.should.equal(true);
                 done();
             });
         });
 
-        it('should proxy the request to the destination', function (done) {
+        it('should proxy the request to the destination', function(done) {
             var mockExecuted = false;
 
-            mockAccessApp.handler = function (req, res) {
+            mockAccessApp.handler = function(req, res) {
                 res.set('Content-Type', 'application/xml');
                 res.send(utils.readExampleFile('./test/accessControlResponses/permitResponse.xml', true));
             };
 
-            mockTargetApp.handler = function (req, res) {
+            mockTargetApp.handler = function(req, res) {
                 mockExecuted = true;
                 res.json(200, {});
             };
 
-            request(options, function (error, response, body) {
+            request(options, function(error, response, body) {
                 mockExecuted.should.equal(true);
                 done();
             });
         });
     });
 
-    describe('When a request to the CB arrives for a user with wrong permissions', function () {
+    describe('When a request to the CB arrives for a user with wrong permissions', function() {
         var options = {
             uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
             method: 'POST',
@@ -129,25 +129,25 @@ describe('Validate action with Access Control', function() {
             json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
         };
 
-        beforeEach(function (done) {
+        beforeEach(function(done) {
             serverMocks.mockPath('/validate', mockAccessApp, done);
             serverMocks.mockPath('/NGSI10/updateContext', mockTargetApp, done);
         });
 
-        it ('should reject the request with a 403 error code', function (done) {
+        it('should reject the request with a 403 error code', function(done) {
             var mockExecuted = false;
 
-            mockAccessApp.handler = function (req, res) {
+            mockAccessApp.handler = function(req, res) {
                 res.set('Content-Type', 'application/xml');
                 res.send(utils.readExampleFile('./test/accessControlResponses/denyResponse.xml', true));
             };
 
-            mockTargetApp.handler = function (req, res) {
+            mockTargetApp.handler = function(req, res) {
                 mockExecuted = true;
                 res.json(200, {});
             };
 
-            request(options, function (error, response, body) {
+            request(options, function(error, response, body) {
                 mockExecuted.should.equal(false);
                 response.statusCode.should.equal(403);
                 done();
