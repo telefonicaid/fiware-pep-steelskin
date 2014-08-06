@@ -110,6 +110,7 @@ The following tables show the rules for detemining the action based on Method an
 | discover | Dis            |
 | subscribe-availability | S-A            |
 
+An up-to-date list of the convenience operations can be found [here](https://docs.google.com/spreadsheet/ccc?key=0Aj_S9VF3rt5DdEhqZHlBaGVURmhZRDY3aDRBdlpHS3c#gid=0).
 
 #### NGSI9 (context information availability)
 | Method | Path                                                                                     | Action |
