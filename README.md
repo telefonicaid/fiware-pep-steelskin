@@ -86,18 +86,9 @@ The XACML Response returns a `Decision` element that can have the following valu
 ```
 ## Rules to determine the Context Broker action from the request
 
-### Standard operations
-* `create`: URL contains `/ngsi10/updateContext` and the `actionType` attribute of the payload (either with XML or JSON) is `APPEND`.
-* `update`: URL contains `/ngsi10/updateContext` and the `actionType` attribute of the payload (either with XML or JSON) is `UPDATE`.
-* `delete`: URL contains `/ngsi10/updateContext` and the `actionType` attribute of the payload (either with XML or JSON) is “DELETE”.
-* `read`: URL contains `/ngsi10/queryContext`.
-* `subscribe`: URL contains  `/ngsi10/subscribeContext`, `/ngsi10/updateContextSubscription` o `/ngsi10/unsubscribeContext`.
-* `register`: URL contains `/ngsi9/registerContext`.
-* `discover`: URL contains `/nsgi9/discoverContextAvailability`.
-* `subscribe-availability`: URL contains `/ngsi9/subscribeContextAvailability`, `/ngsi9/updateContextAvailabilitySubscription` o `/ngsi9/unsubscribeContextAvailability`.
+### Available actions
 
-### Convenience operations
-The following tables show the rules for detemining the action based on Method and path of the request. The actions are shown as an abbreviature following this table:
+This is the list of actions available for the Context Broker. For every action, the abbreviature is also shown (will be used in some of the following tables). 
 
 | Action | Abbreviature |
 | ------ |:------------:|
@@ -109,6 +100,19 @@ The following tables show the rules for detemining the action based on Method an
 | register | Reg           |
 | discover | Dis            |
 | subscribe-availability | S-A            |
+
+### Standard operations
+* `create`: URL contains `/ngsi10/updateContext` and the `actionType` attribute of the payload (either with XML or JSON) is `APPEND`.
+* `update`: URL contains `/ngsi10/updateContext` and the `actionType` attribute of the payload (either with XML or JSON) is `UPDATE`.
+* `delete`: URL contains `/ngsi10/updateContext` and the `actionType` attribute of the payload (either with XML or JSON) is “DELETE”.
+* `read`: URL contains `/ngsi10/queryContext`.
+* `subscribe`: URL contains  `/ngsi10/subscribeContext`, `/ngsi10/updateContextSubscription` o `/ngsi10/unsubscribeContext`.
+* `register`: URL contains `/ngsi9/registerContext`.
+* `discover`: URL contains `/nsgi9/discoverContextAvailability`.
+* `subscribe-availability`: URL contains `/ngsi9/subscribeContextAvailability`, `/ngsi9/updateContextAvailabilitySubscription` o `/ngsi9/unsubscribeContextAvailability`.
+
+### Convenience operations
+The following tables show the rules for detemining the action based on Method and path of the request. 
 
 An up-to-date list of the convenience operations can be found [here](https://docs.google.com/spreadsheet/ccc?key=0Aj_S9VF3rt5DdEhqZHlBaGVURmhZRDY3aDRBdlpHS3c#gid=0).
 
