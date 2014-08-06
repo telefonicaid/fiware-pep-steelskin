@@ -36,7 +36,7 @@ The validation of each request si done connecting with a Keyston Proxy, who, usi
 
 
 ### Request
-The XACML Request maps the information extracted from the request (user token, organization ID and action) to XACML categories (`access-subject`, `resource and action`, `respectively`). 
+The XACML Request maps the information extracted from the request (user token, organization ID and action) to XACML categories (`access-subject`, `resource` and `action`, respectively). 
 ```
 <?xml version="1.0" encoding="UTF-8"?>
 <Request xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
