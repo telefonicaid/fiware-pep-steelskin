@@ -7,7 +7,7 @@ The FiWare Policy Enforcement Point is a proxy meant to secure independent FiWar
 * Organization: is read from the `fiware-service header` and identifies the protected component.
 * Action: the PEP guess the action for a particular request by checking the path or inspecting the body. The logic for performing such actions depends on the component that is being secured, so the PEP will need a plugin for each of this components.
 
-Communication with the Keystone proxy is based on the [http://docs.oasis-open.org/xacml/3.0/xacml-3.0-core-spec-os-en.html](XACML protocol).
+Communication with the Keystone proxy is based on the [XACML protocol](http://docs.oasis-open.org/xacml/3.0/xacml-3.0-core-spec-os-en.html).
 
 ## Usage
 The PEP Proxy can be started executing the following command from the project root:
