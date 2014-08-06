@@ -13,14 +13,14 @@ config.resource = {
         /**
          * Port where the proxied server is listening.
          */
-        port: 4000
+        port: 10026
     },
 
     proxy: {
         /**
          * Port where the proxy is listening.
          */
-        port: 8000
+        port: 1026
     }
 };
 
