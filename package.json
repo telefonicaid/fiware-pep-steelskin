@@ -27,7 +27,7 @@
     "request": "2.39.0",
     "sax": "0.6.0",
     "mustache": "0.8.2",
-    "node-uuid": "*",
+    "node-uuid": "1.4.1",
     "fiware-node-logger": "git+ssh://git@github.com:telefonicaid/fiware-node-logger.git"
   },
   "devDependencies": {
