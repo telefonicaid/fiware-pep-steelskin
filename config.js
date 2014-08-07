@@ -71,7 +71,6 @@ config.ssl = {
  * Default log level. Can be one of: 'DEBUG', 'INFO', 'WARN', 'ERROR', 'FATAL'
  * @type {string}
  */
-config.logLevel = '' +
-    '';
+config.logLevel = 'DEBUG';
 
 module.exports = config;
