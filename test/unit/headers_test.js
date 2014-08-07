@@ -40,16 +40,16 @@ describe('Control header behavior', function() {
         mockAccess,
         mockAccessApp;
 
-    beforeEach(function (done) {
-        proxyLib.start(function (error, proxyObj) {
+    beforeEach(function(done) {
+        proxyLib.start(function(error, proxyObj) {
             proxy = proxyObj;
 
             proxy.middlewares.push(orionPlugin.extractCBAction);
 
-            serverMocks.start(config.resource.original.port, function (error, server, app) {
+            serverMocks.start(config.resource.original.port, function(error, server, app) {
                 mockTarget = server;
                 mockTargetApp = app;
-                serverMocks.start(config.access.port, function (error, serverAccess, appAccess) {
+                serverMocks.start(config.access.port, function(error, serverAccess, appAccess) {
                     mockAccess = serverAccess;
                     mockAccessApp = appAccess;
                     done();
@@ -58,15 +58,15 @@ describe('Control header behavior', function() {
         });
     });
 
-    afterEach(function (done) {
+    afterEach(function(done) {
         proxyLib.stop(proxy, function(error) {
-            serverMocks.stop(mockTarget, function () {
+            serverMocks.stop(mockTarget, function() {
                 serverMocks.stop(mockAccess, done);
             });
         });
     });
 
-    describe('When a request to the CB arrives to the proxy without X-Forwarded-For', function () {
+    describe('When a request to the CB arrives to the proxy without X-Forwarded-For', function() {
         var options = {
             uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
             method: 'POST',
@@ -79,20 +79,20 @@ describe('Control header behavior', function() {
             json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
         };
 
-        beforeEach(function (done) {
+        beforeEach(function(done) {
             serverMocks.mockPath('/validate', mockAccessApp, done);
             serverMocks.mockPath('/NGSI10/updateContext', mockTargetApp, done);
         });
 
-        it('should add the X-Forwarded-For header', function (done) {
+        it('should add the X-Forwarded-For header', function(done) {
             var mockExecuted = false;
 
-            mockAccessApp.handler = function (req, res) {
+            mockAccessApp.handler = function(req, res) {
                 res.set('Content-Type', 'application/xml');
                 res.send(utils.readExampleFile('./test/accessControlResponses/permitResponse.xml', true));
             };
 
-            mockTargetApp.handler = function (req, res) {
+            mockTargetApp.handler = function(req, res) {
                 mockExecuted = true;
                 should.exist(req.headers['x-forwarded-for']);
                 req.headers['x-forwarded-for'].should.equal('127.0.0.1');
@@ -100,14 +100,14 @@ describe('Control header behavior', function() {
                 res.json(200, {});
             };
 
-            request(options, function (error, response, body) {
+            request(options, function(error, response, body) {
                 mockExecuted.should.equal(true);
                 done();
             });
         });
     });
 
-    describe('When a request to the CB arrives to the proxy with the X-Forwarded-For header', function () {
+    describe('When a request to the CB arrives to the proxy with the X-Forwarded-For header', function() {
         var options = {
             uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
             method: 'POST',
@@ -121,20 +121,20 @@ describe('Control header behavior', function() {
             json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
         };
 
-        beforeEach(function (done) {
+        beforeEach(function(done) {
             serverMocks.mockPath('/validate', mockAccessApp, done);
             serverMocks.mockPath('/NGSI10/updateContext', mockTargetApp, done);
         });
 
-        it('should reuse the X-Forwarded-For header', function (done) {
+        it('should reuse the X-Forwarded-For header', function(done) {
             var mockExecuted = false;
 
-            mockAccessApp.handler = function (req, res) {
+            mockAccessApp.handler = function(req, res) {
                 res.set('Content-Type', 'application/xml');
                 res.send(utils.readExampleFile('./test/accessControlResponses/permitResponse.xml', true));
             };
 
-            mockTargetApp.handler = function (req, res) {
+            mockTargetApp.handler = function(req, res) {
                 mockExecuted = true;
                 should.exist(req.headers['x-forwarded-for']);
                 req.headers['x-forwarded-for'].should.equal('192.168.2.1');
@@ -142,7 +142,7 @@ describe('Control header behavior', function() {
                 res.json(200, {});
             };
 
-            request(options, function (error, response, body) {
+            request(options, function(error, response, body) {
                 mockExecuted.should.equal(true);
                 done();
             });

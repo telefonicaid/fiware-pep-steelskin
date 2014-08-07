@@ -39,20 +39,20 @@ describe('HTTPS Options', function() {
         mockAccess,
         mockAccessApp;
 
-    beforeEach(function (done) {
+    beforeEach(function(done) {
         config.ssl.active = true;
         config.ssl.certFile = 'test/certs/pepTest.crt';
         config.ssl.keyFile = 'test/certs/pepTest.key';
 
-        proxyLib.start(function (error, proxyObj) {
+        proxyLib.start(function(error, proxyObj) {
             proxy = proxyObj;
 
             proxy.middlewares.push(orionPlugin.extractCBAction);
 
-            serverMocks.start(config.resource.original.port, function (error, server, app) {
+            serverMocks.start(config.resource.original.port, function(error, server, app) {
                 mockTarget = server;
                 mockTargetApp = app;
-                serverMocks.start(config.access.port, function (error, serverAccess, appAccess) {
+                serverMocks.start(config.access.port, function(error, serverAccess, appAccess) {
                     mockAccess = serverAccess;
                     mockAccessApp = appAccess;
                     done();
@@ -61,15 +61,15 @@ describe('HTTPS Options', function() {
         });
     });
 
-    afterEach(function (done) {
+    afterEach(function(done) {
         config.ssl.active = false;
         proxyLib.stop(proxy, function(error) {
-            serverMocks.stop(mockTarget, function () {
+            serverMocks.stop(mockTarget, function() {
                 serverMocks.stop(mockAccess, done);
             });
         });
     });
-    describe('When a request to the CB arrives to the proxy with HTTPS', function () {
+    describe('When a request to the CB arrives to the proxy with HTTPS', function() {
         var options = {
             uri: 'https://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
             method: 'POST',
@@ -82,25 +82,25 @@ describe('HTTPS Options', function() {
             json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
         };
 
-        beforeEach(function (done) {
+        beforeEach(function(done) {
             serverMocks.mockPath('/validate', mockAccessApp, done);
             serverMocks.mockPath('/NGSI10/updateContext', mockTargetApp, done);
         });
 
-        it('should proxy the request to the destination', function (done) {
+        it('should proxy the request to the destination', function(done) {
             var mockExecuted = false;
 
-            mockAccessApp.handler = function (req, res) {
+            mockAccessApp.handler = function(req, res) {
                 res.set('Content-Type', 'application/xml');
                 res.send(utils.readExampleFile('./test/accessControlResponses/permitResponse.xml', true));
             };
 
-            mockTargetApp.handler = function (req, res) {
+            mockTargetApp.handler = function(req, res) {
                 mockExecuted = true;
                 res.json(200, {});
             };
 
-            request(options, function (error, response, body) {
+            request(options, function(error, response, body) {
                 mockExecuted.should.equal(true);
                 done();
             });

@@ -1,20 +1,49 @@
 var config = {};
 
+// Protected Resource configuration
+//--------------------------------------------------
+// Configures the address of the component that is being proxied and the address of the proxy itself.
 config.resource = {
     original: {
+        /**
+         * Host that is being proxied.
+         */
         host: 'localhost',
-        port: 4000
+
+        /**
+         * Port where the proxied server is listening.
+         */
+        port: 10026
     },
+
     proxy: {
-        port: 8000,
-        ssl: false
+        /**
+         * Port where the proxy is listening.
+         */
+        port: 1026
     }
 };
 
+// Access Control configuration
+//--------------------------------------------------
+// This options can be used to configure the address and options of the Keystone Proxy, resposible of the request
+// validation.
 config.access = {
+    /**
+     * Protocol to use to access the Keystone Proxy.
+     */
     protocol: 'http',
+    /**
+     * Host where the Keystone Proxy is located.
+     */
     host: 'localhost',
+    /**
+     * Port where the keystone Proxy is listening.
+     */
     port: 7000,
+    /**
+     * Path of the authentication action.
+     */
     path: '/validate'
 }
 
