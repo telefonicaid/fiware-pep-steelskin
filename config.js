@@ -26,8 +26,10 @@ config.resource = {
 
 // Access Control configuration
 //--------------------------------------------------
-// This options can be used to configure the address and options of the Keystone Proxy, resposible of the request
-// validation.
+/**
+ * This options can be used to configure the address and options of the Keystone Proxy, resposible of the request
+ * validation.
+ */
 config.access = {
     /**
      * Protocol to use to access the Keystone Proxy.
@@ -72,5 +74,27 @@ config.ssl = {
  * @type {string}
  */
 config.logLevel = 'INFO';
+
+// List of component middlewares
+//-------------------------------------------------
+/**
+ * To validate the request, the proxy needs some information that is dependant of the component: the action that a
+ * request is going to execute. How to detect the action given the request is component-specific logic, that can be
+ * codified in a middleware-like function that will be executed before the user validation. This logic must populate
+ * the 'action' parameter of the request.
+ */
+config.middlewares = {
+    /**
+     * Indicates the module from where the middlewares will be loaded.
+     */
+    require: 'lib/services/orionPlugin',
+
+    /**
+     * Indicates the list of middlewares to load.
+     */
+    functions: [
+        'extractCBAction'
+    ]
+};
 
 module.exports = config;
