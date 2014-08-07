@@ -3,12 +3,12 @@
 var proxy = require('../lib/fiware-orion-pep'),
     config = require('../config');
 
-proxy.start(function (error, proxyObj) {
+proxy.start(function(error, proxyObj) {
+    var module;
+
     if (error) {
         process.exit();
     } else {
-        var module;
-
         console.log('Loading middlewares');
         module = require('../' + config.middlewares.require);
 
