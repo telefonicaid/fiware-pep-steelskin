@@ -28,9 +28,12 @@ var serverMocks = require('../tools/serverMocks'),
     orionPlugin = require('../../lib/services/OrionPlugin'),
     config = require('../../config'),
     utils = require('../tools/utils'),
+    should = require('should'),
     request = require('request');
 
-describe('Validate action with Access Control', function() {
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
+describe('Control header behavior', function() {
     var proxy,
         mockTarget,
         mockTargetApp,
@@ -63,7 +66,7 @@ describe('Validate action with Access Control', function() {
         });
     });
 
-    describe('When a request to the CB arrives to the proxy with appropriate permissions', function() {
+    describe('When a request to the CB arrives to the proxy without X-Forwarded-For', function() {
         var options = {
             uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
             method: 'POST',
@@ -81,22 +84,7 @@ describe('Validate action with Access Control', function() {
             serverMocks.mockPath('/NGSI10/updateContext', mockTargetApp, done);
         });
 
-        it('should send a validation request to Access Control', function(done) {
-            var mockExecuted = false;
-
-            mockAccessApp.handler = function(req, res) {
-                mockExecuted = true;
-                res.set('Content-Type', 'application/xml');
-                res.send(utils.readExampleFile('./test/accessControlResponses/permitResponse.xml', true));
-            };
-
-            request(options, function(error, response, body) {
-                mockExecuted.should.equal(true);
-                done();
-            });
-        });
-
-        it('should proxy the request to the destination', function(done) {
+        it('should add the X-Forwarded-For header', function(done) {
             var mockExecuted = false;
 
             mockAccessApp.handler = function(req, res) {
@@ -106,6 +94,9 @@ describe('Validate action with Access Control', function() {
 
             mockTargetApp.handler = function(req, res) {
                 mockExecuted = true;
+                should.exist(req.headers['x-forwarded-for']);
+                req.headers['x-forwarded-for'].should.equal('127.0.0.1');
+
                 res.json(200, {});
             };
 
@@ -116,7 +107,7 @@ describe('Validate action with Access Control', function() {
         });
     });
 
-    describe('When a request to the CB arrives for a user with wrong permissions', function() {
+    describe('When a request to the CB arrives to the proxy with the X-Forwarded-For header', function() {
         var options = {
             uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
             method: 'POST',
@@ -124,7 +115,8 @@ describe('Validate action with Access Control', function() {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
                 'Fiware-Service': 'frn:contextbroker:551:::',
-                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
+                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q',
+                'X-Forwarded-For': '192.168.2.1'
             },
             json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
         };
@@ -134,22 +126,24 @@ describe('Validate action with Access Control', function() {
             serverMocks.mockPath('/NGSI10/updateContext', mockTargetApp, done);
         });
 
-        it('should reject the request with a 403 error code', function(done) {
+        it('should reuse the X-Forwarded-For header', function(done) {
             var mockExecuted = false;
 
             mockAccessApp.handler = function(req, res) {
                 res.set('Content-Type', 'application/xml');
-                res.send(utils.readExampleFile('./test/accessControlResponses/denyResponse.xml', true));
+                res.send(utils.readExampleFile('./test/accessControlResponses/permitResponse.xml', true));
             };
 
             mockTargetApp.handler = function(req, res) {
                 mockExecuted = true;
+                should.exist(req.headers['x-forwarded-for']);
+                req.headers['x-forwarded-for'].should.equal('192.168.2.1');
+
                 res.json(200, {});
             };
 
             request(options, function(error, response, body) {
-                mockExecuted.should.equal(false);
-                response.statusCode.should.equal(403);
+                mockExecuted.should.equal(true);
                 done();
             });
         });

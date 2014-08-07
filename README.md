@@ -1,6 +1,195 @@
 # fiware-orion-pep
 
-FiWare Policy Enforcement Point
+## Description
+The FiWare Policy Enforcement Point is a proxy meant to secure independent FiWare components, by intercepting every request sent to the component, validating it against the Keystone proxy. This validation is based in three pieces of data:
+
+* User token: comes from the OAuth authorization server and is taken from the `x-auth-token` header.
+* Organization: is read from the `fiware-service` header and identifies the protected component.
+* Action: the PEP guess the action for a particular request by checking the path or inspecting the body. The logic for performing such actions depends on the component that is being secured, so the PEP will need a plugin for each of this components.
+
+Communication with the Keystone proxy is based on the [XACML protocol](http://docs.oasis-open.org/xacml/3.0/xacml-3.0-core-spec-os-en.html).
+
+## Usage
+The PEP Proxy can be started executing the following command from the project root:
+
+```
+bin/pep-proxy.js
+```
+
+## Configuration
+All the configuration of the proxy is stored in the `config.js` file in the root of the project folder.
+
+### Basic Configuration
+In order to have the proxy running, there are two basic pieces of information to fill:
+* `config.resource.proxy`: The information of the server proxy itself (mainly the port).
+* `config.resource.original`: The address and port of the proxied server.
+
+### SSL Configuration
+If SSL Termination is not available, the PEP Proxy can be configured to listen HTTPS instead of plain HTTP. To activate the SSL:
+
+* Create the appropiate public keys and certificates and store them in the PEP Proxy machine.
+* In the `config.js` file, change the `config.ssl.active` flag to true.
+* In the same ssl object in the configuration, fill the path to the key and cert files.
+
+## API With Keystone Proxy
+The validation of each request si done connecting with a Keyston Proxy, who, using the information provided by the PEP Proxy, decides whether the user can execute the selected action in this organization or not. The following is a summary of this interaction with some examples.
+
+
+### Request
+The XACML Request maps the information extracted from the request (user token, organization ID and action) to XACML categories (`access-subject`, `resource` and `action`, respectively). 
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<Request xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17 http://docs.oasis-open.org/xacml/3.0/xacml-core-v3-schema-wd-17.xsd"
+         ReturnPolicyIdList="false">
+    <!-- X-Auth-Token-->
+    <Attributes Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject">
+        <Attribute IncludeInResult="false"
+                   AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id">
+            <AttributeValue
+                    DataType="http://www.w3.org/2001/XMLSchema#int">UAidNA9uQJiIVYSCg0IQ8Q</AttributeValue>
+        </Attribute>
+    </Attributes>
+    <!-- fiware resource name being accessed: organization id -->
+    <Attributes
+            Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource">
+        <Attribute IncludeInResult="false"
+                   AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">frn:contextbroker:551:::</AttributeValue>
+        </Attribute>
+    </Attributes>
+    <!-- action performed -->
+    <Attributes
+            Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action">
+        <Attribute IncludeInResult="false"
+                   AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id">
+            <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string">create</AttributeValue>
+        </Attribute>
+    </Attributes>
+</Request>
+```
+
+### Response
+The XACML Response returns a `Decision` element that can have the following values: “Permit”, “Deny”, “NotApplicable” or “Indeterminate”. The subset of allowable values understood by the PEP Proxy is:
+* `Permit`: allows the request to continue its way to the Context Broker.
+* `Deny`: rejects the request, returning a 403 error to the requestor.
+
+
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<Response xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17 http://docs.oasis-open.org/xacml/3.0/xacml-core-v3-schema-wd-17.xsd">
+    <Result>
+        <Decision>Permit</Decision>
+    </Result>
+</Response>
+```
+## Rules to determine the Context Broker action from the request
+
+### Available actions
+
+This is the list of actions available for the Context Broker. For every action, the abbreviature is also shown (will be used in some of the following tables). 
+
+| Action | Abbreviature |
+| ------ |:------------:|
+| create | C            |
+| update | U            |
+| delete | D            |
+| read | R            |
+| subscribe | S            |
+| register | Reg           |
+| discover | Dis            |
+| subscribe-availability | S-A            |
+
+### Standard operations
+* `create`: URL contains `/ngsi10/updateContext` and the `actionType` attribute of the payload (either with XML or JSON) is `APPEND`.
+* `update`: URL contains `/ngsi10/updateContext` and the `actionType` attribute of the payload (either with XML or JSON) is `UPDATE`.
+* `delete`: URL contains `/ngsi10/updateContext` and the `actionType` attribute of the payload (either with XML or JSON) is “DELETE”.
+* `read`: URL contains `/ngsi10/queryContext`.
+* `subscribe`: URL contains  `/ngsi10/subscribeContext`, `/ngsi10/updateContextSubscription` o `/ngsi10/unsubscribeContext`.
+* `register`: URL contains `/ngsi9/registerContext`.
+* `discover`: URL contains `/nsgi9/discoverContextAvailability`.
+* `subscribe-availability`: URL contains `/ngsi9/subscribeContextAvailability`, `/ngsi9/updateContextAvailabilitySubscription` o `/ngsi9/unsubscribeContextAvailability`.
+
+### Convenience operations
+The following tables show the rules for detemining the action based on Method and path of the request. 
+
+An up-to-date list of the convenience operations can be found [here](https://docs.google.com/spreadsheet/ccc?key=0Aj_S9VF3rt5DdEhqZHlBaGVURmhZRDY3aDRBdlpHS3c#gid=0).
+
+#### NGSI9 (context information availability)
+| Method | Path                                                                                     | Action |
+| ------ |:--------------------------------------------------------------------------------------- | ---:|
+| GET    | /ngsi9/contextEntities/{EntityId}                                                      	| Dis |
+| POST   | /ngsi9/contextEntities/{EntityId}                                                      	| Reg |
+| GET    | /ngsi9/contextEntities/{EntityId}/attributes                                           	| -   |
+| POST   | /ngsi9/contextEntities/{EntityId}/attributes                                           	| -   |
+| GET    | /ngsi9/contextEntities/{EntityId}/attributes/{attributeName}                           	| Dis |
+| POST   | /ngsi9/contextEntities/{EntityId}/attributes/{attributeName}                          	| Reg |
+| GET    | /ngsi9/contextEntities/{EntityId}/attributeDomains/{attributeDomainName}               	| Dis |
+| POST   | /ngsi9/contextEntities/{EntityId}/attributeDomains/{attributeDomainName}               	| Reg |
+| GET    | /ngsi9/contextEntityTypes/{typeName}                                                   	| Dis |
+| POST   | /ngsi9/contextEntityTypes/{typeName}                                                   	| Reg |
+| GET    | /ngsi9/contextEntityTypes/{typeName}/attributes                                        	| -   |
+| POST   | /ngsi9/contextEntityTypes/{typeName}/attributes                                        	| -   |
+| GET    | /ngsi9/contextEntityTypes/{typeName}/attributes/{attributeName}                        	| Dis |
+| POST   | /ngsi9/contextEntityTypes/{typeName}/attributes/{attributeName}                        	| Reg |
+| GET    | /ngsi9/contextEntityTypes/{typeName}/attributeDomains/{attributeDomainName}            	| Dis |
+| POST   | /ngsi9/contextEntityTypes/{typeName}/attributeDomains/{attributeDomainName}            	| Reg |
+| POST   | /ngsi9/contextAvailabilitySubscriptions                                                	| S-A |
+| PUT    | /ngsi9/contextAvailabilitySubscriptions/{subscriptionId}                               	| S-A |
+| DELETE | /ngsi9/contextAvailabilitySubscriptions/{subscriptionId}                               	| S-A |
+
+#### NGS10 (context information availability)
+| Method | Path                                                                                     | Action |
+| ------ |:--------------------------------------------------------------------------------------- | ---:|
+| GET    | /ngsi10/contextEntities/{EntityID}                                                     	| R |
+| PUT    | /ngsi10/contextEntities/{EntityID}                                                     	| U |
+| POST   | /ngsi10/contextEntities/{EntityID}                                                     	| C |
+| DELETE | /ngsi10/contextEntities/{EntityID}                                                     	| D |
+| GET    | /ngsi10/contextEntities/{EntityID}/attributes                                          	| - |
+| PUT    | /ngsi10/contextEntities/{EntityID}/attributes                                          	| - |
+| POST   | /ngsi10/contextEntities/{EntityID}/attributes                                          	| - |
+| DELETE | /ngsi10/contextEntities/{EntityID}/attributes                                          	| - |
+| GET    | /ngsi10/contextEntities/{EntityID}/attributes/{attributeName}                          	| R |
+| POST   | /ngsi10/contextEntities/{EntityID}/attributes/{attributeName}                          	| C |
+| PUT    | /ngsi10/contextEntities/{EntityID}/attributes/{attributeName}                          	| U |
+| DELETE | /ngsi10/contextEntities/{EntityID}/attributes/{attributeName}                          	| D |
+| GET    | /ngsi10/contextEntities/{EntityID}/attributes/{attributeName}/{valueID}                	| R |
+| PUT    | /ngsi10/contextEntities/{EntityID}/attributes/{attributeName}/{valueID}                	| U |
+| DELETE | /ngsi10/contextEntities/{EntityID}/attributes/{attributeName}/{valueID}                	| D |
+| GET    | /ngsi10/contextEntities/{EntityID}/attributeDomains/{attributeDomainName}              	| R |
+| GET    | /ngsi10/contextEntityTypes/{typeName}                                                  	| R |
+| GET    | /ngsi10/contextEntityTypes/{typeName}/attributes                                       	| - |
+| GET    | /ngsi10/contextEntityTypes/{typeName}/attributes/{attributeName}                       	| R |
+| GET    | /ngsi10/contextEntityTypes/{typeName}/attributeDomains/{attributeDomainName}           	| R |
+| POST   | /ngsi10/contextSubscriptions                                                           	| S |
+| PUT    | /ngsi10/contextSubscriptions/{subscriptionID}                                          	| S |
+| DELETE | /ngsi10/contextSubscriptions/{subscriptionID}                                          	| S |
+
+
+## Customizing PEP Proxy for other components
+Although the Orion PEP Proxy was meant to protect the access to the Context Broker using the rules defined in the Access Control, it was designed to easily adapt to other components. Most of the code of the proxy (i.e. the extraction of user data, the communication with the Keystone Proxy and the proxy process itself) will execute exactly the same for all the components. The exception is the rule to determine the action the request is trying to perform. To address this behavior and possible actions different customizations of the proxy could need, the proxy allows for the introduction of middlewares in the validation process.
+
+### Middleware definition
+The middlewares are quite similar to the ones used by the Connect (or Express) framework. A middleware is a function that receives three parameters:
+
+* req: The object representing the incoming HTTP request. Along with all the request information, the request is used to store the information for the validation process (i.e. attributes `userId` with the user token, `organization` with the organization extracted from the headers and `action` that should be filled in by the middlewares).
+* res: The object representing the response. This object can be used to stop the request pipeline due to conditions defined by the specific component (although it is advisable to use a `next(error)` call with a custom error to allow the error to be handled by the proxy).
+* next: Callback used to call the next middleware in the chain. In the current version, it is required that the call to the next middleware contains both the request and response objects (this behavior is not the same as the one in Connect middlewares). If the first parameter in the call is an error, the request will be rejected. If the first parameter is null or undefined, the request will continue through the validation process. This is an example of a call to next that lets the request follow through:
+
+```
+next(null, req, res);
+```
+
+### Middleware configuration
+The middlewares must be defined inside a Node.js module. They can be configured using the `config.middlewares` object of the `config.js` file. This object contains two attributes:
+
+* `require`: path to the module that contains the middlewares, from the project root. The system currently supports only modules defined inside the fiware-orion-pep project (or in accessible folders). 
+* `functions`: list of the middlewares to load. The names in this list must be exported functions of the module selected in the previous attribute.
+
+## License
+
+Orion FiWare Policy Enforcement Point is licensed under Affero General Public License (GPL) version 3.
 
 ## Development documentation
 ### Project build

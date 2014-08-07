@@ -37,7 +37,7 @@ function startMock(port, callback) {
 
     var server = http.createServer(app);
 
-    server.listen(app.get('port'), app.get('host'), function (error) {
+    server.listen(app.get('port'), app.get('host'), function(error) {
         callback(error, server, app);
     });
 }
