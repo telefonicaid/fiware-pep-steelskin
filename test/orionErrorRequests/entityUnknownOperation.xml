@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<updateContextRequest>
+    <contextElementList>
+        <contextElement>
+            <entityId type="Room" isPattern="false">
+                <id>Room1</id>
+            </entityId>
+            <contextAttributeList>
+                <contextAttribute>
+                    <name>temperature</name>
+                    <type>centigrade</type>
+                    <contextValue>23</contextValue>
+                </contextAttribute>
+                <contextAttribute>
+                    <name>pressure</name>
+                    <type>mmHg</type>
+                    <contextValue>720</contextValue>
+                </contextAttribute>
+            </contextAttributeList>
+        </contextElement>
+    </contextElementList>
+    <updateAction>TRANSLATE</updateAction>
+</updateContextRequest>
