@@ -382,9 +382,51 @@ describe('Extract Context Broker action from request', function() {
     });
 
     describe('When an update action comes with an unknown action in a JSON format', function() {
-        it('should reject the request with a 403');
+        var options = {
+            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Fiware-Service': 'frn:contextbroker:551:::',
+                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
+            },
+            json: utils.readExampleFile('./test/orionErrorRequests/entityUnknownOperation.json')
+        };
+
+        beforeEach(function(done) {
+            serverMocks.mockPath('/NGSI10/queryContext', mockApp, done);
+        });
+
+        it('should reject the request with a 403', function(done) {
+            request(options, function(error, response, body) {
+                response.statusCode.should.equal(403);
+                done();
+            });
+        });
     });
     describe('When an update action comes with an unknown action in an XML format', function() {
-        it('should reject the request with a 403');
+        var options = {
+            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/xml',
+                'Accept': 'application/xml',
+                'Fiware-Service': 'frn:contextbroker:551:::',
+                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
+            },
+            body: utils.readExampleFile('./test/orionErrorRequests/entityUnknownOperation.xml', true)
+        };
+
+        beforeEach(function(done) {
+            serverMocks.mockPath('/NGSI10/queryContext', mockApp, done);
+        });
+
+        it('should reject the request with a 403', function(done) {
+            request(options, function(error, response, body) {
+                response.statusCode.should.equal(403);
+                done();
+            });
+        });
     });
 });
