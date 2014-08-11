@@ -231,11 +231,71 @@ describe('Validate action with Access Control', function() {
         });
     });
 
-    describe('When a response from the Keystone proxy comes with an XML with wrong syntax', function () {
-        it('should reject the response with a 403 error');
+    describe('When a response from the Keystone proxy comes with an XML with wrong syntax', function() {
+        var options = {
+            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Fiware-Service': 'frn:contextbroker:551:::',
+                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
+            },
+            json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
+        };
+
+        beforeEach(function(done) {
+            serverMocks.mockPath('/validate', mockAccessApp, done);
+            serverMocks.mockPath('/NGSI10/updateContext', mockTargetApp, done);
+        });
+
+        it('should reject the response with a 503 error', function(done) {
+            var mockExecuted = false;
+
+            mockAccessApp.handler = function(req, res) {
+                mockExecuted = true;
+                res.set('Content-Type', 'application/xml');
+                res.send(utils.readExampleFile('./test/accessControlErrorResponses/denyWrongSyntax.xml', true));
+            };
+
+            request(options, function(error, response, body) {
+                response.statusCode.should.equal(503);
+                done();
+            });
+        });
     });
 
-    describe('When a response from the Keystone does not contain a decision', function () {
-        it('should reject the response with a 403 error');
+    describe('When a response from the Keystone does not contain a decision', function() {
+        var options = {
+            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Fiware-Service': 'frn:contextbroker:551:::',
+                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
+            },
+            json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
+        };
+
+        beforeEach(function(done) {
+            serverMocks.mockPath('/validate', mockAccessApp, done);
+            serverMocks.mockPath('/NGSI10/updateContext', mockTargetApp, done);
+        });
+
+        it('should reject the response with a 403 error', function(done) {
+            var mockExecuted = false;
+
+            mockAccessApp.handler = function(req, res) {
+                mockExecuted = true;
+                res.set('Content-Type', 'application/xml');
+                res.send(utils.readExampleFile('./test/accessControlErrorResponses/noValidationElement.xml', true));
+            };
+
+            request(options, function(error, response, body) {
+                response.statusCode.should.equal(503);
+                done();
+            });
+        });
     });
 });

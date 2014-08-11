@@ -430,11 +430,53 @@ describe('Extract Context Broker action from request', function() {
         });
     });
 
-    describe('When a request arrives with an unknown body type', function () {
-        it('should reject the request with a 403 error');
+    describe('When a request arrives with an unknown body type', function() {
+        var options = {
+            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/csv',
+                'Accept': 'application/csv',
+                'Fiware-Service': 'frn:contextbroker:551:::',
+                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
+            },
+            body: utils.readExampleFile('./test/orionErrorRequests/entityUnknownOperation.xml', true)
+        };
+
+        beforeEach(function(done) {
+            serverMocks.mockPath('/NGSI10/queryContext', mockApp, done);
+        });
+
+        it('should reject the request with a 403 error', function(done) {
+            request(options, function(error, response, body) {
+                response.statusCode.should.equal(403);
+                done();
+            });
+        });
     });
 
-    describe('When a request arrives with an XML body with a wrong syntax', function () {
-        it('should reject the request with a 403 error');
+    describe('When a request arrives with an XML body with a wrong syntax', function() {
+        var options = {
+            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/xml',
+                'Accept': 'application/xml',
+                'Fiware-Service': 'frn:contextbroker:551:::',
+                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
+            },
+            body: utils.readExampleFile('./test/orionErrorRequests/entitySyntaxError.xml', true)
+        };
+
+        beforeEach(function(done) {
+            serverMocks.mockPath('/NGSI10/queryContext', mockApp, done);
+        });
+
+        it('should reject the request with a 403 error', function(done) {
+            request(options, function(error, response, body) {
+                response.statusCode.should.equal(403);
+                done();
+            });
+        });
     });
 });
