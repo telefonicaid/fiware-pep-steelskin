@@ -429,4 +429,12 @@ describe('Extract Context Broker action from request', function() {
             });
         });
     });
+
+    describe('When a request arrives with an unknown body type', function () {
+        it('should reject the request with a 403 error');
+    });
+
+    describe('When a request arrives with an XML body with a wrong syntax', function () {
+        it('should reject the request with a 403 error');
+    });
 });

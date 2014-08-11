@@ -230,4 +230,12 @@ describe('Validate action with Access Control', function() {
             });
         });
     });
+
+    describe('When a response from the Keystone proxy comes with an XML with wrong syntax', function () {
+        it('should reject the response with a 403 error');
+    });
+
+    describe('When a response from the Keystone does not contain a decision', function () {
+        it('should reject the response with a 403 error');
+    });
 });
