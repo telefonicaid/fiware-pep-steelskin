@@ -49,6 +49,20 @@ config.access = {
     path: '/validate'
 }
 
+// Authentication configuration
+//--------------------------------------------------
+/**
+ * Information to authenticate the PEP Proxy to the OAuth stack, to identify itself against the Keystone Proxy.
+ */
+config.authentication = {
+    protocol: 'http',
+    host: 'localhost',
+    port: 9000,
+    path: '/v2.0/tokens',
+    username: '',
+    password: ''
+}
+
 // Security configuration
 //--------------------------------------------------
 config.ssl = {

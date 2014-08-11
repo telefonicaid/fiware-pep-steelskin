@@ -27,6 +27,7 @@ var serverMocks = require('../tools/serverMocks'),
     proxyLib = require('../../lib/fiware-orion-pep'),
     orionPlugin = require('../../lib/services/orionPlugin'),
     config = require('../../config'),
+    async = require('async'),
     utils = require('../tools/utils'),
     request = require('request');
 
@@ -37,7 +38,9 @@ describe('HTTPS Options', function() {
         mockTarget,
         mockTargetApp,
         mockAccess,
-        mockAccessApp;
+        mockAccessApp,
+        mockOAuth,
+        mockOAuthApp;
 
     beforeEach(function(done) {
         config.ssl.active = true;
@@ -55,7 +58,19 @@ describe('HTTPS Options', function() {
                 serverMocks.start(config.access.port, function(error, serverAccess, appAccess) {
                     mockAccess = serverAccess;
                     mockAccessApp = appAccess;
-                    done();
+                    serverMocks.start(config.authentication.port, function(error, serverAuth, appAuth) {
+                        mockOAuth = serverAuth;
+                        mockOAuthApp = appAuth;
+
+                        mockOAuthApp.handler = function(req, res) {
+                            res.json(200, utils.readExampleFile('./test/authorizationResponses/authorize.json'));
+                        };
+
+                        async.series([
+                            async.apply(serverMocks.mockPath, '/v2.0/tokens', mockOAuthApp),
+                            async.apply(serverMocks.mockPath, '/validate', mockAccessApp)
+                        ], done);
+                    });
                 });
             });
         });
@@ -65,7 +80,9 @@ describe('HTTPS Options', function() {
         config.ssl.active = false;
         proxyLib.stop(proxy, function(error) {
             serverMocks.stop(mockTarget, function() {
-                serverMocks.stop(mockAccess, done);
+                serverMocks.stop(mockAccess, function() {
+                    serverMocks.stop(mockOAuth, done);
+                });
             });
         });
     });

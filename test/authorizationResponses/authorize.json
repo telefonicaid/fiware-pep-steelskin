@@ -1,0 +1,14 @@
+{
+    "access": {
+        "token": {
+            "expires": "2015-07-09T15:16:07Z",
+            "id": "092016b75474ea6b492e29fb69d23029"
+        },
+        "user": {
+            "id": "pepProxy",
+            "name": "pepProxy",
+            "roles_links": [],
+            "username": "pepProxy"
+        }
+    }
+}

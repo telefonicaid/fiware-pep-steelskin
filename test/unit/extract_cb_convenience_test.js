@@ -29,6 +29,7 @@ var serverMocks = require('../tools/serverMocks'),
     config = require('../../config'),
     utils = require('../tools/utils'),
     should = require('should'),
+    async = require('async'),
     request = require('request'),
     convenienceOperations;
 
@@ -83,7 +84,9 @@ describe('Extract Context Broker action from convenience operation requests', fu
         mockServer,
         mockApp,
         mockAccess,
-        mockAccessApp;
+        mockAccessApp,
+        mockOAuth,
+        mockOAuthApp;
 
     function testAction(action, options) {
         return function(done) {
@@ -145,7 +148,19 @@ describe('Extract Context Broker action from convenience operation requests', fu
                         res.send(utils.readExampleFile('./test/accessControlResponses/permitResponse.xml', true));
                     };
 
-                    serverMocks.mockPath('/validate', mockAccessApp, done);
+                    serverMocks.start(config.authentication.port, function(error, serverAuth, appAuth) {
+                        mockOAuth = serverAuth;
+                        mockOAuthApp = appAuth;
+
+                        mockOAuthApp.handler = function(req, res) {
+                            res.json(200, utils.readExampleFile('./test/authorizationResponses/authorize.json'));
+                        };
+
+                        async.series([
+                            async.apply(serverMocks.mockPath, '/v2.0/tokens', mockOAuthApp),
+                            async.apply(serverMocks.mockPath, '/validate', mockAccessApp)
+                        ], done);
+                    });
                 });
             });
         });
@@ -154,7 +169,9 @@ describe('Extract Context Broker action from convenience operation requests', fu
     afterEach(function(done) {
         proxyLib.stop(proxy, function(error) {
             serverMocks.stop(mockServer, function() {
-                serverMocks.stop(mockAccess, done);
+                serverMocks.stop(mockAccess, function() {
+                    serverMocks.stop(mockOAuth, done);
+                });
             });
         });
     });
