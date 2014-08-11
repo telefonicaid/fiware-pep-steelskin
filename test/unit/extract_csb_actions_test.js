@@ -380,4 +380,11 @@ describe('Extract Context Broker action from request', function() {
             });
         });
     });
+
+    describe('When an update action comes with an unknown action in a JSON format', function() {
+        it('should reject the request with a 403');
+    });
+    describe('When an update action comes with an unknown action in an XML format', function() {
+        it('should reject the request with a 403');
+    });
 });
