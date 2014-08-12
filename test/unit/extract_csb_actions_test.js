@@ -28,6 +28,7 @@ var serverMocks = require('../tools/serverMocks'),
     orionPlugin = require('../../lib/services/orionPlugin'),
     config = require('../../config'),
     utils = require('../tools/utils'),
+    async = require('async'),
     should = require('should'),
     request = require('request');
 
@@ -37,7 +38,9 @@ describe('Extract Context Broker action from request', function() {
         mockServer,
         mockApp,
         mockAccess,
-        mockAccessApp;
+        mockAccessApp,
+        mockOAuth,
+        mockOAuthApp;
 
     function testAction(action, options) {
         return function(done) {
@@ -76,7 +79,19 @@ describe('Extract Context Broker action from request', function() {
                         res.send(utils.readExampleFile('./test/accessControlResponses/permitResponse.xml', true));
                     };
 
-                    serverMocks.mockPath('/validate', mockAccessApp, done);
+                    serverMocks.start(config.authentication.port, function(error, serverAuth, appAuth) {
+                        mockOAuth = serverAuth;
+                        mockOAuthApp = appAuth;
+
+                        mockOAuthApp.handler = function(req, res) {
+                            res.json(200, utils.readExampleFile('./test/authorizationResponses/authorize.json'));
+                        };
+
+                        async.series([
+                            async.apply(serverMocks.mockPath, '/v2.0/tokens', mockOAuthApp),
+                            async.apply(serverMocks.mockPath, '/validate', mockAccessApp)
+                        ], done);
+                    });
                 });
             });
         });
@@ -85,7 +100,9 @@ describe('Extract Context Broker action from request', function() {
     afterEach(function(done) {
         proxyLib.stop(proxy, function(error) {
             serverMocks.stop(mockServer, function() {
-                serverMocks.stop(mockAccess, done);
+                serverMocks.stop(mockAccess, function() {
+                    serverMocks.stop(mockOAuth, done);
+                });
             });
         });
     });

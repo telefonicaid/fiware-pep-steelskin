@@ -26,6 +26,7 @@
 var serverMocks = require('../tools/serverMocks'),
     proxyLib = require('../../lib/fiware-orion-pep'),
     orionPlugin = require('../../lib/services/orionPlugin'),
+    async = require('async'),
     config = require('../../config'),
     utils = require('../tools/utils'),
     request = require('request');
@@ -35,9 +36,14 @@ describe('Validate action with Access Control', function() {
         mockTarget,
         mockTargetApp,
         mockAccess,
-        mockAccessApp;
+        mockAccessApp,
+        mockOAuth,
+        mockOAuthApp;
 
     beforeEach(function(done) {
+        config.authentication.username = 'testUser';
+        config.authentication.password = 'testPassword';
+
         proxyLib.start(function(error, proxyObj) {
             proxy = proxyObj;
 
@@ -49,7 +55,16 @@ describe('Validate action with Access Control', function() {
                 serverMocks.start(config.access.port, function(error, serverAccess, appAccess) {
                     mockAccess = serverAccess;
                     mockAccessApp = appAccess;
-                    done();
+                    serverMocks.start(config.authentication.port, function(error, serverAuth, appAuth) {
+                        mockOAuth = serverAuth;
+                        mockOAuthApp = appAuth;
+
+                        mockOAuthApp.handler = function(req, res) {
+                            res.json(200, utils.readExampleFile('./test/authorizationResponses/authorize.json'));
+                        };
+
+                        done();
+                    });
                 });
             });
         });
@@ -58,7 +73,9 @@ describe('Validate action with Access Control', function() {
     afterEach(function(done) {
         proxyLib.stop(proxy, function(error) {
             serverMocks.stop(mockTarget, function() {
-                serverMocks.stop(mockAccess, done);
+                serverMocks.stop(mockAccess, function() {
+                    serverMocks.stop(mockOAuth, done);
+                });
             });
         });
     });
@@ -77,8 +94,39 @@ describe('Validate action with Access Control', function() {
         };
 
         beforeEach(function(done) {
-            serverMocks.mockPath('/validate', mockAccessApp, done);
-            serverMocks.mockPath('/NGSI10/updateContext', mockTargetApp, done);
+            async.series([
+                async.apply(serverMocks.mockPath, '/v2.0/tokens', mockOAuthApp),
+                async.apply(serverMocks.mockPath, '/validate', mockAccessApp),
+                async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
+            ], done);
+        });
+
+        it('should authenticate against the Keystone Proxy', function(done) {
+            var mockExecuted = false;
+
+            mockOAuthApp.handler = function(req, res) {
+                mockExecuted = true;
+                req.body.auth.passwordCredentials.username.should.equal('testUser');
+                req.body.auth.passwordCredentials.password.should.equal('testPassword');
+                res.json(200, utils.readExampleFile('./test/authorizationResponses/authorize.json'));
+            };
+
+            request(options, function(error, response, body) {
+                mockExecuted.should.equal(true);
+                done();
+            });
+        });
+
+        it('should send the authorization token along with the requests', function(done) {
+            mockAccessApp.handler = function(req, res) {
+                req.headers['x-auth-token'].should.equal('092016b75474ea6b492e29fb69d23029');
+                res.set('Content-Type', 'application/xml');
+                res.send(utils.readExampleFile('./test/accessControlResponses/permitResponse.xml', true));
+            };
+
+            request(options, function(error, response, body) {
+                done();
+            });
         });
 
         it('should send a validation request to Access Control', function(done) {
@@ -130,8 +178,11 @@ describe('Validate action with Access Control', function() {
         };
 
         beforeEach(function(done) {
-            serverMocks.mockPath('/validate', mockAccessApp, done);
-            serverMocks.mockPath('/NGSI10/updateContext', mockTargetApp, done);
+            async.series([
+                async.apply(serverMocks.mockPath, '/v2.0/tokens', mockOAuthApp),
+                async.apply(serverMocks.mockPath, '/validate', mockAccessApp),
+                async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
+            ], done);
         });
 
         it('should reject the request with a 403 error code', function(done) {
@@ -170,7 +221,10 @@ describe('Validate action with Access Control', function() {
 
         beforeEach(function(done) {
             serverMocks.stop(mockAccess, function() {
-                serverMocks.mockPath('/NGSI10/updateContext', mockTargetApp, done);
+                async.series([
+                    async.apply(serverMocks.mockPath, '/v2.0/tokens', mockOAuthApp),
+                    async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
+                ], done);
             });
         });
 
@@ -212,8 +266,11 @@ describe('Validate action with Access Control', function() {
         };
 
         beforeEach(function(done) {
-            serverMocks.mockPath('/validate', mockAccessApp, done);
-            serverMocks.mockPath('/NGSI10/updateContext', mockTargetApp, done);
+            async.series([
+                async.apply(serverMocks.mockPath, '/v2.0/tokens', mockOAuthApp),
+                async.apply(serverMocks.mockPath, '/validate', mockAccessApp),
+                async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
+            ], done);
         });
 
         it('should reject the request with a 503 error', function(done) {
@@ -245,8 +302,11 @@ describe('Validate action with Access Control', function() {
         };
 
         beforeEach(function(done) {
-            serverMocks.mockPath('/validate', mockAccessApp, done);
-            serverMocks.mockPath('/NGSI10/updateContext', mockTargetApp, done);
+            async.series([
+                async.apply(serverMocks.mockPath, '/v2.0/tokens', mockOAuthApp),
+                async.apply(serverMocks.mockPath, '/validate', mockAccessApp),
+                async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
+            ], done);
         });
 
         it('should reject the response with a 503 error', function(done) {
@@ -279,8 +339,11 @@ describe('Validate action with Access Control', function() {
         };
 
         beforeEach(function(done) {
-            serverMocks.mockPath('/validate', mockAccessApp, done);
-            serverMocks.mockPath('/NGSI10/updateContext', mockTargetApp, done);
+            async.series([
+                async.apply(serverMocks.mockPath, '/v2.0/tokens', mockOAuthApp),
+                async.apply(serverMocks.mockPath, '/validate', mockAccessApp),
+                async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
+            ], done);
         });
 
         it('should reject the response with a 403 error', function(done) {
@@ -297,5 +360,42 @@ describe('Validate action with Access Control', function() {
                 done();
             });
         });
+    });
+    describe('When a request arrives and the authentication to the Keystone Proxy fails', function() {
+        var options = {
+            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Fiware-Service': 'frn:contextbroker:551:::',
+                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
+            },
+            json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
+        };
+
+        beforeEach(function(done) {
+            async.series([
+                async.apply(serverMocks.mockPath, '/v2.0/tokens', mockOAuthApp),
+                async.apply(serverMocks.mockPath, '/validate', mockAccessApp),
+                async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
+            ], done);
+        });
+
+        it('should reject the request with a 503 temporary unavailable message', function(done) {
+            mockOAuthApp.handler = function(req, res) {
+                req.body.auth.passwordCredentials.username.should.equal('testUser');
+                req.body.auth.passwordCredentials.password.should.equal('testPassword');
+                res.json(401, {});
+            };
+
+            request(options, function(error, response, body) {
+                response.statusCode.should.equal(503);
+                done();
+            });
+        });
+    });
+    describe('When a request arrives and the authentication token has expired', function() {
+        it('should reject the request with a 503 temporary unavailable message');
     });
 });
