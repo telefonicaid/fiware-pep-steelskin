@@ -361,7 +361,7 @@ describe('Validate action with Access Control', function() {
             });
         });
     });
-    describe.only('When a request arrives and the authentication to the Keystone Proxy fails', function() {
+    describe('When a request arrives and the authentication to the Keystone Proxy fails', function() {
         var options = {
             uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
             method: 'POST',
