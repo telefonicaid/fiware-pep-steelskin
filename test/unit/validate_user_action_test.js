@@ -190,7 +190,7 @@ describe('Validate action with Access Control', function() {
 
             mockAccessApp.handler = function(req, res) {
                 res.set('Content-Type', 'application/xml');
-                res.send(utils.readExampleFile('./test/accessControlResponses/denyResponse.xml', true));
+                res.status(403).send(utils.readExampleFile('./test/accessControlResponses/permitResponse.xml', true));
             };
 
             mockTargetApp.handler = function(req, res) {
@@ -288,79 +288,6 @@ describe('Validate action with Access Control', function() {
         });
     });
 
-    describe('When a response from the Keystone proxy comes with an XML with wrong syntax', function() {
-        var options = {
-            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Fiware-Service': 'frn:contextbroker:551:::',
-                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
-            },
-            json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
-        };
-
-        beforeEach(function(done) {
-            async.series([
-                async.apply(serverMocks.mockPath, '/v2.0/tokens', mockOAuthApp),
-                async.apply(serverMocks.mockPath, '/validate', mockAccessApp),
-                async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
-            ], done);
-        });
-
-        it('should reject the response with a 503 error', function(done) {
-            var mockExecuted = false;
-
-            mockAccessApp.handler = function(req, res) {
-                mockExecuted = true;
-                res.set('Content-Type', 'application/xml');
-                res.send(utils.readExampleFile('./test/accessControlErrorResponses/denyWrongSyntax.xml', true));
-            };
-
-            request(options, function(error, response, body) {
-                response.statusCode.should.equal(503);
-                done();
-            });
-        });
-    });
-
-    describe('When a response from the Keystone does not contain a decision', function() {
-        var options = {
-            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Fiware-Service': 'frn:contextbroker:551:::',
-                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
-            },
-            json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
-        };
-
-        beforeEach(function(done) {
-            async.series([
-                async.apply(serverMocks.mockPath, '/v2.0/tokens', mockOAuthApp),
-                async.apply(serverMocks.mockPath, '/validate', mockAccessApp),
-                async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
-            ], done);
-        });
-
-        it('should reject the response with a 403 error', function(done) {
-            var mockExecuted = false;
-
-            mockAccessApp.handler = function(req, res) {
-                mockExecuted = true;
-                res.set('Content-Type', 'application/xml');
-                res.send(utils.readExampleFile('./test/accessControlErrorResponses/noValidationElement.xml', true));
-            };
-
-            request(options, function(error, response, body) {
-                response.statusCode.should.equal(503);
-                done();
-            });
-        });
-    });
     describe('When a request arrives and the authentication to the Keystone Proxy fails', function() {
         var options = {
             uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
