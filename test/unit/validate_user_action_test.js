@@ -361,8 +361,39 @@ describe('Validate action with Access Control', function() {
             });
         });
     });
-    describe('When a request arrives and the authentication to the Keystone Proxy fails', function() {
-        it('should reject the request with a 503 temporary unavailable message');
+    describe.only('When a request arrives and the authentication to the Keystone Proxy fails', function() {
+        var options = {
+            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Fiware-Service': 'frn:contextbroker:551:::',
+                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
+            },
+            json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
+        };
+
+        beforeEach(function(done) {
+            async.series([
+                async.apply(serverMocks.mockPath, '/v2.0/tokens', mockOAuthApp),
+                async.apply(serverMocks.mockPath, '/validate', mockAccessApp),
+                async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
+            ], done);
+        });
+
+        it('should reject the request with a 503 temporary unavailable message', function(done) {
+            mockOAuthApp.handler = function(req, res) {
+                req.body.auth.passwordCredentials.username.should.equal('testUser');
+                req.body.auth.passwordCredentials.password.should.equal('testPassword');
+                res.json(401, {});
+            };
+
+            request(options, function(error, response, body) {
+                response.statusCode.should.equal(503);
+                done();
+            });
+        });
     });
     describe('When a request arrives and the authentication token has expired', function() {
         it('should reject the request with a 503 temporary unavailable message');
