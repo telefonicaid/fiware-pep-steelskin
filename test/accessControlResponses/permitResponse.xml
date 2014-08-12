@@ -1,6 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Response xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17 http://docs.oasis-open.org/xacml/3.0/xacml-core-v3-schema-wd-17.xsd">
-    <Result>
-        <Decision>Permit</Decision>
-    </Result>
-</Response>
+<user>
+    <id>2836</id>
+    <actorId>4227</actorId>
+    <nickName>vlci-rita</nickName>
+    <displayName>Vlci Rita</displayName>
+    <email>espencer+vlci_rita@gmail.com</email>
+    <roles>
+        <id>8906</id>
+        <name>Alcalde</name>
+    </roles>
+    <organizations>
+        <id>4230</id>
+        <actorId>4230</actorId>
+        <displayName>VlciBasuras</displayName>
+        <roles>
+            <id>8907</id>
+            <name>Concejal</name>
+        </roles>
+        <name>VlciBasuras</name>
+    </organizations>
+    <organizations>
+        <id>4227</id>
+        <name>vlci-rita</name>
+        <roles>
+            <id>8db87ccbca3b4d1ba4814c3bb0d63aab</id>
+            <name>Member</name>
+        </roles>
+    </organizations>
+</user>
