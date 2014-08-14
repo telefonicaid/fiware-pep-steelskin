@@ -23,7 +23,7 @@
 ############################################################################
 
 # Port where the proxy will listen for requests
-# PROXY_PORT=1026
+PROXY_PORT=1026
 
 # User to execute the PEP Proxy with
 PROXY_USER=pepproxy
