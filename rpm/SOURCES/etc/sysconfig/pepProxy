@@ -26,7 +26,7 @@
 # PROXY_PORT=1026
 
 # User to execute the PEP Proxy with
-PROXY_USER=dmj
+PROXY_USER=pepproxy
 
 # Host where the target Context Broker is located
 # TARGET_HOST=localhost

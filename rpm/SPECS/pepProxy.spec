@@ -22,7 +22,7 @@ policies stored in the Access Control component of the Fiware Platform.
 %define _srcdir $RPM_BUILD_ROOT/../../..
 %define _service_name pepProxy
 %define _install_dir /opt/pepProxy
-%define _pepProxy_log_dir /var/log/%{_project_name}
+%define _pepProxy_log_dir /var/log/pepProxy
 
 # RPM Building folder
 %define _build_root_project %{buildroot}%{_install_dir}

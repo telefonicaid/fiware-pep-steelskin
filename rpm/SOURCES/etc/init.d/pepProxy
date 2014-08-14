@@ -43,7 +43,7 @@
 PARAM=$1
 NAME=pepProxy
 EXECUTABLE=bin/${NAME}
-PROXY_PATH=/opt/fiware-orion-pep
+PROXY_PATH=/opt/pepProxy
 PIDFILE=$PROXY_PATH/$NAME.pid
 LOG_PATH=/var/log/pepProxy/pepProxy.log
 
@@ -59,11 +59,11 @@ fi
 broker_start()
 {
     printf "%-50s" "Starting ${NAME}..."
+    cd $PROXY_PATH
     if [[ -x ${EXECUTABLE} ]]; then
         cd $PROXY_PATH
-        su $PROXY_USER -c "${EXECUTABLE} &> $LOG_PATH "
-        PID=$!
-        echo $PID > $PIDFILE
+        su $PROXY_USER -c "cd $PROXY_PATH; nohup ${EXECUTABLE} &>> $LOG_PATH & echo \$! > $PIDFILE"
+        echo "Success"
     else
         printf "%s\n" "Fail - missing ${EXECUTABLE} executable"
         exit 1
@@ -74,7 +74,7 @@ broker_stop()
 {
     printf "%-50s" "Stopping $NAME..."
     if [ -f "${PIDFILE}" ]; then
-        kill -HUP $(cat ${PIDFILE})
+        kill -9 $(cat ${PIDFILE})
         rm -f ${PIDFILE}
         printf "%s\n" "$(success)"
     else
