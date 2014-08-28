@@ -1,6 +1,16 @@
 # fiware-orion-pep
+## Index
 
-## Description
+* [Overview](#overview)
+* [Usage](#usage)
+* [Configuration](#configuration)
+* [API With Keystone Proxy](#apikeystone)
+* [Rules to determine the Context Broker action from the request](#rules)
+* [Customizing PEP Proxy for other components](#customizing)
+* [License](#licence)
+* [Development documentation](#development)
+
+## <a name="overview"/> Overview
 The FiWare Policy Enforcement Point is a proxy meant to secure independent FiWare components, by intercepting every request sent to the component, validating it against the Keystone proxy. This validation is based in three pieces of data:
 
 * User token: comes from the OAuth authorization server and is taken from the `x-auth-token` header.
@@ -9,14 +19,14 @@ The FiWare Policy Enforcement Point is a proxy meant to secure independent FiWar
 
 Communication with the Keystone proxy is based on the [XACML protocol](http://docs.oasis-open.org/xacml/3.0/xacml-3.0-core-spec-os-en.html).
 
-## Usage
+## <a name="usage"/> Usage
 The PEP Proxy can be started executing the following command from the project root:
 
 ```
 bin/pep-proxy.js
 ```
 
-## Configuration
+## <a name="configuration"/> Configuration
 All the configuration of the proxy is stored in the `config.js` file in the root of the project folder.
 
 ### Basic Configuration
@@ -31,7 +41,7 @@ If SSL Termination is not available, the PEP Proxy can be configured to listen H
 * In the `config.js` file, change the `config.ssl.active` flag to true.
 * In the same ssl object in the configuration, fill the path to the key and cert files.
 
-## API With Keystone Proxy
+## <a name="apikeystone"/> API With Keystone Proxy
 The validation of each request si done connecting with a Keyston Proxy, who, using the information provided by the PEP Proxy, decides whether the user can execute the selected action in this organization or not. The following is a summary of this interaction with some examples.
 
 
@@ -84,7 +94,7 @@ The XACML Response returns a `Decision` element that can have the following valu
     </Result>
 </Response>
 ```
-## Rules to determine the Context Broker action from the request
+## <a name="rules"/> Rules to determine the Context Broker action from the request
 
 ### Available actions
 
@@ -167,7 +177,7 @@ An up-to-date list of the convenience operations can be found [here](https://doc
 | DELETE | /ngsi10/contextSubscriptions/{subscriptionID}                                          	| S |
 
 
-## Customizing PEP Proxy for other components
+## <a name="customizing"/> Customizing PEP Proxy for other components
 Although the Orion PEP Proxy was meant to protect the access to the Context Broker using the rules defined in the Access Control, it was designed to easily adapt to other components. Most of the code of the proxy (i.e. the extraction of user data, the communication with the Keystone Proxy and the proxy process itself) will execute exactly the same for all the components. The exception is the rule to determine the action the request is trying to perform. To address this behavior and possible actions different customizations of the proxy could need, the proxy allows for the introduction of middlewares in the validation process.
 
 ### Middleware definition
@@ -187,11 +197,11 @@ The middlewares must be defined inside a Node.js module. They can be configured 
 * `require`: path to the module that contains the middlewares, from the project root. The system currently supports only modules defined inside the fiware-orion-pep project (or in accessible folders). 
 * `functions`: list of the middlewares to load. The names in this list must be exported functions of the module selected in the previous attribute.
 
-## License
+## <a name="licence"/> License
 
 Orion FiWare Policy Enforcement Point is licensed under Affero General Public License (GPL) version 3.
 
-## Development documentation
+## <a name="development"/> Development documentation
 ### Project build
 The project is managed using Grunt Task Runner.
 
