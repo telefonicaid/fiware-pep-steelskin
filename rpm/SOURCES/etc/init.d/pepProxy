@@ -56,7 +56,7 @@ else
    exit 1
 fi
 
-broker_start()
+pepproxy_start()
 {
     printf "%-50s" "Starting ${NAME}..."
     cd $PROXY_PATH
@@ -70,7 +70,7 @@ broker_start()
     fi
 }
 
-broker_stop()
+pepproxy_stop()
 {
     printf "%-50s" "Stopping $NAME..."
     if [ -f "${PIDFILE}" ]; then
@@ -82,7 +82,7 @@ broker_stop()
     fi
 }
 
-broker_status()
+pepproxy_status()
 {
     status -p ${PIDFILE} ${EXECUTABLE}
 }
@@ -92,22 +92,22 @@ case ${PARAM} in
     'start')
         echo "Starting..."
         status -p ${PIDFILE} ${EXECUTABLE} && exit 0
-        broker_start
+        pepproxy_start
         ;;
 
     'stop')
         echo "Stopping..."
         status -p ${PIDFILE} ${EXECUTABLE} || exit 0
-        broker_stop
+        pepproxy_stop
         ;;
 
     'restart')
-        broker_stop
-        broker_start
+        pepproxy_stop
+        pepproxy_start
         ;;
 
     'status')
-        broker_status
+        pepproxy_status
         ;;
 
 esac
