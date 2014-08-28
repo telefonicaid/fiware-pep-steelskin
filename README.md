@@ -2,6 +2,7 @@
 ## Index
 
 * [Overview](#overview)
+* [Deployment](#deployment)
 * [Usage](#usage)
 * [Configuration](#configuration)
 * [API With Keystone Proxy](#apikeystone)
@@ -11,7 +12,7 @@
 * [Development documentation](#development)
 
 ## <a name="overview"/> Overview
-The FiWare Policy Enforcement Point is a proxy meant to secure independent FiWare components, by intercepting every request sent to the component, validating it against the Keystone proxy. This validation is based in three pieces of data:
+The Orion Policy Enforcement Point (PEP) is a proxy meant to secure independent FiWare components, by intercepting every request sent to the component, validating it against the Keystone proxy. This validation is based in three pieces of data:
 
 * User token: comes from the OAuth authorization server and is taken from the `x-auth-token` header.
 * Organization: is read from the `fiware-service` header and identifies the protected component.
@@ -19,13 +20,59 @@ The FiWare Policy Enforcement Point is a proxy meant to secure independent FiWar
 
 Communication with the Keystone proxy is based on the [XACML protocol](http://docs.oasis-open.org/xacml/3.0/xacml-3.0-core-spec-os-en.html).
 
+## <a name="deployment"/> Deployment
+### Dependencies
+The PEP Proxy is standard Node.js app and doesn't require more dependencies than the Node.js interpreter (0.10 or higher) and the NPM package utility. For RPM installations using Yum, those dependencies should be automatically installed.
+
+### Without RPM Packages 
+Just checkout this directory and install the Node.js dependencies using:
+
+```
+npm install --production
+```
+
+The proxy should be then ready to be configured and used.
+
+### With RPM Packages
+This project provides the specs to create the RPM Package for the project, that may (in the future) be installed in a package repository.
+
+To generate the RPM, checkout the project to a machine with the RPM Build Tools installed, and, from the `rpm/` folder,
+execute the following command:
+
+```
+./create-rpm.sh
+```
+
+This command will generate some folders, including one called RPMS, holding the RPM created for every architecture (noarch is currently generated).
+
+In order to install the generated RPM from the local file, use the following command:
+
+```
+yum --nogpgcheck localinstall  pep-proxy-0.1-1.noarch.rpm
+```
+
+It should automatically download all the dependencies provided they are available (Node.js and NPM may require the EPEL repositories to be added).
+
+### Deployment within a Context Broker installation
+If the PEP Proxy is deployed in a machine with an installed Context Broker service, the PEP Proxy will automatically change the Context Broker port to the 10026 and install itself on the port where the Context Broker was listening.
+
+During the uninstallation of the PEP Proxy, this process is reversed, to revert the Broker to its original state.
+
+### Undeployment
+In order to undeploy the proxy:
+* If it was installed directly from the GIT repositories, just kill the process and remove the directory.
+* If it was installed using the RPM, use standard YUM commands to remove it:
+
+```
+yum remove pep-proxy
+```
+
 ## <a name="usage"/> Usage
 The PEP Proxy can be started executing the following command from the project root:
 
 ```
 bin/pep-proxy.js
 ```
-
 ## <a name="configuration"/> Configuration
 All the configuration of the proxy is stored in the `config.js` file in the root of the project folder.
 
