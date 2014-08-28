@@ -90,6 +90,7 @@ echo "[INFO] Configuring application"
     setfacl -d -m o::rx %{_pepProxy_log_dir}
 
     echo "[INFO] Checking Context Broker installations"
+    service --status-all |grep contextBroker
     CONTEXT_BROKER=$?
 
     if [ -e /etc/sysconfig/contextBroker ] && [ $CONTEXT_BROKER = 0 ]; then
@@ -117,6 +118,7 @@ service %{_service_name} stop &> /dev/null
 if [ $1 == 0 ]; then
 
   echo "[INFO] Checking Context Broker installations"
+  service --status-all |grep contextBroker
   CONTEXT_BROKER=$?
 
   if [ -e /etc/sysconfig/contextBroker ] && [ $CONTEXT_BROKER = 0 ]; then
