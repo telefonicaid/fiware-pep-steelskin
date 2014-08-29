@@ -2,6 +2,7 @@
 ## Index
 
 * [Overview](#overview)
+* [Architecture](#architecture)
 * [Deployment](#deployment)
 * [Usage](#usage)
 * [Configuration](#configuration)
@@ -19,6 +20,13 @@ The Orion Policy Enforcement Point (PEP) is a proxy meant to secure independent 
 * Action: the PEP guess the action for a particular request by checking the path or inspecting the body. The logic for performing such actions depends on the component that is being secured, so the PEP will need a plugin for each of this components.
 
 Communication with the Keystone proxy is based on the [XACML protocol](http://docs.oasis-open.org/xacml/3.0/xacml-3.0-core-spec-os-en.html).
+
+## <a name="architecture"/> Architecture Description
+Orion Policy Enforcement Point Proxy is part of the authorization mechanism of the FIWARE platform. This authorization mechanism is based in OAuth 2.0, and it makes use of tokens to identify the user. 
+ 
+Each request to a component holds some extra information (apart from the token) that can be used to identify what kind of action is requested to be executed and over what entity. This information may be explicit (using headers) or implicit (being part of the payload or the URL). The first task of the proxy is to extract this information (currently focused on the Context Broker, but will be compatible with other components in the future).
+For each request, the proxy asks the Keystone Proxy to validate the access of the user (identified with the token) to the selected actions and resources (identified by the extra information) (2). This is an HTTP request using the XACML request format. The Keystone Proxy validates all the information (3) and checks the retrieved data against the XACML Access Rules defined in the Identity Manager (4) (where each role for each user is associated with n permissions, each one of them defined using an XACML Rule). 
+If the user is allowed to execute the requested action (5), the HTTP request is resend to the component (6); if it is not, it is rejected.
 
 ## <a name="deployment"/> Deployment
 ### Dependencies
