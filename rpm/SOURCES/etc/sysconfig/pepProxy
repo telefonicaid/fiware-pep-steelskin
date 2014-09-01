@@ -35,7 +35,7 @@ PROXY_USER=pepproxy
 # TARGET_PORT=10026
 
 # Maximum level of logs to show (FATAL, ERROR, WARNING, INFO, DEBUG)
-# LOG_LEVEL=
+LOG_LEVEL=ERROR
 
 #
 # Access Control Configuration
