@@ -89,9 +89,13 @@ bin/pep-proxy.js
 All the configuration of the proxy is stored in the `config.js` file in the root of the project folder.
 
 ### Basic Configuration
-In order to have the proxy running, there are two basic pieces of information to fill:
+In order to have the proxy running, there are several basic pieces of information to fill:
 * `config.resource.proxy`: The information of the server proxy itself (mainly the port).
 * `config.resource.original`: The address and port of the proxied server.
+* `config.authentication.username`: username of the PEP proxy in the IDM.
+* `config.authentication.password`: password of the PEP proxy in the IDM.
+* `config.authentication.host`: host where the authentication host is listening (for the proxy to authenticate itself).
+* `config.access.host`: hot where the Keystone proxy is located (usually the same as the authentication host).
 
 ### SSL Configuration
 If SSL Termination is not available, the PEP Proxy can be configured to listen HTTPS instead of plain HTTP. To activate the SSL:
