@@ -64,7 +64,8 @@ describe('Validate action with Access Control', function() {
                                 res.json(200, utils.readExampleFile('./test/authorizationResponses/authorize.json'));
                             } else {
                                 res.json(200, utils.readExampleFile('./test/authorizationResponses/rolesOfUser.json'));
-                            }                        };
+                            }
+                        };
 
                         done();
                     });
@@ -83,7 +84,7 @@ describe('Validate action with Access Control', function() {
         });
     });
 
-    describe.only('When a request to the CB arrives to the proxy with appropriate permissions', function() {
+    describe('When a request to the CB arrives to the proxy with appropriate permissions', function() {
         var options = {
             uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
             method: 'POST',
