@@ -223,7 +223,7 @@ describe('Validate action with Access Control', function() {
 
             mockAccessApp.handler = function(req, res) {
                 res.set('Content-Type', 'application/xml');
-                res.status(403).send(utils.readExampleFile('./test/accessControlResponses/permitResponse.xml', true));
+                res.status(200).send(utils.readExampleFile('./test/accessControlResponses/denyResponse.xml', true));
             };
 
             mockTargetApp.handler = function(req, res) {
