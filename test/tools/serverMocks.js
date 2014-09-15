@@ -26,12 +26,40 @@
 var express = require('express'),
     http = require('http');
 
+/**
+ * Middleware that makes Express read the incoming body if the content-type is text/xml or application/xml (the default
+ * behavior is to read the body if it can be parsed and leave it unread in any other case).
+ *
+ * @param {Object} req           Incoming request.
+ * @param {Object} res           Outgoing response.
+ * @param {Function} next        Invokes the next middleware in the chain.
+ */
+function xmlRawBody(req, res, next) {
+    var contentType = req.headers['content-type'] || '',
+        mime = contentType.split(';')[0];
+
+    if (mime !== 'text/xml' && mime !== 'application/xml') {
+        next();
+    } else {
+        var data = '';
+        req.setEncoding('utf8');
+        req.on('data', function(chunk) {
+            data += chunk;
+        });
+        req.on('end', function() {
+            req.rawBody = data;
+            next();
+        });
+    }
+}
+
 function startMock(port, callback) {
     var app = express();
 
     app.set('port', port);
     app.set('host', '0.0.0.0');
     app.use(express.json());
+    app.use(xmlRawBody);
     app.use(express.urlencoded());
     app.use(app.router);
 

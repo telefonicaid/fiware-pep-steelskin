@@ -163,9 +163,10 @@ describe('Validate action with Access Control', function() {
             var mockExecuted = false;
 
             mockAccessApp.handler = function(req, res) {
-                mockExecuted = true;
+                req.rawBody.should.match(/8907(.|\n)*4937(.|\n)*frn:contextbroker:551:::(.|\n)*create/);
                 res.set('Content-Type', 'application/xml');
                 res.send(utils.readExampleFile('./test/accessControlResponses/permitResponse.xml', true));
+                mockExecuted = true;
             };
 
             request(options, function(error, response, body) {
@@ -202,6 +203,7 @@ describe('Validate action with Access Control', function() {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
                 'Fiware-Service': 'frn:contextbroker:551:::',
+                'Fiware-Path': '551',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
@@ -210,6 +212,7 @@ describe('Validate action with Access Control', function() {
         beforeEach(function(done) {
             async.series([
                 async.apply(serverMocks.mockPath, '/v2.0/tokens', mockOAuthApp),
+                async.apply(serverMocks.mockPath, '/user', mockOAuthApp),
                 async.apply(serverMocks.mockPath, '/validate', mockAccessApp),
                 async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
             ], done);
