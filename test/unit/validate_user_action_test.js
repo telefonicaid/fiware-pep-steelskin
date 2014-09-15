@@ -60,8 +60,11 @@ describe('Validate action with Access Control', function() {
                         mockOAuthApp = appAuth;
 
                         mockOAuthApp.handler = function(req, res) {
-                            res.json(200, utils.readExampleFile('./test/authorizationResponses/authorize.json'));
-                        };
+                            if (req.url.match(/\/v2.0\/token.*/)) {
+                                res.json(200, utils.readExampleFile('./test/authorizationResponses/authorize.json'));
+                            } else {
+                                res.json(200, utils.readExampleFile('./test/authorizationResponses/rolesOfUser.json'));
+                            }                        };
 
                         done();
                     });
@@ -80,7 +83,7 @@ describe('Validate action with Access Control', function() {
         });
     });
 
-    describe('When a request to the CB arrives to the proxy with appropriate permissions', function() {
+    describe.only('When a request to the CB arrives to the proxy with appropriate permissions', function() {
         var options = {
             uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
             method: 'POST',
@@ -88,6 +91,7 @@ describe('Validate action with Access Control', function() {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
                 'Fiware-Service': 'frn:contextbroker:551:::',
+                'Fiware-Path': '551',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
@@ -96,6 +100,7 @@ describe('Validate action with Access Control', function() {
         beforeEach(function(done) {
             async.series([
                 async.apply(serverMocks.mockPath, '/v2.0/tokens', mockOAuthApp),
+                async.apply(serverMocks.mockPath, '/user', mockOAuthApp),
                 async.apply(serverMocks.mockPath, '/validate', mockAccessApp),
                 async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
             ], done);
@@ -105,10 +110,34 @@ describe('Validate action with Access Control', function() {
             var mockExecuted = false;
 
             mockOAuthApp.handler = function(req, res) {
-                mockExecuted = true;
-                req.body.auth.passwordCredentials.username.should.equal('testUser');
-                req.body.auth.passwordCredentials.password.should.equal('testPassword');
-                res.json(200, utils.readExampleFile('./test/authorizationResponses/authorize.json'));
+                if (req.url.match(/\/v2.0\/token.*/)) {
+                    mockExecuted = true;
+                    req.body.auth.passwordCredentials.username.should.equal('testUser');
+                    req.body.auth.passwordCredentials.password.should.equal('testPassword');
+                    res.json(200, utils.readExampleFile('./test/authorizationResponses/authorize.json'));
+                } else {
+                    res.json(200, utils.readExampleFile('./test/authorizationResponses/rolesOfUser.json'));
+                }
+            };
+
+            request(options, function(error, response, body) {
+                mockExecuted.should.equal(true);
+                done();
+            });
+        });
+
+        it('should retrieve the roles from the IDM', function(done) {
+            var mockExecuted = false;
+
+            mockOAuthApp.handler = function(req, res) {
+                if (req.url.match(/\/v2.0\/token.*/)) {
+                    res.json(200, utils.readExampleFile('./test/authorizationResponses/authorize.json'));
+                } else {
+                    should.exist(req.query.access_token);
+                    req.query.access_token.should.equal('UAidNA9uQJiIVYSCg0IQ8Q');
+                    res.json(200, utils.readExampleFile('./test/authorizationResponses/rolesOfUser.json'));
+                    mockExecuted = true;
+                }
             };
 
             request(options, function(error, response, body) {
