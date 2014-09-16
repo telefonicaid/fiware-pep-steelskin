@@ -5,6 +5,7 @@
 * [Architecture](#architecture)
 * [Deployment](#deployment)
 * [Usage](#usage)
+* [Administration](#administration)
 * [Configuration](#configuration)
 * [API With Keystone Proxy](#apikeystone)
 * [Rules to determine the Context Broker action from the request](#rules)
@@ -86,6 +87,54 @@ The PEP Proxy can be started executing the following command from the project ro
 ```
 bin/pep-proxy.js
 ```
+
+## <a name="administration"/> Administration
+###Service operations
+####	Start service
+To start the service, use either the service command:
+service pepProxy start
+
+Or just the launch script:
+```
+/etc/init.d/pepProxy start
+```
+For testing purposes it might be interesting to launch the process directly without the service. That can be done executing the following command from the project root directory:
+```
+./bin/pepProxy
+```
+
+Take into account that when the process is executed manually the system configuration for the script (in /etc/sysconfig/pepProxy) is not loaded and the default configuration (in /opt/pepProxy/config.js) is used. 
+
+####	Stop service
+To stop the service, use either the service command:
+```
+service pepProxy stop
+```
+Or just the launch script:
+```
+/etc/init.d/pepProxy stop
+```
+###	How to check service status
+####	Checking the process is running
+The status of the process can be retrieved using the service command:
+```
+service pepProxy status
+```
+It also can be checked with ps, using a filter with the command name:
+```
+ps -ef | grep "bin/pepProxy"
+```
+In both cases a result of 0 (echoing $?) indicates the process is supposed to be running, and an error otherwise.
+#### Checking that the port is listening
+The following command:
+```
+netstat -ntpl | grep 1026
+```
+can be used to check the process is listening in the appropriate port (provided the port is the standard 1026). The result should resemble this line:
+```
+tcp   0   0  0.0.0.0:1026     0.0.0.0:*   LISTEN   12179/node
+```
+
 ## <a name="configuration"/> Configuration
 All the configuration of the proxy is stored in the `config.js` file in the root of the project folder.
 
