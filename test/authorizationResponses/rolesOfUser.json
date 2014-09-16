@@ -1,0 +1,30 @@
+{
+    "id": 2836,
+    "actorId": 4227,
+    "nickName": "vlci-rita",
+    "displayName": "Vlci Rita",
+    "email": "espencer+vlci_rita@gmail.com",
+    "roles": [
+        {
+            "id": 8906,
+            "name": "Alcalde"
+        }
+    ],
+    "organizations": [
+        {
+            "id": 551,
+            "actorId": 4230,
+            "displayName": "VlciBasuras",
+            "roles": [
+                {
+                    "id": 8907,
+                    "name": "Concejal"
+                },
+                {
+                    "id": 4937,
+                    "name": "Lector"
+                }
+            ]
+        }
+    ]
+}

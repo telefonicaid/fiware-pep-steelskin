@@ -61,10 +61,11 @@ describe('Control header behavior', function() {
                         mockOAuthApp = appAuth;
 
                         mockOAuthApp.handler = function(req, res) {
-                            res.json(200, utils.readExampleFile('./test/authorizationResponses/authorize.json'));
+                            res.json(200, utils.readExampleFile('./test/authorizationResponses/rolesOfUser.json'));
                         };
 
                         async.series([
+                            async.apply(serverMocks.mockPath, '/user', mockOAuthApp),
                             async.apply(serverMocks.mockPath, '/v2.0/tokens', mockOAuthApp),
                             async.apply(serverMocks.mockPath, '/validate', mockAccessApp)
                         ], done);
@@ -92,6 +93,7 @@ describe('Control header behavior', function() {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
                 'Fiware-Service': 'frn:contextbroker:551:::',
+                'Fiware-Path': '551',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
@@ -133,6 +135,7 @@ describe('Control header behavior', function() {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
                 'Fiware-Service': 'frn:contextbroker:551:::',
+                'Fiware-Path': '551',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q',
                 'X-Forwarded-For': '192.168.2.1'
             },
