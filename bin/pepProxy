@@ -29,12 +29,6 @@ function loadConfiguration() {
     if (process.env.AUTHENTICATION_PORT) {
         config.authentication.port = process.env.AUTHENTICATION_PORT;
     }
-    if (process.env.PROXY_USERNAME) {
-        config.authentication.username = process.env.PROXY_USERNAME;
-    }
-    if (process.env.PROXY_PASSWORD) {
-        config.authentication.password = process.env.PROXY_PASSWORD;
-    }
 }
 
 loadConfiguration();
