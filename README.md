@@ -81,6 +81,32 @@ In order to undeploy the proxy:
 yum remove pep-proxy
 ```
 
+### Configuration with an RPM package
+If the PEP Proxy is deployed in a machine with an installed Context Broker service, the PEP Proxy will automatically change the Context Broker port to the 10026 and install itself on the port where the Context Broker was listening, so no further configuration should be needed for the connectivity.
+
+During the uninstallation of the PEP Proxy, this process is reversed, to revert the Broker to its original state.
+If there is no previous Context Broker instance, the default behaviour of the PEP Proxy is to listen in the port 1026 and redirect its requests to the port 10026 in the local host. This behaviour can be changed configuring the attributes PROXY_PORT and TARGET_PORT in the configuration file.
+
+### Configuration without an RPM package
+If the PEP Proxy is deployed directly from the source code, it won't add itself as a service, and the running ports should be configured manually. This configuration will involve two steps:
+* Changing the port of the Context Broker to a different internal port (not open to external connections). Refer to the Orion Context Broker Deployment Manual for instructions on how to do it.
+* Changing the port of the proxy to listen in the Context Broker original port, and to redirect to the new one. This parameters can be changed in the config.js file in the root folder.
+Once configured, the service can be started as a demon with the following comand:
+
+```
+nohup bin/pep-proxy.js &> pep-proxy.log&
+```
+
+### Activate service
+The proxy service is disabled once its installed. In order to enable it, use the following command:
+```
+service pepProxy start
+```
+
+### Log Rotation
+Independently of how the service is installed, the log files will need an external rotation (e.g.: the logrotate command) to avoid disk full problems. 
+
+
 ## <a name="usage"/> Usage
 The PEP Proxy can be started executing the following command from the project root:
 
