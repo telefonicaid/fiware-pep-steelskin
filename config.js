@@ -111,4 +111,6 @@ config.middlewares = {
     ]
 };
 
+config.componentName = 'contextbroker';
+
 module.exports = config;
