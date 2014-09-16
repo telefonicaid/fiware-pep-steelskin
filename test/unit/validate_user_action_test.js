@@ -93,7 +93,7 @@ describe('Validate action with Access Control', function() {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
                 'Fiware-Service': 'frn:contextbroker:551:::',
-                'Fiware-Path': '551',
+                'fiware-servicepath': '551',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
@@ -205,7 +205,7 @@ describe('Validate action with Access Control', function() {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
                 'Fiware-Service': 'frn:contextbroker:551:::',
-                'Fiware-Path': '551',
+                'fiware-servicepath': '551',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
