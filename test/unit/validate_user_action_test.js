@@ -29,6 +29,7 @@ var serverMocks = require('../tools/serverMocks'),
     async = require('async'),
     config = require('../../config'),
     utils = require('../tools/utils'),
+    should = require('should'),
     request = require('request');
 
 describe('Validate action with Access Control', function() {
@@ -128,6 +129,7 @@ describe('Validate action with Access Control', function() {
         });
 
         it('should retrieve the roles from the IDM', function(done) {
+            /*jshint camelcase: false*/
             var mockExecuted = false;
 
             mockOAuthApp.handler = function(req, res) {
