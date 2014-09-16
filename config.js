@@ -27,7 +27,7 @@ config.resource = {
 // Access Control configuration
 //--------------------------------------------------
 /**
- * This options can be used to configure the address and options of the Keystone Proxy, resposible of the request
+ * This options can be used to configure the address and options of the Access Control, responsible of the request
  * validation.
  */
 config.access = {
@@ -49,18 +49,16 @@ config.access = {
     path: '/validate'
 }
 
-// Authentication configuration
+// User identity configuration
 //--------------------------------------------------
 /**
- * Information to authenticate the PEP Proxy to the OAuth stack, to identify itself against the Keystone Proxy.
+ * Information about the Identity Manager server from where the information about a user will be drawn.
  */
 config.authentication = {
     protocol: 'http',
     host: 'localhost',
     port: 9000,
-    path: '/v2.0/tokens',
-    username: '',
-    password: ''
+    path: '/user'
 }
 
 // Security configuration
@@ -110,5 +108,7 @@ config.middlewares = {
         'extractCBAction'
     ]
 };
+
+config.componentName = 'contextbroker';
 
 module.exports = config;
