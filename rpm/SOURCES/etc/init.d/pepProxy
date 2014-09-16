@@ -14,7 +14,7 @@
 # Description: The Policy Enforcement Point is part of the Access Control system of
 # the Fiware Platform. Its main purpose is to filter the access to the Context Broker
 # based on policies defined in the Access Control system. The PEP Proxy validates all
-# the incoming requests against the Keystone Proxy.
+# the incoming requests against the Access Control.
 ### END INIT INFO
 
 # Copyright 2013 Telefonica Investigacion y Desarrollo, S.A.U

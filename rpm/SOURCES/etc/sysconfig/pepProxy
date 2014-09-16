@@ -41,21 +41,16 @@ LOG_LEVEL=ERROR
 # Access Control Configuration
 ############################################################################
 
-# Host where the Keystone Proxy (the component who knows the policies for the incoming requests) is located
+# Host where the Access Control (the component who knows the policies for the incoming requests) is located
 # ACCESS_HOST=
 
-# Port where the Keystone Proxy is listening
+# Port where the Access Control is listening
 # ACCESS_PORT=
 
-# Host where the authentication authority for the Keystone Proxy is located
+# Host where the authentication authority for the Access Control is located
 # AUTHENTICATION_HOST=
 
 # Port where the authentication authority is listening
 # AUTHENTICATION_PORT=
 
-# User name of the PEP Proxy in the authentication authority
-# PROXY_USERNAME=
-
-# Password of the PEP Proxy in the Authentication authority
-# PROXY_PASSWORD=
 

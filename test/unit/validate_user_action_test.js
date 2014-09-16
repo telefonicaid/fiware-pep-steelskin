@@ -196,7 +196,7 @@ describe('Validate action with Access Control', function() {
         });
     });
 
-    describe('When a request to the CB arrives and the connection to the Keystone Proxy is not working', function() {
+    describe('When a request to the CB arrives and the connection to the Access Control is not working', function() {
         var options = {
             uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
             method: 'POST',
@@ -241,7 +241,7 @@ describe('Validate action with Access Control', function() {
     });
 
 
-    describe('When a request to the CB arrives and the Keystone proxy fails to make a proper decision', function() {
+    describe('When a request to the CB arrives and the Access Control fails to make a proper decision', function() {
         var options = {
             uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
             method: 'POST',

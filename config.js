@@ -32,15 +32,15 @@ config.resource = {
  */
 config.access = {
     /**
-     * Protocol to use to access the Keystone Proxy.
+     * Protocol to use to access the Access Control.
      */
     protocol: 'http',
     /**
-     * Host where the Keystone Proxy is located.
+     * Host where the Access Control is located.
      */
     host: 'localhost',
     /**
-     * Port where the keystone Proxy is listening.
+     * Port where the Access Control is listening.
      */
     port: 7000,
     /**
