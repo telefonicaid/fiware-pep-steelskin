@@ -122,17 +122,6 @@ describe('Validate action with Access Control', function() {
             });
         });
 
-        it('should send the authorization token along with the requests', function(done) {
-            mockAccessApp.handler = function(req, res) {
-                res.set('Content-Type', 'application/xml');
-                res.send(utils.readExampleFile('./test/accessControlResponses/permitResponse.xml', true));
-            };
-
-            request(options, function(error, response, body) {
-                done();
-            });
-        });
-
         it('should proxy the request to the destination', function(done) {
             var mockExecuted = false;
 
