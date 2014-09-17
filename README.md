@@ -7,7 +7,7 @@
 * [Usage](#usage)
 * [Administration](#administration)
 * [Configuration](#configuration)
-* [API With Keystone Proxy](#apikeystone)
+* [API With Access Control](#apiaccesscontrol)
 * [Rules to determine the Context Broker action from the request](#rules)
 * [Customizing PEP Proxy for other components](#customizing)
 * [License](#licence)
@@ -180,12 +180,12 @@ If SSL Termination is not available, the PEP Proxy can be configured to listen H
 * In the `config.js` file, change the `config.ssl.active` flag to true.
 * In the same ssl object in the configuration, fill the path to the key and cert files.
 
-## <a name="apikeystone"/> API With Keystone Proxy
-The validation of each request si done connecting with a Keyston Proxy, who, using the information provided by the PEP Proxy, decides whether the user can execute the selected action in this organization or not. The following is a summary of this interaction with some examples.
+## <a name="apiaccesscontrol"/> API With Access Control
+The validation of each request si done connecting with the Access Control component, which, using the information provided by the PEP Proxy, decides whether the user can execute the selected action in this organization or not. The following is a summary of this interaction with some examples.
 
 
 ### Request
-The XACML Request maps the information extracted from the request (user token, organization ID and action) to XACML categories (`access-subject`, `resource` and `action`, respectively). 
+The XACML Request maps the information extracted from the request and from the IDM (roles, organization and action) to XACML categories (`access-subject`, `resource` and `action`, respectively). 
 ```
 <?xml version="1.0" encoding="UTF-8"?>
 <Request xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
@@ -197,7 +197,7 @@ The XACML Request maps the information extracted from the request (user token, o
         <Attribute IncludeInResult="false"
                    AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id">
             <AttributeValue
-                    DataType="http://www.w3.org/2001/XMLSchema#int">UAidNA9uQJiIVYSCg0IQ8Q</AttributeValue>
+                    DataType="http://www.w3.org/2001/XMLSchema#int">511</AttributeValue>
         </Attribute>
     </Attributes>
     <!-- fiware resource name being accessed: organization id -->
