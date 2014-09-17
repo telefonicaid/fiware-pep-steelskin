@@ -88,7 +88,6 @@ describe('Extract Context Broker action from request', function() {
                         };
 
                         async.series([
-                            async.apply(serverMocks.mockPath, '/v2.0/tokens', mockOAuthApp),
                             async.apply(serverMocks.mockPath, '/validate', mockAccessApp)
                         ], done);
                     });

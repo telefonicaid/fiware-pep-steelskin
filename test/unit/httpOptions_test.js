@@ -72,7 +72,6 @@ describe('HTTPS Options', function() {
 
                         async.series([
                             async.apply(serverMocks.mockPath, '/user', mockOAuthApp),
-                            async.apply(serverMocks.mockPath, '/v2.0/tokens', mockOAuthApp),
                             async.apply(serverMocks.mockPath, '/validate', mockAccessApp)
                         ], done);
                     });

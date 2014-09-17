@@ -153,11 +153,11 @@ describe('Extract Context Broker action from convenience operation requests', fu
                         mockOAuthApp = appAuth;
 
                         mockOAuthApp.handler = function(req, res) {
-                            res.json(200, utils.readExampleFile('./test/authorizationResponses/authorize.json'));
+                            res.json(200, utils.readExampleFile('./test/authorizationResponses/rolesOfUser.json'));
                         };
 
                         async.series([
-                            async.apply(serverMocks.mockPath, '/v2.0/tokens', mockOAuthApp),
+                            async.apply(serverMocks.mockPath, '/user', mockOAuthApp),
                             async.apply(serverMocks.mockPath, '/validate', mockAccessApp)
                         ], done);
                     });
