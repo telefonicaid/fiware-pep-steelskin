@@ -108,11 +108,79 @@ Independently of how the service is installed, the log files will need an extern
 
 
 ## <a name="usage"/> Usage
-The PEP Proxy can be started executing the following command from the project root:
+If the PEP Proxy is not started as a service, it can be started executing the following command from the project root:
 
 ```
 bin/pep-proxy.js
 ```
+
+Once the PEP Proxy is working, it can be used to enforce both authentication and authorization over the protected component (e.g. Orion Context Broker). In order to enforce both actions, the PEP Proxy has to be connected to an [Identity Manager](https://github.com/ging/fi-ware-idm) server and an [Access Manager](https://github.com/telefonicaid/fiware-keypass) server. Next sections will show some examples of both processes
+
+### Authentication
+
+The authentication process is based on OAuth v2 tokens. The PEP Proxy expects all the requests to have a header `x-auth-token` containing a valid access token from the IDM. All the requests without this requirement are rejected with a 401 error. 
+
+In order to get an access token to send with the request, a user can send a request to the IDM, with its user and password (here shown as a curl request):
+
+```
+curl -i --user <serverUser>:<serverPassword> -X POST -H "Content-Type: application/x-www-form-urlencoded" https://<idmHostName>/oauth2/token -d 'grant_type=password&username=<theUserName>&password=<theUserPassword>'
+```
+
+If the user and password are correct, the response will be like the following:
+
+```
+{
+    "access_token":"O-OqiBR1AbZk7qfyidF3AwMeBY253xYEpUdkv",
+    "refresh_token":"Ny0OwE19230QfftxXYGwwgOLafa5v2xnI5t6HWdQ",
+    "token_type":"bearer",
+    "expires_in":2591999
+}
+```
+
+The `access_token` field contains the required token. 
+
+The must be used also to assign roles to each user. For details about role creation and assign, check the IDM API.
+
+### Authorization
+
+Once the user is authenticated, the PEP Proxy will ask the Access Control for its permissions. In order for the request to be accepted, at least one rule has to match the request information and the user roles. 
+
+Rules are defined in [XACML](https://www.oasis-open.org/committees/xacml/). The particular rules will depend on each case and are left to the authorization designer. The following document shows a typical rule explained for the use case of a Context Broker:
+
+```
+<Policy
+  RuleCombiningAlgId="identifier:rule-combining-algorithm:deny-overrides">
+
+<Target>
+  <AnyOf>
+    <AllOf>
+      <Match MatchId="urn:oasis:names:tc:xacml:3.0:function:string-starts-with">
+        <AttributeDesignator MustBePresent="true"
+          Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
+          AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id"
+          DataType="http://www.w3.org/2001/XMLSchema#string"/>
+        <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string"
+          >frn:contextbroker:551:833:</AttributeValue>
+      </Match>
+    </AllOf>
+    <AllOf>
+      <Match MatchId="urn:oasis:names:tc:xacml:3.0:function:string-equal">
+        <AttributeDesignator MustBePresent="true"
+          Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action"
+          AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id"
+          DataType="http://www.w3.org/2001/XMLSchema#string"/>
+        <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string"
+          >read</AttributeValue>
+      </Match>
+    </AllOf>
+  </AnyOf>
+</Target>
+</Policy>
+```
+
+All the rules are associated to a service ID (the value of the `fiware-service` header) and a subservice. When the request arrives to the Access Control, the later will retrieve all the permissions for the user roles, each one represented by a XACML policy. All the policies are applied then in order to find any that would let the request be executed.
+
+In the example, the policy states the following: "if the resource has the prefix `frn:contextbroker:551:833:` and the action `read` the request would be allowed". This policy will allow read access over all the resources in subservice `833` of the service `551` to the roles that have it assigned. 
 
 ## <a name="administration"/> Administration
 ###Service operations
