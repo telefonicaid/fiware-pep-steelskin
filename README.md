@@ -260,6 +260,19 @@ The middlewares must be defined inside a Node.js module. They can be configured 
 * `require`: path to the module that contains the middlewares, from the project root. The system currently supports only modules defined inside the fiware-orion-pep project (or in accessible folders). 
 * `functions`: list of the middlewares to load. The names in this list must be exported functions of the module selected in the previous attribute.
 
+### Generic REST Middleware
+For standard REST APIs that make use exclusively of the POST, PUT, DELETE and GET methods with their CRUD meaning, the PEP Proxy provides a generic plugin that maps those methods to actions in the access request. To configure it, put the following lines in the middleware section of the PEP Proxy installation:
+
+```
+config.middlewares = {
+   require: 'lib/services/restPlugin',
+   
+   functions: [
+     'extractAction'
+   ]
+};
+```
+
 ## <a name="licence"/> License
 
 Orion FiWare Policy Enforcement Point is licensed under Affero General Public License (GPL) version 3.
