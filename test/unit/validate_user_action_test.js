@@ -61,6 +61,11 @@ describe('Validate action with Access Control', function() {
                             res.json(200, utils.readExampleFile('./test/authorizationResponses/rolesOfUser.json'));
                         };
 
+                        mockAccessApp.handler = function(req, res) {
+                            res.set('Content-Type', 'application/xml');
+                            res.send(utils.readExampleFile('./test/accessControlResponses/permitResponse.xml', true));
+                        };
+
                         done();
                     });
                 });
@@ -85,8 +90,8 @@ describe('Validate action with Access Control', function() {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'Fiware-Service': 'frn:contextbroker:551:::',
-                'fiware-servicepath': '551',
+                'Fiware-Service': '551',
+                'fiware-servicepath': '833',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
@@ -108,22 +113,6 @@ describe('Validate action with Access Control', function() {
                 should.exist(req.query.access_token);
                 req.query.access_token.should.equal('UAidNA9uQJiIVYSCg0IQ8Q');
                 res.json(200, utils.readExampleFile('./test/authorizationResponses/rolesOfUser.json'));
-                mockExecuted = true;
-            };
-
-            request(options, function(error, response, body) {
-                mockExecuted.should.equal(true);
-                done();
-            });
-        });
-
-        it('should send a validation request to Access Control', function(done) {
-            var mockExecuted = false;
-
-            mockAccessApp.handler = function(req, res) {
-                req.rawBody.should.match(/8907(.|\n)*4937(.|\n)*frn:contextbroker:551:::(.|\n)*create/);
-                res.set('Content-Type', 'application/xml');
-                res.send(utils.readExampleFile('./test/accessControlResponses/permitResponse.xml', true));
                 mockExecuted = true;
             };
 
@@ -160,8 +149,8 @@ describe('Validate action with Access Control', function() {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'Fiware-Service': 'frn:contextbroker:551:::',
-                'fiware-servicepath': '551',
+                'Fiware-Service': '551',
+                'fiware-servicepath': '833',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
@@ -203,7 +192,8 @@ describe('Validate action with Access Control', function() {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'Fiware-Service': 'frn:contextbroker:551:::',
+                'Fiware-Service': '551',
+                'Fiware-Path': '833',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
@@ -248,7 +238,8 @@ describe('Validate action with Access Control', function() {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'Fiware-Service': 'frn:contextbroker:551:::',
+                'Fiware-Service': '551',
+                'Fiware-Path': '833',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
