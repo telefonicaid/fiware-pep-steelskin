@@ -63,7 +63,7 @@ describe('REST Plugin tests', function() {
 
         describe('When  a ' + particularCase[0] + ' request arrives to the PEP Proxy', function() {
             beforeEach(function(done) {
-                config.middlewares.require = 'lib/services/orionPlugin';
+                config.middlewares.require = 'lib/services/restPlugin';
                 config.middlewares.function = [
                     'extractAction'
                 ];
