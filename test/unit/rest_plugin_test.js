@@ -42,8 +42,8 @@ describe('REST Plugin tests', function() {
         mockOAuthApp,
         apiCases = [
         ['POST', 'create'],
-        ['PUT', 'modify'],
-        ['DELETE', 'remove'],
+        ['PUT', 'update'],
+        ['DELETE', 'delete'],
         ['GET', 'read']
     ];
 
