@@ -148,39 +148,116 @@ Once the user is authenticated, the PEP Proxy will ask the Access Control for it
 Rules are defined in [XACML](https://www.oasis-open.org/committees/xacml/). The particular rules will depend on each case and are left to the authorization designer. The following document shows a typical rule explained for the use case of a Context Broker:
 
 ```
-<Policy
-  RuleCombiningAlgId="identifier:rule-combining-algorithm:deny-overrides">
+<Policy xsi:schemaLocation="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17
+    http://docs.oasis-open.org/xacml/3.0/xacml-core-v3-schema-wd-17.xsd"
+        PolicyId="policy03"
+        RuleCombiningAlgId="urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:deny-unless-permit"
+        Version="1.0" xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
-<Target>
-  <AnyOf>
-    <AllOf>
-      <Match MatchId="urn:oasis:names:tc:xacml:3.0:function:string-starts-with">
-        <AttributeDesignator MustBePresent="true"
-          Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource"
-          AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id"
-          DataType="http://www.w3.org/2001/XMLSchema#string"/>
-        <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string"
-          >frn:contextbroker:551:833:</AttributeValue>
-      </Match>
-    </AllOf>
-    <AllOf>
-      <Match MatchId="urn:oasis:names:tc:xacml:3.0:function:string-equal">
-        <AttributeDesignator MustBePresent="true"
-          Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action"
-          AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id"
-          DataType="http://www.w3.org/2001/XMLSchema#string"/>
-        <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string"
-          >read</AttributeValue>
-      </Match>
-    </AllOf>
-  </AnyOf>
-</Target>
+  <Target>
+    <AnyOf>
+      <AllOf>
+        <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-regexp-match">
+          <AttributeValue
+              DataType="http://www.w3.org/2001/XMLSchema#string"
+              >frn:contextbroker:551:833:.*</AttributeValue>
+          <AttributeDesignator
+              AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id"
+              DataType="http://www.w3.org/2001/XMLSchema#string"
+              MustBePresent="true"
+              Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" />
+        </Match>
+      </AllOf>
+    </AnyOf>
+  </Target>
+
+  <Rule RuleId="policy03rule01" Effect="Permit">
+
+    <Condition>
+      <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+          <AttributeDesignator
+              AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id"
+              DataType="http://www.w3.org/2001/XMLSchema#string"
+              MustBePresent="true"
+              Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action" />
+        </Apply>
+        <AttributeValue
+            DataType="http://www.w3.org/2001/XMLSchema#string"
+            >read</AttributeValue>
+      </Apply>
+    </Condition>
+  </Rule>
+
 </Policy>
+
 ```
 
 All the rules are associated to a service ID (the value of the `fiware-service` header) and a subservice. When the request arrives to the Access Control, the later will retrieve all the permissions for the user roles, each one represented by a XACML policy. All the policies are applied then in order to find any that would let the request be executed.
 
-In the example, the policy states the following: "if the resource has the prefix `frn:contextbroker:551:833:` and the action `read` the request would be allowed". This policy will allow read access over all the resources in subservice `833` of the service `551` to the roles that have it assigned. 
+In the example, the policy states the following: "if the resource has the prefix `frn:contextbroker:551:833:` and the action `read` the request would be allowed". This policy will allow read access over all the resources in subservice `833` of the service `551` to the roles that have it assigned. The meaning of the term resource will depend on the component which is being protected by the particular access rules. E.g.: for Orion Context Broker, the resources will be the entities of the CB; for each entity, the Policy Enforcement Point of the CB will generate a FRN, composed of the aforementioned prefix plus the identifier of the entity itself. 
+
+Another example could be this the following:
+
+```
+<Policy xsi:schemaLocation="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17
+    http://docs.oasis-open.org/xacml/3.0/xacml-core-v3-schema-wd-17.xsd"
+        PolicyId="policy02"
+        RuleCombiningAlgId="urn:oasis:names:tc:xacml:3.0:rule-combining-algorithm:deny-unless-permit"
+        Version="1.0" xmlns="urn:oasis:names:tc:xacml:3.0:core:schema:wd-17"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <Target>
+    <AnyOf>
+      <AllOf>
+        <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+          <AttributeValue
+              DataType="http://www.w3.org/2001/XMLSchema#string">admin</AttributeValue>
+          <AttributeDesignator
+              AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id"
+              DataType="http://www.w3.org/2001/XMLSchema#string"
+              MustBePresent="false"
+              Category="urn:oasis:names:tc:xacml:1.0:subject-category:access-subject" />
+        </Match>
+        <Match MatchId="urn:oasis:names:tc:xacml:1.0:function:string-regexp-match">
+          <AttributeValue
+              DataType="http://www.w3.org/2001/XMLSchema#string">frn:contextbroker:551:833:.*</AttributeValue>
+          <AttributeDesignator
+              AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id"
+              DataType="http://www.w3.org/2001/XMLSchema#string"
+              MustBePresent="true"
+              Category="urn:oasis:names:tc:xacml:3.0:attribute-category:resource" />
+        </Match>
+      </AllOf>
+    </AnyOf>
+  </Target>
+
+  <Rule RuleId="policy02rule01" Effect="Permit">
+
+    <Condition>
+      <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-equal">
+        <Apply FunctionId="urn:oasis:names:tc:xacml:1.0:function:string-one-and-only">
+          <AttributeDesignator
+              AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id"
+              DataType="http://www.w3.org/2001/XMLSchema#string"
+              MustBePresent="true"
+              Category="urn:oasis:names:tc:xacml:3.0:attribute-category:action" />
+        </Apply>
+        <AttributeValue
+            DataType="http://www.w3.org/2001/XMLSchema#string">write</AttributeValue>
+      </Apply>
+    </Condition>
+  </Rule>
+
+</Policy>
+
+```
+
+In this example, only those users with `subjectId` (user's role) "admin" may write on resources of tenant 511 and subservice 833.
+
+Any number of rules can be included in the Access Control for each pair (tenant, subject). If any of the rules can be applied to the request and `Permit` the request, then the global result is a `Permit`. If none of the rules can be applied (no target exist for the tenant, subservice and subject of the request) the result will be `NotApplicable`. If there are rules that can be applied
+but all of them deny the access, the result will be a `Deny`.
 
 ## <a name="administration"/> Administration
 ###Service operations
