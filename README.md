@@ -256,8 +256,7 @@ Another example could be this the following:
 
 In this example, only those users with `subjectId` (user's role) "admin" may write on resources of tenant 511 and subservice 833.
 
-Any number of rules can be included in the Access Control for each pair (tenant, subject). If any of the rules can be applied to the request and `Permit` the request, then the global result is a `Permit`. If none of the rules can be applied (no target exist for the tenant, subservice and subject of the request) the result will be `NotApplicable`. If there are rules that can be applied
-but all of them deny the access, the result will be a `Deny`.
+Any number of policies can be included in the Access Control for each pair (tenant, subject). If any of the policies can be applied to the request and `Permit` the request, then the global result is a `Permit`. If none of the policies can be applied (no target exist for the tenant, subservice and subject of the request) the result will be `NotApplicable`. If there are policies that can be applied but all of them deny the access, the result will be a `Deny`.
 
 ## <a name="administration"/> Administration
 ###Service operations
