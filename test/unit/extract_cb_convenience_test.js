@@ -82,7 +82,10 @@ convenienceOperations = [
     ['DELETE', '/v1/contextSubscriptions/TestedSubscriptionID001', 'suscribe'],
     ['PUT', '/v1/contextSubscriptions/TestedSubscriptionID001', 'suscribe'],
     ['GET', '/v1/registry/contextEntityTypes/TestedTypeName001', 'discover'],
-    ['POST', '/v1/registry/contextEntityTypes/TestedTypeName001', 'register']
+    ['POST', '/v1/registry/contextEntityTypes/TestedTypeName001', 'register'],
+
+    ['GET', '/v1/contextTypes', 'read'],
+    ['GET', '/v1/contextTypes/typeOfEntity001', 'read']
 ];
 
 describe('Extract Context Broker action from convenience operation requests', function() {
