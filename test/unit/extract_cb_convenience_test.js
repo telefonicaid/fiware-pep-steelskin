@@ -76,7 +76,13 @@ convenienceOperations = [
     ['GET', '/ngsi10/contextEntityTypes/TestedTypeName001/attributeDomains/TestedDomainName001', 'read'],
     ['POST', '/ngsi10/contextSubscriptions', 'suscribe'],
     ['PUT', '/ngsi10/contextSubscriptions/TestedSubscriptionID001', 'suscribe'],
-    ['DELETE', '/ngsi10/contextSubscriptions/TestedSubscriptionID001', 'suscribe']
+    ['DELETE', '/ngsi10/contextSubscriptions/TestedSubscriptionID001', 'suscribe'],
+
+    ['PUT', '/v1/contextSubscriptions/TestedSubscriptionID001', 'suscribe'],
+    ['DELETE', '/v1/contextSubscriptions/TestedSubscriptionID001', 'suscribe'],
+    ['PUT', '/v1/contextSubscriptions/TestedSubscriptionID001', 'suscribe'],
+    ['GET', '/v1/registry/contextEntityTypes/TestedTypeName001', 'discover'],
+    ['POST', '/v1/registry/contextEntityTypes/TestedTypeName001', 'register']
 ];
 
 describe('Extract Context Broker action from convenience operation requests', function() {
