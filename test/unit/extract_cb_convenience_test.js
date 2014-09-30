@@ -84,6 +84,7 @@ convenienceOperations = [
     ['GET', '/v1/registry/contextEntityTypes/TestedTypeName001', 'discover'],
     ['POST', '/v1/registry/contextEntityTypes/TestedTypeName001', 'register'],
 
+    ['GET', '/ngsi10/contextTypes', 'read'],
     ['GET', '/v1/contextTypes', 'read'],
     ['GET', '/v1/contextTypes/typeOfEntity001', 'read']
 ];
