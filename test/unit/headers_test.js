@@ -56,7 +56,7 @@ describe('Control header behavior', function() {
                     mockAccess = serverAccess;
                     mockAccessApp = appAccess;
 
-                    serverMocks.start(config.authentication.port, function(error, serverAuth, appAuth) {
+                    serverMocks.start(config.authentication.options.port, function(error, serverAuth, appAuth) {
                         mockOAuth = serverAuth;
                         mockOAuthApp = appAuth;
 

@@ -53,7 +53,7 @@ describe('Validate action with Access Control', function() {
                 serverMocks.start(config.access.port, function(error, serverAccess, appAccess) {
                     mockAccess = serverAccess;
                     mockAccessApp = appAccess;
-                    serverMocks.start(config.authentication.port, function(error, serverAuth, appAuth) {
+                    serverMocks.start(config.authentication.options.port, function(error, serverAuth, appAuth) {
                         mockOAuth = serverAuth;
                         mockOAuthApp = appAuth;
 

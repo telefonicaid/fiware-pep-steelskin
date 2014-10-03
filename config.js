@@ -55,11 +55,15 @@ config.access = {
  * Information about the Identity Manager server from where the information about a user will be drawn.
  */
 config.authentication = {
-    protocol: 'http',
-    host: 'localhost',
-    port: 9000,
-    path: '/user'
-}
+    module: 'idm',
+    options: {
+        protocol: 'http',
+        host: 'localhost',
+        port: 9000,
+        path: '/user'
+    }
+};
+
 
 // Security configuration
 //--------------------------------------------------
