@@ -32,14 +32,33 @@ var serverMocks = require('../tools/serverMocks'),
     should = require('should'),
     request = require('request');
 
-describe('Validate action with Access Control', function() {
+function authMiddleware(authPath, authFile, rolesFile) {
+    return function(req, res) {
+        if (req.path == authPath) {
+            res.json(200, utils.readExampleFile(authFile));
+        } else {
+            res.json(200, utils.readExampleFile(rolesFile));
+        }
+    };
+}
+
+describe.only('Validate action with Access Control', function() {
     var proxy,
         mockTarget,
         mockTargetApp,
         mockAccess,
         mockAccessApp,
         mockOAuth,
-        mockOAuthApp;
+        mockOAuthApp,
+        authenticationMechanisms = [
+            {
+                name: 'idm',
+                path: '/validate',
+                authPath: '',
+                rolesFile: './test/authorizationResponses/rolesOfUser.json',
+                authenticationResponse: './test/authorizationResponses/rolesOfUser.json'
+            }
+        ];
 
     beforeEach(function(done) {
         proxyLib.start(function(error, proxyObj) {
@@ -56,10 +75,6 @@ describe('Validate action with Access Control', function() {
                     serverMocks.start(config.authentication.options.port, function(error, serverAuth, appAuth) {
                         mockOAuth = serverAuth;
                         mockOAuthApp = appAuth;
-
-                        mockOAuthApp.handler = function(req, res) {
-                            res.json(200, utils.readExampleFile('./test/authorizationResponses/rolesOfUser.json'));
-                        };
 
                         mockAccessApp.handler = function(req, res) {
                             res.set('Content-Type', 'application/xml');
@@ -83,191 +98,218 @@ describe('Validate action with Access Control', function() {
         });
     });
 
-    describe('When a request to the CB arrives to the proxy with appropriate permissions', function() {
-        var options = {
-            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Fiware-Service': '551',
-                'fiware-servicepath': '833',
-                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
-            },
-            json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
-        };
+    for (var q=0; q < authenticationMechanisms.length; q++) {
+        describe('When a request to the CB arrives to the proxy with appropriate permissions', function() {
+            var options = {
+                    uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Fiware-Service': '551',
+                        'fiware-servicepath': '833',
+                        'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
+                    },
+                    json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
+                },
+                currentAuthentication = authenticationMechanisms[q];
 
-        beforeEach(function(done) {
-            async.series([
-                async.apply(serverMocks.mockPath, '/user', mockOAuthApp),
-                async.apply(serverMocks.mockPath, '/validate', mockAccessApp),
-                async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
-            ], done);
-        });
 
-        it('should retrieve the roles from the IDM', function(done) {
-            /*jshint camelcase: false*/
-            var mockExecuted = false;
+            beforeEach(function(done) {
+                mockOAuthApp.handler = authMiddleware(
+                    currentAuthentication.authPath,
+                    currentAuthentication.authenticationResponse,
+                    currentAuthentication.rolesFile);
 
-            mockOAuthApp.handler = function(req, res) {
-                should.exist(req.query.access_token);
-                req.query.access_token.should.equal('UAidNA9uQJiIVYSCg0IQ8Q');
-                res.json(200, utils.readExampleFile('./test/authorizationResponses/rolesOfUser.json'));
-                mockExecuted = true;
-            };
-
-            request(options, function(error, response, body) {
-                mockExecuted.should.equal(true);
-                done();
-            });
-        });
-
-        it('should proxy the request to the destination', function(done) {
-            var mockExecuted = false;
-
-            mockAccessApp.handler = function(req, res) {
-                res.set('Content-Type', 'application/xml');
-                res.send(utils.readExampleFile('./test/accessControlResponses/permitResponse.xml', true));
-            };
-
-            mockTargetApp.handler = function(req, res) {
-                mockExecuted = true;
-                res.json(200, {});
-            };
-
-            request(options, function(error, response, body) {
-                mockExecuted.should.equal(true);
-                done();
-            });
-        });
-    });
-
-    describe('When a request to the CB arrives for a user with wrong permissions', function() {
-        var options = {
-            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Fiware-Service': '551',
-                'fiware-servicepath': '833',
-                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
-            },
-            json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
-        };
-
-        beforeEach(function(done) {
-            async.series([
-                async.apply(serverMocks.mockPath, '/user', mockOAuthApp),
-                async.apply(serverMocks.mockPath, '/validate', mockAccessApp),
-                async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
-            ], done);
-        });
-
-        it('should reject the request with a 403 error code', function(done) {
-            var mockExecuted = false;
-
-            mockAccessApp.handler = function(req, res) {
-                res.set('Content-Type', 'application/xml');
-                res.status(200).send(utils.readExampleFile('./test/accessControlResponses/denyResponse.xml', true));
-            };
-
-            mockTargetApp.handler = function(req, res) {
-                mockExecuted = true;
-                res.json(200, {});
-            };
-
-            request(options, function(error, response, body) {
-                mockExecuted.should.equal(false);
-                response.statusCode.should.equal(403);
-                done();
-            });
-        });
-    });
-
-    describe('When a request to the CB arrives and the connection to the Access Control is not working', function() {
-        var options = {
-            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Fiware-Service': '551',
-                'Fiware-Path': '833',
-                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
-            },
-            json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
-        };
-
-        beforeEach(function(done) {
-            serverMocks.stop(mockAccess, function() {
                 async.series([
+                    async.apply(serverMocks.mockPath, '/user', mockOAuthApp),
+                    async.apply(serverMocks.mockPath, currentAuthentication.path, mockAccessApp),
                     async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
                 ], done);
             });
-        });
 
-        afterEach(function(done) {
-            serverMocks.start(config.access.port, function(error, serverAccess, appAccess) {
-                mockAccess = serverAccess;
-                mockAccessApp = appAccess;
-                done();
+            it('should retrieve the roles from the IDM', function(done) {
+                /*jshint camelcase: false*/
+                var mockExecuted = false;
+
+                mockOAuthApp.handler = function(req, res) {
+                    should.exist(req.query.access_token);
+                    req.query.access_token.should.equal('UAidNA9uQJiIVYSCg0IQ8Q');
+                    res.json(200, utils.readExampleFile(currentAuthentication.rolesFile));
+                    mockExecuted = true;
+                };
+
+                request(options, function(error, response, body) {
+                    mockExecuted.should.equal(true);
+                    done();
+                });
+            });
+
+            it('should proxy the request to the destination', function(done) {
+                var mockExecuted = false;
+
+                mockAccessApp.handler = function(req, res) {
+                    res.set('Content-Type', 'application/xml');
+                    res.send(utils.readExampleFile('./test/accessControlResponses/permitResponse.xml', true));
+                };
+
+                mockTargetApp.handler = function(req, res) {
+                    mockExecuted = true;
+                    res.json(200, {});
+                };
+
+                request(options, function(error, response, body) {
+                    mockExecuted.should.equal(true);
+                    done();
+                });
             });
         });
 
-        it('should reject the request with a 503 error', function(done) {
-            var mockExecuted = false;
+        describe('When a request to the CB arrives for a user with wrong permissions', function() {
+            var options = {
+                    uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Fiware-Service': '551',
+                        'fiware-servicepath': '833',
+                        'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
+                    },
+                    json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
+                },
+                currentAuthentication = authenticationMechanisms[q];
 
-            mockAccessApp.handler = function(req, res) {
-                mockExecuted = true;
-                res.json(500, {});
-            };
+            beforeEach(function(done) {
+                mockOAuthApp.handler = authMiddleware(
+                    currentAuthentication.authPath,
+                    currentAuthentication.authenticationResponse,
+                    currentAuthentication.rolesFile);
 
-            request(options, function(error, response, body) {
-                response.statusCode.should.equal(503);
-                done();
+                async.series([
+                    async.apply(serverMocks.mockPath, '/user', mockOAuthApp),
+                    async.apply(serverMocks.mockPath, currentAuthentication.path, mockAccessApp),
+                    async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
+                ], done);
+            });
+
+            it('should reject the request with a 403 error code', function(done) {
+                var mockExecuted = false;
+
+                mockAccessApp.handler = function(req, res) {
+                    res.set('Content-Type', 'application/xml');
+                    res.status(200).send(utils.readExampleFile('./test/accessControlResponses/denyResponse.xml', true));
+                };
+
+                mockTargetApp.handler = function(req, res) {
+                    mockExecuted = true;
+                    res.json(200, {});
+                };
+
+                request(options, function(error, response, body) {
+                    mockExecuted.should.equal(false);
+                    response.statusCode.should.equal(403);
+                    done();
+                });
             });
         });
-    });
 
+        describe('When a request to the CB arrives and the connection to the Access Control is not working', function() {
+            var options = {
+                    uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Fiware-Service': '551',
+                        'Fiware-Path': '833',
+                        'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
+                    },
+                    json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
+                },
+                currentAuthentication = authenticationMechanisms[q];
 
-    describe('When a request to the CB arrives and the Access Control fails to make a proper decision', function() {
-        var options = {
-            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Fiware-Service': '551',
-                'Fiware-Path': '833',
-                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
-            },
-            json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
-        };
+            beforeEach(function(done) {
+                mockOAuthApp.handler = authMiddleware(
+                    currentAuthentication.authPath,
+                    currentAuthentication.authenticationResponse,
+                    currentAuthentication.rolesFile);
 
-        beforeEach(function(done) {
-            async.series([
-                async.apply(serverMocks.mockPath, '/validate', mockAccessApp),
-                async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
-            ], done);
-        });
+                serverMocks.stop(mockAccess, function() {
+                    async.series([
+                        async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
+                    ], done);
+                });
+            });
 
-        it('should reject the request with a 503 error', function(done) {
-            var mockExecuted = false;
+            afterEach(function(done) {
+                serverMocks.start(config.access.port, function(error, serverAccess, appAccess) {
+                    mockAccess = serverAccess;
+                    mockAccessApp = appAccess;
+                    done();
+                });
+            });
 
-            mockAccessApp.handler = function(req, res) {
-                mockExecuted = true;
-                res.json(500, {});
-            };
+            it('should reject the request with a 503 error', function(done) {
+                var mockExecuted = false;
 
-            request(options, function(error, response, body) {
-                response.statusCode.should.equal(503);
-                done();
+                mockAccessApp.handler = function(req, res) {
+                    mockExecuted = true;
+                    res.json(500, {});
+                };
+
+                request(options, function(error, response, body) {
+                    response.statusCode.should.equal(503);
+                    done();
+                });
             });
         });
-    });
 
-    describe('When a request arrives and the authentication token has expired', function() {
-        it('should reject the request with a 503 temporary unavailable message');
-    });
+
+        describe('When a request to the CB arrives and the Access Control fails to make a proper decision', function() {
+            var options = {
+                    uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Fiware-Service': '551',
+                        'Fiware-Path': '833',
+                        'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
+                    },
+                    json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
+                },
+                currentAuthentication = authenticationMechanisms[q];
+
+            beforeEach(function(done) {
+                mockOAuthApp.handler = authMiddleware(
+                    currentAuthentication.authPath,
+                    currentAuthentication.authenticationResponse,
+                    currentAuthentication.rolesFile);
+
+                async.series([
+                    async.apply(serverMocks.mockPath, currentAuthentication.path, mockAccessApp),
+                    async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
+                ], done);
+            });
+
+            it('should reject the request with a 503 error', function(done) {
+                var mockExecuted = false;
+
+                mockAccessApp.handler = function(req, res) {
+                    mockExecuted = true;
+                    res.json(500, {});
+                };
+
+                request(options, function(error, response, body) {
+                    response.statusCode.should.equal(503);
+                    done();
+                });
+            });
+        });
+
+        describe('When a request arrives and the authentication token has expired', function() {
+            it('should reject the request with a 503 temporary unavailable message');
+        });
+    }
 });
