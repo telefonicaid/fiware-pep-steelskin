@@ -33,20 +33,20 @@ var serverMocks = require('../tools/serverMocks'),
     should = require('should'),
     request = require('request');
 
-function authMiddleware(authPath, authFile, rolesFile, headers) {
+function authMiddleware(currentAuthentication) {
     return function(req, res) {
-        if (req.path == authPath) {
-            for (var i=0; i < headers.length; i++) {
-                req.headers[headers[i].name] = headers[i].value;
-            }
-            res.json(200, utils.readExampleFile(authFile));
+        if (req.path == currentAuthentication.path) {
+            res.json(200, utils.readExampleFile(currentAuthentication.rolesFile));
         } else {
-            res.json(200, utils.readExampleFile(rolesFile));
+            for (var i=0; i < currentAuthentication.headers.length; i++) {
+                req.headers[currentAuthentication.headers[i].name] = currentAuthentication.headers[i].value;
+            }
+            res.json(200, utils.readExampleFile(currentAuthentication.authenticationResponse));
         }
     };
 }
 
-describe.only('Validate action with Access Control', function() {
+describe('Validate action with Access Control', function() {
     var proxy,
         mockTarget,
         mockTargetApp,
@@ -57,8 +57,8 @@ describe.only('Validate action with Access Control', function() {
         authenticationMechanisms = [
             {
                 module: 'idm',
-                path: '/validate',
-                authPath: '/user',
+                path: '/user',
+                authPath: null,
                 rolesFile: './test/authorizationResponses/rolesOfUser.json',
                 authenticationResponse: './test/authorizationResponses/authorize.json',
                 headers: [
@@ -66,15 +66,11 @@ describe.only('Validate action with Access Control', function() {
             },
             {
                 module: 'keystone',
-                path: '/validate',
-                authPath: '/v3/auth/tokens',
+                path: '/user',
+                authPath: null,
                 rolesFile: './test/keystoneResponses/rolesOfUser.json',
                 authenticationResponse: './test/keystoneResponses/authorize.json',
                 headers: [
-                    {
-                        name: 'X-Subject-Token',
-                        value: '152Rkj+LtYmzv-eXuyKcToxtEnPph'
-                    }
                 ]
             }
         ];
@@ -97,10 +93,7 @@ describe.only('Validate action with Access Control', function() {
                         mockOAuth = serverAuth;
                         mockOAuthApp = appAuth;
 
-                        mockOAuthApp.handler = authMiddleware(
-                            currentAuthentication.authPath,
-                            currentAuthentication.authenticationResponse,
-                            currentAuthentication.rolesFile);
+                        mockOAuthApp.handler = authMiddleware(currentAuthentication);
 
                         mockAccessApp.handler = function(req, res) {
                             res.set('Content-Type', 'application/xml');
@@ -135,8 +128,8 @@ describe.only('Validate action with Access Control', function() {
             beforeEach(function(done) {
                 initializeUseCase(currentAuthentication, function () {
                     async.series([
-                        async.apply(serverMocks.mockPath, '/user', mockOAuthApp),
-                        async.apply(serverMocks.mockPath, currentAuthentication.path, mockAccessApp),
+                        async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
+                        async.apply(serverMocks.mockPath, '/validate', mockAccessApp),
                         async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
                     ], done);
                 });
@@ -208,8 +201,8 @@ describe.only('Validate action with Access Control', function() {
             beforeEach(function(done) {
                 initializeUseCase(currentAuthentication, function () {
                     async.series([
-                        async.apply(serverMocks.mockPath, '/user', mockOAuthApp),
-                        async.apply(serverMocks.mockPath, currentAuthentication.path, mockAccessApp),
+                        async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
+                        async.apply(serverMocks.mockPath, '/validate', mockAccessApp),
                         async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
                     ], done);
                 });
@@ -316,7 +309,8 @@ describe.only('Validate action with Access Control', function() {
             beforeEach(function(done) {
                 initializeUseCase(currentAuthentication, function () {
                     async.series([
-                        async.apply(serverMocks.mockPath, currentAuthentication.path, mockAccessApp),
+                        async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
+                        async.apply(serverMocks.mockPath, '/validate', mockAccessApp),
                         async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
                     ], done);
                 });
@@ -352,4 +346,11 @@ describe.only('Validate action with Access Control', function() {
             it('should reject the request with a 503 temporary unavailable message');
         });
     }
+
+    describe('[' + authenticationMechanisms[1g].module + '] ' +
+        'When a request is validated using Keystone', function() {
+        it('should authenticate to get the administration token');
+        it('should get user data');
+        it('should send an authenticated call to get the roles');
+    });
 });

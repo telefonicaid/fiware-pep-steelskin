@@ -2,15 +2,15 @@
     "role_assignments": [
         {
             "scope": {
-                "domain": {
-                    "id": "f7a5b8e303ec43e8a912fe26fa79dc02"
+                "project": {
+                    "id": 833
                 }
             },
             "role": {
-                "id": "a6407b6c597e4e1dad37a3420b6137dd"
+                "id": 8907
             },
             "user": {
-                "id": "5e817c5e0d624ee68dfb7a72d0d31ce4"
+                "id": 2836
             },
             "links": {
                 "assignment": "http://localhost:5000/v3/domains/f7a5b8e303ec43e8a912fe26fa79dc02/users/5e817c5e0d624ee68dfb7a72d0d31ce4/roles/a6407b6c597e4e1dad37a3420b6137dd"
