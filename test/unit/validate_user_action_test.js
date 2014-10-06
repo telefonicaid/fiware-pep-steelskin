@@ -27,6 +27,7 @@ var serverMocks = require('../tools/serverMocks'),
     proxyLib = require('../../lib/fiware-orion-pep'),
     orionPlugin = require('../../lib/services/orionPlugin'),
     async = require('async'),
+    apply = async.apply,
     config = require('../../config'),
     utils = require('../tools/utils'),
     should = require('should'),
@@ -52,7 +53,7 @@ describe.only('Validate action with Access Control', function() {
         mockOAuthApp,
         authenticationMechanisms = [
             {
-                name: 'idm',
+                module: 'idm',
                 path: '/validate',
                 authPath: '',
                 rolesFile: './test/authorizationResponses/rolesOfUser.json',
@@ -60,7 +61,9 @@ describe.only('Validate action with Access Control', function() {
             }
         ];
 
-    beforeEach(function(done) {
+    function initializeUseCase(currentAuthentication, done) {
+        config.authentication.module = currentAuthentication.module;
+
         proxyLib.start(function(error, proxyObj) {
             proxy = proxyObj;
 
@@ -76,6 +79,11 @@ describe.only('Validate action with Access Control', function() {
                         mockOAuth = serverAuth;
                         mockOAuthApp = appAuth;
 
+                        mockOAuthApp.handler = authMiddleware(
+                            currentAuthentication.authPath,
+                            currentAuthentication.authenticationResponse,
+                            currentAuthentication.rolesFile);
+
                         mockAccessApp.handler = function(req, res) {
                             res.set('Content-Type', 'application/xml');
                             res.send(utils.readExampleFile('./test/accessControlResponses/permitResponse.xml', true));
@@ -86,17 +94,7 @@ describe.only('Validate action with Access Control', function() {
                 });
             });
         });
-    });
-
-    afterEach(function(done) {
-        proxyLib.stop(proxy, function(error) {
-            serverMocks.stop(mockTarget, function() {
-                serverMocks.stop(mockAccess, function() {
-                    serverMocks.stop(mockOAuth, done);
-                });
-            });
-        });
-    });
+    }
 
     for (var q=0; q < authenticationMechanisms.length; q++) {
         describe('When a request to the CB arrives to the proxy with appropriate permissions', function() {
@@ -116,16 +114,21 @@ describe.only('Validate action with Access Control', function() {
 
 
             beforeEach(function(done) {
-                mockOAuthApp.handler = authMiddleware(
-                    currentAuthentication.authPath,
-                    currentAuthentication.authenticationResponse,
-                    currentAuthentication.rolesFile);
-
                 async.series([
                     async.apply(serverMocks.mockPath, '/user', mockOAuthApp),
                     async.apply(serverMocks.mockPath, currentAuthentication.path, mockAccessApp),
                     async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
-                ], done);
+                ], apply(initializeUseCase, currentAuthentication));
+            });
+
+            afterEach(function(done) {
+                proxyLib.stop(proxy, function(error) {
+                    serverMocks.stop(mockTarget, function() {
+                        serverMocks.stop(mockAccess, function() {
+                            serverMocks.stop(mockOAuth, done);
+                        });
+                    });
+                });
             });
 
             it('should retrieve the roles from the IDM', function(done) {
@@ -181,16 +184,21 @@ describe.only('Validate action with Access Control', function() {
                 currentAuthentication = authenticationMechanisms[q];
 
             beforeEach(function(done) {
-                mockOAuthApp.handler = authMiddleware(
-                    currentAuthentication.authPath,
-                    currentAuthentication.authenticationResponse,
-                    currentAuthentication.rolesFile);
-
                 async.series([
                     async.apply(serverMocks.mockPath, '/user', mockOAuthApp),
                     async.apply(serverMocks.mockPath, currentAuthentication.path, mockAccessApp),
                     async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
-                ], done);
+                ], apply(initializeUseCase, currentAuthentication));
+            });
+
+            afterEach(function(done) {
+                proxyLib.stop(proxy, function(error) {
+                    serverMocks.stop(mockTarget, function() {
+                        serverMocks.stop(mockAccess, function() {
+                            serverMocks.stop(mockOAuth, done);
+                        });
+                    });
+                });
             });
 
             it('should reject the request with a 403 error code', function(done) {
@@ -230,15 +238,20 @@ describe.only('Validate action with Access Control', function() {
                 currentAuthentication = authenticationMechanisms[q];
 
             beforeEach(function(done) {
-                mockOAuthApp.handler = authMiddleware(
-                    currentAuthentication.authPath,
-                    currentAuthentication.authenticationResponse,
-                    currentAuthentication.rolesFile);
-
                 serverMocks.stop(mockAccess, function() {
                     async.series([
                         async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
-                    ], done);
+                    ], apply(initializeUseCase, currentAuthentication));
+                });
+            });
+
+            afterEach(function(done) {
+                proxyLib.stop(proxy, function(error) {
+                    serverMocks.stop(mockTarget, function() {
+                        serverMocks.stop(mockAccess, function() {
+                            serverMocks.stop(mockOAuth, done);
+                        });
+                    });
                 });
             });
 
@@ -282,15 +295,20 @@ describe.only('Validate action with Access Control', function() {
                 currentAuthentication = authenticationMechanisms[q];
 
             beforeEach(function(done) {
-                mockOAuthApp.handler = authMiddleware(
-                    currentAuthentication.authPath,
-                    currentAuthentication.authenticationResponse,
-                    currentAuthentication.rolesFile);
-
                 async.series([
                     async.apply(serverMocks.mockPath, currentAuthentication.path, mockAccessApp),
                     async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
-                ], done);
+                ], apply(initializeUseCase, currentAuthentication));
+            });
+
+            afterEach(function(done) {
+                proxyLib.stop(proxy, function(error) {
+                    serverMocks.stop(mockTarget, function() {
+                        serverMocks.stop(mockAccess, function() {
+                            serverMocks.stop(mockOAuth, done);
+                        });
+                    });
+                });
             });
 
             it('should reject the request with a 503 error', function(done) {
