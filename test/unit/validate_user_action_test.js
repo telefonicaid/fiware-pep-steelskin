@@ -347,7 +347,7 @@ describe('Validate action with Access Control', function() {
         });
     }
 
-    describe('[' + authenticationMechanisms[1g].module + '] ' +
+    describe('[' + authenticationMechanisms[1].module + '] ' +
         'When a request is validated using Keystone', function() {
         it('should authenticate to get the administration token');
         it('should get user data');
