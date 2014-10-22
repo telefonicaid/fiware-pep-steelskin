@@ -67,7 +67,7 @@ describe('Validate action with Access Control', function() {
             {
                 module: 'keystone',
                 path: '/user',
-                authPath: null,
+                authPath: '/v3/auth/tokens',
                 rolesFile: './test/keystoneResponses/rolesOfUser.json',
                 authenticationResponse: './test/keystoneResponses/authorize.json',
                 headers: [
@@ -347,9 +347,70 @@ describe('Validate action with Access Control', function() {
         });
     }
 
-    describe('[' + authenticationMechanisms[1].module + '] ' +
+    describe.only('[' + authenticationMechanisms[1].module + '] ' +
         'When a request is validated using Keystone', function() {
-        it('should authenticate to get the administration token');
+        var options = {
+                uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'Fiware-Service': '551',
+                    'fiware-servicepath': '833',
+                    'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
+                },
+                json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
+            },
+            currentAuthentication = authenticationMechanisms[1];
+
+        beforeEach(function(done) {
+            initializeUseCase(currentAuthentication, function () {
+                async.series([
+                    async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
+                    async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
+                    async.apply(serverMocks.mockPath, '/validate', mockAccessApp),
+                    async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
+                ], done);
+            });
+        });
+
+        afterEach(function(done) {
+            proxyLib.stop(proxy, function(error) {
+                serverMocks.stop(mockTarget, function() {
+                    serverMocks.stop(mockAccess, function() {
+                        serverMocks.stop(mockOAuth, done);
+                    });
+                });
+            });
+        });
+
+        it('should authenticate to get the administration token', function (done) {
+            var mockExecuted = false;
+
+            mockOAuthApp.handler = function(req, res) {
+                if (req.path === currentAuthentication.authPath) {
+                    should.exist(req.body);
+                    should.exist(req.body.auth);
+                    should.exist(req.body.auth.identity);
+                    should.exist(req.body.auth.identity.password);
+                    should.exist(req.body.auth.identity.password.user);
+                    req.body.auth.identity.password.user.name.should.equal(config.authentication.user);
+                    req.body.auth.identity.password.user.password.should.equal(config.authentication.password);
+
+                    res.setHeader('X-Subject-Token', '092016b75474ea6b492e29fb69d23029');
+                    res.json(200, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
+                } else {
+                    res.json(200, utils.readExampleFile('./test/keystoneResponses/rolesOfUser.json'));
+                }
+                mockExecuted = true;
+            };
+
+            request(options, function(error, response, body) {
+                mockExecuted.should.equal(true);
+                done();
+            });
+        });
+
         it('should get user data');
         it('should send an authenticated call to get the roles');
     });

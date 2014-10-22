@@ -45,7 +45,7 @@ NAME=pepProxy
 EXECUTABLE=bin/${NAME}
 PROXY_PATH=/opt/pepProxy
 PIDFILE=$PROXY_PATH/$NAME.pid
-LOG_PATH=/var/log/pepProxy/pepProxy.log
+LOG_PATH=/var/log/pepProxy/${NAME}.log
 
 # Load the environment
 if [[ -f /etc/sysconfig/${NAME} ]]; then
@@ -62,7 +62,7 @@ pepproxy_start()
     cd $PROXY_PATH
     if [[ -x ${EXECUTABLE} ]]; then
         cd $PROXY_PATH
-        su $PROXY_USER -c "cd $PROXY_PATH; nohup ${EXECUTABLE} &>> $LOG_PATH & echo \$! > $PIDFILE"
+        su $PROXY_USER -p -c "cd $PROXY_PATH; nohup ${EXECUTABLE} &>> $LOG_PATH & echo \$! > $PIDFILE"
         echo "Success"
     else
         printf "%s\n" "Fail - missing ${EXECUTABLE} executable"

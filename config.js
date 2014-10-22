@@ -56,11 +56,16 @@ config.access = {
  */
 config.authentication = {
     module: 'idm',
+    user: 'pepproxy',
+    password: 'pepproxy',
     options: {
         protocol: 'http',
         host: 'localhost',
         port: 9000,
-        path: '/user'
+        path: '/v3/role_assignments',
+        authPath: '/v3/auth/tokens',
+        domainName: 'Default',
+        projectName: 'admin'
     }
 };
 
