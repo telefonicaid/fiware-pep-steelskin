@@ -347,7 +347,7 @@ describe('Validate action with Access Control', function() {
         });
     }
 
-    describe.only('[' + authenticationMechanisms[1].module + '] ' +
+    describe('[' + authenticationMechanisms[1].module + '] ' +
         'When a request is validated using Keystone', function() {
         var options = {
                 uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
