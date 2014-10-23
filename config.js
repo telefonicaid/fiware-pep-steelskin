@@ -63,9 +63,7 @@ config.authentication = {
         host: 'localhost',
         port: 9000,
         path: '/v3/role_assignments',
-        authPath: '/v3/auth/tokens',
-        domainName: 'Default',
-        projectName: 'admin'
+        authPath: '/v3/auth/tokens'
     }
 };
 
