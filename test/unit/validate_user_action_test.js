@@ -46,6 +46,25 @@ function authMiddleware(currentAuthentication) {
     };
 }
 
+function mockKeystone(req, res) {
+    if (req.path === '/v3/auth/tokens' && req.method === 'POST') {
+        res.setHeader('X-Subject-Token', '092016b75474ea6b492e29fb69d23029');
+        res.json(200, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
+    } else if (req.path === '/v3/auth/tokens' && req.method === 'GET') {
+        res.json(200, utils.readExampleFile('./test/keystoneResponses/getUser.json'));
+    } else {
+        res.json(200, utils.readExampleFile('./test/keystoneResponses/rolesOfUser.json'));
+    }
+}
+
+function mockIdm(req, res) {
+    if (req.path == "/user") {
+        res.json(200, utils.readExampleFile('./test/authorizationResponses/rolesOfUser.json'));
+    } else {
+        res.json(200, utils.readExampleFile('./test/authorizationResponses/authorize.json'));
+    }
+}
+
 describe('Validate action with Access Control', function() {
     var proxy,
         mockTarget,
@@ -58,11 +77,12 @@ describe('Validate action with Access Control', function() {
             {
                 module: 'idm',
                 path: '/user',
-                authPath: null,
+                authPath: '/oauth2/authorize',
                 rolesFile: './test/authorizationResponses/rolesOfUser.json',
                 authenticationResponse: './test/authorizationResponses/authorize.json',
                 headers: [
-                ]
+                ],
+                authMock: mockIdm
             },
             {
                 module: 'keystone',
@@ -71,12 +91,15 @@ describe('Validate action with Access Control', function() {
                 rolesFile: './test/keystoneResponses/rolesOfUser.json',
                 authenticationResponse: './test/keystoneResponses/authorize.json',
                 headers: [
-                ]
+                ],
+                authMock: mockKeystone
             }
         ];
 
     function initializeUseCase(currentAuthentication, done) {
         config.authentication.module = currentAuthentication.module;
+        config.authentication.path = currentAuthentication.path;
+        config.authentication.authPath = currentAuthentication.authPath;
 
         proxyLib.start(function(error, proxyObj) {
             proxy = proxyObj;
@@ -93,7 +116,7 @@ describe('Validate action with Access Control', function() {
                         mockOAuth = serverAuth;
                         mockOAuthApp = appAuth;
 
-                        mockOAuthApp.handler = authMiddleware(currentAuthentication);
+                        mockOAuthApp.handler = currentAuthentication.authMock;
 
                         mockAccessApp.handler = function(req, res) {
                             res.set('Content-Type', 'application/xml');
@@ -107,7 +130,7 @@ describe('Validate action with Access Control', function() {
         });
     }
 
-    for (var q=0; q < authenticationMechanisms.length; q++) {
+    for (var q=1; q < authenticationMechanisms.length; q++) {
         describe('[' + authenticationMechanisms[q].module +
             '] When a request to the CB arrives to the proxy with appropriate permissions', function() {
             var options = {
@@ -129,9 +152,12 @@ describe('Validate action with Access Control', function() {
                 initializeUseCase(currentAuthentication, function () {
                     async.series([
                         async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
+                        async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
                         async.apply(serverMocks.mockPath, '/validate', mockAccessApp),
                         async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
-                    ], done);
+                    ], function (error) {
+                        done();
+                    });
                 });
             });
 
@@ -145,25 +171,9 @@ describe('Validate action with Access Control', function() {
                 });
             });
 
-            it('should retrieve the roles from the IDM', function(done) {
-                /*jshint camelcase: false*/
-                var mockExecuted = false;
-
-                mockOAuthApp.handler = function(req, res) {
-                    should.exist(req.query.access_token);
-                    req.query.access_token.should.equal('UAidNA9uQJiIVYSCg0IQ8Q');
-                    res.json(200, utils.readExampleFile(currentAuthentication.rolesFile));
-                    mockExecuted = true;
-                };
-
-                request(options, function(error, response, body) {
-                    mockExecuted.should.equal(true);
-                    done();
-                });
-            });
-
             it('should proxy the request to the destination', function(done) {
                 var mockExecuted = false;
+
 
                 mockAccessApp.handler = function(req, res) {
                     res.set('Content-Type', 'application/xml');
@@ -202,6 +212,7 @@ describe('Validate action with Access Control', function() {
                 initializeUseCase(currentAuthentication, function () {
                     async.series([
                         async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
+                        async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
                         async.apply(serverMocks.mockPath, '/validate', mockAccessApp),
                         async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
                     ], done);
