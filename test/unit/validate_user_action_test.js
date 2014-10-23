@@ -27,24 +27,10 @@ var serverMocks = require('../tools/serverMocks'),
     proxyLib = require('../../lib/fiware-orion-pep'),
     orionPlugin = require('../../lib/services/orionPlugin'),
     async = require('async'),
-    apply = async.apply,
     config = require('../../config'),
     utils = require('../tools/utils'),
     should = require('should'),
     request = require('request');
-
-function authMiddleware(currentAuthentication) {
-    return function(req, res) {
-        if (req.path == currentAuthentication.path) {
-            res.json(200, utils.readExampleFile(currentAuthentication.rolesFile));
-        } else {
-            for (var i=0; i < currentAuthentication.headers.length; i++) {
-                req.headers[currentAuthentication.headers[i].name] = currentAuthentication.headers[i].value;
-            }
-            res.json(200, utils.readExampleFile(currentAuthentication.authenticationResponse));
-        }
-    };
-}
 
 function mockKeystone(req, res) {
     if (req.path === '/v3/auth/tokens' && req.method === 'POST') {
@@ -58,7 +44,7 @@ function mockKeystone(req, res) {
 }
 
 function mockIdm(req, res) {
-    if (req.path == "/user") {
+    if (req.path === '/user') {
         res.json(200, utils.readExampleFile('./test/authorizationResponses/rolesOfUser.json'));
     } else {
         res.json(200, utils.readExampleFile('./test/authorizationResponses/authorize.json'));
@@ -66,6 +52,8 @@ function mockIdm(req, res) {
 }
 
 describe('Validate action with Access Control', function() {
+    /* jshint loopfunc: true */
+
     var proxy,
         mockTarget,
         mockTargetApp,
@@ -130,7 +118,7 @@ describe('Validate action with Access Control', function() {
         });
     }
 
-    for (var q=0; q < authenticationMechanisms.length; q++) {
+    for (var q = 0; q < authenticationMechanisms.length; q++) {
         describe('[' + authenticationMechanisms[q].module +
             '] When a request to the CB arrives to the proxy with appropriate permissions', function() {
             var options = {
@@ -149,15 +137,13 @@ describe('Validate action with Access Control', function() {
 
 
             beforeEach(function(done) {
-                initializeUseCase(currentAuthentication, function () {
+                initializeUseCase(currentAuthentication, function() {
                     async.series([
                         async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
                         async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
                         async.apply(serverMocks.mockPath, '/validate', mockAccessApp),
                         async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
-                    ], function (error) {
-                        done();
-                    });
+                    ], done);
                 });
             });
 
@@ -209,7 +195,7 @@ describe('Validate action with Access Control', function() {
                 currentAuthentication = authenticationMechanisms[q];
 
             beforeEach(function(done) {
-                initializeUseCase(currentAuthentication, function () {
+                initializeUseCase(currentAuthentication, function() {
                     async.series([
                         async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
                         async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
@@ -268,7 +254,7 @@ describe('Validate action with Access Control', function() {
                 currentAuthentication = authenticationMechanisms[q];
 
             beforeEach(function(done) {
-                initializeUseCase(currentAuthentication, function () {
+                initializeUseCase(currentAuthentication, function() {
                     serverMocks.stop(mockAccess, function() {
                         async.series([
                             async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
@@ -318,7 +304,7 @@ describe('Validate action with Access Control', function() {
                 currentAuthentication = authenticationMechanisms[q];
 
             beforeEach(function(done) {
-                initializeUseCase(currentAuthentication, function () {
+                initializeUseCase(currentAuthentication, function() {
                     async.series([
                         async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
                         async.apply(serverMocks.mockPath, '/validate', mockAccessApp),
@@ -375,7 +361,7 @@ describe('Validate action with Access Control', function() {
             currentAuthentication = authenticationMechanisms[1];
 
         beforeEach(function(done) {
-            initializeUseCase(currentAuthentication, function () {
+            initializeUseCase(currentAuthentication, function() {
                 async.series([
                     async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
                     async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
@@ -395,7 +381,7 @@ describe('Validate action with Access Control', function() {
             });
         });
 
-        it('should authenticate to get the administration token', function (done) {
+        it('should authenticate to get the administration token', function(done) {
             var mockExecuted = false;
 
             mockOAuthApp.handler = function(req, res) {
@@ -424,7 +410,7 @@ describe('Validate action with Access Control', function() {
             });
         });
 
-        it('should get user data', function (done) {
+        it('should get user data', function(done) {
             var mockExecuted = false;
 
             mockOAuthApp.handler = function(req, res) {
@@ -448,7 +434,7 @@ describe('Validate action with Access Control', function() {
                 done();
             });
         });
-        it('should send an authenticated call to get the roles', function (done) {
+        it('should send an authenticated call to get the roles', function(done) {
             var mockExecuted = false;
 
             mockOAuthApp.handler = function(req, res) {
