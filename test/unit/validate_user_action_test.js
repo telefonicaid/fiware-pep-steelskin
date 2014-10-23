@@ -388,7 +388,7 @@ describe('Validate action with Access Control', function() {
             var mockExecuted = false;
 
             mockOAuthApp.handler = function(req, res) {
-                if (req.path === currentAuthentication.authPath) {
+                if (req.path === currentAuthentication.authPath && req.method === 'POST') {
                     should.exist(req.body);
                     should.exist(req.body.auth);
                     should.exist(req.body.auth.identity);
@@ -399,10 +399,12 @@ describe('Validate action with Access Control', function() {
 
                     res.setHeader('X-Subject-Token', '092016b75474ea6b492e29fb69d23029');
                     res.json(200, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
+                    mockExecuted = true;
+                } else if (req.path === currentAuthentication.authPath && req.method === 'GET') {
+                    res.json(200, utils.readExampleFile('./test/keystoneResponses/getUser.json'));
                 } else {
                     res.json(200, utils.readExampleFile('./test/keystoneResponses/rolesOfUser.json'));
                 }
-                mockExecuted = true;
             };
 
             request(options, function(error, response, body) {
@@ -411,7 +413,30 @@ describe('Validate action with Access Control', function() {
             });
         });
 
-        it('should get user data');
+        it('should get user data', function (done) {
+            var mockExecuted = false;
+
+            mockOAuthApp.handler = function(req, res) {
+                if (req.path === currentAuthentication.authPath && req.method === 'POST') {
+                    res.setHeader('X-Subject-Token', '092016b75474ea6b492e29fb69d23029');
+                    res.json(200, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
+                } else if (req.path === currentAuthentication.authPath && req.method === 'GET') {
+                    should.exist(req.headers['x-auth-token']);
+                    should.exist(req.headers['x-subject-token']);
+                    req.headers['x-auth-token'].should.equal('092016b75474ea6b492e29fb69d23029');
+                    req.headers['x-subject-token'].should.equal('UAidNA9uQJiIVYSCg0IQ8Q');
+                    res.json(200, utils.readExampleFile('./test/keystoneResponses/getUser.json'));
+                    mockExecuted = true;
+                } else {
+                    res.json(200, utils.readExampleFile('./test/keystoneResponses/rolesOfUser.json'));
+                }
+            };
+
+            request(options, function(error, response, body) {
+                mockExecuted.should.equal(true);
+                done();
+            });
+        });
         it('should send an authenticated call to get the roles');
     });
 });
