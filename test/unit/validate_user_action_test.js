@@ -130,7 +130,7 @@ describe('Validate action with Access Control', function() {
         });
     }
 
-    for (var q=1; q < authenticationMechanisms.length; q++) {
+    for (var q=0; q < authenticationMechanisms.length; q++) {
         describe('[' + authenticationMechanisms[q].module +
             '] When a request to the CB arrives to the proxy with appropriate permissions', function() {
             var options = {
