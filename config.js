@@ -55,13 +55,13 @@ config.access = {
  * Information about the Identity Manager server from where the information about a user will be drawn.
  */
 config.authentication = {
-    module: 'idm',
+    module: 'keystone',
     user: 'pepproxy',
     password: 'pepproxy',
     options: {
         protocol: 'http',
         host: 'localhost',
-        port: 9000,
+        port: 5000,
         path: '/v3/role_assignments',
         authPath: '/v3/auth/tokens'
     }
