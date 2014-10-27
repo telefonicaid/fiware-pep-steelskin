@@ -257,6 +257,9 @@ describe('Validate action with Access Control', function() {
                 initializeUseCase(currentAuthentication, function() {
                     serverMocks.stop(mockAccess, function() {
                         async.series([
+                            async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
+                            async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
+                            async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
                             async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
                         ], done);
                     });
@@ -280,6 +283,7 @@ describe('Validate action with Access Control', function() {
                 };
 
                 request(options, function(error, response, body) {
+                    should.exist(mockExecuted);
                     response.statusCode.should.equal(503);
                     done();
                 });
@@ -307,6 +311,7 @@ describe('Validate action with Access Control', function() {
                 initializeUseCase(currentAuthentication, function() {
                     async.series([
                         async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
+                        async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
                         async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
                         async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
                     ], done);
@@ -332,6 +337,7 @@ describe('Validate action with Access Control', function() {
                 };
 
                 request(options, function(error, response, body) {
+                    should.exist(mockExecuted);
                     response.statusCode.should.equal(503);
                     done();
                 });
@@ -455,6 +461,51 @@ describe('Validate action with Access Control', function() {
 
             request(options, function(error, response, body) {
                 mockExecuted.should.equal(true);
+                done();
+            });
+        });
+    });
+
+    describe('[' + authenticationMechanisms[1].module + '] ' +
+        'When a request with a tenant A tries to acces things on tenant B', function() {
+        var options = {
+                uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'Fiware-Service': '749',
+                    'fiware-servicepath': '833',
+                    'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
+                },
+                json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
+            },
+            currentAuthentication = authenticationMechanisms[1];
+
+        beforeEach(function(done) {
+            initializeUseCase(currentAuthentication, function() {
+                async.series([
+                    async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
+                    async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
+                    async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
+                    async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
+                ], done);
+            });
+        });
+
+        afterEach(function(done) {
+            proxyLib.stop(proxy, function(error) {
+                serverMocks.stop(mockTarget, function() {
+                    serverMocks.stop(mockAccess, function() {
+                        serverMocks.stop(mockOAuth, done);
+                    });
+                });
+            });
+        });
+
+        it('should reject the request with a 401', function(done) {
+            request(options, function(error, response, body) {
+                response.statusCode.should.equal(401);
                 done();
             });
         });
