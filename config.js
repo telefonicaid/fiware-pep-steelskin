@@ -42,11 +42,11 @@ config.access = {
     /**
      * Port where the Access Control is listening.
      */
-    port: 7000,
+    port: 7070,
     /**
      * Path of the authentication action.
      */
-    path: '/validate'
+    path: '/pdp/v3'
 }
 
 // User identity configuration

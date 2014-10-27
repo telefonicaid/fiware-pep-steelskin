@@ -24,8 +24,11 @@ function loadConfiguration() {
         }
     }
 
+    if (process.env.PROXY_PORT) {
+        config.resource.proxy.port = process.env.PROXY_PORT;
+    }
     if (process.env.TARGET_HOST) {
-        config.resource.original.host = process.env.PROXY_PORT;
+        config.resource.original.host = process.env.TARGET_HOST;
     }
     if (process.env.TARGET_PORT) {
         config.resource.original.port = process.env.TARGET_PORT;
