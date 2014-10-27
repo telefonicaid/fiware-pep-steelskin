@@ -29,7 +29,8 @@ var serverMocks = require('../tools/serverMocks'),
     config = require('../../config'),
     async = require('async'),
     utils = require('../tools/utils'),
-    request = require('request');
+    request = require('request'),
+    originalAuthenticationModule;
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
@@ -43,6 +44,9 @@ describe('HTTPS Options', function() {
         mockOAuthApp;
 
     beforeEach(function(done) {
+        originalAuthenticationModule = config.authentication.module;
+        config.authentication.module = 'idm';
+
         config.ssl.active = true;
         config.ssl.certFile = 'test/certs/pepTest.crt';
         config.ssl.keyFile = 'test/certs/pepTest.key';
@@ -72,7 +76,7 @@ describe('HTTPS Options', function() {
 
                         async.series([
                             async.apply(serverMocks.mockPath, '/user', mockOAuthApp),
-                            async.apply(serverMocks.mockPath, '/validate', mockAccessApp)
+                            async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp)
                         ], done);
                     });
                 });
@@ -81,6 +85,8 @@ describe('HTTPS Options', function() {
     });
 
     afterEach(function(done) {
+        config.authentication.module = originalAuthenticationModule;
+
         config.ssl.active = false;
         proxyLib.stop(proxy, function(error) {
             serverMocks.stop(mockTarget, function() {

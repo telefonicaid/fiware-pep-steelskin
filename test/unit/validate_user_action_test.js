@@ -35,7 +35,7 @@ var serverMocks = require('../tools/serverMocks'),
 function mockKeystone(req, res) {
     if (req.path === '/v3/auth/tokens' && req.method === 'POST') {
         res.setHeader('X-Subject-Token', '092016b75474ea6b492e29fb69d23029');
-        res.json(200, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
+        res.json(201, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
     } else if (req.path === '/v3/auth/tokens' && req.method === 'GET') {
         res.json(200, utils.readExampleFile('./test/keystoneResponses/getUser.json'));
     } else {
@@ -141,7 +141,7 @@ describe('Validate action with Access Control', function() {
                     async.series([
                         async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
                         async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
-                        async.apply(serverMocks.mockPath, '/validate', mockAccessApp),
+                        async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
                         async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
                     ], done);
                 });
@@ -199,7 +199,7 @@ describe('Validate action with Access Control', function() {
                     async.series([
                         async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
                         async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
-                        async.apply(serverMocks.mockPath, '/validate', mockAccessApp),
+                        async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
                         async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
                     ], done);
                 });
@@ -307,7 +307,7 @@ describe('Validate action with Access Control', function() {
                 initializeUseCase(currentAuthentication, function() {
                     async.series([
                         async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
-                        async.apply(serverMocks.mockPath, '/validate', mockAccessApp),
+                        async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
                         async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
                     ], done);
                 });
@@ -365,7 +365,7 @@ describe('Validate action with Access Control', function() {
                 async.series([
                     async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
                     async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
-                    async.apply(serverMocks.mockPath, '/validate', mockAccessApp),
+                    async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
                     async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
                 ], done);
             });
@@ -395,7 +395,7 @@ describe('Validate action with Access Control', function() {
                     req.body.auth.identity.password.user.password.should.equal(config.authentication.password);
 
                     res.setHeader('X-Subject-Token', '092016b75474ea6b492e29fb69d23029');
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
+                    res.json(201, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
                     mockExecuted = true;
                 } else if (req.path === currentAuthentication.authPath && req.method === 'GET') {
                     res.json(200, utils.readExampleFile('./test/keystoneResponses/getUser.json'));
@@ -416,7 +416,7 @@ describe('Validate action with Access Control', function() {
             mockOAuthApp.handler = function(req, res) {
                 if (req.path === currentAuthentication.authPath && req.method === 'POST') {
                     res.setHeader('X-Subject-Token', '092016b75474ea6b492e29fb69d23029');
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
+                    res.json(201, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
                 } else if (req.path === currentAuthentication.authPath && req.method === 'GET') {
                     should.exist(req.headers['x-auth-token']);
                     should.exist(req.headers['x-subject-token']);
@@ -440,7 +440,7 @@ describe('Validate action with Access Control', function() {
             mockOAuthApp.handler = function(req, res) {
                 if (req.path === currentAuthentication.authPath && req.method === 'POST') {
                     res.setHeader('X-Subject-Token', '092016b75474ea6b492e29fb69d23029');
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
+                    res.json(201, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
                 } else if (req.path === currentAuthentication.authPath && req.method === 'GET') {
                     res.json(200, utils.readExampleFile('./test/keystoneResponses/getUser.json'));
                 } else {

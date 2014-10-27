@@ -30,7 +30,8 @@ var serverMocks = require('../tools/serverMocks'),
     async = require('async'),
     utils = require('../tools/utils'),
     should = require('should'),
-    request = require('request');
+    request = require('request'),
+    originalAuthenticationModule;
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
@@ -44,6 +45,9 @@ describe('Control header behavior', function() {
         mockOAuthApp;
 
     beforeEach(function(done) {
+        originalAuthenticationModule = config.authentication.module;
+        config.authentication.module = 'idm';
+
         proxyLib.start(function(error, proxyObj) {
             proxy = proxyObj;
 
@@ -67,7 +71,7 @@ describe('Control header behavior', function() {
                         async.series([
                             async.apply(serverMocks.mockPath, '/user', mockOAuthApp),
                             async.apply(serverMocks.mockPath, '/v2.0/tokens', mockOAuthApp),
-                            async.apply(serverMocks.mockPath, '/validate', mockAccessApp)
+                            async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp)
                         ], done);
                     });
                 });
@@ -76,6 +80,8 @@ describe('Control header behavior', function() {
     });
 
     afterEach(function(done) {
+        config.authentication.module = originalAuthenticationModule;
+
         proxyLib.stop(proxy, function(error) {
             serverMocks.stop(mockTarget, function() {
                 serverMocks.stop(mockAccess, function() {
@@ -100,7 +106,7 @@ describe('Control header behavior', function() {
         };
 
         beforeEach(function(done) {
-            serverMocks.mockPath('/validate', mockAccessApp, done);
+            serverMocks.mockPath('/pdp/v3', mockAccessApp, done);
             serverMocks.mockPath('/NGSI10/updateContext', mockTargetApp, done);
         });
 
@@ -143,7 +149,7 @@ describe('Control header behavior', function() {
         };
 
         beforeEach(function(done) {
-            serverMocks.mockPath('/validate', mockAccessApp, done);
+            serverMocks.mockPath('/pdp/v3', mockAccessApp, done);
             serverMocks.mockPath('/NGSI10/updateContext', mockTargetApp, done);
         });
 
