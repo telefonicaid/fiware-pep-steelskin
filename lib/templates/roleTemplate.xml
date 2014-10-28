@@ -1,6 +1,6 @@
 <Attribute IncludeInResult="false"
            AttributeId="urn:oasis:names:tc:xacml:1.0:subject:subject-id">
     <AttributeValue
-            DataType="http://www.w3.org/2001/XMLSchema#int"
+            DataType="http://www.w3.org/2001/XMLSchema#string"
             >{{roleId}}</AttributeValue>
 </Attribute>
