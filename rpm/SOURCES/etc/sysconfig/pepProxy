@@ -53,4 +53,8 @@ LOG_LEVEL=ERROR
 # Port where the authentication authority is listening
 # AUTHENTICATION_PORT=
 
+# User name of the PEP Proxy in the authentication authority
+PROXY_USERNAME=pep
 
+# Password of the PEP Proxy in the Authentication authority
+PROXY_PASSWORD=pep

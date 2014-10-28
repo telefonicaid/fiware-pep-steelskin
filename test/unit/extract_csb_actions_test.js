@@ -79,7 +79,7 @@ describe('Extract Context Broker action from request', function() {
                         res.send(utils.readExampleFile('./test/accessControlResponses/permitResponse.xml', true));
                     };
 
-                    serverMocks.start(config.authentication.port, function(error, serverAuth, appAuth) {
+                    serverMocks.start(config.authentication.options.port, function(error, serverAuth, appAuth) {
                         mockOAuth = serverAuth;
                         mockOAuthApp = appAuth;
 

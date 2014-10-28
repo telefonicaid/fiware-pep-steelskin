@@ -5,11 +5,30 @@ var proxy = require('../lib/fiware-orion-pep'),
 
 
 function loadConfiguration() {
+    var environmentValues = [
+        'PROXY_PORT',
+        'TARGET_HOST',
+        'TARGET_PORT',
+        'LOG_LEVEL',
+        'ACCESS_HOST',
+        'ACCESS_PORT',
+        'AUTHENTICATION_HOST',
+        'AUTHENTICATION_PORT',
+        'PROXY_USERNAME',
+        'PROXY_PASSWORD'
+    ];
+
+    for (var i = 0; i < environmentValues.length; i++) {
+        if (process.env[environmentValues[i]]) {
+            console.log('Changing %s to environment value: %s', environmentValues[i], process.env[environmentValues[i]]);
+        }
+    }
+
     if (process.env.PROXY_PORT) {
         config.resource.proxy.port = process.env.PROXY_PORT;
     }
     if (process.env.TARGET_HOST) {
-        config.resource.original.host = process.env.PROXY_PORT;
+        config.resource.original.host = process.env.TARGET_HOST;
     }
     if (process.env.TARGET_PORT) {
         config.resource.original.port = process.env.TARGET_PORT;
@@ -24,10 +43,16 @@ function loadConfiguration() {
         config.access.port = process.env.ACCESS_PORT;
     }
     if (process.env.AUTHENTICATION_HOST) {
-        config.authentication.host = process.env.AUTHENTICATION_HOST;
+        config.authentication.options.host = process.env.AUTHENTICATION_HOST;
     }
     if (process.env.AUTHENTICATION_PORT) {
-        config.authentication.port = process.env.AUTHENTICATION_PORT;
+        config.authentication.options.port = process.env.AUTHENTICATION_PORT;
+    }
+    if (process.env.PROXY_USERNAME) {
+        config.authentication.user = process.env.PROXY_USERNAME;
+    }
+    if (process.env.PROXY_PASSWORD) {
+        config.authentication.password = process.env.PROXY_PASSWORD;
     }
 }
 

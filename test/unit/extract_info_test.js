@@ -29,7 +29,8 @@ var serverMocks = require('../tools/serverMocks'),
     utils = require('../tools/utils'),
     async = require('async'),
     should = require('should'),
-    request = require('request');
+    request = require('request'),
+    originalAuthenticationModule;
 
 
 describe('Extract information from requests', function() {
@@ -42,6 +43,9 @@ describe('Extract information from requests', function() {
         mockOAuthApp;
 
     beforeEach(function(done) {
+        originalAuthenticationModule = config.authentication.module;
+        config.authentication.module = 'idm';
+
         proxyLib.start(function(error, proxyObj) {
             proxy = proxyObj;
 
@@ -56,7 +60,7 @@ describe('Extract information from requests', function() {
                         res.send(utils.readExampleFile('./test/accessControlResponses/permitResponse.xml', true));
                     };
 
-                    serverMocks.start(config.authentication.port, function(error, serverAuth, appAuth) {
+                    serverMocks.start(config.authentication.options.port, function(error, serverAuth, appAuth) {
                         mockOAuth = serverAuth;
                         mockOAuthApp = appAuth;
 
@@ -66,7 +70,7 @@ describe('Extract information from requests', function() {
 
                         async.series([
                             async.apply(serverMocks.mockPath, '/user', mockOAuthApp),
-                            async.apply(serverMocks.mockPath, '/validate', mockAccessApp)
+                            async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp)
                         ], done);
                     });
                 });
@@ -75,6 +79,8 @@ describe('Extract information from requests', function() {
     });
 
     afterEach(function(done) {
+        config.authentication.module = originalAuthenticationModule;
+
         proxyLib.stop(proxy, function(error) {
             serverMocks.stop(mockServer, function() {
                 serverMocks.stop(mockAccess, function() {

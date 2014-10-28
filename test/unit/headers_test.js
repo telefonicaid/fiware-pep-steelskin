@@ -30,7 +30,8 @@ var serverMocks = require('../tools/serverMocks'),
     async = require('async'),
     utils = require('../tools/utils'),
     should = require('should'),
-    request = require('request');
+    request = require('request'),
+    originalAuthenticationModule;
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
@@ -44,6 +45,9 @@ describe('Control header behavior', function() {
         mockOAuthApp;
 
     beforeEach(function(done) {
+        originalAuthenticationModule = config.authentication.module;
+        config.authentication.module = 'idm';
+
         proxyLib.start(function(error, proxyObj) {
             proxy = proxyObj;
 
@@ -56,7 +60,7 @@ describe('Control header behavior', function() {
                     mockAccess = serverAccess;
                     mockAccessApp = appAccess;
 
-                    serverMocks.start(config.authentication.port, function(error, serverAuth, appAuth) {
+                    serverMocks.start(config.authentication.options.port, function(error, serverAuth, appAuth) {
                         mockOAuth = serverAuth;
                         mockOAuthApp = appAuth;
 
@@ -67,7 +71,7 @@ describe('Control header behavior', function() {
                         async.series([
                             async.apply(serverMocks.mockPath, '/user', mockOAuthApp),
                             async.apply(serverMocks.mockPath, '/v2.0/tokens', mockOAuthApp),
-                            async.apply(serverMocks.mockPath, '/validate', mockAccessApp)
+                            async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp)
                         ], done);
                     });
                 });
@@ -76,6 +80,8 @@ describe('Control header behavior', function() {
     });
 
     afterEach(function(done) {
+        config.authentication.module = originalAuthenticationModule;
+
         proxyLib.stop(proxy, function(error) {
             serverMocks.stop(mockTarget, function() {
                 serverMocks.stop(mockAccess, function() {
@@ -100,7 +106,7 @@ describe('Control header behavior', function() {
         };
 
         beforeEach(function(done) {
-            serverMocks.mockPath('/validate', mockAccessApp, done);
+            serverMocks.mockPath('/pdp/v3', mockAccessApp, done);
             serverMocks.mockPath('/NGSI10/updateContext', mockTargetApp, done);
         });
 
@@ -143,7 +149,7 @@ describe('Control header behavior', function() {
         };
 
         beforeEach(function(done) {
-            serverMocks.mockPath('/validate', mockAccessApp, done);
+            serverMocks.mockPath('/pdp/v3', mockAccessApp, done);
             serverMocks.mockPath('/NGSI10/updateContext', mockTargetApp, done);
         });
 
@@ -160,6 +166,48 @@ describe('Control header behavior', function() {
                 should.exist(req.headers['x-forwarded-for']);
                 req.headers['x-forwarded-for'].should.equal('192.168.2.1');
 
+                res.json(200, {});
+            };
+
+            request(options, function(error, response, body) {
+                mockExecuted.should.equal(true);
+                done();
+            });
+        });
+    });
+
+    describe('When the PEP Proxy sends a request to the access control', function() {
+        var options = {
+            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Fiware-Service': 'frn:contextbroker:551:::',
+                'Fiware-Path': '551',
+                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
+            },
+            json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
+        };
+
+        beforeEach(function(done) {
+            serverMocks.mockPath('/pdp/v3', mockAccessApp, done);
+            serverMocks.mockPath('/NGSI10/updateContext', mockTargetApp, done);
+        });
+
+        it('should forward the fiware-service header', function(done) {
+            var mockExecuted = false;
+
+            mockAccessApp.handler = function(req, res) {
+                should.exist(req.headers['fiware-service']);
+                req.headers['fiware-service'].should.equal('frn:contextbroker:551:::');
+
+                res.set('Content-Type', 'application/xml');
+                res.send(utils.readExampleFile('./test/accessControlResponses/permitResponse.xml', true));
+                mockExecuted = true;
+            };
+
+            mockTargetApp.handler = function(req, res) {
                 res.json(200, {});
             };
 

@@ -1,0 +1,18 @@
+{
+    "token": {
+        "issued_at": "2014-10-06T08:20:13.484880Z",
+        "extras": {},
+        "methods": [
+            "password"
+        ],
+        "expires_at": "2014-10-06T09:20:13.484827Z",
+        "user": {
+            "domain": {
+                "id": "f7a5b8e303ec43e8a912fe26fa79dc02",
+                "name": "SmartValencia"
+            },
+            "id": "5e817c5e0d624ee68dfb7a72d0d31ce4",
+            "name": "alice"
+        }
+    }
+}

@@ -42,11 +42,11 @@ config.access = {
     /**
      * Port where the Access Control is listening.
      */
-    port: 7000,
+    port: 7070,
     /**
      * Path of the authentication action.
      */
-    path: '/validate'
+    path: '/pdp/v3'
 }
 
 // User identity configuration
@@ -55,11 +55,18 @@ config.access = {
  * Information about the Identity Manager server from where the information about a user will be drawn.
  */
 config.authentication = {
-    protocol: 'http',
-    host: 'localhost',
-    port: 9000,
-    path: '/user'
-}
+    module: 'keystone',
+    user: 'pepproxy',
+    password: 'pepproxy',
+    options: {
+        protocol: 'http',
+        host: 'localhost',
+        port: 5000,
+        path: '/v3/role_assignments',
+        authPath: '/v3/auth/tokens'
+    }
+};
+
 
 // Security configuration
 //--------------------------------------------------
