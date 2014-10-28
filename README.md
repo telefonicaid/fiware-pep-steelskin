@@ -120,6 +120,10 @@ Once the PEP Proxy is working, it can be used to enforce both authentication and
 
 The authentication process is based on OAuth v2 tokens. The PEP Proxy expects all the requests to have a header `x-auth-token` containing a valid access token from the IDM. All the requests without this requirement are rejected with a 401 error. 
 
+PEP Proxy currently supports two possible authentication authorities: Keyrock IdM and Openstack Keystone. The following sections show how to retrieve a token with each of this authentication technologies. The module can be configured using the config.authentication.module option.
+
+#### IdM
+
 In order to get an access token to send with the request, a user can send a request to the IDM, with its user and password (here shown as a curl request):
 
 ```
@@ -140,6 +144,63 @@ If the user and password are correct, the response will be like the following:
 The `access_token` field contains the required token. 
 
 The must be used also to assign roles to each user. For details about role creation and assign, check the IDM API.
+
+#### Keystone
+In order to get its access token, a user can send the following request to Keystone:
+```
+curl http://localhost:5000/v3/auth/tokens \
+    -s \
+    -i \
+    -H "Content-Type: application/json" \
+    -d '
+{
+    "auth": {
+        "identity": {
+            "methods": [
+                "password"
+            ],
+            "password": {
+                "user": {
+                    "domain": {
+                        "name": "SmartCity"
+                    },
+                    "name": "alice",
+                    "password": "password"
+                }
+            }
+        }
+    }
+}'
+```
+The token can be found in the `X-Subject-Token` header of the response:
+```
+X-Subject-Token: MIIC3AYJKoZIhvcNAQcCoIICzTCCAskCAQExCTAHBgUrDgMCGjCCATIGCSqGSIb3DQEHAaCCASMEggEfeyJ0b2tlbiI6IHsiaXNzdWVkX2F0IjogIjIwMTQtMTAtMTBUMTA6NTA6NDkuNTMyNTQyWiIsICJleHRyYXMiOiB7fSwgIm1ldGhvZHMiOiBbInBhc3N3b3JkIl0sICJleHBpcmVzX2F0IjogIjIwMTQtMTAtMTBUMTE6NTA6NDkuNTMyNDkxWiIsICJ1c2VyIjogeyJkb21haW4iOiB7ImlkIjogImY3YTViOGUzMDNlYzQzZThhOTEyZmUyNmZhNzlkYzAyIiwgIm5hbWUiOiAiU21hcnRWYWxlbmNpYSJ9LCAiaWQiOiAiNWU4MTdjNWUwZDYyNGVlNjhkZmI3YTcyZDBkMzFjZTQiLCAibmFtZSI6ICJhbGljZSJ9fX0xggGBMIIBfQIBATBcMFcxCzAJBgNVBAYTAlVTMQ4wDAYDVQQIDAVVbnNldDEOMAwGA1UEBwwFVW5zZXQxDjAMBgNVBAoMBVVuc2V0MRgwFgYDVQQDDA93d3cuZXhhbXBsZS5jb20CAQEwBwYFKw4DAhowDQYJKoZIhvcNAQEBBQAEggEAKRGV3uu8fiS7UNm47KhltSjlY1e7KnedUcD-mdwz6Asbo7X9hbtljy1ml9gGcuMf6vX4tycx4goRyMARPS7YKROd0evZtnYArIyx0IrmwDaqodwp8BxBCxFgHRZtCwzHvZFEaUcClydQq7HJvBfTgTwH4v1aJkMyK8wLMP-CYyiZSfCIWPVnoB9I3P56jeKHkmcryYLgT2I-AwDBj1zd9HPzUjyQuNj5rCMkJjvz-A9-hef6AMMZuYPMIYdkei+deq86O1qFuo7PpO2SA7QWkqjcsKs9v+myvHhLrBre9GLP2hP1rc4D67lSL2XB1UY20mc6FNIVIErxT0DOSXltXQ==
+Vary: X-Auth-Token
+Content-Type: application/json
+Content-Length: 287
+Date: Fri, 10 Oct 2014 10:50:49 GMT
+
+{
+  "token": {
+    "issued_at": "2014-10-10T10:50:49.532542Z",
+    "extras": {},
+    "methods": [
+      "password"
+    ],
+    "expires_at": "2014-10-10T11:50:49.532491Z",
+    "user": {
+      "domain": {
+        "id": "f7a5b8e303ec43e8a912fe26fa79dc02",
+        "name": "SmartValencia"
+      },
+      "id": "5e817c5e0d624ee68dfb7a72d0d31ce4",
+      "name": "alice"
+    }
+  }
+}
+```
+
+For details on user and role creation, check the Keystone API.
 
 ### Authorization
 
