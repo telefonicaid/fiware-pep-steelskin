@@ -1,6 +1,6 @@
 {"token": {
     "domain": {
-        "id": "b5978be292f442f3a669ca7b5bda21f0",
+        "id": "551",
         "name": "admin_domain"
     },
     "methods": ["password"],
@@ -15,7 +15,7 @@
     "extras": {},
     "user": {
         "domain": {
-            "id": "b5978be292f442f3a669ca7b5bda21f0",
+            "id": "551",
             "name": "admin_domain"
         },
         "id": "f0ff3c8620174f64809cbaca71aff4be",
