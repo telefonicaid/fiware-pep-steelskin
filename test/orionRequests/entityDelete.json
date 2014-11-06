@@ -1,0 +1,10 @@
+{
+    "contextElements": {
+        "contextElement": {
+            "type": "T",
+            "isPattern": "false",
+            "id": "E1"
+        }
+    },
+    "updateAction": "DELETE"
+}

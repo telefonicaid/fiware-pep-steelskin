@@ -1,0 +1,25 @@
+{"token": {
+    "domain": {
+        "id": "551",
+        "name": "admin_domain"
+    },
+    "methods": ["password"],
+    "roles": [
+        {
+            "id": "36c7a5deb2254307a477f7867a9aca40",
+            "name": "admin"
+        }
+    ],
+    "expires_at": "2014-10-06T08:01:03.379786Z",
+    "catalog": [],
+    "extras": {},
+    "user": {
+        "domain": {
+            "id": "551",
+            "name": "admin_domain"
+        },
+        "id": "f0ff3c8620174f64809cbaca71aff4be",
+        "name": "cloud_admin"
+    },
+    "issued_at": "2014-10-06T07:01:03.379841Z"
+}}

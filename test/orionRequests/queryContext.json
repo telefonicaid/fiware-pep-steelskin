@@ -1,0 +1,9 @@
+{
+    "entities": [
+        {
+            "type": "Room",
+            "isPattern": "false",
+            "id": "Room1"
+        }
+    ]
+}
