@@ -38,6 +38,8 @@ function mockKeystone(req, res) {
         res.json(201, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
     } else if (req.path === '/v3/auth/tokens' && req.method === 'GET') {
         res.json(200, utils.readExampleFile('./test/keystoneResponses/getUser.json'));
+    } else if (req.path === '/v3/projects' && req.method === 'GET') {
+        res.json(200, utils.readExampleFile('./test/keystoneResponses/getProjects.json'));
     } else {
         res.json(200, utils.readExampleFile('./test/keystoneResponses/rolesOfUser.json'));
     }
@@ -128,7 +130,7 @@ describe('Validate action with Access Control', function() {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
                         'Fiware-Service': 'admin_domain',
-                        'fiware-servicepath': '833',
+                        'fiware-servicepath': 'Electricidad',
                         'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
                     },
                     json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
@@ -141,6 +143,7 @@ describe('Validate action with Access Control', function() {
                     async.series([
                         async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
                         async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
+                        async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
                         async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
                         async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
                     ], done);
@@ -186,7 +189,7 @@ describe('Validate action with Access Control', function() {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
                         'Fiware-Service': 'admin_domain',
-                        'fiware-servicepath': '833',
+                        'fiware-servicepath': 'Electricidad',
                         'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
                     },
                     json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
@@ -198,6 +201,7 @@ describe('Validate action with Access Control', function() {
                     async.series([
                         async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
                         async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
+                        async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
                         async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
                         async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
                     ], done);
@@ -245,7 +249,7 @@ describe('Validate action with Access Control', function() {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
                         'Fiware-Service': 'admin_domain',
-                        'Fiware-Servicepath': '833',
+                        'Fiware-Servicepath': 'Electricidad',
                         'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
                     },
                     json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
@@ -258,6 +262,7 @@ describe('Validate action with Access Control', function() {
                         async.series([
                             async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
                             async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
+                            async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
                             async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
                             async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
                         ], done);
@@ -299,7 +304,7 @@ describe('Validate action with Access Control', function() {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
                         'Fiware-Service': 'admin_domain',
-                        'Fiware-Servicepath': '833',
+                        'Fiware-Servicepath': 'Electricidad',
                         'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
                     },
                     json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
@@ -311,6 +316,7 @@ describe('Validate action with Access Control', function() {
                     async.series([
                         async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
                         async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
+                        async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
                         async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
                         async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
                     ], done);
@@ -358,7 +364,7 @@ describe('Validate action with Access Control', function() {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
                     'Fiware-Service': 'admin_domain',
-                    'fiware-servicepath': '833',
+                    'fiware-servicepath': 'Electricidad',
                     'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
                 },
                 json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
@@ -370,6 +376,7 @@ describe('Validate action with Access Control', function() {
                 async.series([
                     async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
                     async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
+                    async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
                     async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
                     async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
                 ], done);
@@ -448,6 +455,8 @@ describe('Validate action with Access Control', function() {
                     res.json(201, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
                 } else if (req.path === currentAuthentication.authPath && req.method === 'GET') {
                     res.json(200, utils.readExampleFile('./test/keystoneResponses/getUser.json'));
+                } else if (req.url === '/v3/projects' && req.method === 'GET') {
+                    res.json(200, utils.readExampleFile('./test/keystoneResponses/getProjects.json'));
                 } else {
                     should.exist(req.headers['x-auth-token']);
                     should.exist(req.query['user.id']);
@@ -474,7 +483,7 @@ describe('Validate action with Access Control', function() {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
                     'Fiware-Service': 'admin_domain',
-                    'fiware-servicepath': '833',
+                    'fiware-servicepath': 'Electricidad',
                     'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
                 },
                 json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
@@ -486,6 +495,7 @@ describe('Validate action with Access Control', function() {
                 async.series([
                     async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
                     async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
+                    async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
                     async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
                     async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
                 ], done);
@@ -535,7 +545,7 @@ describe('Validate action with Access Control', function() {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
                     'Fiware-Service': '749',
-                    'fiware-servicepath': '833',
+                    'fiware-servicepath': 'Electricidad',
                     'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
                 },
                 json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
@@ -547,6 +557,7 @@ describe('Validate action with Access Control', function() {
                 async.series([
                     async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
                     async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
+                    async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
                     async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
                     async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
                 ], done);
