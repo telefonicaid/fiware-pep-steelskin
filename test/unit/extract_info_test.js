@@ -97,8 +97,8 @@ describe('Extract information from requests', function() {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'Fiware-Service': 'frn:contextbroker:551:::',
-                'Fiware-Path': '551',
+                'Fiware-Service': 'frn:contextbroker:admin_domain:::',
+                'Fiware-Path': 'admin_domain',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
@@ -113,7 +113,7 @@ describe('Extract information from requests', function() {
 
             var testExtraction = function(req, res, callback) {
                 should.exist(req.organization);
-                req.organization.should.equal('frn:contextbroker:551:::');
+                req.organization.should.equal('frn:contextbroker:admin_domain:::');
                 extractionExecuted = true;
                 callback(null, req, res);
             };
@@ -166,7 +166,7 @@ describe('Extract information from requests', function() {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'Fiware-Service': 'frn:contextbroker:551:::'
+                'Fiware-Service': 'frn:contextbroker:admin_domain:::'
             },
             json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
         };

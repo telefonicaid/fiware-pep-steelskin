@@ -98,8 +98,8 @@ describe('Control header behavior', function() {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'Fiware-Service': 'frn:contextbroker:551:::',
-                'Fiware-Path': '551',
+                'Fiware-Service': 'frn:contextbroker:admin_domain:::',
+                'Fiware-Path': 'admin_domain',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
@@ -140,8 +140,8 @@ describe('Control header behavior', function() {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'Fiware-Service': 'frn:contextbroker:551:::',
-                'Fiware-Path': '551',
+                'Fiware-Service': 'frn:contextbroker:admin_domain:::',
+                'Fiware-Path': 'admin_domain',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q',
                 'X-Forwarded-For': '192.168.2.1'
             },
@@ -183,8 +183,8 @@ describe('Control header behavior', function() {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'Fiware-Service': 'frn:contextbroker:551:::',
-                'Fiware-Path': '551',
+                'Fiware-Service': 'frn:contextbroker:admin_domain:::',
+                'Fiware-Path': 'admin_domain',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
@@ -200,7 +200,7 @@ describe('Control header behavior', function() {
 
             mockAccessApp.handler = function(req, res) {
                 should.exist(req.headers['fiware-service']);
-                req.headers['fiware-service'].should.equal('frn:contextbroker:551:::');
+                req.headers['fiware-service'].should.equal('frn:contextbroker:admin_domain:::');
 
                 res.set('Content-Type', 'application/xml');
                 res.send(utils.readExampleFile('./test/accessControlResponses/permitResponse.xml', true));

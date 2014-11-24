@@ -54,7 +54,7 @@ describe('REST Plugin tests', function() {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'Fiware-Service': 'frn:contextbroker:551:::',
+                'Fiware-Service': 'frn:contextbroker:admin_domain:::',
                 'fiware-servicepath': '833',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
