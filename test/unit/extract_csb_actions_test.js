@@ -113,7 +113,7 @@ describe('Extract Context Broker action from request', function() {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'Fiware-Service': 'frn:contextbroker:551:::',
+                'Fiware-Service': 'frn:contextbroker:admin_domain:::',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
@@ -133,7 +133,7 @@ describe('Extract Context Broker action from request', function() {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'Fiware-Service': 'frn:contextbroker:551:::',
+                'Fiware-Service': 'frn:contextbroker:admin_domain:::',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             json: utils.readExampleFile('./test/orionRequests/entityUpdate.json')
@@ -152,7 +152,7 @@ describe('Extract Context Broker action from request', function() {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'Fiware-Service': 'frn:contextbroker:551:::',
+                'Fiware-Service': 'frn:contextbroker:admin_domain:::',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             json: utils.readExampleFile('./test/orionRequests/entityDelete.json')
@@ -172,7 +172,7 @@ describe('Extract Context Broker action from request', function() {
             headers: {
                 'Content-Type': 'application/xml',
                 'Accept': 'application/xml',
-                'Fiware-Service': 'frn:contextbroker:551:::',
+                'Fiware-Service': 'frn:contextbroker:admin_domain:::',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             body: utils.readExampleFile('./test/orionRequests/entityCreation.xml', true)
@@ -192,7 +192,7 @@ describe('Extract Context Broker action from request', function() {
             headers: {
                 'Content-Type': 'application/xml',
                 'Accept': 'application/xml',
-                'Fiware-Service': 'frn:contextbroker:551:::',
+                'Fiware-Service': 'frn:contextbroker:admin_domain:::',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             body: utils.readExampleFile('./test/orionRequests/entityUpdate.xml', true)
@@ -211,7 +211,7 @@ describe('Extract Context Broker action from request', function() {
             headers: {
                 'Content-Type': 'application/xml',
                 'Accept': 'application/xml',
-                'Fiware-Service': 'frn:contextbroker:551:::',
+                'Fiware-Service': 'frn:contextbroker:admin_domain:::',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             body: utils.readExampleFile('./test/orionRequests/entityDelete.xml', true)
@@ -231,7 +231,7 @@ describe('Extract Context Broker action from request', function() {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'Fiware-Service': 'frn:contextbroker:551:::',
+                'Fiware-Service': 'frn:contextbroker:admin_domain:::',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             json: utils.readExampleFile('./test/orionRequests/queryContext.json')
@@ -251,7 +251,7 @@ describe('Extract Context Broker action from request', function() {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'Fiware-Service': 'frn:contextbroker:551:::',
+                'Fiware-Service': 'frn:contextbroker:admin_domain:::',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             json: utils.readExampleFile('./test/orionRequests/queryContext.json')
@@ -270,7 +270,7 @@ describe('Extract Context Broker action from request', function() {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'Fiware-Service': 'frn:contextbroker:551:::',
+                'Fiware-Service': 'frn:contextbroker:admin_domain:::',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             json: utils.readExampleFile('./test/orionRequests/queryContext.json')
@@ -289,7 +289,7 @@ describe('Extract Context Broker action from request', function() {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'Fiware-Service': 'frn:contextbroker:551:::',
+                'Fiware-Service': 'frn:contextbroker:admin_domain:::',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             json: utils.readExampleFile('./test/orionRequests/queryContext.json')
@@ -308,7 +308,7 @@ describe('Extract Context Broker action from request', function() {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'Fiware-Service': 'frn:contextbroker:551:::',
+                'Fiware-Service': 'frn:contextbroker:admin_domain:::',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             json: utils.readExampleFile('./test/orionRequests/queryContext.json')
@@ -329,7 +329,7 @@ describe('Extract Context Broker action from request', function() {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'Fiware-Service': 'frn:contextbroker:551:::',
+                'Fiware-Service': 'frn:contextbroker:admin_domain:::',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             json: utils.readExampleFile('./test/orionErrorRequests/entityUpdateNoAttribute.json')
@@ -354,7 +354,7 @@ describe('Extract Context Broker action from request', function() {
             headers: {
                 'Content-Type': 'application/xml',
                 'Accept': 'application/xml',
-                'Fiware-Service': 'frn:contextbroker:551:::',
+                'Fiware-Service': 'frn:contextbroker:admin_domain:::',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             body: utils.readExampleFile('./test/orionErrorRequests/entityUpdateNoAttribute.xml', true)
@@ -379,7 +379,7 @@ describe('Extract Context Broker action from request', function() {
             headers: {
                 'Content-Type': 'application/xml',
                 'Accept': 'application/xml',
-                'Fiware-Service': 'frn:contextbroker:551:::',
+                'Fiware-Service': 'frn:contextbroker:admin_domain:::',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             body: utils.readExampleFile('./test/orionRequests/entityUpdate.xml', true)
@@ -404,7 +404,7 @@ describe('Extract Context Broker action from request', function() {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'Fiware-Service': 'frn:contextbroker:551:::',
+                'Fiware-Service': 'frn:contextbroker:admin_domain:::',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             json: utils.readExampleFile('./test/orionErrorRequests/entityUnknownOperation.json')
@@ -428,7 +428,7 @@ describe('Extract Context Broker action from request', function() {
             headers: {
                 'Content-Type': 'application/xml',
                 'Accept': 'application/xml',
-                'Fiware-Service': 'frn:contextbroker:551:::',
+                'Fiware-Service': 'frn:contextbroker:admin_domain:::',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             body: utils.readExampleFile('./test/orionErrorRequests/entityUnknownOperation.xml', true)
@@ -453,7 +453,7 @@ describe('Extract Context Broker action from request', function() {
             headers: {
                 'Content-Type': 'application/csv',
                 'Accept': 'application/csv',
-                'Fiware-Service': 'frn:contextbroker:551:::',
+                'Fiware-Service': 'frn:contextbroker:admin_domain:::',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             body: utils.readExampleFile('./test/orionErrorRequests/entityUnknownOperation.xml', true)
@@ -478,7 +478,7 @@ describe('Extract Context Broker action from request', function() {
             headers: {
                 'Content-Type': 'application/xml',
                 'Accept': 'application/xml',
-                'Fiware-Service': 'frn:contextbroker:551:::',
+                'Fiware-Service': 'frn:contextbroker:admin_domain:::',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             body: utils.readExampleFile('./test/orionErrorRequests/entitySyntaxError.xml', true)

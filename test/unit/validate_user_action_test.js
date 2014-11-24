@@ -127,7 +127,7 @@ describe('Validate action with Access Control', function() {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
-                        'Fiware-Service': '551',
+                        'Fiware-Service': 'admin_domain',
                         'fiware-servicepath': '833',
                         'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
                     },
@@ -186,7 +186,7 @@ describe('Validate action with Access Control', function() {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
-                        'Fiware-Service': '551',
+                        'Fiware-Service': 'admin_domain',
                         'fiware-servicepath': '833',
                         'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
                     },
@@ -245,7 +245,7 @@ describe('Validate action with Access Control', function() {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
-                        'Fiware-Service': '551',
+                        'Fiware-Service': 'admin_domain',
                         'Fiware-Path': '833',
                         'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
                     },
@@ -299,7 +299,7 @@ describe('Validate action with Access Control', function() {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
-                        'Fiware-Service': '551',
+                        'Fiware-Service': 'admin_domain',
                         'Fiware-Path': '833',
                         'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
                     },
@@ -358,7 +358,7 @@ describe('Validate action with Access Control', function() {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
-                    'Fiware-Service': '551',
+                    'Fiware-Service': 'admin_domain',
                     'fiware-servicepath': '833',
                     'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
                 },
