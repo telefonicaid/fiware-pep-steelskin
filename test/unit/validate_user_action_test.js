@@ -129,7 +129,7 @@ describe('Validate action with Access Control', function() {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
-                        'Fiware-Service': 'admin_domain',
+                        'Fiware-Service': 'SmartValencia',
                         'fiware-servicepath': 'Electricidad',
                         'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
                     },
@@ -188,7 +188,7 @@ describe('Validate action with Access Control', function() {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
-                        'Fiware-Service': 'admin_domain',
+                        'Fiware-Service': 'SmartValencia',
                         'fiware-servicepath': 'Electricidad',
                         'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
                     },
@@ -248,7 +248,7 @@ describe('Validate action with Access Control', function() {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
-                        'Fiware-Service': 'admin_domain',
+                        'Fiware-Service': 'SmartValencia',
                         'Fiware-Servicepath': 'Electricidad',
                         'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
                     },
@@ -303,7 +303,7 @@ describe('Validate action with Access Control', function() {
                     headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json',
-                        'Fiware-Service': 'admin_domain',
+                        'Fiware-Service': 'SmartValencia',
                         'Fiware-Servicepath': 'Electricidad',
                         'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
                     },
@@ -363,7 +363,7 @@ describe('Validate action with Access Control', function() {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
-                    'Fiware-Service': 'admin_domain',
+                    'Fiware-Service': 'SmartValencia',
                     'fiware-servicepath': 'Electricidad',
                     'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
                 },
@@ -488,7 +488,7 @@ describe('Validate action with Access Control', function() {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
-                    'Fiware-Service': 'admin_domain',
+                    'Fiware-Service': 'SmartValencia',
                     'fiware-servicepath': 'Electricidad',
                     'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
                 },
@@ -550,7 +550,7 @@ describe('Validate action with Access Control', function() {
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
-                    'Fiware-Service': '749',
+                    'Fiware-Service': 'Mordor',
                     'fiware-servicepath': 'Electricidad',
                     'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
                 },
