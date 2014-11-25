@@ -403,6 +403,12 @@ describe('Validate action with Access Control', function() {
                     should.exist(req.body.auth.identity);
                     should.exist(req.body.auth.identity.password);
                     should.exist(req.body.auth.identity.password.user);
+                    should.exist(req.body.auth.scope.domain.name);
+                    should.exist(req.body.auth.identity.password.user.domain);
+
+                    req.body.auth.scope.domain.name.should.equal(config.authentication.domainName);
+                    req.body.auth.identity.password.user.domain.name.should.equal(config.authentication.domainName);
+
                     req.body.auth.identity.password.user.name.should.equal(config.authentication.user);
                     req.body.auth.identity.password.user.password.should.equal(config.authentication.password);
 
