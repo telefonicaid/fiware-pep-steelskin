@@ -58,6 +58,7 @@ config.authentication = {
     module: 'keystone',
     user: 'pepproxy',
     password: 'pepproxy',
+    domainName: 'Default',
     options: {
         protocol: 'http',
         host: 'localhost',
