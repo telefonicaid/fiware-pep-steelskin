@@ -118,5 +118,6 @@ config.middlewares = {
 };
 
 config.componentName = 'contextbroker';
+config.resourceNamePrefix = 'frn:';
 
 module.exports = config;
