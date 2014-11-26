@@ -117,7 +117,7 @@ config.middlewares = {
     ]
 };
 
-config.componentName = 'contextbroker';
+config.componentName = 'orion';
 config.resourceNamePrefix = 'fiware:';
 
 module.exports = config;
