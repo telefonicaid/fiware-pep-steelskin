@@ -59,6 +59,7 @@ config.authentication = {
     user: 'pepproxy',
     password: 'pepproxy',
     domainName: 'Default',
+    retries: 5,
     options: {
         protocol: 'http',
         host: 'localhost',
