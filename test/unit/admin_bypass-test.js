@@ -113,7 +113,7 @@ describe.skip('Admin bypass tests', function() {
 
         beforeEach(function(done) {
             config.bypass = true;
-            config.adminRoleId = 8907;
+            config.bypassRoleId = 8907;
             initializeUseCase(currentAuthentication, function() {
                 async.series([
                     async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
@@ -127,7 +127,7 @@ describe.skip('Admin bypass tests', function() {
 
         afterEach(function(done) {
             delete config.bypass;
-            delete config.adminRoleId;
+            delete config.bypassRoleId;
 
             proxyLib.stop(proxy, function(error) {
                 serverMocks.stop(mockTarget, function() {

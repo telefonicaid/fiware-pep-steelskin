@@ -136,6 +136,6 @@ config.bypass = false;
 /**
  * ID of the admin user if it exists. Only effective if the "bypass" property is true.
  */
-config.adminRoleId = '';
+config.bypassRoleId = '';
 
 module.exports = config;
