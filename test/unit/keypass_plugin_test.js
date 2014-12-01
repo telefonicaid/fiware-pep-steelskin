@@ -32,8 +32,23 @@ var serverMocks = require('../tools/serverMocks'),
     async = require('async'),
     request = require('request');
 
-describe.only('Keypass Plugin tests', function() {
+function mockKeystone(req, res) {
+    if (req.path === '/v3/auth/tokens' && req.method === 'POST') {
+        res.setHeader('X-Subject-Token', '092016b75474ea6b492e29fb69d23029');
+        res.json(201, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
+    } else if (req.path === '/v3/auth/tokens' && req.method === 'GET') {
+        res.json(200, utils.readExampleFile('./test/keystoneResponses/getUser.json'));
+    } else if (req.path === '/v3/projects' && req.method === 'GET') {
+        res.json(200, utils.readExampleFile('./test/keystoneResponses/getProjects.json'));
+    } else {
+        res.json(200, utils.readExampleFile('./test/keystoneResponses/rolesOfUser.json'));
+    }
+}
+
+describe('Keypass Plugin tests', function() {
     var proxy,
+        mockTarget,
+        mockTargetApp,
         mockServer,
         mockApp,
         mockAccess,
@@ -47,7 +62,17 @@ describe.only('Keypass Plugin tests', function() {
             ['DELETE', '/pap/v1', 'deleteTenantPolicies'],
             ['GET', '/pap/v1/subject/12354/policy/143', 'readPolicy'],
             ['DELETE', '/pap/v1/subject/16412/policy/1235', 'removePolicy']
-        ];
+        ],
+        authenticationMechanism = {
+            module: 'keystone',
+            path: '/v3/role_assignments',
+            authPath: '/v3/auth/tokens',
+            rolesFile: './test/keystoneResponses/rolesOfUser.json',
+            authenticationResponse: './test/keystoneResponses/authorize.json',
+            headers: [
+            ],
+            authMock: mockKeystone
+        };
 
     function apiCase(particularCase) {
         var options = {
@@ -56,15 +81,15 @@ describe.only('Keypass Plugin tests', function() {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'Fiware-Service': 'frn:contextbroker:551:::',
-                'fiware-servicepath': '833',
+                'Fiware-Service': 'SmartValencia',
+                'fiware-servicepath': 'Electricidad',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             json: {}
         };
 
         describe('When  a ' + particularCase[0] + ' request arrives to the ' +
-        particularCase[1] + ' url of Keypass through the PEP Proxy', function() {
+        particularCase[1] + ' url of Keypass PAP through the PEP Proxy', function() {
 
             beforeEach(function(done) {
                 config.middlewares.require = 'lib/services/keypassPlugin';
@@ -141,4 +166,95 @@ describe.only('Keypass Plugin tests', function() {
     }
 
     apiCases.forEach(apiCase);
+
+    describe('When a request arrives at the Keypass PDP through the PEP Proxy', function() {
+        function initializeUseCase(currentAuthentication, done) {
+            config.authentication.module = currentAuthentication.module;
+            config.authentication.path = currentAuthentication.path;
+            config.authentication.authPath = currentAuthentication.authPath;
+
+            proxyLib.start(function(error, proxyObj) {
+                proxy = proxyObj;
+
+                proxy.middlewares.push(keypassPlugin.extractAction);
+
+                serverMocks.start(config.resource.original.port, function(error, server, app) {
+                    mockTarget = server;
+                    mockTargetApp = app;
+                    serverMocks.start(config.access.port, function(error, serverAccess, appAccess) {
+                        mockAccess = serverAccess;
+                        mockAccessApp = appAccess;
+                        serverMocks.start(config.authentication.options.port, function(error, serverAuth, appAuth) {
+                            mockOAuth = serverAuth;
+                            mockOAuthApp = appAuth;
+
+                            mockOAuthApp.handler = currentAuthentication.authMock;
+
+                            done();
+                        });
+                    });
+                });
+            });
+        }
+
+        beforeEach(function(done) {
+            initializeUseCase(authenticationMechanism, function() {
+                async.series([
+                    async.apply(serverMocks.mockPath, authenticationMechanism.path, mockOAuthApp),
+                    async.apply(serverMocks.mockPath, authenticationMechanism.authPath, mockOAuthApp),
+                    async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
+                    async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
+                    async.apply(serverMocks.mockPath, '/pdp/v3', mockTargetApp)
+                ], done);
+            });
+        });
+
+        afterEach(function(done) {
+            delete config.bypass;
+            delete config.bypassRoleId;
+
+            proxyLib.stop(proxy, function(error) {
+                serverMocks.stop(mockTarget, function() {
+                    serverMocks.stop(mockAccess, function() {
+                        serverMocks.stop(mockOAuth, done);
+                    });
+                });
+            });
+        });
+
+        var options = {
+            uri: 'http://localhost:' + config.resource.proxy.port + '/pdp/v3',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Fiware-Service': 'SmartValencia',
+                'fiware-servicepath': 'Electricidad',
+                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
+            },
+            json: {}
+        };
+
+        it('should bypass the validation', function(done) {
+            var accessControlExecuted = false,
+                requestProxyed = false;
+
+            mockTargetApp.handler = function(req, res) {
+                requestProxyed = true;
+                res.json(200, {});
+            };
+
+            mockAccessApp.handler = function(req, res) {
+                accessControlExecuted = true;
+                res.json(501, {});
+            };
+
+            request(options, function(error, response, body) {
+                should.not.exist(error);
+                accessControlExecuted.should.equal(false);
+                requestProxyed.should.equal(true);
+                done();
+            });
+        });
+    });
 });
