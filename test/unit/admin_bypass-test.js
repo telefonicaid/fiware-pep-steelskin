@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Telefonica Investigación y Desarrollo, S.A.U
+ * Copyright 2014 Telefonica Investigación y Desarrollo, S.A.U
  *
  * This file is part of fiware-orion-pep
  *
@@ -45,7 +45,7 @@ function mockKeystone(req, res) {
     }
 }
 
-describe.skip('Admin bypass tests', function() {
+describe('Admin bypass tests', function() {
     /* jshint loopfunc: true */
 
     var proxy,
@@ -140,7 +140,7 @@ describe.skip('Admin bypass tests', function() {
 
         it('should proxy the request without further validation', function(done) {
             var accessControlExecuted = false,
-                requestProxyed = true;
+                requestProxyed = false;
 
             mockTargetApp.handler = function(req, res) {
                 requestProxyed = true;
