@@ -45,14 +45,6 @@ function mockKeystone(req, res) {
     }
 }
 
-function mockIdm(req, res) {
-    if (req.path === '/user') {
-        res.json(200, utils.readExampleFile('./test/authorizationResponses/rolesOfUser.json'));
-    } else {
-        res.json(200, utils.readExampleFile('./test/authorizationResponses/authorize.json'));
-    }
-}
-
 describe('Reuse authentication tokens', function() {
     var proxy,
         mockTarget,
@@ -129,7 +121,7 @@ describe('Reuse authentication tokens', function() {
                     async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
                     async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
                     async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
-                ], function () {
+                ], function() {
                     request(options, function(error, response, body) {
                         done();
                     });
@@ -229,6 +221,7 @@ describe('Reuse authentication tokens', function() {
             };
 
             request(options, function(error, response, body) {
+                should.not.exist(error);
                 mockExecuted.should.equal(true);
                 roleAccesses.should.equal(2);
                 done();
