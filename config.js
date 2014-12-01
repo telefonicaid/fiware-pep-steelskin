@@ -91,7 +91,6 @@ config.ssl = {
 
 /**
  * Default log level. Can be one of: 'DEBUG', 'INFO', 'WARN', 'ERROR', 'FATAL'
- * @type {string}
  */
 config.logLevel = 'FATAL';
 
@@ -117,7 +116,26 @@ config.middlewares = {
     ]
 };
 
+/**
+ * Name of the component. It will be used in the generation of the FRN.
+ */
 config.componentName = 'orion';
+
+/**
+ * Prefix to use in the FRN (Not to change, usually).
+ */
 config.resourceNamePrefix = 'fiware:';
+
+/**
+ * Indicates whether this PEP should have an admin bypass or not. If it does, whenever a user request arrives to the
+ * PEP from a user that has the role defined in the "adminRoleId" property, that request is not validated against the
+ * Access Control, but it is automatically proxied instead.
+ */
+config.bypass = false;
+
+/**
+ * ID of the admin user if it exists. Only effective if the "bypass" property is true.
+ */
+config.bypassRoleId = '';
 
 module.exports = config;
