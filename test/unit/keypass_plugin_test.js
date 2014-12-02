@@ -32,19 +32,6 @@ var serverMocks = require('../tools/serverMocks'),
     async = require('async'),
     request = require('request');
 
-function mockKeystone(req, res) {
-    if (req.path === '/v3/auth/tokens' && req.method === 'POST') {
-        res.setHeader('X-Subject-Token', '092016b75474ea6b492e29fb69d23029');
-        res.json(201, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
-    } else if (req.path === '/v3/auth/tokens' && req.method === 'GET') {
-        res.json(200, utils.readExampleFile('./test/keystoneResponses/getUser.json'));
-    } else if (req.path === '/v3/projects' && req.method === 'GET') {
-        res.json(200, utils.readExampleFile('./test/keystoneResponses/getProjects.json'));
-    } else {
-        res.json(200, utils.readExampleFile('./test/keystoneResponses/rolesOfUser.json'));
-    }
-}
-
 describe('Keypass Plugin tests', function() {
     var proxy,
         mockTarget,
@@ -71,7 +58,7 @@ describe('Keypass Plugin tests', function() {
             authenticationResponse: './test/keystoneResponses/authorize.json',
             headers: [
             ],
-            authMock: mockKeystone
+            authMock: serverMocks.mockKeystone
         };
 
     function apiCase(particularCase) {
