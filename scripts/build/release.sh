@@ -164,7 +164,7 @@ then
     if [ "$PEP_RELEASE" != "dev" ]
     then
        git checkout master
-       git pull
+       git pull origin master
        git merge develop
        git push origin master
        git checkout -b release/$NEW_VERSION
