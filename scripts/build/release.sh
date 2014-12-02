@@ -65,7 +65,7 @@ DATE=$(LANG=C date +"%a %b %d %Y")
 export dateLine="$DATE Daniel Moran <daniel.moranjimenez@telefonica.com> ${NEW_VERSION}-${PEP_RELEASE}"
 
 
-# Modify rpm/SPECS/pepProxy.spec only when step to a non-deve release
+# Modify rpm/SPECS/pepProxy.spec only when step to a non-devel release
 if [ "$PEP_RELEASE" != "dev" ]
 then
     #
