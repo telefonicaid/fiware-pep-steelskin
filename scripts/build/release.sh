@@ -155,6 +155,7 @@ CURRENT_BRANCH=$(git branch | grep '^*' | cut -c 3-10)
 if [ "$CURRENT_BRANCH" == "develop" ]
 then
     git add rpm/SPECS/pepProxy.spec
+    git add rpm/create-rpm.sh
     git add package.json
     git add CHANGES_NEXT_RELEASE
     git commit -m "ADD Step: $currentVersion -> $NEW_VERSION"
