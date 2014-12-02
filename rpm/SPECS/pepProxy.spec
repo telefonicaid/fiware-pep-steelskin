@@ -161,3 +161,6 @@ rm -rf $RPM_BUILD_ROOT
 %config /etc/init.d/%{_service_name}
 %config /etc/sysconfig/%{_service_name}
 %{_install_dir}
+
+%changelog
+
