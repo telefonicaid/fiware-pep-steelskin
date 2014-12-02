@@ -87,7 +87,7 @@ describe('Keystone authentication cache', function() {
         });
     }
 
-    describe('When the user data cache is activated and multiple requests for a user arrive', function() {
+    describe('When the keystone cache is activated and multiple requests for a user arrive', function() {
         var options = {
             uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
             method: 'POST',
@@ -126,8 +126,8 @@ describe('Keystone authentication cache', function() {
             });
         });
 
-        it('should send a single request to Keystone', function(done) {
-            var roleAccesses = 0;
+        it('should send a single request to Keystone asking for user data', function(done) {
+            var userAccesses = 0;
 
             mockOAuthApp.handler = function(req, res) {
                 if (req.path === currentAuthentication.authPath && req.method === 'POST') {
@@ -136,7 +136,7 @@ describe('Keystone authentication cache', function() {
                 } else if (req.path === '/v3/projects' && req.method === 'GET') {
                     res.json(200, utils.readExampleFile('./test/keystoneResponses/getProjects.json'));
                 } else if (req.path === currentAuthentication.authPath && req.method === 'GET') {
-                    roleAccesses++;
+                    userAccesses++;
                     res.json(200, utils.readExampleFile('./test/keystoneResponses/getUser.json'));
                 } else {
                     res.json(200, utils.readExampleFile('./test/keystoneResponses/rolesOfUser.json'));
@@ -149,9 +149,39 @@ describe('Keystone authentication cache', function() {
                 async.apply(request, options),
                 async.apply(request, options),
                 async.apply(request, options)
-            ], function (error, results) {
+            ], function(error, results) {
                 should.not.exist(error);
-                roleAccesses.should.equal(1);
+                userAccesses.should.equal(1);
+                done();
+            });
+        });
+
+        it('should send a single request to Keystone asking for project data', function(done) {
+            var projectIDAccesses = 0;
+
+            mockOAuthApp.handler = function(req, res) {
+                if (req.path === currentAuthentication.authPath && req.method === 'POST') {
+                    res.setHeader('X-Subject-Token', '4e92e29a90fb20701692236b4b69d547');
+                    res.json(201, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
+                } else if (req.path === '/v3/projects' && req.method === 'GET') {
+                    projectIDAccesses++;
+                    res.json(200, utils.readExampleFile('./test/keystoneResponses/getProjects.json'));
+                } else if (req.path === currentAuthentication.authPath && req.method === 'GET') {
+                    res.json(200, utils.readExampleFile('./test/keystoneResponses/getUser.json'));
+                } else {
+                    res.json(200, utils.readExampleFile('./test/keystoneResponses/rolesOfUser.json'));
+                }
+            };
+
+            async.series([
+                async.apply(request, options),
+                async.apply(request, options),
+                async.apply(request, options),
+                async.apply(request, options),
+                async.apply(request, options)
+            ], function(error, results) {
+                should.not.exist(error);
+                projectIDAccesses.should.equal(1);
                 done();
             });
         });

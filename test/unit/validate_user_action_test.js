@@ -488,6 +488,7 @@ describe('Validate action with Access Control', function() {
             currentAuthentication = authenticationMechanisms[1];
 
         beforeEach(function(done) {
+            keystonePlugin.cleanCache();
             initializeUseCase(currentAuthentication, function() {
                 async.series([
                     async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
