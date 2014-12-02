@@ -161,3 +161,13 @@ rm -rf $RPM_BUILD_ROOT
 %config /etc/init.d/%{_service_name}
 %config /etc/sysconfig/%{_service_name}
 %{_install_dir}
+
+%changelog
+* Tue Dec 02 2014 Daniel Moran <daniel.moranjimenez@telefonica.com> 0.3.0-rel
+- Add: Reuse the token instead of authenticating for each request (Issue #22).
+- Add: Support for Keystone as the authentication mechanism.
+- Add: Admin role bypass for privileged usage of the proxy.
+- Add: Plugin to sucure Keypass PAP.
+- Add: Plugin to secure Perseo CEP Rules API.
+- Add: Change expected headers form UUIDs to Names (and resolve UUIDs against Keystone).
+
