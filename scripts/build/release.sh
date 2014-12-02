@@ -170,11 +170,6 @@ then
        git checkout -b release/$NEW_VERSION
        git tag $NEW_VERSION
        git push --tags origin release/$NEW_VERSION
-
-       # Build release only when step to a non-dev release. Note that, taking into account
-       # how the "make rpm" target works, it has to be done after commit has been done
-       make rpm
-
        git checkout $CURRENT_BRANCH
     fi
 else
