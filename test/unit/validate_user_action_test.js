@@ -26,6 +26,7 @@
 var serverMocks = require('../tools/serverMocks'),
     proxyLib = require('../../lib/fiware-orion-pep'),
     orionPlugin = require('../../lib/services/orionPlugin'),
+    keystonePlugin = require('../../lib/services/keystoneAuth'),
     async = require('async'),
     config = require('../../config'),
     utils = require('../tools/utils'),
@@ -374,6 +375,7 @@ describe('Validate action with Access Control', function() {
         beforeEach(function(done) {
             initializeUseCase(currentAuthentication, function() {
                 async.series([
+                    keystonePlugin.invalidate,
                     async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
                     async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
                     async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
