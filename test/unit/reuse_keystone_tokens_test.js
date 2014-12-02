@@ -182,7 +182,11 @@ describe('Reuse authentication tokens', function() {
                     async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
                     async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
                     async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
-                ], done);
+                ], function() {
+                    request(options, function(error, response, body) {
+                        done();
+                    });
+                });
             });
         });
 
@@ -202,13 +206,13 @@ describe('Reuse authentication tokens', function() {
 
             mockOAuthApp.handler = function(req, res) {
                 if (req.path === currentAuthentication.authPath && req.method === 'POST') {
-                    res.setHeader('X-Subject-Token', '092016b75474ea6b492e29fb69d23029');
+                    res.setHeader('X-Subject-Token', '4e92e29a90fb20701692236b4b69d547');
                     res.json(201, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
                     mockExecuted = true;
                 } else if (req.path === '/v3/projects' && req.method === 'GET') {
                     res.json(200, utils.readExampleFile('./test/keystoneResponses/getProjects.json'));
                 } else if (req.path === currentAuthentication.authPath && req.method === 'GET') {
-                    if (req.headers['x-auth-token'] === '092016b75474ea6b492e29fb69d23029') {
+                    if (req.headers['x-auth-token'] === '4e92e29a90fb20701692236b4b69d547') {
                         res.json(200, utils.readExampleFile('./test/keystoneResponses/getUser.json'));
                     } else {
                         res.json(401, utils.readExampleFile('./test/keystoneResponses/tokenExpired.json'));
