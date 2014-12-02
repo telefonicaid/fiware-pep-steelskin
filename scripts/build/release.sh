@@ -97,14 +97,13 @@ then
     #
     # 2. Get the total number of lines in rpm/SPECS/pepProxy.spec
     #
-    LINES=$(wc -l rpm/SPECS/pepProxy.spec | awk '{ print $1 }')
+    LINES=$(wc -l  < rpm/SPECS/pepProxy.spec)
 
 
     #
     # 3. Get the number of lines in rpm/SPECS/pepProxy.spec after the insertion
     #
-    typeset -i LAST_LINES
-    LAST_LINES=$LINES-$LINE
+    LAST_LINES=$(($LINES-$LINE))
 
 
     #
