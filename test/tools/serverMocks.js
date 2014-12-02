@@ -24,6 +24,7 @@
 'use strict';
 
 var express = require('express'),
+    utils = require('./utils'),
     http = require('http');
 
 /**
@@ -90,6 +91,20 @@ function mockPath(url, app, callback) {
     callback();
 }
 
+function mockKeystone(req, res) {
+    if (req.path === '/v3/auth/tokens' && req.method === 'POST') {
+        res.setHeader('X-Subject-Token', '092016b75474ea6b492e29fb69d23029');
+        res.json(201, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
+    } else if (req.path === '/v3/auth/tokens' && req.method === 'GET') {
+        res.json(200, utils.readExampleFile('./test/keystoneResponses/getUser.json'));
+    } else if (req.path === '/v3/projects' && req.method === 'GET') {
+        res.json(200, utils.readExampleFile('./test/keystoneResponses/getProjects.json'));
+    } else {
+        res.json(200, utils.readExampleFile('./test/keystoneResponses/rolesOfUser.json'));
+    }
+}
+
 exports.start = startMock;
 exports.stop = stopMock;
 exports.mockPath = mockPath;
+exports.mockKeystone = mockKeystone;
