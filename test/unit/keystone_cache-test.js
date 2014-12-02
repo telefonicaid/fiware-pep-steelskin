@@ -185,5 +185,36 @@ describe('Keystone authentication cache', function() {
                 done();
             });
         });
+
+        it('should send a single request to Keystone asking for the user\'s roles', function(done) {
+            var roleAccesses = 0;
+
+            mockOAuthApp.handler = function(req, res) {
+                if (req.path === currentAuthentication.authPath && req.method === 'POST') {
+                    res.setHeader('X-Subject-Token', '4e92e29a90fb20701692236b4b69d547');
+                    res.json(201, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
+                } else if (req.path === '/v3/projects' && req.method === 'GET') {
+                    res.json(200, utils.readExampleFile('./test/keystoneResponses/getProjects.json'));
+                } else if (req.path === currentAuthentication.authPath && req.method === 'GET') {
+                    res.json(200, utils.readExampleFile('./test/keystoneResponses/getUser.json'));
+                } else {
+                    roleAccesses++;
+                    res.json(200, utils.readExampleFile('./test/keystoneResponses/rolesOfUser.json'));
+                }
+            };
+
+            async.series([
+                async.apply(request, options),
+                async.apply(request, options),
+                async.apply(request, options),
+                async.apply(request, options),
+                async.apply(request, options)
+            ], function(error, results) {
+                should.not.exist(error);
+                roleAccesses.should.equal(1);
+                done();
+            });
+        });
     });
+
 });
