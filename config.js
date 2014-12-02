@@ -65,9 +65,6 @@ config.authentication = {
         projectIds: 1000,
         roles: 1000
     },
-    cachePeriods: {
-
-    },
     options: {
         protocol: 'http',
         host: 'localhost',
