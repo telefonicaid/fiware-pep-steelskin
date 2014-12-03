@@ -106,9 +106,29 @@ describe('Extract Context Broker action from request', function() {
         });
     });
 
-    describe('When a create action arrives with JSON payload', function() {
+    describe('When a create action arrives with JSON payload and the "/NGSI10" prefix', function() {
         var options = {
             uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Fiware-Service': 'frn:contextbroker:admin_domain:::',
+                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
+            },
+            json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
+        };
+
+        beforeEach(function(done) {
+            serverMocks.mockPath('/NGSI10/queryContext', mockApp, done);
+        });
+
+        it('should add the action attribute with value "create" to the request', testAction('create', options));
+    });
+
+    describe('When a create action arrives with JSON payload and the "/v1" prefix', function() {
+        var options = {
+            uri: 'http://localhost:' + config.resource.proxy.port + '/v1/updateContext',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
