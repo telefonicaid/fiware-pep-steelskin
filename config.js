@@ -60,6 +60,11 @@ config.authentication = {
     password: 'pepproxy',
     domainName: 'Default',
     retries: 5,
+    cacheTTLs: {
+        users: 1000,
+        projectIds: 1000,
+        roles: 60
+    },
     options: {
         protocol: 'http',
         host: 'localhost',

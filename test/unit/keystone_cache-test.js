@@ -33,7 +33,7 @@ var serverMocks = require('../tools/serverMocks'),
     should = require('should'),
     request = require('request');
 
-describe('Reuse authentication tokens', function() {
+describe('Keystone authentication cache', function() {
     var proxy,
         mockTarget,
         mockTargetApp,
@@ -87,70 +87,7 @@ describe('Reuse authentication tokens', function() {
         });
     }
 
-    describe('When a the PEP Proxy has a token and it\'s still valid', function() {
-        var options = {
-                uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Fiware-Service': 'SmartValencia',
-                    'fiware-servicepath': 'Electricidad',
-                    'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
-                },
-                json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
-            };
-
-        beforeEach(function(done) {
-            keystoneAuth.cleanCache();
-
-            initializeUseCase(currentAuthentication, function() {
-                async.series([
-                    async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
-                    async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
-                    async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
-                    async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
-                    async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
-                ], function() {
-                    request(options, function(error, response, body) {
-                        done();
-                    });
-                });
-            });
-        });
-
-        afterEach(function(done) {
-            proxyLib.stop(proxy, function(error) {
-                serverMocks.stop(mockTarget, function() {
-                    serverMocks.stop(mockAccess, function() {
-                        serverMocks.stop(mockOAuth, done);
-                    });
-                });
-            });
-        });
-
-        it('should not ask Keystone for another token', function(done) {
-            var mockExecuted = false;
-
-            mockOAuthApp.handler = function(req, res) {
-                if (req.path === currentAuthentication.authPath && req.method === 'POST') {
-                    res.json(201, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
-                    mockExecuted = true;
-                } else if (req.path === currentAuthentication.authPath && req.method === 'GET') {
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/getUser.json'));
-                } else {
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/rolesOfUser.json'));
-                }
-            };
-
-            request(options, function(error, response, body) {
-                mockExecuted.should.equal(false);
-                done();
-            });
-        });
-    });
-
-    describe('When a the PEP Proxy has a token and it has expired', function() {
+    describe('When the keystone cache is activated and multiple requests for a user arrive', function() {
         var options = {
             uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
             method: 'POST',
@@ -165,6 +102,7 @@ describe('Reuse authentication tokens', function() {
         };
 
         beforeEach(function(done) {
+            keystoneAuth.cleanCache();
             initializeUseCase(currentAuthentication, function() {
                 async.series([
                     async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
@@ -172,16 +110,13 @@ describe('Reuse authentication tokens', function() {
                     async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
                     async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
                     async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
-                ], function() {
-                    request(options, function(error, response, body) {
-                        keystoneAuth.cleanCache();
-                        done();
-                    });
-                });
+                ], done);
             });
         });
 
         afterEach(function(done) {
+            keystoneAuth.cleanCache();
+
             proxyLib.stop(proxy, function(error) {
                 serverMocks.stop(mockTarget, function() {
                     serverMocks.stop(mockAccess, function() {
@@ -191,36 +126,95 @@ describe('Reuse authentication tokens', function() {
             });
         });
 
-        it('should ask Keystone for another token', function(done) {
-            var mockExecuted = false,
-                roleAccesses = 0;
+        it('should send a single request to Keystone asking for user data', function(done) {
+            var userAccesses = 0;
 
             mockOAuthApp.handler = function(req, res) {
                 if (req.path === currentAuthentication.authPath && req.method === 'POST') {
                     res.setHeader('X-Subject-Token', '4e92e29a90fb20701692236b4b69d547');
                     res.json(201, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
-                    mockExecuted = true;
                 } else if (req.path === '/v3/projects' && req.method === 'GET') {
                     res.json(200, utils.readExampleFile('./test/keystoneResponses/getProjects.json'));
                 } else if (req.path === currentAuthentication.authPath && req.method === 'GET') {
-                    if (req.headers['x-auth-token'] === '4e92e29a90fb20701692236b4b69d547') {
-                        res.json(200, utils.readExampleFile('./test/keystoneResponses/getUser.json'));
-                    } else {
-                        res.json(401, utils.readExampleFile('./test/keystoneResponses/tokenExpired.json'));
-                    }
-
-                    roleAccesses++;
+                    userAccesses++;
+                    res.json(200, utils.readExampleFile('./test/keystoneResponses/getUser.json'));
                 } else {
                     res.json(200, utils.readExampleFile('./test/keystoneResponses/rolesOfUser.json'));
                 }
             };
 
-            request(options, function(error, response, body) {
+            async.series([
+                async.apply(request, options),
+                async.apply(request, options),
+                async.apply(request, options),
+                async.apply(request, options),
+                async.apply(request, options)
+            ], function(error, results) {
                 should.not.exist(error);
-                mockExecuted.should.equal(true);
-                roleAccesses.should.equal(2);
+                userAccesses.should.equal(1);
+                done();
+            });
+        });
+
+        it('should send a single request to Keystone asking for project data', function(done) {
+            var projectIDAccesses = 0;
+
+            mockOAuthApp.handler = function(req, res) {
+                if (req.path === currentAuthentication.authPath && req.method === 'POST') {
+                    res.setHeader('X-Subject-Token', '4e92e29a90fb20701692236b4b69d547');
+                    res.json(201, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
+                } else if (req.path === '/v3/projects' && req.method === 'GET') {
+                    projectIDAccesses++;
+                    res.json(200, utils.readExampleFile('./test/keystoneResponses/getProjects.json'));
+                } else if (req.path === currentAuthentication.authPath && req.method === 'GET') {
+                    res.json(200, utils.readExampleFile('./test/keystoneResponses/getUser.json'));
+                } else {
+                    res.json(200, utils.readExampleFile('./test/keystoneResponses/rolesOfUser.json'));
+                }
+            };
+
+            async.series([
+                async.apply(request, options),
+                async.apply(request, options),
+                async.apply(request, options),
+                async.apply(request, options),
+                async.apply(request, options)
+            ], function(error, results) {
+                should.not.exist(error);
+                projectIDAccesses.should.equal(1);
+                done();
+            });
+        });
+
+        it('should send a single request to Keystone asking for the user\'s roles', function(done) {
+            var roleAccesses = 0;
+
+            mockOAuthApp.handler = function(req, res) {
+                if (req.path === currentAuthentication.authPath && req.method === 'POST') {
+                    res.setHeader('X-Subject-Token', '4e92e29a90fb20701692236b4b69d547');
+                    res.json(201, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
+                } else if (req.path === '/v3/projects' && req.method === 'GET') {
+                    res.json(200, utils.readExampleFile('./test/keystoneResponses/getProjects.json'));
+                } else if (req.path === currentAuthentication.authPath && req.method === 'GET') {
+                    res.json(200, utils.readExampleFile('./test/keystoneResponses/getUser.json'));
+                } else {
+                    roleAccesses++;
+                    res.json(200, utils.readExampleFile('./test/keystoneResponses/rolesOfUser.json'));
+                }
+            };
+
+            async.series([
+                async.apply(request, options),
+                async.apply(request, options),
+                async.apply(request, options),
+                async.apply(request, options),
+                async.apply(request, options)
+            ], function(error, results) {
+                should.not.exist(error);
+                roleAccesses.should.equal(1);
                 done();
             });
         });
     });
+
 });
