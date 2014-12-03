@@ -83,9 +83,7 @@ describe('Extract Context Broker action from request', function() {
                         mockOAuth = serverAuth;
                         mockOAuthApp = appAuth;
 
-                        mockOAuthApp.handler = function(req, res) {
-                            res.json(200, utils.readExampleFile('./test/authorizationResponses/authorize.json'));
-                        };
+                        mockOAuthApp.handler = serverMocks.mockKeystone;
 
                         async.series([
                             async.apply(serverMocks.mockPath, '/validate', mockAccessApp)
@@ -113,7 +111,8 @@ describe('Extract Context Broker action from request', function() {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'Fiware-Service': 'frn:contextbroker:admin_domain:::',
+                'fiware-service': 'SmartValencia',
+                'fiware-servicepath': 'Electricidad',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
@@ -133,7 +132,8 @@ describe('Extract Context Broker action from request', function() {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'Fiware-Service': 'frn:contextbroker:admin_domain:::',
+                'fiware-service': 'SmartValencia',
+                'fiware-servicepath': 'Electricidad',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
@@ -153,7 +153,8 @@ describe('Extract Context Broker action from request', function() {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'Fiware-Service': 'frn:contextbroker:admin_domain:::',
+                'fiware-service': 'SmartValencia',
+                'fiware-servicepath': 'Electricidad',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             json: utils.readExampleFile('./test/orionRequests/entityUpdate.json')
@@ -172,7 +173,8 @@ describe('Extract Context Broker action from request', function() {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'Fiware-Service': 'frn:contextbroker:admin_domain:::',
+                'fiware-service': 'SmartValencia',
+                'fiware-servicepath': 'Electricidad',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             json: utils.readExampleFile('./test/orionRequests/entityDelete.json')
@@ -192,7 +194,8 @@ describe('Extract Context Broker action from request', function() {
             headers: {
                 'Content-Type': 'application/xml',
                 'Accept': 'application/xml',
-                'Fiware-Service': 'frn:contextbroker:admin_domain:::',
+                'fiware-service': 'SmartValencia',
+                'fiware-servicepath': 'Electricidad',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             body: utils.readExampleFile('./test/orionRequests/entityCreation.xml', true)
@@ -212,7 +215,8 @@ describe('Extract Context Broker action from request', function() {
             headers: {
                 'Content-Type': 'application/xml',
                 'Accept': 'application/xml',
-                'Fiware-Service': 'frn:contextbroker:admin_domain:::',
+                'fiware-service': 'SmartValencia',
+                'fiware-servicepath': 'Electricidad',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             body: utils.readExampleFile('./test/orionRequests/entityUpdate.xml', true)
@@ -231,7 +235,8 @@ describe('Extract Context Broker action from request', function() {
             headers: {
                 'Content-Type': 'application/xml',
                 'Accept': 'application/xml',
-                'Fiware-Service': 'frn:contextbroker:admin_domain:::',
+                'fiware-service': 'SmartValencia',
+                'fiware-servicepath': 'Electricidad',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             body: utils.readExampleFile('./test/orionRequests/entityDelete.xml', true)
@@ -251,7 +256,8 @@ describe('Extract Context Broker action from request', function() {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'Fiware-Service': 'frn:contextbroker:admin_domain:::',
+                'fiware-service': 'SmartValencia',
+                'fiware-servicepath': 'Electricidad',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             json: utils.readExampleFile('./test/orionRequests/queryContext.json')
@@ -271,7 +277,8 @@ describe('Extract Context Broker action from request', function() {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'Fiware-Service': 'frn:contextbroker:admin_domain:::',
+                'fiware-service': 'SmartValencia',
+                'fiware-servicepath': 'Electricidad',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             json: utils.readExampleFile('./test/orionRequests/queryContext.json')
@@ -290,7 +297,8 @@ describe('Extract Context Broker action from request', function() {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'Fiware-Service': 'frn:contextbroker:admin_domain:::',
+                'fiware-service': 'SmartValencia',
+                'fiware-servicepath': 'Electricidad',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             json: utils.readExampleFile('./test/orionRequests/queryContext.json')
@@ -309,7 +317,8 @@ describe('Extract Context Broker action from request', function() {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'Fiware-Service': 'frn:contextbroker:admin_domain:::',
+                'fiware-service': 'SmartValencia',
+                'fiware-servicepath': 'Electricidad',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             json: utils.readExampleFile('./test/orionRequests/queryContext.json')
@@ -328,7 +337,8 @@ describe('Extract Context Broker action from request', function() {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'Fiware-Service': 'frn:contextbroker:admin_domain:::',
+                'fiware-service': 'SmartValencia',
+                'fiware-servicepath': 'Electricidad',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             json: utils.readExampleFile('./test/orionRequests/queryContext.json')
@@ -349,7 +359,8 @@ describe('Extract Context Broker action from request', function() {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'Fiware-Service': 'frn:contextbroker:admin_domain:::',
+                'fiware-service': 'SmartValencia',
+                'fiware-servicepath': 'Electricidad',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             json: utils.readExampleFile('./test/orionErrorRequests/entityUpdateNoAttribute.json')
@@ -374,7 +385,8 @@ describe('Extract Context Broker action from request', function() {
             headers: {
                 'Content-Type': 'application/xml',
                 'Accept': 'application/xml',
-                'Fiware-Service': 'frn:contextbroker:admin_domain:::',
+                'fiware-service': 'SmartValencia',
+                'fiware-servicepath': 'Electricidad',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             body: utils.readExampleFile('./test/orionErrorRequests/entityUpdateNoAttribute.xml', true)
@@ -399,7 +411,8 @@ describe('Extract Context Broker action from request', function() {
             headers: {
                 'Content-Type': 'application/xml',
                 'Accept': 'application/xml',
-                'Fiware-Service': 'frn:contextbroker:admin_domain:::',
+                'fiware-service': 'SmartValencia',
+                'fiware-servicepath': 'Electricidad',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             body: utils.readExampleFile('./test/orionRequests/entityUpdate.xml', true)
@@ -424,7 +437,8 @@ describe('Extract Context Broker action from request', function() {
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'Fiware-Service': 'frn:contextbroker:admin_domain:::',
+                'fiware-service': 'SmartValencia',
+                'fiware-servicepath': 'Electricidad',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             json: utils.readExampleFile('./test/orionErrorRequests/entityUnknownOperation.json')
@@ -448,7 +462,8 @@ describe('Extract Context Broker action from request', function() {
             headers: {
                 'Content-Type': 'application/xml',
                 'Accept': 'application/xml',
-                'Fiware-Service': 'frn:contextbroker:admin_domain:::',
+                'fiware-service': 'SmartValencia',
+                'fiware-servicepath': 'Electricidad',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             body: utils.readExampleFile('./test/orionErrorRequests/entityUnknownOperation.xml', true)
@@ -473,7 +488,8 @@ describe('Extract Context Broker action from request', function() {
             headers: {
                 'Content-Type': 'application/csv',
                 'Accept': 'application/csv',
-                'Fiware-Service': 'frn:contextbroker:admin_domain:::',
+                'fiware-service': 'SmartValencia',
+                'fiware-servicepath': 'Electricidad',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             body: utils.readExampleFile('./test/orionErrorRequests/entityUnknownOperation.xml', true)
@@ -498,7 +514,8 @@ describe('Extract Context Broker action from request', function() {
             headers: {
                 'Content-Type': 'application/xml',
                 'Accept': 'application/xml',
-                'Fiware-Service': 'frn:contextbroker:admin_domain:::',
+                'fiware-service': 'SmartValencia',
+                'fiware-servicepath': 'Electricidad',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             body: utils.readExampleFile('./test/orionErrorRequests/entitySyntaxError.xml', true)
@@ -511,6 +528,32 @@ describe('Extract Context Broker action from request', function() {
         it('should reject the request with a 403 error', function(done) {
             request(options, function(error, response, body) {
                 response.statusCode.should.equal(403);
+                done();
+            });
+        });
+    });
+
+    describe('When a request arrives with a JSON body with a wrong syntax', function() {
+        var options = {
+            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'fiware-service': 'SmartValencia',
+                'fiware-servicepath': 'Electricidad',
+                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
+            },
+            body: utils.readExampleFile('./test/orionErrorRequests/entitySyntaxError.json', true)
+        };
+
+        beforeEach(function(done) {
+            serverMocks.mockPath('/NGSI10/queryContext', mockApp, done);
+        });
+
+        it('should reject the request with a 400 error', function(done) {
+            request(options, function(error, response, body) {
+                response.statusCode.should.equal(400);
                 done();
             });
         });
