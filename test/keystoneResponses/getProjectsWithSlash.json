@@ -1,0 +1,19 @@
+{
+  "projects": [
+    {
+      "name": "/Electricidad",
+      "domain_id": "db50362d5f264c8292bebdb5c5783741",
+      "id": "833",
+      "enabled": true,
+      "links": {
+        "self": "http://localhost:5000/v3/projects/c0dbaa3db1a543d681487bfce7969fb4"
+      },
+      "description": "SmartValencia Subservicio Electricidad"
+    }
+  ],
+  "links": {
+    "next": null,
+    "previous": null,
+    "self": "http://localhost:5000/v3/projects"
+  }
+}
