@@ -1,7 +1,31 @@
 #!/usr/bin/env node
 
 var proxy = require('../lib/fiware-orion-pep'),
-    config = require('../config');
+    config = require('../config'),
+    middlewareConfigs = {
+        orion: {
+            require: 'lib/services/orionPlugin',
+
+            functions: [
+               'extractCBAction'
+            ]
+        },
+        perseo: {
+            require: 'lib/services/keypassPlugin',
+
+            functions: [
+               'extractAction'
+            ]
+        },
+        keypass: {
+            require: 'lib/services/perseoPlugin',
+
+            functions: [
+               'extractAction'
+            ]
+        }
+    };
+
 
 
 function loadConfiguration() {
@@ -53,6 +77,13 @@ function loadConfiguration() {
     }
     if (process.env.PROXY_PASSWORD) {
         config.authentication.password = process.env.PROXY_PASSWORD;
+    }
+    if (process.env.COMPONENT_PLUGIN) {
+        if (middlewareConfigs[process.env.COMPONENT_PLUGIN]) {
+            config.middlewares = middlewareConfigs[process.env.COMPONENT_PLUGIN];
+        } else {
+            console.log('Component plugin not found');
+        }
     }
 }
 
