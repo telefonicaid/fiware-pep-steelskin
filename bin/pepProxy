@@ -82,7 +82,8 @@ function loadConfiguration() {
         if (middlewareConfigs[process.env.COMPONENT_PLUGIN]) {
             config.middlewares = middlewareConfigs[process.env.COMPONENT_PLUGIN];
         } else {
-            console.log('Component plugin not found');
+            console.log('FATAL ERROR: Component plugin not found');
+            process.exit();
         }
     }
 }
