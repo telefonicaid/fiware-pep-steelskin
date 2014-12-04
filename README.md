@@ -39,6 +39,8 @@ Actinos (2) and (3) may actually involve some more calls in the case of Keystone
 
 If the user is allowed to execute the requested action (5), the HTTP request is resend to the component (6); if it is not, it is rejected.
 
+There is a special flow allowed for service administrators, that can be configured in the config file. A service administrator role ID can be configured in the `bypassRoleId` attribute, so that any request coming into the PEP Proxy with an authorization token belonging to a user with that role will not be validated against the Access Control server, but will be automatically proxied insted. A flag is also provided in the configuration to enable and disable this mechanism for the proxy (`bypass`).
+
 ## <a name="deployment"/> Deployment
 ### Dependencies
 The PEP Proxy is standard Node.js app and doesn't require more dependencies than the Node.js interpreter (0.10 or higher) and the NPM package utility. For RPM installations using Yum, those dependencies should be automatically installed.
@@ -372,16 +374,47 @@ tcp   0   0  0.0.0.0:1026     0.0.0.0:*   LISTEN   12179/node
 ```
 
 ## <a name="configuration"/> Configuration
-All the configuration of the proxy is stored in the `config.js` file in the root of the project folder.
+All the configuration of the proxy is stored in the `config.js` file in the root of the project folder. This values operate as the default values for all the importante configuration pieces of data, so is important none of them are removed. 
+
+Another way of configuring the component is through the use of environment variables, although less configuration options are exposed with this mechanism.
 
 ### Basic Configuration
 In order to have the proxy running, there are several basic pieces of information to fill:
 * `config.resource.proxy`: The information of the server proxy itself (mainly the port).
 * `config.resource.original`: The address and port of the proxied server.
+* `config.access.host`: hot where the Keystone proxy is located (usually the same as the authentication host).
+* `config.componentName`: name of the component that will be used to compose the FRN that will identify the resource to be accessed.
+* `config.resourceNamePrefix`: string prefix that will be used to compose the FRN that will identify the resource to be accessed.
+* `config.bypass`: used to activate the administration bypass in the proxy.
+* `config.bypassRoleId`: ID of the role that will be considered to have administrative rights over the proxy (so being transparently proxied without validation).
+
+### Authentication configuration
+* `config.authentication.module`: indicates what type of authentication server should be used: keystone or idm. The currently supported one (and default) is `keystone`.
 * `config.authentication.username`: username of the PEP proxy in the IDM.
 * `config.authentication.password`: password of the PEP proxy in the IDM.
-* `config.authentication.host`: host where the authentication host is listening (for the proxy to authenticate itself).
-* `config.access.host`: hot where the Keystone proxy is located (usually the same as the authentication host).
+* `config.authentication.domainName`: (only meaningful for Keystone) name of the administration domain the PEP proxy user belongs to.
+* `config.authentication.retries`: as the authentication is based in the use of tokens that can expire, the operations against Keystone are meant to retry with a fresh token. This configuration value indicates how many retries the PEP should perform in case the communication against Keystone fails.
+* `cacheTTLs`: the values in this object correspond to the Time To Live of the values of the different caches the PEP uses to cache requests for information in Keystone. The value is expressed in seconds.
+* `config.authentication.options`: address, port and other communication data needed to communicate with the Identity Manager. Apart from the host and port, default values should be used. 
+
+### Configuration based on environment variables
+Some of the configuration values for the attributes above mentioned can be overriden with values in environment variables. The following table shows the environment variables and what attribute they map to.
+
+| Environment variable |:Configuration attribute             |
+|:-------------------- |:----------------------------------- |
+| PROXY_PORT           | config.resource.proxy.port          | 
+| TARGET_HOST          | config.resource.original.host       |
+| TARGET_PORT          | config.resource.original.port       |
+| LOG_LEVEL            | config.logLevel                     |
+| ACCESS_HOST          | config.access.host                  |
+| ACCESS_PORT          | config.access.port                  |
+| AUTHENTICATION_HOST  | config.authentication.options.host  |
+| AUTHENTICATION_PORT  | config.authentication.options.port  |
+| PROXY_USERNAME       | config.authentication.user          |
+| PROXY_PASSWORD       | config.authentication.password      |
+
+### Component configuration
+A special environment variable, called `COMPONENT_PLUGIN` can be set with one of this values: `orion`, `perseo`, `keypass`. This variable can be used to select what component plugin to load in order to determine the action of the incoming requests.
 
 ### SSL Configuration
 If SSL Termination is not available, the PEP Proxy can be configured to listen HTTPS instead of plain HTTP. To activate the SSL:
