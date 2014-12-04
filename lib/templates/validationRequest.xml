@@ -14,7 +14,7 @@
     <Attribute IncludeInResult="false"
                AttributeId="urn:oasis:names:tc:xacml:1.0:resource:resource-id">
         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string"
-                >{{organization}}</AttributeValue>
+                >{{{organization}}}</AttributeValue>
     </Attribute>
 </Attributes>
 <!-- action performed -->
@@ -23,7 +23,7 @@
     <Attribute IncludeInResult="false"
                AttributeId="urn:oasis:names:tc:xacml:1.0:action:action-id">
         <AttributeValue DataType="http://www.w3.org/2001/XMLSchema#string"
-                >{{action}}</AttributeValue>
+                >{{{action}}}</AttributeValue>
     </Attribute>
 </Attributes>
 </Request>
