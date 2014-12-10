@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Bash lib to know the RPM version and revision from a PDIHub repository
+# Bash lib to know the RPM version and revision from a GitHub repository
 # Call method get_rpm_version_string to obtain them for rpmbuild
 #
 shopt -s extglob
@@ -10,7 +10,7 @@ get_branch()
     git rev-parse --abbrev-ref HEAD
 }
 
-## PDI specific functions according the pdihub workflow
+## Github specific functions according the github workflow
 get_branch_type()
 {
     local branch="$(get_branch)"
@@ -26,7 +26,7 @@ get_branch_type()
 
 get_version_string()
 {
-    if [[ $(is_pdi_compliant) -eq 0 ]]; then # Not PDI compliant, return a dummy version
+    if [[ $(is_github_compliant) -eq 0 ]]; then # Not GitHub compliant, return a dummy version
         echo "HEAD-0-g$(git log --pretty=format:'%h' -1)"
         return
     fi
@@ -86,7 +86,7 @@ get_pdi_version_string()
     get_rpm_version_string
 }
 
-is_pdi_compliant()
+is_github_compliant()
 {
     case $(get_branch_type) in
     "other")
