@@ -108,7 +108,7 @@ describe('Connection error tests', function() {
                     async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
                     async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
                     async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
-                ], function (error) {
+                ], function(error) {
                     keystoneAuth.cleanCache();
                     done();
                 });
