@@ -1,5 +1,5 @@
-- ADD: Environment variable to select the plugin to execute.
-- ADD: Process the "/" value for the fiware-servicepath header as a domain-scoped request instead of project scoped.
-- ADD: Cache for every call to Keystone.
-- FIX: Slash scaped in Access Control Templates.
-- FIX: Capture request forwarding errors.
+- ADD: Environment variable to select the plugin to execute (#49).
+- ADD: Process the "/" value for the fiware-servicepath header as a domain-scoped request instead of project scoped (#70).
+- ADD: Cache for every call to Keystone (#46).
+- FIX: Slash scaped in Access Control Templates (#73).
+- FIX: Capture request forwarding errors (#82).
