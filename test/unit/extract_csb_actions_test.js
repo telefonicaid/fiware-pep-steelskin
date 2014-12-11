@@ -395,7 +395,7 @@ describe('Extract Context Broker action from request', function() {
     });
     describe('When a register action arrives with the V1 prefix', function() {
         var options = {
-            uri: 'http://localhost:' + config.resource.proxy.port + '/v1/registerContext',
+            uri: 'http://localhost:' + config.resource.proxy.port + '/v1/registry/registerContext',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -408,14 +408,14 @@ describe('Extract Context Broker action from request', function() {
         };
 
         beforeEach(function(done) {
-            serverMocks.mockPath('/v1/registerContext', mockApp, done);
+            serverMocks.mockPath('/v1/registry/registerContext', mockApp, done);
         });
 
         it('should add the action attribute with value "register" to the request', testAction('register', options));
     });
     describe('When a discover action arrives with the V1 prefix', function() {
         var options = {
-            uri: 'http://localhost:' + config.resource.proxy.port + '/v1/discoverContextAvailability',
+            uri: 'http://localhost:' + config.resource.proxy.port + '/v1/registry/discoverContextAvailability',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -428,14 +428,14 @@ describe('Extract Context Broker action from request', function() {
         };
 
         beforeEach(function(done) {
-            serverMocks.mockPath('/v1/discoverContextAvailability', mockApp, done);
+            serverMocks.mockPath('/v1/registry/discoverContextAvailability', mockApp, done);
         });
 
         it('should add the action attribute with value "discover" to the request', testAction('discover', options));
     });
     describe('When a subscribe-availability action arrives with the V1 prefix', function() {
         var options = {
-            uri: 'http://localhost:' + config.resource.proxy.port + '/v1/subscribeContextAvailability',
+            uri: 'http://localhost:' + config.resource.proxy.port + '/v1/registry/subscribeContextAvailability',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -448,7 +448,7 @@ describe('Extract Context Broker action from request', function() {
         };
 
         beforeEach(function(done) {
-            serverMocks.mockPath('/v1/subscribeContextAvailability', mockApp, done);
+            serverMocks.mockPath('/v1/registry/subscribeContextAvailability', mockApp, done);
         });
 
         it('should add the action attribute with value "subscribe-availability" to the request',
