@@ -63,7 +63,7 @@ config.authentication = {
     cacheTTLs: {
         users: 1000,
         projectIds: 1000,
-        roles: 60
+        roles: 60000
     },
     options: {
         protocol: 'http',

@@ -215,6 +215,35 @@ describe('Keystone authentication cache', function() {
                 done();
             });
         });
+
+        it('should forward the request to the target server with the apropriate roles', function(done) {
+            var accessControlExecuted = false,
+                requestAccesses = 0;
+
+            mockTargetApp.handler = function(req, res) {
+                requestAccesses++;
+                res.json(200, {});
+            };
+
+            mockAccessApp.handler = function(req, res) {
+                accessControlExecuted = true;
+                req.rawBody.should.containEql('8907');
+                res.set('Content-Type', 'application/xml');
+                res.send(utils.readExampleFile('./test/accessControlResponses/permitResponse.xml', true));
+            };
+
+            async.series([
+                async.apply(request, options),
+                async.apply(request, options),
+                async.apply(request, options),
+                async.apply(request, options),
+                async.apply(request, options)
+            ], function(error, results) {
+                should.not.exist(error);
+                requestAccesses.should.equal(5);
+                done();
+            });
+        });
     });
 
 });
