@@ -146,7 +146,5 @@ describe('Admin bypass tests', function() {
                 done();
             });
         });
-
-
     });
 });
