@@ -2,4 +2,4 @@
 - ADD: Process the "/" value for the fiware-servicepath header as a domain-scoped request instead of project scoped.
 - ADD: Cache for every call to Keystone.
 - FIX: Slash scaped in Access Control Templates.
-
+- FIX: Capture request forwarding errors.
