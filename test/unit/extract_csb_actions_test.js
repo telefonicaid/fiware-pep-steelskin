@@ -312,7 +312,7 @@ describe('Extract Context Broker action from request', function() {
     });
     describe('When a discover action arrives', function() {
         var options = {
-            uri: 'http://localhost:' + config.resource.proxy.port + '/nsgi9/discoverContextAvailability',
+            uri: 'http://localhost:' + config.resource.proxy.port + '/ngsi9/discoverContextAvailability',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -325,7 +325,7 @@ describe('Extract Context Broker action from request', function() {
         };
 
         beforeEach(function(done) {
-            serverMocks.mockPath('/nsgi9/discoverContextAvailability', mockApp, done);
+            serverMocks.mockPath('/ngsi9/discoverContextAvailability', mockApp, done);
         });
 
         it('should add the action attribute with value "discover" to the request', testAction('discover', options));
@@ -346,6 +346,109 @@ describe('Extract Context Broker action from request', function() {
 
         beforeEach(function(done) {
             serverMocks.mockPath('/ngsi9/subscribeContextAvailability', mockApp, done);
+        });
+
+        it('should add the action attribute with value "subscribe-availability" to the request',
+            testAction('subscribe-availability', options));
+    });
+
+    describe('When a read action arrives with the V1 prefix', function() {
+        var options = {
+            uri: 'http://localhost:' + config.resource.proxy.port + '/v1/queryContext',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'fiware-service': 'SmartValencia',
+                'fiware-servicepath': 'Electricidad',
+                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
+            },
+            json: utils.readExampleFile('./test/orionRequests/queryContext.json')
+        };
+
+        beforeEach(function(done) {
+            serverMocks.mockPath('/v1/queryContext', mockApp, done);
+        });
+
+        it('should add the action attribute with value "read" to the request', testAction('read', options));
+    });
+
+    describe('When a subscribe action arrives with the V1 prefix', function() {
+        var options = {
+            uri: 'http://localhost:' + config.resource.proxy.port + '/v1/subscribeContext',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'fiware-service': 'SmartValencia',
+                'fiware-servicepath': 'Electricidad',
+                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
+            },
+            json: utils.readExampleFile('./test/orionRequests/queryContext.json')
+        };
+
+        beforeEach(function(done) {
+            serverMocks.mockPath('/v1/subscribeContext', mockApp, done);
+        });
+
+        it('should add the action attribute with value "subscribe" to the request', testAction('subscribe', options));
+    });
+    describe('When a register action arrives with the V1 prefix', function() {
+        var options = {
+            uri: 'http://localhost:' + config.resource.proxy.port + '/v1/registerContext',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'fiware-service': 'SmartValencia',
+                'fiware-servicepath': 'Electricidad',
+                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
+            },
+            json: utils.readExampleFile('./test/orionRequests/queryContext.json')
+        };
+
+        beforeEach(function(done) {
+            serverMocks.mockPath('/v1/registerContext', mockApp, done);
+        });
+
+        it('should add the action attribute with value "register" to the request', testAction('register', options));
+    });
+    describe('When a discover action arrives with the V1 prefix', function() {
+        var options = {
+            uri: 'http://localhost:' + config.resource.proxy.port + '/v1/discoverContextAvailability',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'fiware-service': 'SmartValencia',
+                'fiware-servicepath': 'Electricidad',
+                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
+            },
+            json: utils.readExampleFile('./test/orionRequests/queryContext.json')
+        };
+
+        beforeEach(function(done) {
+            serverMocks.mockPath('/v1/discoverContextAvailability', mockApp, done);
+        });
+
+        it('should add the action attribute with value "discover" to the request', testAction('discover', options));
+    });
+    describe('When a subscribe-availability action arrives with the V1 prefix', function() {
+        var options = {
+            uri: 'http://localhost:' + config.resource.proxy.port + '/v1/subscribeContextAvailability',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'fiware-service': 'SmartValencia',
+                'fiware-servicepath': 'Electricidad',
+                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
+            },
+            json: utils.readExampleFile('./test/orionRequests/queryContext.json')
+        };
+
+        beforeEach(function(done) {
+            serverMocks.mockPath('/v1/subscribeContextAvailability', mockApp, done);
         });
 
         it('should add the action attribute with value "subscribe-availability" to the request',
