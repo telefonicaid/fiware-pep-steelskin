@@ -3,3 +3,4 @@
 - ADD: Cache for every call to Keystone (#46).
 - FIX: Slash scaped in Access Control Templates (#73).
 - FIX: Capture request forwarding errors (#82).
+- FIX: Wrong roles attribute in cached value (#84).
