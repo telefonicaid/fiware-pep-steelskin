@@ -109,6 +109,7 @@ convenienceOperations = [
     ['GET', '/ngsi10/contextEntities/type/TestedType01/id/TestedEntityId002/attributeDomains/TestedDomainName001',
             'read'],
     ['GET', '/ngsi10/contextEntityTypes/TestedTypeName001', 'read'],
+    ['GET', '/v1/contextEntities/{EntityID}', 'read'],
     ['GET', '/ngsi10/contextEntityTypes/TestedTypeName001/attributes', 'N/A'],
     ['GET', '/ngsi10/contextEntityTypes/TestedTypeName001/attributes/TestedAttributeName001', 'read'],
     ['GET', '/ngsi10/contextEntityTypes/TestedTypeName001/attributeDomains/TestedDomainName001', 'read'],
@@ -177,7 +178,7 @@ describe('Extract Context Broker action from convenience operation requests', fu
                 serverMocks.mockPath('/NGSI10/queryContext', mockApp, done);
             });
 
-            it('should add the action attribute with value "create" to the request',
+            it('should add the action attribute with value ' + convenienceAction + ' to the request',
                 testAction(convenienceAction, options));
         };
     }
@@ -228,7 +229,7 @@ describe('Extract Context Broker action from convenience operation requests', fu
     });
 
     for (var i = 0; i < convenienceOperations.length; i++) {
-        describe('When a create action arrives with a convenience task URL ' +
+        describe('When a request arrives with a convenience operation URL ' +
             convenienceOperations[i][1] + ' ' + convenienceOperations[i][0],
             testConvenienceOperation(convenienceOperations[i][1],
                 convenienceOperations[i][0],
