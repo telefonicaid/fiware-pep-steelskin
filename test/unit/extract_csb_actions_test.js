@@ -104,6 +104,46 @@ describe('Extract Context Broker action from request', function() {
         });
     });
 
+    var standardOperation = [
+        ['/NGSI10/queryContext', 'read'],
+        ['/ngsi10/subscribeContext', 'subscribe'],
+        ['/ngsi9/registerContext', 'register'],
+        ['/ngsi9/discoverContextAvailability', 'discover'],
+        ['/ngsi9/subscribeContextAvailability', 'subscribe-availability'],
+        ['/v1/queryContext', 'read'],
+        ['/v1/subscribeContext', 'subscribe'],
+        ['/v1/registry/registerContext', 'register'],
+        ['/v1/registry/discoverContextAvailability', 'discover'],
+        ['/v1/registry/subscribeContextAvailability', 'subscribe-availability']
+    ];
+
+    function testStandardOperation(url, action) {
+        return function() {
+            var options = {
+                uri: 'http://localhost:' + config.resource.proxy.port + url,
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'fiware-service': 'SmartValencia',
+                    'fiware-servicepath': 'Electricidad',
+                    'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
+                },
+                json: utils.readExampleFile('./test/orionRequests/queryContext.json')
+            };
+
+            it('should add the action attribute with value "' + action + '" to the request',
+                testAction(action, options));
+        };
+    }
+
+    for (var i = 0; i < standardOperation.length; i++) {
+        describe('When a standard action with url' + standardOperation[i][0] + ' arrives', testStandardOperation(
+            standardOperation[i][0],
+            standardOperation[i][1]
+        ));
+    }
+
     describe('When a create action arrives with JSON payload and the "/NGSI10" prefix', function() {
         var options = {
             uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
@@ -248,41 +288,6 @@ describe('Extract Context Broker action from request', function() {
 
         it('should add the action attribute with value "delete" to the request', testAction('delete', options));
     });
-
-
-    var standardOperation = [
-        ['/NGSI10/queryContext', 'read'],
-        ['/ngsi10/subscribeContext', 'subscribe'],
-        ['/ngsi9/registerContext', 'register'],
-        ['/ngsi9/discoverContextAvailability', 'discover'],
-        ['/ngsi9/subscribeContextAvailability', 'subscribe-availability'],
-        ['/v1/queryContext', 'read'],
-        ['/v1/subscribeContext', 'subscribe'],
-        ['/v1/registry/registerContext', 'register'],
-        ['/v1/registry/discoverContextAvailability', 'discover'],
-        ['/v1/registry/subscribeContextAvailability', 'subscribe-availability']
-    ];
-
-    for (var i = 0; i < standardOperation.length; i++) {
-        describe('When a standard action with url' + standardOperation[i][0] + ' arrives', function() {
-            var options = {
-                uri: 'http://localhost:' + config.resource.proxy.port + standardOperation[i][0],
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'fiware-service': 'SmartValencia',
-                    'fiware-servicepath': 'Electricidad',
-                    'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
-                },
-                json: utils.readExampleFile('./test/orionRequests/queryContext.json')
-            };
-
-            it('should add the action attribute with value "' + standardOperation[i][1] + '" to the request',
-                testAction(standardOperation[i][1],
-                options));
-        });
-    }
 
     describe('When a update action arrives with JSON payload without the \'updateAction\' attribute', function() {
         var options = {
