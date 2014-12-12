@@ -25,7 +25,7 @@
 
 var serverMocks = require('../tools/serverMocks'),
     proxyLib = require('../../lib/fiware-orion-pep'),
-    keypassPlugin = require('../../lib/services/keypassPlugin'),
+    keypassPlugin = require('../../lib/plugins/keypassPlugin'),
     config = require('../../config'),
     utils = require('../tools/utils'),
     should = require('should'),
