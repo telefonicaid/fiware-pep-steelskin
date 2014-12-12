@@ -4,3 +4,4 @@
 - FIX: Slash scaped in Access Control Templates (#73).
 - FIX: Capture request forwarding errors (#82).
 - FIX: Wrong roles attribute in cached value (#84).
+- FIX: Missing "v1" prefix in some standard ops (#86).
