@@ -112,7 +112,7 @@ config.middlewares = {
     /**
      * Indicates the module from where the middlewares will be loaded.
      */
-    require: 'lib/services/orionPlugin',
+    require: 'lib/plugins/orionPlugin',
 
     /**
      * Indicates the list of middlewares to load.
