@@ -10,14 +10,14 @@ var proxy = require('../lib/fiware-orion-pep'),
                'extractCBAction'
             ]
         },
-        perseo: {
+        keypass: {
             require: 'lib/plugin/keypassPlugin',
 
             functions: [
                'extractAction'
             ]
         },
-        keypass: {
+        perseo: {
             require: 'lib/plugin/perseoPlugin',
 
             functions: [

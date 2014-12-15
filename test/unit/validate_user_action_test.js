@@ -602,7 +602,7 @@ describe('Validate action with Access Control', function() {
     });
 
     describe('[' + authenticationMechanisms[1].module + '] ' +
-        'When a request with a tenant A tries to acces things on tenant B', function() {
+        'When a request with a tenant A tries to access things on tenant B', function() {
         var options = {
                 uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
                 method: 'POST',
@@ -640,9 +640,9 @@ describe('Validate action with Access Control', function() {
             });
         });
 
-        it('should reject the request with a 401', function(done) {
+        it('should reject the request with a 403', function(done) {
             request(options, function(error, response, body) {
-                response.statusCode.should.equal(401);
+                response.statusCode.should.equal(403);
                 done();
             });
         });
