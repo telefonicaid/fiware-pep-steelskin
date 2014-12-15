@@ -492,6 +492,7 @@ This is the list of actions available for the Context Broker. For every action, 
 | register | Reg           |
 | discover | Dis            |
 | subscribe-availability | S-A            |
+| N/A | - |
 
 ### Standard operations
 * `create`: URL contains `/ngsi10/updateContext` and the `actionType` attribute of the payload (either with XML or JSON) is `APPEND`.
@@ -557,6 +558,8 @@ An up-to-date list of the convenience operations can be found [here](https://doc
 | POST   | /ngsi10/contextSubscriptions                                                           	| S |
 | PUT    | /ngsi10/contextSubscriptions/{subscriptionID}                                          	| S |
 | DELETE | /ngsi10/contextSubscriptions/{subscriptionID}                                          	| S |
+
+Operations marked with a slash, "-" are now deprecated. All those operations will be tagged with the special action "N/A". If you want to allow them anyway, just add a rule to the Access Control allowing the "N/A" action for the desired roles.
 
 ## <a name="rulesPerseo"/> Rules to determine the Perseo CEP action from the request
 
