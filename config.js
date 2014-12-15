@@ -59,7 +59,7 @@ config.authentication = {
     user: 'pepproxy',
     password: 'pepproxy',
     domainName: 'Default',
-    retries: 5,
+    retries: 3,
     cacheTTLs: {
         users: 1000,
         projectIds: 1000,
