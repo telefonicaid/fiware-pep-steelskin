@@ -380,17 +380,36 @@ Another way of configuring the component is through the use of environment varia
 
 ### Basic Configuration
 In order to have the proxy running, there are several basic pieces of information to fill:
-* `config.resource.proxy`: The information of the server proxy itself (mainly the port).
-* `config.resource.original`: The address and port of the proxied server.
-* `config.access.host`: hot where the Keystone proxy is located (usually the same as the authentication host).
-* `config.componentName`: name of the component that will be used to compose the FRN that will identify the resource to be accessed.
-* `config.resourceNamePrefix`: string prefix that will be used to compose the FRN that will identify the resource to be accessed.
-* `config.bypass`: used to activate the administration bypass in the proxy.
-* `config.bypassRoleId`: ID of the role that will be considered to have administrative rights over the proxy (so being transparently proxied without validation).
+* `config.resource.proxy`: The information of the server proxy itself (mainly the port). E.g.:
+```
+{
+    port: 1026
+}
+```
+* `config.resource.original`: The address and port of the proxied server. E.g.:
+```
+{
+    host: 'localhost',
+    port: 10026
+},
+```
+* `config.access`: connection information to the selected Access Control PDP API. E.g.:
+```
+{
+    protocol: 'http',
+    host: 'localhost',
+    port: 7070,
+    path: '/pdp/v3'
+}
+```
+* `config.componentName`: name of the component that will be used to compose the FRN that will identify the resource to be accessed. E.g.: `orion`.
+* `config.resourceNamePrefix`: string prefix that will be used to compose the FRN that will identify the resource to be accessed. E.g.: `fiware:`.
+* `config.bypass`: used to activate the administration bypass in the proxy. Valid values are `true` or `false`.
+* `config.bypassRoleId`: ID of the role that will be considered to have administrative rights over the proxy (so being transparently proxied without validation). Valid values are Role UUIDs. E.g.: `db50362d5f264c8292bebdb5c5783741`.
 
 ### Authentication configuration
 * `config.authentication.module`: indicates what type of authentication server should be used: keystone or idm. The currently supported one (and default) is `keystone`.
-* `config.authentication.username`: username of the PEP proxy in the IDM.
+* `config.authentication.username`: username of the PEP proxy in the IDM. 
 * `config.authentication.password`: password of the PEP proxy in the IDM.
 * `config.authentication.domainName`: (only meaningful for Keystone) name of the administration domain the PEP proxy user belongs to.
 * `config.authentication.retries`: as the authentication is based in the use of tokens that can expire, the operations against Keystone are meant to retry with a fresh token. This configuration value indicates how many retries the PEP should perform in case the communication against Keystone fails.
