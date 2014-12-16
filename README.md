@@ -419,7 +419,7 @@ In order to have the proxy running, there are several basic pieces of informatio
 ### Configuration based on environment variables
 Some of the configuration values for the attributes above mentioned can be overriden with values in environment variables. The following table shows the environment variables and what attribute they map to.
 
-| Environment variable |:Configuration attribute             |
+| Environment variable | Configuration attribute             |
 |:-------------------- |:----------------------------------- |
 | PROXY_PORT           | config.resource.proxy.port          | 
 | TARGET_HOST          | config.resource.original.host       |
