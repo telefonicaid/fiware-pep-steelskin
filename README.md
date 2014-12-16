@@ -24,16 +24,22 @@ The Orion Policy Enforcement Point (PEP) is a proxy meant to secure independent 
 
 Communication with the Access Control is based on the [XACML protocol](http://docs.oasis-open.org/xacml/3.0/xacml-3.0-core-spec-os-en.html).
 
+Along this document, the term IDM (Identity Manager) will be used, as a general term to refer to the server providing user and role creation and authentication. The currently supported IDM is Keystone; a Keyrock IDM option is provided as well, but it may be deprecated in the near future.
+
 ## <a name="architecture"/> Architecture Description
 Orion Policy Enforcement Point Proxy is part of the authorization mechanism of the FIWARE platform. This authorization mechanism is based in OAuth 2.0, and it makes use of tokens to identify the user. 
  
 ![Alt text](https://raw.githubusercontent.com/telefonicaid/fiware-orion-pep/develop/img/arquitecture.png "Authorization Architecture")
 
-Each request to a component holds some extra information (apart from the token) that can be used to identify what kind of action is requested to be executed and over what entity. This information may be explicit (using headers) or implicit (being part of the payload or the URL). The first task of the proxy is to extract this information (currently focused on the Context Broker, but will be compatible with other components in the future).
+Each request to a component holds some extra information (apart from the token) that can be used to identify what kind of action is requested to be executed and over what entity. This information may be explicit (using headers) or implicit (being part of the payload or the URL). The first task of the proxy is to extract this information; the way of extracting it depends on the particular component that it's being proxied (currently there are four plugins, supporing Orion Context Broker, Perseo Complex Event Processing and Keypass PAP API, as well as a generic REST one).
 
 For each request, the proxy asks the IDM to validate the access token of the user (2). If the token is valid, the IDM answer with a response that contain the user roles (3). With those roles, the selected actions and resources (identified by the extra information) the PEP Proxy makes a request to the Access Manager for validation (4). This is an HTTP request using the XACML Request format. The Access Control component validates all the information and checks the retrieved data against the XACML Access Rules defined in the Identity Manager (4) (where each role for each user is associated with n permissions, each one of them defined using an XACML Rule). 
 
+Actions (2) and (3) may actually involve some more calls in the case of Keystone, in order to resolve organization names or user information, and in order to retrieve the PEP's own authoerization token. All this calls are not depicted in the diagram as they can be safely cached (the cache being configurable in the config file).
+
 If the user is allowed to execute the requested action (5), the HTTP request is resend to the component (6); if it is not, it is rejected.
+
+There is a special flow allowed for service administrators, that can be configured in the config file. A service administrator role ID can be configured in the `bypassRoleId` attribute, so that any request coming into the PEP Proxy with an authorization token belonging to a user with that role will not be validated against the Access Control server, but will be automatically proxied insted. A flag is also provided in the configuration to enable and disable this mechanism for the proxy (`bypass`).
 
 ## <a name="deployment"/> Deployment
 ### Dependencies
@@ -60,10 +66,10 @@ execute the following command:
 
 This command will generate some folders, including one called RPMS, holding the RPM created for every architecture (noarch is currently generated).
 
-In order to install the generated RPM from the local file, use the following command:
+In order to install the generated RPM from the local file, use the following command (changing the PEP RPM for the one you have just generated; X.Y.Z being the version you are about to install):
 
 ```
-yum --nogpgcheck localinstall  pep-proxy-0.1-1.noarch.rpm
+yum --nogpgcheck localinstall  pep-proxy-X.Y-Z.noarch.rpm
 ```
 
 It should automatically download all the dependencies provided they are available (Node.js and NPM may require the EPEL repositories to be added).
@@ -368,16 +374,66 @@ tcp   0   0  0.0.0.0:1026     0.0.0.0:*   LISTEN   12179/node
 ```
 
 ## <a name="configuration"/> Configuration
-All the configuration of the proxy is stored in the `config.js` file in the root of the project folder.
+All the configuration of the proxy is stored in the `config.js` file in the root of the project folder. The values set inside config.js operate as the default values for all the important pieces of configuration data, so it is important none of them are removed (you can change them to suit your needs, as long as they have a valid value).
+
+Another way of configuring the component is through the use of environment variables, although less configuration options are exposed with this mechanism.
 
 ### Basic Configuration
 In order to have the proxy running, there are several basic pieces of information to fill:
-* `config.resource.proxy`: The information of the server proxy itself (mainly the port).
-* `config.resource.original`: The address and port of the proxied server.
-* `config.authentication.username`: username of the PEP proxy in the IDM.
+* `config.resource.proxy`: The information of the server proxy itself (mainly the port). E.g.:
+```
+{
+    port: 1026
+}
+```
+* `config.resource.original`: The address and port of the proxied server. E.g.:
+```
+{
+    host: 'localhost',
+    port: 10026
+},
+```
+* `config.access`: connection information to the selected Access Control PDP API. E.g.:
+```
+{
+    protocol: 'http',
+    host: 'localhost',
+    port: 7070,
+    path: '/pdp/v3'
+}
+```
+* `config.componentName`: name of the component that will be used to compose the FRN that will identify the resource to be accessed. E.g.: `orion`.
+* `config.resourceNamePrefix`: string prefix that will be used to compose the FRN that will identify the resource to be accessed. E.g.: `fiware:`.
+* `config.bypass`: used to activate the administration bypass in the proxy. Valid values are `true` or `false`.
+* `config.bypassRoleId`: ID of the role that will be considered to have administrative rights over the proxy (so being transparently proxied without validation). Valid values are Role UUIDs. E.g.: `db50362d5f264c8292bebdb5c5783741`.
+
+### Authentication configuration
+* `config.authentication.module`: indicates what type of authentication server should be used: keystone or idm. The currently supported one (and default) is `keystone`.
+* `config.authentication.username`: username of the PEP proxy in the IDM. 
 * `config.authentication.password`: password of the PEP proxy in the IDM.
-* `config.authentication.host`: host where the authentication host is listening (for the proxy to authenticate itself).
-* `config.access.host`: hot where the Keystone proxy is located (usually the same as the authentication host).
+* `config.authentication.domainName`: (only meaningful for Keystone) name of the administration domain the PEP proxy user belongs to.
+* `config.authentication.retries`: as the authentication is based in the use of tokens that can expire, the operations against Keystone are meant to retry with a fresh token. This configuration value indicates how many retries the PEP should perform in case the communication against Keystone fails.
+* `cacheTTLs`: the values in this object correspond to the Time To Live of the values of the different caches the PEP uses to cache requests for information in Keystone. The value is expressed in seconds.
+* `config.authentication.options`: address, port and other communication data needed to communicate with the Identity Manager. Apart from the host and port, default values should be used. 
+
+### Configuration based on environment variables
+Some of the configuration values for the attributes above mentioned can be overriden with values in environment variables. The following table shows the environment variables and what attribute they map to.
+
+| Environment variable | Configuration attribute             |
+|:-------------------- |:----------------------------------- |
+| PROXY_PORT           | config.resource.proxy.port          | 
+| TARGET_HOST          | config.resource.original.host       |
+| TARGET_PORT          | config.resource.original.port       |
+| LOG_LEVEL            | config.logLevel                     |
+| ACCESS_HOST          | config.access.host                  |
+| ACCESS_PORT          | config.access.port                  |
+| AUTHENTICATION_HOST  | config.authentication.options.host  |
+| AUTHENTICATION_PORT  | config.authentication.options.port  |
+| PROXY_USERNAME       | config.authentication.user          |
+| PROXY_PASSWORD       | config.authentication.password      |
+
+### Component configuration
+A special environment variable, called `COMPONENT_PLUGIN` can be set with one of this values: `orion`, `perseo`, `keypass`. This variable can be used to select what component plugin to load in order to determine the action of the incoming requests.
 
 ### SSL Configuration
 If SSL Termination is not available, the PEP Proxy can be configured to listen HTTPS instead of plain HTTP. To activate the SSL:
@@ -455,6 +511,7 @@ This is the list of actions available for the Context Broker. For every action, 
 | register | Reg           |
 | discover | Dis            |
 | subscribe-availability | S-A            |
+| N/A | - |
 
 ### Standard operations
 * `create`: URL contains `/ngsi10/updateContext` and the `actionType` attribute of the payload (either with XML or JSON) is `APPEND`.
@@ -520,6 +577,8 @@ An up-to-date list of the convenience operations can be found [here](https://doc
 | POST   | /ngsi10/contextSubscriptions                                                           	| S |
 | PUT    | /ngsi10/contextSubscriptions/{subscriptionID}                                          	| S |
 | DELETE | /ngsi10/contextSubscriptions/{subscriptionID}                                          	| S |
+
+Operations marked with a slash, "-" are now deprecated. All those operations will be tagged with the special action "N/A". If you want to allow them anyway, just add a rule to the Access Control allowing the "N/A" action for the desired roles.
 
 ## <a name="rulesPerseo"/> Rules to determine the Perseo CEP action from the request
 
