@@ -35,7 +35,7 @@ Each request to a component holds some extra information (apart from the token) 
 
 For each request, the proxy asks the IDM to validate the access token of the user (2). If the token is valid, the IDM answer with a response that contain the user roles (3). With those roles, the selected actions and resources (identified by the extra information) the PEP Proxy makes a request to the Access Manager for validation (4). This is an HTTP request using the XACML Request format. The Access Control component validates all the information and checks the retrieved data against the XACML Access Rules defined in the Identity Manager (4) (where each role for each user is associated with n permissions, each one of them defined using an XACML Rule). 
 
-Actinos (2) and (3) may actually involve some more calls in the case of Keystone, in order to resolve organization names or user information, and in order to retrieve the PEP's own authoerization token. All this calls are not depicted in the diagram as they can be safely cached (the cache being configurable in the config file).
+Actions (2) and (3) may actually involve some more calls in the case of Keystone, in order to resolve organization names or user information, and in order to retrieve the PEP's own authoerization token. All this calls are not depicted in the diagram as they can be safely cached (the cache being configurable in the config file).
 
 If the user is allowed to execute the requested action (5), the HTTP request is resend to the component (6); if it is not, it is rejected.
 
@@ -66,10 +66,10 @@ execute the following command:
 
 This command will generate some folders, including one called RPMS, holding the RPM created for every architecture (noarch is currently generated).
 
-In order to install the generated RPM from the local file, use the following command (changing the PEP RPM for the one you have just generated):
+In order to install the generated RPM from the local file, use the following command (changing the PEP RPM for the one you have just generated; X.Y.Z being the version you are about to install):
 
 ```
-yum --nogpgcheck localinstall  pep-proxy-0.3-1.noarch.rpm
+yum --nogpgcheck localinstall  pep-proxy-X.Y-Z.noarch.rpm
 ```
 
 It should automatically download all the dependencies provided they are available (Node.js and NPM may require the EPEL repositories to be added).
@@ -374,7 +374,7 @@ tcp   0   0  0.0.0.0:1026     0.0.0.0:*   LISTEN   12179/node
 ```
 
 ## <a name="configuration"/> Configuration
-All the configuration of the proxy is stored in the `config.js` file in the root of the project folder. This values operate as the default values for all the importante configuration pieces of data, so is important none of them are removed. 
+All the configuration of the proxy is stored in the `config.js` file in the root of the project folder. The values set inside config.js operate as the default values for all the important pieces of configuration data, so it is important none of them are removed (you can change them to suit your needs, as long as they have a valid value).
 
 Another way of configuring the component is through the use of environment variables, although less configuration options are exposed with this mechanism.
 
