@@ -5,4 +5,5 @@
 - FIX: Capture request forwarding errors (#82).
 - FIX: Wrong roles attribute in cached value (#84).
 - FIX: Missing "v1" prefix in some standard ops (#86).
-- FIX: Make the retries on Keystone requests dependent on the error type (#78);
+- FIX: Make the retries on Keystone requests dependent on the error type (#78)
+- FIX: Fixed subscribe action (it was 'suscribe') (#94)
