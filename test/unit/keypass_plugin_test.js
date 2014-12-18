@@ -48,7 +48,7 @@ describe('Keypass Plugin tests', function() {
             ['DELETE', '/pap/v1/subject/1345', 'deleteSubjectPolicies'],
             ['DELETE', '/pap/v1', 'deleteTenantPolicies'],
             ['GET', '/pap/v1/subject/12354/policy/143', 'readPolicy'],
-            ['DELETE', '/pap/v1/subject/16412/policy/1235', 'removePolicy']
+            ['DELETE', '/pap/v1/subject/16412/policy/1235', 'deletePolicy']
         ],
         authenticationMechanism = {
             module: 'keystone',
