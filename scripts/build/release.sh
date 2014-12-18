@@ -162,7 +162,7 @@ then
     git push origin develop
 
     # We do the tag only and merge to master only in the case of  non "dev" release
-    if [ "$PEP_RELEASE" == "sprint" ]
+    if [ "$PEP_RELEASE" = "sprint" ]
     then
        git checkout master
        git pull origin master
@@ -172,7 +172,7 @@ then
        git tag $NEW_VERSION
        git push --tags origin release/$NEW_VERSION
        git checkout $CURRENT_BRANCH
-    elif [ "$PEP_RELEASE" == "cc" ]
+    elif [ "$PEP_RELEASE" = "cc" ]
     then
        git checkout -b release/$NEW_VERSION
        git tag $NEW_VERSION
