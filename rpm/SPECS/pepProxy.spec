@@ -163,22 +163,4 @@ rm -rf $RPM_BUILD_ROOT
 %{_install_dir}
 
 %changelog
-* Thu Dec 18 2014 Daniel Moran <daniel.moranjimenez@telefonica.com> 0.4.0-cc
-- ADD: Environment variable to select the plugin to execute (#49).
-- ADD: Process the "/" value for the fiware-servicepath header as a domain-scoped request instead of project scoped (#70).
-- ADD: Cache for every call to Keystone (#46).
-- FIX: Slash scaped in Access Control Templates (#73).
-- FIX: Capture request forwarding errors (#82).
-- FIX: Wrong roles attribute in cached value (#84).
-- FIX: Missing "v1" prefix in some standard ops (#86).
-- FIX: Make the retries on Keystone requests dependent on the error type (#78)
-- FIX: Fixed subscribe action (it was 'suscribe') (#94)
-
-* Tue Dec 02 2014 Daniel Moran <daniel.moranjimenez@telefonica.com> 0.3.0-rel
-- Add: Reuse the token instead of authenticating for each request (Issue #22).
-- Add: Support for Keystone as the authentication mechanism.
-- Add: Admin role bypass for privileged usage of the proxy.
-- Add: Plugin to sucure Keypass PAP.
-- Add: Plugin to secure Perseo CEP Rules API.
-- Add: Change expected headers form UUIDs to Names (and resolve UUIDs against Keystone).
 

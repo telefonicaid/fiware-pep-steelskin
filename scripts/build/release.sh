@@ -192,6 +192,7 @@ then
     elif [ "$PEP_RELEASE" = "cc" ]
     then
        git checkout -b release/$NEW_VERSION
+       git push origin release/$NEW_VERSION
        git checkout $CURRENT_BRANCH
     fi
 
