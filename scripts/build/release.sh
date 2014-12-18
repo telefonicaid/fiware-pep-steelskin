@@ -32,7 +32,24 @@ CHANGELOG_FILE="CHANGES_NEXT_RELEASE"
 #
 function usage
 {
-  echo "$progName <NEW_VERSION> [dev | cc | sprint]"
+  cat <<EOF
+
+Usage:
+   $progName <NEW_VERSION> [dev | cc | sprint]
+        Creates a new release changing the version to the one specified in the arguments.
+        The second argument indicates what type of release is it going to be released:
+
+        - sprint: releases that are meant to be created each sprint end. A tag is automatically
+        generated along with the branch and develop is merged with master.
+
+        - cc: code complete releases meant to be created when the product is about to go
+        into production with the rest of the platform. No tag is generated and master is not
+        updated.
+
+        - dev: intermediate releases that do not require following the same SCM specs.
+
+EOF
+
   exit 1
 }
 
@@ -175,13 +192,11 @@ then
     elif [ "$PEP_RELEASE" = "cc" ]
     then
        git checkout -b release/$NEW_VERSION
-       git tag $NEW_VERSION
-       git push --tags origin release/$NEW_VERSION
        git checkout $CURRENT_BRANCH
     fi
 
     #
-    # Prepaire develop for the next version
+    # Prepare develop for the next version
     #
     sed "s/$NEW_VERSION/$NEW_VERSION-next/" package.json        > /tmp/package.json
     sed "s/$NEW_VERSION/$NEW_VERSION-next/" rpm/create-rpm.sh        > /tmp/create-rpm.sh
@@ -190,7 +205,7 @@ then
 
     git add rpm/create-rpm.sh
     git add package.json
-    git commit -m "ADD Prepaire new version numbers for develop"
+    git commit -m "ADD Prepare new version numbers for develop"
     git push origin develop
 
 else
