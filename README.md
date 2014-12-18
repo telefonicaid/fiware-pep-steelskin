@@ -10,6 +10,7 @@
 * [API With Access Control](#apiaccesscontrol)
 * [Rules to determine the Context Broker action from the request](#rules)
 * [Rules to determine the Perseo action from the request](#rulesPerseo)
+* [Rules to determine the Keypass Access Control action from the request](#rulesKeypass)
 * [Customizing PEP Proxy for other components](#customizing)
 * [License](#licence)
 * [Development documentation](#development)
