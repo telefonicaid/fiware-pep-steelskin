@@ -32,7 +32,7 @@ CHANGELOG_FILE="CHANGES_NEXT_RELEASE"
 #
 function usage
 {
-  echo "$progName <NEW_VERSION> [dev | rel]"
+  echo "$progName <NEW_VERSION> [dev | cc | sprint]"
   exit 1
 }
 
@@ -160,8 +160,9 @@ then
     git add CHANGES_NEXT_RELEASE
     git commit -m "ADD Step: $currentVersion -> $NEW_VERSION"
     git push origin develop
+
     # We do the tag only and merge to master only in the case of  non "dev" release
-    if [ "$PEP_RELEASE" != "dev" ]
+    if [ "$PEP_RELEASE" == "sprint" ]
     then
        git checkout master
        git pull origin master
@@ -171,7 +172,27 @@ then
        git tag $NEW_VERSION
        git push --tags origin release/$NEW_VERSION
        git checkout $CURRENT_BRANCH
+    elif [ "$PEP_RELEASE" == "cc" ]
+    then
+       git checkout -b release/$NEW_VERSION
+       git tag $NEW_VERSION
+       git push --tags origin release/$NEW_VERSION
+       git checkout $CURRENT_BRANCH
     fi
+
+    #
+    # Prepaire develop for the next version
+    #
+    sed "s/$NEW_VERSION/$NEW_VERSION-next/" package.json        > /tmp/package.json
+    sed "s/$NEW_VERSION/$NEW_VERSION-next/" rpm/create-rpm.sh        > /tmp/create-rpm.sh
+    mv /tmp/package.json              package.json
+    mv /tmp/create-rpm.sh             rpm/create-rpm.sh
+
+    git add rpm/create-rpm.sh
+    git add package.json
+    git commit -m "ADD Prepaire new version numbers for develop"
+    git push origin develop
+
 else
     echo "Your current branch is $CURRENT_BRANCH. You need to be at develop branch to do the final part of the process"
 fi
