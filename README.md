@@ -619,7 +619,7 @@ The available actions are:
 * **deleteSubjectPolicies**: to remove all the policies for a particular subject.
 * **deleteTenantPolicies**: to remove all the policies for all the subjects of a tenant.
 * **readPolicy**: to get the policy body for a particular policy.
-* **removePolicy**: to remove a single policy of a subject.
+* **deletePolicy**: to remove a single policy of a subject.
 
 The following table show the map from method and path of the request to the action.
 
@@ -630,7 +630,7 @@ The following table show the map from method and path of the request to the acti
 | DELETE    | /pap/v1/subject/{subjectId}       | deleteSubjectPolicies  |
 | DELETE    | /pap/v1      | deleteTenantPolicies  |
 | GET    | /pap/v1/subject/{subjectId}/policy/{policyId}      | readPolicy  |
-| DELETE    | /pap/v1/subject/{subjectId}/policy/{policyId}      | removePolicy  |
+| DELETE    | /pap/v1/subject/{subjectId}/policy/{policyId}      | deletePolicy  |
 
 ## <a name="customizing"/> Customizing PEP Proxy for other components
 Although the Orion PEP Proxy was meant to protect the access to the Context Broker using the rules defined in the Access Control, it was designed to easily adapt to other components. Most of the code of the proxy (i.e. the extraction of user data, the communication with the Keystone Proxy and the proxy process itself) will execute exactly the same for all the components. The exception is the rule to determine the action the request is trying to perform. To address this behavior and possible actions different customizations of the proxy could need, the proxy allows for the introduction of middlewares in the validation process.
