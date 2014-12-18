@@ -1,7 +1,7 @@
 {
   "name": "fiware-orion-pep",
   "description": "FiWare Policy Enforcement Point",
-  "version": "0.3.0-NEXT",
+  "version": "0.4.0",
   "homepage": "https://github.com/telefonicaid/fiware-orion-pep",
   "author": {
     "name": "Daniel Moran",
