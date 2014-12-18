@@ -32,7 +32,24 @@ CHANGELOG_FILE="CHANGES_NEXT_RELEASE"
 #
 function usage
 {
-  echo "$progName <NEW_VERSION> [dev | rel]"
+  cat <<EOF
+
+Usage:
+   $progName <NEW_VERSION> [dev | cc | sprint]
+        Creates a new release changing the version to the one specified in the arguments.
+        The second argument indicates what type of release is it going to be released:
+
+        - sprint: releases that are meant to be created each sprint end. A tag is automatically
+        generated along with the branch and develop is merged with master.
+
+        - cc: code complete releases meant to be created when the product is about to go
+        into production with the rest of the platform. No tag is generated and master is not
+        updated.
+
+        - dev: intermediate releases that do not require following the same SCM specs.
+
+EOF
+
   exit 1
 }
 
@@ -160,8 +177,9 @@ then
     git add CHANGES_NEXT_RELEASE
     git commit -m "ADD Step: $currentVersion -> $NEW_VERSION"
     git push origin develop
+
     # We do the tag only and merge to master only in the case of  non "dev" release
-    if [ "$PEP_RELEASE" != "dev" ]
+    if [ "$PEP_RELEASE" = "sprint" ]
     then
        git checkout master
        git pull origin master
@@ -171,7 +189,25 @@ then
        git tag $NEW_VERSION
        git push --tags origin release/$NEW_VERSION
        git checkout $CURRENT_BRANCH
+    elif [ "$PEP_RELEASE" = "cc" ]
+    then
+       git checkout -b release/$NEW_VERSION
+       git checkout $CURRENT_BRANCH
     fi
+
+    #
+    # Prepare develop for the next version
+    #
+    sed "s/$NEW_VERSION/$NEW_VERSION-next/" package.json        > /tmp/package.json
+    sed "s/$NEW_VERSION/$NEW_VERSION-next/" rpm/create-rpm.sh        > /tmp/create-rpm.sh
+    mv /tmp/package.json              package.json
+    mv /tmp/create-rpm.sh             rpm/create-rpm.sh
+
+    git add rpm/create-rpm.sh
+    git add package.json
+    git commit -m "ADD Prepare new version numbers for develop"
+    git push origin develop
+
 else
     echo "Your current branch is $CURRENT_BRANCH. You need to be at develop branch to do the final part of the process"
 fi
