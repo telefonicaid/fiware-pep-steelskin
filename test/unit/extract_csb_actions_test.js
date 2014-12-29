@@ -503,4 +503,44 @@ describe('Extract Context Broker action from request', function() {
             });
         });
     });
+
+    describe('When a request arrives with a valid XML payload to the proxy', function() {
+        var options = {
+            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/xml',
+                'Accept': 'application/xml',
+                'fiware-service': 'SmartValencia',
+                'fiware-servicepath': 'Electricidad',
+                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
+            },
+            body: utils.readExampleFile('./test/orionRequests/entityUpdate.xml', true)
+        };
+
+        beforeEach(function(done) {
+            async.series([
+                async.apply(serverMocks.mockPath, '/v3/role_assignments', mockOAuthApp),
+                async.apply(serverMocks.mockPath, '/v3/auth/tokens', mockOAuthApp),
+                async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
+                async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
+                async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockApp)
+            ], done);
+        });
+
+        it('should proxy the request to the target URL', function(done) {
+            var mockExecuted = false;
+
+            mockApp.handler = function(req, res) {
+                req.rawBody.replace(/\n/g, '').should.match(/<updateContextRequest>.*<\/updateContextRequest>/);
+                mockExecuted = true;
+                res.json(200, {});
+            };
+
+            request(options, function(error, response, body) {
+                mockExecuted.should.equal(true);
+                done();
+            });
+        });
+    });
 });
