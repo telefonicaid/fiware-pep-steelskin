@@ -1,0 +1,1 @@
+- FIX XML requests wrongly forwarded as an empty JSON (#103).
