@@ -543,4 +543,46 @@ describe('Extract Context Broker action from request', function() {
             });
         });
     });
+
+
+    describe('When a request arrives with a valid JSON payload to the proxy', function() {
+        var options = {
+            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'fiware-service': 'SmartValencia',
+                'fiware-servicepath': 'Electricidad',
+                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
+            },
+            json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
+        };
+
+        beforeEach(function(done) {
+            async.series([
+                async.apply(serverMocks.mockPath, '/v3/role_assignments', mockOAuthApp),
+                async.apply(serverMocks.mockPath, '/v3/auth/tokens', mockOAuthApp),
+                async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
+                async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
+                async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockApp)
+            ], done);
+        });
+
+        it('should proxy the request to the target URL', function(done) {
+            var mockExecuted = false;
+
+            mockApp.handler = function(req, res) {
+                should.exist(req.body.updateAction);
+                req.body.updateAction.should.equal('APPEND');
+                mockExecuted = true;
+                res.json(200, {});
+            };
+
+            request(options, function(error, response, body) {
+                mockExecuted.should.equal(true);
+                done();
+            });
+        });
+    });
 });
