@@ -19,7 +19,7 @@
 # For those usages not covered by this license please contact with
 # iot_support at tid dot es
 
-PROXY_VERSION=0.3.0
+PROXY_VERSION=$2
 PROXY_RELEASE=$1
 RPM_TOPDIR=$PWD
 PROXY_USER=pepproxy
