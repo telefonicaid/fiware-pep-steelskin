@@ -2,6 +2,9 @@
 Feature: CEP middleware
   check if all urls of EPB, with the correct permissions in AC, could connect with CEP
 
+  Background:
+    Given the Perseo configuration
+
   @cep_mdw
   Scenario: Notifications urls
     Given a domain in KEYSTONE

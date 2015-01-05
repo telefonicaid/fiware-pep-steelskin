@@ -2,6 +2,9 @@
 Feature: AC middleware
   check if all urls of EPB, with the correct permissions in AC, could connect with CEP
 
+  Background:
+    Given the Bypass configuration
+
   @ac_mdw
   Scenario: Read policy
     Given a domain in KEYSTONE

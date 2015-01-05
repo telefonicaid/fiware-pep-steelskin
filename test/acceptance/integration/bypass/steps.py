@@ -21,7 +21,7 @@ from integration.commons import *
 
 @step('a bypass domain in KEYSTONE')
 def a_bypass_domain_in_keystone(step):
-    world.domain = world.ks['bypass_domain']
+    world.domain = world.ks['domain_bypass']
 
 
 @step('a "([^"]*)" rol in the domain$')
@@ -30,9 +30,9 @@ def a_rol_in_the_domain(step, role):
 
 @step('a user bypass in the domain')
 def a_user_bypass_in_the_domain(step):
-    world.user = world.ks['bypass_user']
+    world.user = world.ks['user_bypass']
 
 
 @step('a "([^"]*)" rol in the project "([^"]*)"')
-def a_group1_rol_in_the_project_group2(step, wole, project):
+def a_group1_rol_in_the_project_group2(step, role, project):
     world.project = world.ks[project]

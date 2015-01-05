@@ -43,14 +43,14 @@ def a_context_broker_petition_is_asked_to_pep_with_format(step, action, format):
                 'updateAction': world.action_type
             }
             world.data = json.dumps(data)
-            requests.request(action.lower(), 'http://127.0.0.1:1025/' + world.url, headers=headers, data=json.dumps(data))
+            requests.request(action.lower(), 'http://{pep_ip}:{pep_port}/'.format(pep_ip=world.pep_ip, pep_port=world.pep_port) + world.url, headers=headers, data=json.dumps(data))
         else:
             data = "<updateAction>%s</updateAction>" % world.action_type
             world.data = data
-            requests.request(action.lower(), 'http://127.0.0.1:1025/' + world.url, headers=headers, data=data)
+            requests.request(action.lower(), 'http://{pep_ip}:{pep_port}/'.format(pep_ip=world.pep_ip, pep_port=world.pep_port) + world.url, headers=headers, data=data)
     else:
         world.data = {}
-        requests.request(action.lower(), 'http://127.0.0.1:1025/' + world.url, headers=headers, data={})
+        requests.request(action.lower(), 'http://{pep_ip}:{pep_port}/'.format(pep_ip=world.pep_ip, pep_port=world.pep_port) + world.url, headers=headers, data={})
 
 
 

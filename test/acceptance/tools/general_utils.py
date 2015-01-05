@@ -9,6 +9,11 @@ consent of Telefonica I+D or in accordance with the terms and conditions
 stipulated in the agreement/contract under which the program(s) have
 been supplied.
 """
+from iotqautils.accessControl import AC
+from iotqautils.idm_keystone import IdmUtils
+from lettuce import world
+from deploy_pep import *
+
 __author__ = 'Jon'
 
 import time
@@ -36,12 +41,44 @@ def start_mock(filename, ip, port):
     mock_proc = subprocess.Popen('python %s%s %s %s' % (path, filename, ip, port), stdout=DEVNULL, stderr=DEVNULL)
     return mock_proc
 
-def stop_mock(pid):
-    subprocess.Popen(['taskkill', '/F', '/T', '/PID', str(pid)])
+
+def stop_process(process):
+    subprocess.Popen(['taskkill', '/F', '/T', '/PID', str(process.pid)])
 
 
-def start_mock_destinations():
-    return start_mock('mock.py', '192.168.56.1', '1026')
+def start_proxy(ip_proxy, port_proxy, ip_destination, port_destination):
+    path, fl = os.path.split(os.path.realpath(__file__))
+    path = path[0:path.rfind('\\')] + '\\tools\\mocks\\'
+    #path += '\\mocks\\'
+    DEVNULL = open(os.devnull, 'wb')
+    proxy_proc = subprocess.Popen('python %sproxy.py %s %s %s %s' % (path, ip_proxy, port_proxy, ip_destination, port_destination), stdout=DEVNULL, stderr=DEVNULL)
+    return proxy_proc
+
+
+def start_mock_destinations(ip, port):
+    return start_mock('mock.py', ip, port)
+
+
+def initialize_keystone(platform, environment):
+    try:
+        IdmUtils.prepare_environment(platform, environment)
+    except:
+        for domain in environment['domains']:
+            IdmUtils.clean_service(platform, domain['name'])
+        IdmUtils.prepare_environment(platform, environment)
+
+
+def initialize_ac(user_roles, ac_ip, structure, domain, project, policy_name):
+    ac = AC(ac_ip)
+    ac.delete_tenant_policies(domain)
+    if project == '/':
+        for user_rol in user_roles:
+            customer_role_id = structure[domain]['users'][user_rol[0]]['roles'][user_rol[1]]['id']
+            ac.create_policy(domain, customer_role_id, policy_name + '_' + user_rol[1], 'fiware:orion:%s:%s::' % (domain, project), user_rol[1])
+    else:
+        for user_rol in user_roles:
+            customer_role_id = structure[domain]['projects'][project]['users'][user_rol[0]]['roles'][user_rol[1]]['id']
+            ac.create_policy(domain, customer_role_id, policy_name + '_' + user_rol[1], 'fiware:orion:%s:%s::' % (domain, project), user_rol[1])
 
 
 def convert(data):
@@ -53,3 +90,38 @@ def convert(data):
         return type(data)(map(convert, data))
     else:
         return data
+
+
+def start_environment():
+    # start proxys
+    #world.ks_proxy = start_proxy(world.ks_proxy_bind_ip, world.ks_proxy_port, world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
+    world.ac_proxy = start_proxy(world.ac_proxy_bind_ip, world.ac_proxy_port, world.ac['ip'], world.ac['port'])
+    world.mock_dest = start_mock_destinations(world.mock['ip'], world.mock['port'])
+
+
+def stop_environment():
+    #stop_process(world.ks_proxy)
+    stop_process(world.ac_proxy)
+    stop_process(world.mock_dest)
+
+
+def set_config_cb():
+    set_variables_config(world.mock['ip'], world.mock['port'], world.pep_port, world.ac_proxy_port, world.ac_proxy_ip,
+                         world.pep_user, world.pep_password, world.pep_domain, world.ks_proxy_ip, world.ks_proxy_port,
+                         'DEBUG', world.cb_plug_in, world.cb_extract_action)
+
+def set_config_keypass():
+    set_variables_config(world.mock['ip'], world.mock['port'], world.pep_port, world.ac_proxy_port, world.ac_proxy_ip,
+                         world.pep_user, world.pep_password, world.pep_domain, world.ks_proxy_ip, world.ks_proxy_port,
+                         'DEBUG', world.keypass_plug_in, world.keypass_extract_action)
+
+def set_config_perseo():
+    set_variables_config(world.mock['ip'], world.mock['port'], world.pep_port, world.ac_proxy_port, world.ac_proxy_ip,
+                         world.pep_user, world.pep_password, world.pep_domain, world.ks_proxy_ip, world.ks_proxy_port,
+                         'DEBUG', world.perseo_plug_in, world.perseo_extract_action)
+
+def set_config_bypass():
+    set_variables_config(world.mock['ip'], world.mock['port'], world.pep_port, world.ac_proxy_port, world.ac_proxy_ip,
+                         world.pep_user, world.pep_password, world.pep_domain, world.ks_proxy_ip, world.ks_proxy_port,
+                         'DEBUG', world.keypass_plug_in, world.keypass_extract_action, 'true', world.structure[world.ks['domain_bypass']]['users'][world.ks['user_bypass']]['roles'][world.ac['bypass_rol']]['id'])
+

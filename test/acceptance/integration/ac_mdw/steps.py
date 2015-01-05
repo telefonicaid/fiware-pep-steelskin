@@ -28,7 +28,9 @@ def a_keypass_petition_is_asked_to_pep(step, action):
         'X-Auth-Token': token
     }
     data = {'test_payload': 'test_value'}
-    world.data = data
+    world.data = json.dumps(data)
     world.headers = headers
     world.method = action.lower()
-    requests.request(action.lower(), 'http://127.0.0.1:1025' + world.url, headers=headers, data=json.dumps(data))
+    print 'Data: %s' % str(data)
+    print 'Data dump: %s' % json.dumps(data)
+    requests.request(action.lower(), 'http://{pep_ip}:{pep_port}'.format(pep_ip=world.pep_ip, pep_port=world.pep_port) +  world.url, headers=headers, data=json.dumps(data))

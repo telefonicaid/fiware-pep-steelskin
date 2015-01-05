@@ -9,11 +9,15 @@ consent of Telefonica I+D or in accordance with the terms and conditions
 stipulated in the agreement/contract under which the program(s) have
 been supplied.
 """
+from tools.deploy_pep import start_docker_pep
+from tools.general_utils import set_config_cb, set_config_keypass, set_config_perseo, set_config_bypass
+
 __author__ = 'Jon'
 
 from lettuce import world, step
 import requests
 import json
+import time
 
 @step('a url with "([^"]*)"')
 def a_url_with_url(step, url):
@@ -87,7 +91,7 @@ def a_role_in_the_user_project(step, role):
 @step('a domain without projects in KEYSTONE')
 def a_domain_without_projects_in_keystone(step):
     found = False
-    if world.ks['domain_domain_only'] in [x['name'] for x in world.ks['environment']['domains']]:
+    if world.ks['domain_domain_only'] in [x['name'] for x in world.ks['environment_domain']['domains']]:
         found = True
         world.domain = world.ks['domain_domain_only']
     assert found, "The domain is not in the keystone structure"
@@ -121,12 +125,61 @@ def a_role_in_the_user_and_domain(step, role):
 
 @step('the petition gets to the mock')
 def the_petition_gets_to_contextbroker_mock(step):
-    resp = requests.get('http://192.168.56.1:1026/last_value')
+    resp = requests.get('http://{mock_ip}:{mock_port}/last_value'.format(mock_ip=world.mock['ip'], mock_port=world.mock['port']))
+    print resp.text
     try:
+        print "Entro en try"
         sent = eval(world.data)
+        print "despues del sent"
         response = eval(json.loads(resp.text)['resp'])
-    except:
+    except Exception as e:
+        print "Entro en except: %s" % e
         sent = world.data
         response = json.loads(resp.text)['resp']
     assert sent == response, 'The payload sent is "%s (%s)" and the payload proxied is "%s (%s)"' % (sent, type(sent), response, type(response))
     assert resp.status_code == 200, 'The response code is not 200, is: %s' % resp.status_code
+
+
+@step("the Context Broker configuration")
+def step_impl(step):
+    """
+    :type step lettuce.core.Step
+    """
+    if world.config_set != 'cb':
+        world.config_set = 'cb'
+        set_config_cb()
+        start_docker_pep(world.docker_ip, world.docker_user, world.docker_password, 'root', 'root', 'pep_c4')
+        time.sleep(5)
+
+@step("the Keypass configuration")
+def step_impl(step):
+    """
+    :type step lettuce.core.Step
+    """
+    if world.config_set != 'ks':
+        world.config_set = 'ks'
+        set_config_keypass()
+        start_docker_pep(world.docker_ip, world.docker_user, world.docker_password, 'root', 'root', 'pep_c4')
+        time.sleep(5)
+
+@step("the Perseo configuration")
+def step_impl(step):
+    """
+    :type step lettuce.core.Step
+    """
+    if world.config_set != 'cep':
+        world.config_set = 'cep'
+        set_config_perseo()
+        start_docker_pep(world.docker_ip, world.docker_user, world.docker_password, 'root', 'root', 'pep_c4')
+        time.sleep(5)
+
+@step("the Bypass configuration")
+def step_impl(step):
+    """
+    :type step lettuce.core.Step
+    """
+    if world.config_set != 'bypass':
+        world.config_set = 'bypass'
+        set_config_bypass()
+        start_docker_pep(world.docker_ip, world.docker_user, world.docker_password, 'root', 'root', 'pep_c4')
+        time.sleep(5)

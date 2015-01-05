@@ -2,8 +2,11 @@
 Feature: Context broker middleware
   Check if all urls of CB, with the correct user permissions in AC, could connect with CB
 
+  Background:
+    Given the Context Broker configuration
+
   #Standard operations
-  @cb_mdwae @act2
+  @cb_mdwae @act
   Scenario Outline: Create Standard operation
     Given a domain in KEYSTONE
     And a user in the domain

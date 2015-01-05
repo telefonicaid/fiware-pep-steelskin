@@ -72,7 +72,7 @@ def last_value():
     global path_access
     if requested != '':
         resp = {"resp": str(requested), "path": str(path_access)}
-        requested_to_cb = ''
+        requested = ''
         path_access = ''
         return json.dumps(resp), 200
     else:

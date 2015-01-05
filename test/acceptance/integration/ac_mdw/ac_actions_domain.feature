@@ -2,6 +2,9 @@
 Feature: AC actions when the rol is defined only in the domain
   check if all urls of EPB, with the correct permissions in AC, could connect with CEP
 
+  Background:
+    Given the Keypass configuration
+
   @ac_actions_domain
   Scenario: Read policy
     Given a domain without projects in KEYSTONE

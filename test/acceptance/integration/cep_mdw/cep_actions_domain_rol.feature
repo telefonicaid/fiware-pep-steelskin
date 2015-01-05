@@ -2,6 +2,9 @@
 Feature: CEP actions when the rol is defined only in the domain
   Check if all urls of CEP are mapped to the correct action. This actions are defined in the domain of the user in Keystone
 
+  Background:
+    Given the Perseo configuration
+
   @cep_actions_domain
   Scenario: Notify action
     Given a domain without projects in KEYSTONE

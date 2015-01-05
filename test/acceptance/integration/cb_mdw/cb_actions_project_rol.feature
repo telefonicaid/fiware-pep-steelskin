@@ -2,6 +2,9 @@
 Feature: Context broker actions when the rol is defined only in a project
   Check if all urls of CB are mapped to the correct action. This action are defined in the project of the user in Keystone
 
+  Background:
+    Given the Context Broker configuration
+
   #Standard operations
   @cb_actions_project_rol
   Scenario Outline: Create Standard operation

@@ -2,8 +2,11 @@
 Feature: Context broker actions when the rol is defined only in a domain
   Check if all urls of CB are mapped to the correct action. This actions are defined in the domain of the user in Keystone
 
+  Background:
+    Given the Context Broker configuration
+
   #Standard operations
-  @cb_actions_domain @act
+  @cb_actions_domain
   Scenario Outline: Create Standard operation
     Given a domain without projects in KEYSTONE
     And a "user_create_domain" user in domain without projects
@@ -14,7 +17,7 @@ Feature: Context broker actions when the rol is defined only in a domain
     
   Examples:
     | format |
-  #  | xml    |
+    | xml    |
     | json   |
 
   @cb_actions_domain
