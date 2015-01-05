@@ -30,7 +30,7 @@ var serverMocks = require('../tools/serverMocks'),
     async = require('async'),
     utils = require('../tools/utils'),
     should = require('should'),
-    request = require('request'),
+    request = require('headers'),
     originalAuthenticationModule;
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
@@ -91,7 +91,7 @@ describe('Control header behavior', function() {
         });
     });
 
-    describe('When a request to the CB arrives to the proxy without X-Forwarded-For', function() {
+    describe('When a headers to the CB arrives to the proxy without X-Forwarded-For', function() {
         var options = {
             uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
             method: 'POST',
@@ -133,7 +133,7 @@ describe('Control header behavior', function() {
         });
     });
 
-    describe('When a request to the CB arrives to the proxy with the X-Forwarded-For header', function() {
+    describe('When a headers to the CB arrives to the proxy with the X-Forwarded-For header', function() {
         var options = {
             uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
             method: 'POST',
@@ -176,7 +176,7 @@ describe('Control header behavior', function() {
         });
     });
 
-    describe('When the PEP Proxy sends a request to the access control', function() {
+    describe('When the PEP Proxy sends a headers to the access control', function() {
         var options = {
             uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
             method: 'POST',

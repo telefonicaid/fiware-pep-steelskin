@@ -30,7 +30,7 @@ var serverMocks = require('../tools/serverMocks'),
     config = require('../../config'),
     utils = require('../tools/utils'),
     should = require('should'),
-    request = require('request');
+    request = require('headers');
 
 describe('Admin bypass tests', function() {
     /* jshint loopfunc: true */
@@ -83,7 +83,7 @@ describe('Admin bypass tests', function() {
     }
 
     describe('[' + authenticationMechanism.module + '] ' +
-    'When a request arrives to the PEP and for a user with the admin role', function() {
+    'When a headers arrives to the PEP and for a user with the admin role', function() {
         var options = {
                 uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
                 method: 'POST',
@@ -125,7 +125,7 @@ describe('Admin bypass tests', function() {
             });
         });
 
-        it('should proxy the request without further validation', function(done) {
+        it('should proxy the headers without further validation', function(done) {
             var accessControlExecuted = false,
                 requestProxyed = false;
 

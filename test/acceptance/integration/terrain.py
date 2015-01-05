@@ -43,10 +43,11 @@ def before_all_scenarios():
     #start_docker_pep(world.docker_ip, world.docker_user, world.docker_password, 'root', 'root', 'pep_c4')
 
     log.debug('Initialize environment')
-    # initialize_keystone(world.ks['platform'], world.ks['environment_general'])
+    initialize_keystone(world.ks['platform'], world.ks['environment_general'])
+    initialize_keystone(world.ks['platform'], world.ks['environment_general_ko'])
     # initialize_keystone(world.ks['platform'], world.ks['environment_domain'])
     # initialize_keystone(world.ks['platform'], world.ks['environment_project'])
-    initialize_keystone(world.ks['platform'], world.ks['environment_bypass'])
+    # initialize_keystone(world.ks['platform'], world.ks['environment_bypass'])
 
     world.structure = IdmUtils.get_structure(world.ks['platform'])
     # General
@@ -58,6 +59,7 @@ def before_all_scenarios():
     #               world.ks['domain_ok'],
     #               world.ks['project_ok'],
     #               'general')
+    # #Domain
     # user_roles_domain = [(x['name'], x['roles'][0]['name']) for x in
     #                      world.ks['environment_domain']['domains'][0]['users']]
     # initialize_ac(user_roles_domain,
@@ -66,6 +68,7 @@ def before_all_scenarios():
     #               world.ks['domain_domain_only'],
     #               world.ks['project_domain_only'],
     #               'domain')
+    #Project
     # user_roles_project = [(x['name'], x['projects'][0]['roles'][0]['name']) for x in
     #                       world.ks['environment_project']['domains'][0]['users']]
     # initialize_ac(user_roles_project,

@@ -31,11 +31,11 @@ world.cb_plug_in = 'orionPlugin'
 world.perseo_plug_in = 'perseoPlugin'
 
 world.ks_proxy_bind_ip = '0.0.0.0'
-world.ks_proxy_ip = '192.168.56.1'
+world.ks_proxy_ip = '192.168.1.37'
 world.ks_proxy_port = '5001'
 
 world.ac_proxy_bind_ip = '0.0.0.0'
-world.ac_proxy_ip = '192.168.56.1'
+world.ac_proxy_ip = '192.168.1.37'
 world.ac_proxy_port = '8082'
 
 world.pep_log_level = 'DEBUG'
@@ -47,7 +47,7 @@ world.pep_ip = '127.0.0.1'
 world.pep_port = '1025'
 
 world.mock = {
-    'ip': '192.168.56.1',
+    'ip': '192.168.1.37',
     'port': '1027'
 }
 
@@ -106,11 +106,6 @@ world.ks['platform'] = {
     }
 }
 
-# bypass
-world.ks['bypass_user'] = 'bypass_admin'
-world.ks['bypass_domain'] = 'bypass_domain'
-world.ks['bypass_project'] = '/bypass_project'
-
 # General
 world.ks['user_all'] = 'octopus'
 world.ks['domain_ok'] = 'atlantic'
@@ -118,7 +113,7 @@ world.ks['project_ok'] = '/coral'
 world.ks['environment_general'] = {
     'domains': [
         {
-            'name': 'atlantic',
+            'name': world.ks['domain_ok'],
             'description': 'All the atlantic Ocean',
             'domain_admin': {
                 'username': 'white_shark',
@@ -136,7 +131,7 @@ world.ks['environment_general'] = {
                     ],
                     'projects': [
                         {
-                            'name': '/coral',
+                            'name': world.ks['project_ok'],
                             'description': 'Nemos house',
                             'roles': [
                                 {
@@ -198,6 +193,47 @@ world.ks['environment_general'] = {
         }
     ]
 }
+
+# General ko
+world.ks['user_all_ko'] = 'urchin'
+world.ks['domain_ko'] = 'atlantic_ko'
+world.ks['project_ko'] = '/coral_ko'
+world.ks['environment_general_ko'] = {
+    'domains': [
+        {
+            'name': world.ks['domain_ko'],
+            'description': 'All the atlantic Ocean',
+            'domain_admin': {
+                'username': 'white_shark',
+                'password': 'white_shark'
+            },
+            'users': [
+                {
+                    'name': world.ks['user_all_ko'],
+                    'password': world.ks['user_all_ko'],
+                    'description': 'Tentacles guy',
+                    'roles': [
+                        {
+                            'name': 'ko_rol'
+                        }
+                    ],
+                    'projects': [
+                        {
+                            'name': world.ks['project_ko'],
+                            'description': 'Nemos house',
+                            'roles': [
+                                {
+                                    'name': 'ko_rol'
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+
 
 # Project Only
 world.ks['user_create_project'] = 'krim_create'

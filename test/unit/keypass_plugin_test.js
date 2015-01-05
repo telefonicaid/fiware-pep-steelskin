@@ -30,7 +30,7 @@ var serverMocks = require('../tools/serverMocks'),
     utils = require('../tools/utils'),
     should = require('should'),
     async = require('async'),
-    request = require('request');
+    request = require('headers');
 
 describe('Keypass Plugin tests', function() {
     var proxy,
@@ -75,7 +75,7 @@ describe('Keypass Plugin tests', function() {
             json: {}
         };
 
-        describe('When  a ' + particularCase[0] + ' request arrives to the ' +
+        describe('When  a ' + particularCase[0] + ' headers arrives to the ' +
         particularCase[1] + ' url of Keypass PAP through the PEP Proxy', function() {
 
             beforeEach(function(done) {
@@ -154,7 +154,7 @@ describe('Keypass Plugin tests', function() {
 
     apiCases.forEach(apiCase);
 
-    describe('When a request arrives at the Keypass PDP through the PEP Proxy', function() {
+    describe('When a headers arrives at the Keypass PDP through the PEP Proxy', function() {
         function initializeUseCase(currentAuthentication, done) {
             config.authentication.module = currentAuthentication.module;
             config.authentication.path = currentAuthentication.path;

@@ -22,6 +22,9 @@ app = Flask(__name__)
 
 log = get_logger('proxy_ks')
 
+requested = ''
+last_path = ''
+
 
 def convert(data):
     if isinstance(data, basestring):
@@ -37,36 +40,44 @@ def convert(data):
 @app.route('/', defaults={'path': ''}, methods=['GET', 'POST', 'UPDATE', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'])
 @app.route('/<path:path>', methods=['GET', 'POST', 'UPDATE', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'])
 def proxy(path):
+    global requested
+    global last_path
     log.debug('********************************* Entring in proxy***********************************************************')
-    url = request.scheme + '://%s:%s/%s' % (sys.argv[3], sys.argv[4], path)
-    headers = convert(dict(request.headers))
-    headers['Host'] = "{ip_dest}:{port_dest}".format(ip_dest=sys.argv[3], port_dest=sys.argv[4])
-    del headers['Content-Length']
-    method = request.method.lower()
-    redirect = False
-    params = request.args
-    stream = False
-    timeout = 30
-    log.debug('Request: \n\n Method: %s \n\n Headers: %s \n\n Data: %s \n\n URL: %s \n\n ARGS: %s \n\n---------------------------------------------' % \
-    (str(method), str(headers), str(request.data), str(url), str(params)))
-    if method == 'post':
-        log.debug('Sending %s request' % method)
-        r = requests.request(method, url, allow_redirects=redirect, headers=headers, params=params, stream=stream, data=request.data, timeout=timeout)
+    if path == 'last_path':
+        ret_last_path = last_path
+        last_path = ''
+        return ret_last_path
     else:
-        log.debug('Sending %s request' % method)
-        r = requests.request(method, url, allow_redirects=redirect, headers=headers, params=params, stream=stream, timeout=timeout)
+        last_path = path
+        url = request.scheme + '://%s:%s/%s' % (sys.argv[3], sys.argv[4], path)
+        headers = convert(dict(request.headers))
+        headers['Host'] = "{ip_dest}:{port_dest}".format(ip_dest=sys.argv[3], port_dest=sys.argv[4])
+        del headers['Content-Length']
+        method = request.method.lower()
+        redirect = False
+        params = request.args
+        stream = False
+        timeout = 30
+        log.debug('Request: \n\n Method: %s \n\n Headers: %s \n\n Data: %s \n\n URL: %s \n\n ARGS: %s \n\n---------------------------------------------' % \
+        (str(method), str(headers), str(request.data), str(url), str(params)))
+        if method == 'post':
+            log.debug('Sending %s headers' % method)
+            r = requests.request(method, url, allow_redirects=redirect, headers=headers, params=params, stream=stream, data=request.data, timeout=timeout)
+        else:
+            log.debug('Sending %s headers' % method)
+            r = requests.request(method, url, allow_redirects=redirect, headers=headers, params=params, stream=stream, timeout=timeout)
 
-    headers_resp = dict(r.headers)
-    if 'transfer-encoding' in headers_resp:
-        del headers_resp['transfer-encoding']
-    response_data = r.content
-    status_code = r.status_code
-    content_type = headers_resp['content-type']
-    flask_response = Response(response=response_data,
-                              status=status_code,
-                              headers=headers_resp.items())
-    log.debug('Response: \n\n  Headers: %s \n\n Data: %s \n\n StatusCode: %s \n\n Response: %s \n\n+++++++++++++++++++++++++++++++++++++++++++++' % \
-    (headers_resp, response_data, status_code, flask_response.response))
+        headers_resp = dict(r.headers)
+        if 'transfer-encoding' in headers_resp:
+            del headers_resp['transfer-encoding']
+        response_data = r.content
+        status_code = r.status_code
+        content_type = headers_resp['content-type']
+        flask_response = Response(response=response_data,
+                                  status=status_code,
+                                  headers=headers_resp.items())
+        log.debug('Response: \n\n  Headers: %s \n\n Data: %s \n\n StatusCode: %s \n\n Response: %s \n\n+++++++++++++++++++++++++++++++++++++++++++++' % \
+        (headers_resp, response_data, status_code, flask_response.response))
     log.debug('################################### Exiting proxy ##############################################################\n\n\n')
     return flask_response
 

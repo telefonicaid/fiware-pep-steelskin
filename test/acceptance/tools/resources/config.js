@@ -8,7 +8,7 @@ config.resource = {
         /**
          * Host that is being proxied.
          */
-        host: '192.168.56.1',
+        host: '192.168.1.37',
 
         /**
          * Port where the proxied server is listening.
@@ -27,7 +27,7 @@ config.resource = {
 // Access Control configuration
 //--------------------------------------------------
 /**
- * This options can be used to configure the address and options of the Access Control, responsible of the request
+ * This options can be used to configure the address and options of the Access Control, responsible of the headers
  * validation.
  */
 config.access = {
@@ -38,7 +38,7 @@ config.access = {
     /**
      * Host where the Access Control is located.
      */
-    host: '192.168.56.1',
+    host: '192.168.1.37',
     /**
      * Port where the Access Control is listening.
      */
@@ -67,7 +67,7 @@ config.authentication = {
     },
     options: {
         protocol: 'http',
-        host: '192.168.56.1',
+        host: '192.168.1.37',
         port: 5001,
         path: '/v3/role_assignments',
         authPath: '/v3/auth/tokens'
@@ -103,16 +103,16 @@ config.logLevel = 'DEBUG';
 // List of component middlewares
 //-------------------------------------------------
 /**
- * To validate the request, the proxy needs some information that is dependant of the component: the action that a
- * request is going to execute. How to detect the action given the request is component-specific logic, that can be
+ * To validate the headers, the proxy needs some information that is dependant of the component: the action that a
+ * headers is going to execute. How to detect the action given the headers is component-specific logic, that can be
  * codified in a middleware-like function that will be executed before the user validation. This logic must populate
- * the 'action' parameter of the request.
+ * the 'action' parameter of the headers.
  */
 config.middlewares = {
     /**
      * Indicates the module from where the middlewares will be loaded.
      */
-    require: 'lib/plugins/keypassPlugin',
+    require: 'lib/plugins/perseoPlugin',
 
     /**
      * Indicates the list of middlewares to load.
@@ -133,15 +133,15 @@ config.componentName = 'orion';
 config.resourceNamePrefix = 'fiware:';
 
 /**
- * Indicates whether this PEP should have an admin bypass or not. If it does, whenever a user request arrives to the
- * PEP from a user that has the role defined in the "adminRoleId" property, that request is not validated against the
+ * Indicates whether this PEP should have an admin bypass or not. If it does, whenever a user headers arrives to the
+ * PEP from a user that has the role defined in the "adminRoleId" property, that headers is not validated against the
  * Access Control, but it is automatically proxied instead.
  */
-config.bypass = true;
+config.bypass = false;
 
 /**
  * ID of the admin user if it exists. Only effective if the "bypass" property is true.
  */
-config.bypassRoleId = '77a80f0c4a9f4be2b148f1e0a5ce1717';
+config.bypassRoleId = '';
 
 module.exports = config;

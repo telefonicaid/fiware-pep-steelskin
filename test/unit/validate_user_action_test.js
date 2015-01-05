@@ -31,7 +31,7 @@ var serverMocks = require('../tools/serverMocks'),
     config = require('../../config'),
     utils = require('../tools/utils'),
     should = require('should'),
-    request = require('request');
+    request = require('headers');
 
 function mockIdm(req, res) {
     if (req.path === '/user') {
@@ -110,7 +110,7 @@ describe('Validate action with Access Control', function() {
 
     for (var q = 0; q < authenticationMechanisms.length; q++) {
         describe('[' + authenticationMechanisms[q].module +
-            '] When a request to the CB arrives to the proxy with appropriate permissions', function() {
+            '] When a headers to the CB arrives to the proxy with appropriate permissions', function() {
             var options = {
                     uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
                     method: 'POST',
@@ -148,7 +148,7 @@ describe('Validate action with Access Control', function() {
                 });
             });
 
-            it('should proxy the request to the destination', function(done) {
+            it('should proxy the headers to the destination', function(done) {
                 var mockExecuted = false;
 
                 mockAccessApp.handler = function(req, res) {
@@ -169,7 +169,7 @@ describe('Validate action with Access Control', function() {
         });
 
         describe('[' + authenticationMechanisms[q].module +
-            '] When a request to the CB arrives for a user with wrong permissions', function() {
+            '] When a headers to the CB arrives for a user with wrong permissions', function() {
             var options = {
                     uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
                     method: 'POST',
@@ -207,7 +207,7 @@ describe('Validate action with Access Control', function() {
                 });
             });
 
-            it('should reject the request with a 403 error code', function(done) {
+            it('should reject the headers with a 403 error code', function(done) {
                 var mockExecuted = false;
 
                 mockAccessApp.handler = function(req, res) {
@@ -229,7 +229,7 @@ describe('Validate action with Access Control', function() {
         });
 
         describe('[' + authenticationMechanisms[q].module +
-            '] When a request to the CB arrives and the connection to the Access Control is not working', function() {
+            '] When a headers to the CB arrives and the connection to the Access Control is not working', function() {
             var options = {
                     uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
                     method: 'POST',
@@ -266,7 +266,7 @@ describe('Validate action with Access Control', function() {
                 });
             });
 
-            it('should reject the request with a 503 error', function(done) {
+            it('should reject the headers with a 503 error', function(done) {
                 var mockExecuted = false;
 
                 mockAccessApp.handler = function(req, res) {
@@ -284,7 +284,7 @@ describe('Validate action with Access Control', function() {
 
 
         describe('[' + authenticationMechanisms[q].module + '] ' +
-            'When a request to the CB arrives and the Access Control fails to make a proper decision', function() {
+            'When a headers to the CB arrives and the Access Control fails to make a proper decision', function() {
             var options = {
                     uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
                     method: 'POST',
@@ -321,7 +321,7 @@ describe('Validate action with Access Control', function() {
                 });
             });
 
-            it('should reject the request with a 503 error', function(done) {
+            it('should reject the headers with a 503 error', function(done) {
                 var mockExecuted = false;
 
                 mockAccessApp.handler = function(req, res) {
@@ -338,13 +338,13 @@ describe('Validate action with Access Control', function() {
         });
 
         describe('[' + authenticationMechanisms[q].module + '] ' +
-            'When a request arrives and the authentication token has expired', function() {
-            it('should reject the request with a 503 temporary unavailable message');
+            'When a headers arrives and the authentication token has expired', function() {
+            it('should reject the headers with a 503 temporary unavailable message');
         });
     }
 
     describe('[' + authenticationMechanisms[1].module + '] ' +
-        'When a request is validated using Keystone', function() {
+        'When a headers is validated using Keystone', function() {
         var options = {
                 uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
                 method: 'POST',
@@ -472,7 +472,7 @@ describe('Validate action with Access Control', function() {
     });
 
     describe('[' + authenticationMechanisms[1].module + '] ' +
-    'When a request arrives for a user that doesn\'t have a role on the subservice', function() {
+    'When a headers arrives for a user that doesn\'t have a role on the subservice', function() {
         var options = {
                 uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
                 method: 'POST',
@@ -535,7 +535,7 @@ describe('Validate action with Access Control', function() {
     });
 
     describe('[' + authenticationMechanisms[1].module + '] ' +
-    'When a request arrives for a user that has roles in the domain as well as in the project', function() {
+    'When a headers arrives for a user that has roles in the domain as well as in the project', function() {
         var options = {
                 uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
                 method: 'POST',
@@ -602,7 +602,7 @@ describe('Validate action with Access Control', function() {
     });
 
     describe('[' + authenticationMechanisms[1].module + '] ' +
-        'When a request with a tenant A tries to access things on tenant B', function() {
+        'When a headers with a tenant A tries to access things on tenant B', function() {
         var options = {
                 uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
                 method: 'POST',
@@ -640,7 +640,7 @@ describe('Validate action with Access Control', function() {
             });
         });
 
-        it('should reject the request with a 403', function(done) {
+        it('should reject the headers with a 403', function(done) {
             request(options, function(error, response, body) {
                 response.statusCode.should.equal(403);
                 done();

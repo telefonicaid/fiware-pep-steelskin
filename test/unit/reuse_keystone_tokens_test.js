@@ -31,7 +31,7 @@ var serverMocks = require('../tools/serverMocks'),
     config = require('../../config'),
     utils = require('../tools/utils'),
     should = require('should'),
-    request = require('request');
+    request = require('headers');
 
 describe('Reuse authentication tokens', function() {
     var proxy,

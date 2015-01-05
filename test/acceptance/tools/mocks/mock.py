@@ -76,7 +76,7 @@ def last_value():
         path_access = ''
         return json.dumps(resp), 200
     else:
-        return 'There is no value in request', 201
+        return 'There is no value in headers', 201
 
 
 @app.route('/notices', methods=['POST'])
