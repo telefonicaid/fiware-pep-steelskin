@@ -515,14 +515,14 @@ This is the list of actions available for the Context Broker. For every action, 
 | N/A | - |
 
 ### Standard operations
-* `create`: URL contains `/ngsi10/updateContext` and the `actionType` attribute of the payload (either with XML or JSON) is `APPEND`.
-* `update`: URL contains `/ngsi10/updateContext` and the `actionType` attribute of the payload (either with XML or JSON) is `UPDATE`.
-* `delete`: URL contains `/ngsi10/updateContext` and the `actionType` attribute of the payload (either with XML or JSON) is “DELETE”.
-* `read`: URL contains `/ngsi10/queryContext`.
-* `subscribe`: URL contains  `/ngsi10/subscribeContext`, `/ngsi10/updateContextSubscription` o `/ngsi10/unsubscribeContext`.
-* `register`: URL contains `/ngsi9/registerContext`.
-* `discover`: URL contains `/nsgi9/discoverContextAvailability`.
-* `subscribe-availability`: URL contains `/ngsi9/subscribeContextAvailability`, `/ngsi9/updateContextAvailabilitySubscription` o `/ngsi9/unsubscribeContextAvailability`.
+* `create`: URL contains `/v1/updateContext` and the `actionType` attribute of the payload (either with XML or JSON) is `APPEND`.
+* `update`: URL contains `/v1/updateContext` and the `actionType` attribute of the payload (either with XML or JSON) is `UPDATE`.
+* `delete`: URL contains `/v1/updateContext` and the `actionType` attribute of the payload (either with XML or JSON) is “DELETE”.
+* `read`: URL contains `/v1/queryContext`.
+* `subscribe`: URL contains  `/v1/subscribeContext`, `/v1/updateContextSubscription` o `/v1/unsubscribeContext`.
+* `register`: URL contains `/v1/registry/registerContext`.
+* `discover`: URL contains `/v1/registry/discoverContextAvailability`.
+* `subscribe-availability`: URL contains `/v1/registry/subscribeContextAvailability`, `/v1/registry/updateContextAvailabilitySubscription` o `/v1/registry/unsubscribeContextAvailability`.
 
 ### Convenience operations
 The following tables show the rules for detemining the action based on Method and path of the request. 
@@ -532,52 +532,52 @@ An up-to-date list of the convenience operations can be found [here](https://doc
 #### NGSI9 (context information availability)
 | Method | Path                                                                                     | Action |
 | ------ |:--------------------------------------------------------------------------------------- | ---:|
-| GET    | /ngsi9/contextEntities/{EntityId}                                                      	| Dis |
-| POST   | /ngsi9/contextEntities/{EntityId}                                                      	| Reg |
-| GET    | /ngsi9/contextEntities/{EntityId}/attributes                                           	| -   |
-| POST   | /ngsi9/contextEntities/{EntityId}/attributes                                           	| -   |
-| GET    | /ngsi9/contextEntities/{EntityId}/attributes/{attributeName}                           	| Dis |
-| POST   | /ngsi9/contextEntities/{EntityId}/attributes/{attributeName}                          	| Reg |
-| GET    | /ngsi9/contextEntities/{EntityId}/attributeDomains/{attributeDomainName}               	| Dis |
-| POST   | /ngsi9/contextEntities/{EntityId}/attributeDomains/{attributeDomainName}               	| Reg |
-| GET    | /ngsi9/contextEntityTypes/{typeName}                                                   	| Dis |
-| POST   | /ngsi9/contextEntityTypes/{typeName}                                                   	| Reg |
-| GET    | /ngsi9/contextEntityTypes/{typeName}/attributes                                        	| -   |
-| POST   | /ngsi9/contextEntityTypes/{typeName}/attributes                                        	| -   |
-| GET    | /ngsi9/contextEntityTypes/{typeName}/attributes/{attributeName}                        	| Dis |
-| POST   | /ngsi9/contextEntityTypes/{typeName}/attributes/{attributeName}                        	| Reg |
-| GET    | /ngsi9/contextEntityTypes/{typeName}/attributeDomains/{attributeDomainName}            	| Dis |
-| POST   | /ngsi9/contextEntityTypes/{typeName}/attributeDomains/{attributeDomainName}            	| Reg |
-| POST   | /ngsi9/contextAvailabilitySubscriptions                                                	| S-A |
-| PUT    | /ngsi9/contextAvailabilitySubscriptions/{subscriptionId}                               	| S-A |
-| DELETE | /ngsi9/contextAvailabilitySubscriptions/{subscriptionId}                               	| S-A |
+| GET    | /v1/registry/contextEntities/{EntityId}                                                      	| Dis |
+| POST   | /v1/registry/contextEntities/{EntityId}                                                      	| Reg |
+| GET    | /v1/registry/contextEntities/{EntityId}/attributes                                           	| -   |
+| POST   | /v1/registry/contextEntities/{EntityId}/attributes                                           	| -   |
+| GET    | /v1/registry/contextEntities/{EntityId}/attributes/{attributeName}                           	| Dis |
+| POST   | /v1/registry/contextEntities/{EntityId}/attributes/{attributeName}                          	| Reg |
+| GET    | /v1/registry/contextEntities/{EntityId}/attributeDomains/{attributeDomainName}               	| Dis |
+| POST   | /v1/registry/contextEntities/{EntityId}/attributeDomains/{attributeDomainName}               	| Reg |
+| GET    | /v1/registry/contextEntityTypes/{typeName}                                                   	| Dis |
+| POST   | /v1/registry/contextEntityTypes/{typeName}                                                   	| Reg |
+| GET    | /v1/registry/contextEntityTypes/{typeName}/attributes                                        	| -   |
+| POST   | /v1/registry/contextEntityTypes/{typeName}/attributes                                        	| -   |
+| GET    | /v1/registry/contextEntityTypes/{typeName}/attributes/{attributeName}                        	| Dis |
+| POST   | /v1/registry/contextEntityTypes/{typeName}/attributes/{attributeName}                        	| Reg |
+| GET    | /v1/registry/contextEntityTypes/{typeName}/attributeDomains/{attributeDomainName}            	| Dis |
+| POST   | /v1/registry/contextEntityTypes/{typeName}/attributeDomains/{attributeDomainName}            	| Reg |
+| POST   | /v1/registry/contextAvailabilitySubscriptions                                                	| S-A |
+| PUT    | /v1/registry/contextAvailabilitySubscriptions/{subscriptionId}                               	| S-A |
+| DELETE | /v1/registry/contextAvailabilitySubscriptions/{subscriptionId}                               	| S-A |
 
 #### NGS10 (context information availability)
 | Method | Path                                                                                     | Action |
 | ------ |:--------------------------------------------------------------------------------------- | ---:|
-| GET    | /ngsi10/contextEntities/{EntityID}                                                     	| R |
-| PUT    | /ngsi10/contextEntities/{EntityID}                                                     	| U |
-| POST   | /ngsi10/contextEntities/{EntityID}                                                     	| C |
-| DELETE | /ngsi10/contextEntities/{EntityID}                                                     	| D |
-| GET    | /ngsi10/contextEntities/{EntityID}/attributes                                          	| - |
-| PUT    | /ngsi10/contextEntities/{EntityID}/attributes                                          	| - |
-| POST   | /ngsi10/contextEntities/{EntityID}/attributes                                          	| - |
-| DELETE | /ngsi10/contextEntities/{EntityID}/attributes                                          	| - |
-| GET    | /ngsi10/contextEntities/{EntityID}/attributes/{attributeName}                          	| R |
-| POST   | /ngsi10/contextEntities/{EntityID}/attributes/{attributeName}                          	| C |
-| PUT    | /ngsi10/contextEntities/{EntityID}/attributes/{attributeName}                          	| U |
-| DELETE | /ngsi10/contextEntities/{EntityID}/attributes/{attributeName}                          	| D |
-| GET    | /ngsi10/contextEntities/{EntityID}/attributes/{attributeName}/{valueID}                	| R |
-| PUT    | /ngsi10/contextEntities/{EntityID}/attributes/{attributeName}/{valueID}                	| U |
-| DELETE | /ngsi10/contextEntities/{EntityID}/attributes/{attributeName}/{valueID}                	| D |
-| GET    | /ngsi10/contextEntities/{EntityID}/attributeDomains/{attributeDomainName}              	| R |
-| GET    | /ngsi10/contextEntityTypes/{typeName}                                                  	| R |
-| GET    | /ngsi10/contextEntityTypes/{typeName}/attributes                                       	| - |
-| GET    | /ngsi10/contextEntityTypes/{typeName}/attributes/{attributeName}                       	| R |
-| GET    | /ngsi10/contextEntityTypes/{typeName}/attributeDomains/{attributeDomainName}           	| R |
-| POST   | /ngsi10/contextSubscriptions                                                           	| S |
-| PUT    | /ngsi10/contextSubscriptions/{subscriptionID}                                          	| S |
-| DELETE | /ngsi10/contextSubscriptions/{subscriptionID}                                          	| S |
+| GET    | /v1/contextEntities/{EntityID}                                                     	| R |
+| PUT    | /v1/contextEntities/{EntityID}                                                     	| U |
+| POST   | /v1/contextEntities/{EntityID}                                                     	| C |
+| DELETE | /v1/contextEntities/{EntityID}                                                     	| D |
+| GET    | /v1/contextEntities/{EntityID}/attributes                                          	| - |
+| PUT    | /v1/contextEntities/{EntityID}/attributes                                          	| - |
+| POST   | /v1/contextEntities/{EntityID}/attributes                                          	| - |
+| DELETE | /v1/contextEntities/{EntityID}/attributes                                          	| - |
+| GET    | /v1/contextEntities/{EntityID}/attributes/{attributeName}                          	| R |
+| POST   | /v1/contextEntities/{EntityID}/attributes/{attributeName}                          	| C |
+| PUT    | /v1/contextEntities/{EntityID}/attributes/{attributeName}                          	| U |
+| DELETE | /v1/contextEntities/{EntityID}/attributes/{attributeName}                          	| D |
+| GET    | /v1/contextEntities/{EntityID}/attributes/{attributeName}/{valueID}                	| R |
+| PUT    | /v1/contextEntities/{EntityID}/attributes/{attributeName}/{valueID}                	| U |
+| DELETE | /v1/contextEntities/{EntityID}/attributes/{attributeName}/{valueID}                	| D |
+| GET    | /v1/contextEntities/{EntityID}/attributeDomains/{attributeDomainName}              	| R |
+| GET    | /v1/contextEntityTypes/{typeName}                                                  	| R |
+| GET    | /v1/contextEntityTypes/{typeName}/attributes                                       	| - |
+| GET    | /v1/contextEntityTypes/{typeName}/attributes/{attributeName}                       	| R |
+| GET    | /v1/contextEntityTypes/{typeName}/attributeDomains/{attributeDomainName}           	| R |
+| POST   | /v1/contextSubscriptions                                                           	| S |
+| PUT    | /v1/contextSubscriptions/{subscriptionID}                                          	| S |
+| DELETE | /v1/contextSubscriptions/{subscriptionID}                                          	| S |
 
 Operations marked with a slash, "-" are now deprecated. All those operations will be tagged with the special action "N/A". If you want to allow them anyway, just add a rule to the Access Control allowing the "N/A" action for the desired roles.
 
