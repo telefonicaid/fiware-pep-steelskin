@@ -59,11 +59,11 @@ config.authentication = {
     user: '{{pep_user}}',
     password: '{{pep_password}}',
     domainName: '{{pep_domain}}',
-    retries: 3,
+    retries: 0,
     cacheTTLs: {
-        users: 1000,
-        projectIds: 1000,
-        roles: 60
+        users: {{cache_users}},
+        projectIds: {{cache_projects}},
+        roles: {{cache_roles}}
     },
     options: {
         protocol: 'http',

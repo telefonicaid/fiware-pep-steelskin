@@ -20,11 +20,11 @@ from iotqautils.iotqaLogger import get_logger
 app = Flask(__name__)
 
 
-log = get_logger('proxy_ks')
+log = get_logger('proxy')
 
 requested = ''
 last_path = ''
-
+history = []
 
 def convert(data):
     if isinstance(data, basestring):
@@ -42,12 +42,19 @@ def convert(data):
 def proxy(path):
     global requested
     global last_path
+    global history
     log.debug('********************************* Entring in proxy***********************************************************')
     if path == 'last_path':
         ret_last_path = last_path
         last_path = ''
         return ret_last_path
+    elif path == 'history':
+        return str(history)
+    elif path == 'reset_history':
+        history = []
+        return ''
     else:
+        history.append(path)
         last_path = path
         url = request.scheme + '://%s:%s/%s' % (sys.argv[3], sys.argv[4], path)
         headers = convert(dict(request.headers))

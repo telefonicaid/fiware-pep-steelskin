@@ -45,7 +45,7 @@ def start_mock(filename, ip, port):
 def stop_process(process):
     subprocess.Popen(['taskkill', '/F', '/T', '/PID', str(process.pid)])
 
-
+#TODO: It must work in any SO
 def start_proxy(ip_proxy, port_proxy, ip_destination, port_destination):
     path, fl = os.path.split(os.path.realpath(__file__))
     path = path[0:path.rfind('\\')] + '\\tools\\mocks\\'
@@ -54,7 +54,7 @@ def start_proxy(ip_proxy, port_proxy, ip_destination, port_destination):
     proxy_proc = subprocess.Popen('python %sproxy.py %s %s %s %s' % (path, ip_proxy, port_proxy, ip_destination, port_destination), stdout=DEVNULL, stderr=DEVNULL)
     return proxy_proc
 
-
+#TODO: It must work in any SO
 def start_mock_destinations(ip, port):
     return start_mock('mock.py', ip, port)
 
@@ -94,13 +94,13 @@ def convert(data):
 
 def start_environment():
     # start proxys
-    #world.ks_proxy = start_proxy(world.ks_proxy_bind_ip, world.ks_proxy_port, world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
+    world.ks_proxy = start_proxy(world.ks_proxy_bind_ip, world.ks_proxy_port, world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
     world.ac_proxy = start_proxy(world.ac_proxy_bind_ip, world.ac_proxy_port, world.ac['ip'], world.ac['port'])
     world.mock_dest = start_mock_destinations(world.mock['ip'], world.mock['port'])
 
 
 def stop_environment():
-    #stop_process(world.ks_proxy)
+    stop_process(world.ks_proxy)
     stop_process(world.ac_proxy)
     stop_process(world.mock_dest)
 
@@ -125,3 +125,16 @@ def set_config_bypass():
                          world.pep_user, world.pep_password, world.pep_domain, world.ks_proxy_ip, world.ks_proxy_port,
                          'DEBUG', world.keypass_plug_in, world.keypass_extract_action, 'true', world.structure[world.ks['domain_bypass']]['users'][world.ks['user_bypass']]['roles'][world.ac['bypass_rol']]['id'])
 
+def set_config_cache_gradual():
+    set_variables_config(world.mock['ip'], world.mock['port'], world.pep_port, world.ac_proxy_port, world.ac_proxy_ip,
+                         world.pep_user, world.pep_password, world.pep_domain, world.ks_proxy_ip, world.ks_proxy_port,
+                         'DEBUG', world.cb_plug_in, world.cb_extract_action, cache_users='10', cache_projects='20', cache_roles='30')
+
+def set_config_cache_projects():
+    set_variables_config(world.mock['ip'], world.mock['port'], world.pep_port, world.ac_proxy_port, world.ac_proxy_ip,
+                         world.pep_user, world.pep_password, world.pep_domain, world.ks_proxy_ip, world.ks_proxy_port,
+                         'DEBUG', world.cb_plug_in, world.cb_extract_action, cache_users='30', cache_projects='10', cache_roles='30')
+def set_config_cache_roles():
+    set_variables_config(world.mock['ip'], world.mock['port'], world.pep_port, world.ac_proxy_port, world.ac_proxy_ip,
+                         world.pep_user, world.pep_password, world.pep_domain, world.ks_proxy_ip, world.ks_proxy_port,
+                         'DEBUG', world.cb_plug_in, world.cb_extract_action, cache_users='30', cache_projects='30', cache_roles='10')

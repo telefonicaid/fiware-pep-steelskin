@@ -5,7 +5,7 @@ Feature: Test request headers
   Background:
     Given the Context Broker configuration
 
-  @act2
+  @headers
   Scenario Outline: Test incomplete headers CB KO append Action
     Given headers with format "<format>" and "APPEND" action
     And headers without the header "<header>"
@@ -29,7 +29,7 @@ Feature: Test request headers
     | X-Auth-Token       | json   |                     |
     | X-Auth-Token       | xml    |                     |
 
-  @act2
+  @headers
   Scenario Outline: Test incomplete headers CB KO update Action
     Given headers with format "<format>" and "UPDATE" action
     And headers without the header "<header>"
@@ -51,7 +51,7 @@ Feature: Test request headers
     | content-type       | json   |                |
     | content-type       | xml    |                |
 
-  @act2
+  @headers
   Scenario Outline: Test incomplete headers CB KO delete Action
     Given headers with format "<format>" and "DELETE" action
     And headers without the header "<header>"
@@ -74,7 +74,7 @@ Feature: Test request headers
     | content-type       | xml    |                |
 
 
-  @act2
+  @headers
   Scenario Outline: Test incomplete headers CB KO read Action
     Given headers with format "<format>"
     And headers without the header "<header>"
@@ -97,8 +97,7 @@ Feature: Test request headers
     | content-type       | xml    | v3/auth/tokens |
 
 
-
-  @act2
+  @headers
   Scenario Outline: Test bad header CB
     Given headers with format "<format>"
     And header "<header>" inexistent in KEYSTONE

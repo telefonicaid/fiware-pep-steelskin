@@ -10,7 +10,8 @@ stipulated in the agreement/contract under which the program(s) have
 been supplied.
 """
 from tools.deploy_pep import start_docker_pep
-from tools.general_utils import set_config_cb, set_config_keypass, set_config_perseo, set_config_bypass
+from tools.general_utils import set_config_cb, set_config_keypass, set_config_perseo, set_config_bypass, \
+    set_config_cache_projects, set_config_cache_roles, set_config_cache_gradual
 
 __author__ = 'Jon'
 
@@ -139,7 +140,7 @@ def the_petition_gets_to_contextbroker_mock(step):
     assert sent == response, 'The payload sent is "%s (%s)" and the payload proxied is "%s (%s)"' % (sent, type(sent), response, type(response))
     assert resp.status_code == 200, 'The response code is not 200, is: %s' % resp.status_code
 
-
+#TODO: Change the user, password and pep container, to get it from properties
 @step("the Context Broker configuration")
 def step_impl(step):
     """
@@ -150,6 +151,37 @@ def step_impl(step):
         set_config_cb()
         start_docker_pep(world.docker_ip, world.docker_user, world.docker_password, 'root', 'root', 'pep_c4')
         time.sleep(5)
+
+@step("the cache gradual configuration")
+def step_impl(step):
+    """
+    :type step lettuce.core.Step
+    """
+
+    world.config_set = 'cache_gradual'
+    set_config_cache_gradual()
+    start_docker_pep(world.docker_ip, world.docker_user, world.docker_password, 'root', 'root', 'pep_c4')
+    time.sleep(5)
+
+@step("the cache projects configuration")
+def step_impl(step):
+    """
+    :type step lettuce.core.Step
+    """
+    world.config_set = 'cache_projects'
+    set_config_cache_projects()
+    start_docker_pep(world.docker_ip, world.docker_user, world.docker_password, 'root', 'root', 'pep_c4')
+    time.sleep(5)
+
+@step("the cache roles configuration")
+def step_impl(step):
+    """
+    :type step lettuce.core.Step
+    """
+    world.config_set = 'cache_roles'
+    set_config_cache_roles()
+    start_docker_pep(world.docker_ip, world.docker_user, world.docker_password, 'root', 'root', 'pep_c4')
+    time.sleep(5)
 
 @step("the Keypass configuration")
 def step_impl(step):
@@ -183,3 +215,7 @@ def step_impl(step):
         set_config_bypass()
         start_docker_pep(world.docker_ip, world.docker_user, world.docker_password, 'root', 'root', 'pep_c4')
         time.sleep(5)
+
+@step('the keystone proxy history reset')
+def the_keystone_proxy_history_reset(step):
+    requests.request('get', 'http://{ks_proxy_ip}:{ks_proxy_port}/reset_history'.format(ks_proxy_ip=world.ks_proxy_ip, ks_proxy_port=world.ks_proxy_port))

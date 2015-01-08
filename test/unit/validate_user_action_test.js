@@ -344,7 +344,7 @@ describe('Validate action with Access Control', function() {
     }
 
     describe('[' + authenticationMechanisms[1].module + '] ' +
-        'When a headers is validated using Keystone', function() {
+        'When a headers is validated using keystone_errors', function() {
         var options = {
                 uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
                 method: 'POST',

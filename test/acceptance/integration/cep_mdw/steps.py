@@ -23,7 +23,7 @@ from iotqautils.idm_keystone import IdmUtils
 def a_cep_petition_is_asked_to_pep(step, action):
     token = IdmUtils.get_token(world.user, world.user, world.domain, world.ks['platform']['address']['ip'])
     headers = {
-        #"Accept": "application/%s" % format,
+        "Accept": "application/json",
         'content-type': 'application/json',
         'Fiware-Servicepath': world.project,
         'Fiware-Service': world.domain,

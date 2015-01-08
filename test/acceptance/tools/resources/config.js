@@ -8,7 +8,7 @@ config.resource = {
         /**
          * Host that is being proxied.
          */
-        host: '192.168.1.37',
+        host: '192.168.1.36',
 
         /**
          * Port where the proxied server is listening.
@@ -38,7 +38,7 @@ config.access = {
     /**
      * Host where the Access Control is located.
      */
-    host: '192.168.1.37',
+    host: '192.168.1.36',
     /**
      * Port where the Access Control is listening.
      */
@@ -59,7 +59,7 @@ config.authentication = {
     user: 'pep',
     password: 'pep',
     domainName: 'admin_domain',
-    retries: 3,
+    retries: 0,
     cacheTTLs: {
         users: 1000,
         projectIds: 1000,
@@ -67,7 +67,7 @@ config.authentication = {
     },
     options: {
         protocol: 'http',
-        host: '192.168.1.37',
+        host: '192.168.1.36',
         port: 5001,
         path: '/v3/role_assignments',
         authPath: '/v3/auth/tokens'

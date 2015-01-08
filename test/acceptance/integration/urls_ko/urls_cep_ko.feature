@@ -5,7 +5,7 @@ Feature: Urls that not exist in Perseo plugin
   Background:
     Given the Perseo configuration
 
-  @act
+  @urls_cep_ko
   Scenario: Test bad URL CEP KO
     Given headers
     And a url with "/notis"

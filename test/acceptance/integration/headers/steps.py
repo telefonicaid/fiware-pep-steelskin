@@ -59,7 +59,7 @@ def the_petition_is_asked(step, action):
 
 @step('the Keystone proxy receive the last petition "([^"]*)" from PEP')
 def the_keystone_proxy_doesnt_receive_any_petition(step, last_petition):
-    resp = requests.request('GET', 'http://192.168.1.37:5001/last_path').text
+    resp = requests.request('GET', 'http://{ks_proxy_ip}:{ks_proxy_port}/last_path'.format(ks_proxy_ip=world.ks_proxy_ip, ks_proxy_port=world.ks_proxy_port)).text
     print 'last_petition: {last_petition}'.format(last_petition=last_petition)
     print 'last_petition_received: {last_petition}'.format(last_petition=resp)
     assert resp == last_petition

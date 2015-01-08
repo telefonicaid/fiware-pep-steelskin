@@ -14,11 +14,16 @@ __author__ = 'Jon'
 from lettuce import world
 import socket
 
+# Get local ip
+s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+s.connect(('8.8.8.8', 0))  # connecting to a UDP address doesn't send packets
+local_ip_address = s.getsockname()[0]
+
 # world.environment = 'local'
 # world.environment = 'remote'
 world.environment = 'docker'
 
-world.docker_ip = '192.168.1.38'
+world.docker_ip = '192.168.1.35'
 world.docker_user = 'vagrant'
 world.docker_password = 'vagrant'
 
@@ -31,11 +36,11 @@ world.cb_plug_in = 'orionPlugin'
 world.perseo_plug_in = 'perseoPlugin'
 
 world.ks_proxy_bind_ip = '0.0.0.0'
-world.ks_proxy_ip = '192.168.1.37'
+world.ks_proxy_ip = str(local_ip_address)
 world.ks_proxy_port = '5001'
 
 world.ac_proxy_bind_ip = '0.0.0.0'
-world.ac_proxy_ip = '192.168.1.37'
+world.ac_proxy_ip = str(local_ip_address)
 world.ac_proxy_port = '8082'
 
 world.pep_log_level = 'DEBUG'
@@ -47,7 +52,7 @@ world.pep_ip = '127.0.0.1'
 world.pep_port = '1025'
 
 world.mock = {
-    'ip': '192.168.1.37',
+    'ip': str(local_ip_address),
     'port': '1027'
 }
 
@@ -226,6 +231,36 @@ world.ks['environment_general_ko'] = {
                                     'name': 'ko_rol'
                                 }
                             ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+
+# General no_roles
+world.ks['user_no_roles'] = 'seahorse'
+world.ks['domain_no_roles'] = 'atlantic_no_roles'
+world.ks['project_no_roles'] = '/coral_no_roles'
+world.ks['environment_general_no_roles'] = {
+    'domains': [
+        {
+            'name': world.ks['domain_no_roles'],
+            'description': 'All the atlantic Ocean',
+            'domain_admin': {
+                'username': 'white_shark',
+                'password': 'white_shark'
+            },
+            'users': [
+                {
+                    'name': world.ks['user_no_roles'],
+                    'password': world.ks['user_no_roles'],
+                    'description': 'Tentacles guy',
+                    'projects': [
+                        {
+                            'name': world.ks['project_no_roles'],
+                            'description': 'Nemos house',
                         }
                     ]
                 }

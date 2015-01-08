@@ -5,7 +5,7 @@ Feature: Urls that not exist in Access Control plugin
   Background:
     Given the Keypass configuration
 
-  @act2
+  @urls_ac_ko
   Scenario: Test bad URL AC KO
     Given headers
     And a url with "/pap/v1/subjec"

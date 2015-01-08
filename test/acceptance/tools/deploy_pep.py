@@ -20,7 +20,8 @@ def set_variables_config(host_proxied_ip, host_proxied_port, port_listening,
                   ks_ip, ks_port,
                   log_level,
                   plug_in, plug_in_extract_action,
-                  bypass_activation='false', bypass_id=''):
+                  bypass_activation='false', bypass_id='',
+                  cache_users='1000', cache_projects='1000', cache_roles='60'):
     replaces = {
         'host_proxied_ip': host_proxied_ip,
         'host_proxied_port': host_proxied_port,
@@ -36,7 +37,10 @@ def set_variables_config(host_proxied_ip, host_proxied_port, port_listening,
         'plug_in': plug_in,
         'plug_in_extract_action': plug_in_extract_action,
         'bypass_activation': bypass_activation,
-        'bypass_id': bypass_id
+        'bypass_id': bypass_id,
+        'cache_users': cache_users,
+        'cache_projects': cache_projects,
+        'cache_roles': cache_roles
     }
     path, fl = os.path.split(os.path.realpath(__file__))
     path = path + '\\resources\\'

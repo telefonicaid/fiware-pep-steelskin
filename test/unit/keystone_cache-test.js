@@ -33,7 +33,7 @@ var serverMocks = require('../tools/serverMocks'),
     should = require('should'),
     request = require('headers');
 
-describe('Keystone authentication cache', function() {
+describe('keystone_errors authentication cache', function() {
     var proxy,
         mockTarget,
         mockTargetApp,
@@ -126,7 +126,7 @@ describe('Keystone authentication cache', function() {
             });
         });
 
-        it('should send a single headers to Keystone asking for user data', function(done) {
+        it('should send a single headers to keystone_errors asking for user data', function(done) {
             var userAccesses = 0;
 
             mockOAuthApp.handler = function(req, res) {
@@ -156,7 +156,7 @@ describe('Keystone authentication cache', function() {
             });
         });
 
-        it('should send a single headers to Keystone asking for project data', function(done) {
+        it('should send a single headers to keystone_errors asking for project data', function(done) {
             var projectIDAccesses = 0;
 
             mockOAuthApp.handler = function(req, res) {
@@ -186,7 +186,7 @@ describe('Keystone authentication cache', function() {
             });
         });
 
-        it('should send a single headers to Keystone asking for the user\'s roles', function(done) {
+        it('should send a single headers to keystone_errors asking for the user\'s roles', function(done) {
             var roleAccesses = 0;
 
             mockOAuthApp.handler = function(req, res) {

@@ -5,7 +5,7 @@ Feature: Urls that not exist in ContextBroker plugin
   Background:
     Given the Context Broker configuration
 
-  @act2
+  @urls_cb_ko
   Scenario Outline: Test bad URL CB KO
     Given headers with format "<format>"
     And a url with "v1/queryContex"
