@@ -6,7 +6,7 @@ Feature: Context broker middleware
     Given the Context Broker configuration
 
   #Standard operations
-  @cb_mdwae
+  @cb_mdwae @act
   Scenario Outline: Create Standard operation
     Given a domain in KEYSTONE
     And a user in the domain

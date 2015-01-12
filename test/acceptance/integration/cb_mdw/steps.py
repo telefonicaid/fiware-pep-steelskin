@@ -29,6 +29,7 @@ def a_url_with_group1_and_the_actiontype_attribute_group2(step, url, action_type
 @step('a context broker "([^"]*)" petition is asked to PEP with "([^"]*)" format')
 def a_context_broker_petition_is_asked_to_pep_with_format(step, action, format):
     token = IdmUtils.get_token(world.user, world.user, world.domain, world.ks['platform']['address']['ip'])
+    print token
     headers = {
         "Accept": "application/%s" % format,
         'content-type': 'application/%s' % format,
@@ -43,14 +44,14 @@ def a_context_broker_petition_is_asked_to_pep_with_format(step, action, format):
                 'updateAction': world.action_type
             }
             world.data = json.dumps(data)
-            requests.request(action.lower(), 'http://{pep_ip}:{pep_port}/'.format(pep_ip=world.pep_ip, pep_port=world.pep_port) + world.url, headers=headers, data=json.dumps(data))
+            requests.request(action.lower(), 'http://{pep_ip}:{pep_port}/'.format(pep_ip=world.pep_host_ip, pep_port=world.pep_port) + world.url, headers=headers, data=json.dumps(data))
         else:
             data = "<updateAction>%s</updateAction>" % world.action_type
             world.data = data
-            requests.request(action.lower(), 'http://{pep_ip}:{pep_port}/'.format(pep_ip=world.pep_ip, pep_port=world.pep_port) + world.url, headers=headers, data=data)
+            requests.request(action.lower(), 'http://{pep_ip}:{pep_port}/'.format(pep_ip=world.pep_host_ip, pep_port=world.pep_port) + world.url, headers=headers, data=data)
     else:
         world.data = {}
-        requests.request(action.lower(), 'http://{pep_ip}:{pep_port}/'.format(pep_ip=world.pep_ip, pep_port=world.pep_port) + world.url, headers=headers, data={})
+        requests.request(action.lower(), 'http://{pep_ip}:{pep_port}/'.format(pep_ip=world.pep_host_ip, pep_port=world.pep_port) + world.url, headers=headers, data={})
 
 
 

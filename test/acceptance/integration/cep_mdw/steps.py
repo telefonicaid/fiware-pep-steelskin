@@ -31,7 +31,7 @@ def a_cep_petition_is_asked_to_pep(step, action):
     }
     data = {'test_payload': 'test_value'}
     world.data = json.dumps(data)
-    requests.request(action.lower(), 'http://{pep_ip}:{pep_port}'.format(pep_ip=world.pep_ip, pep_port=world.pep_port) + world.url, headers=headers, data=json.dumps(data))
+    requests.request(action.lower(), 'http://{pep_ip}:{pep_port}'.format(pep_ip=world.pep_host_ip, pep_port=world.pep_port) + world.url, headers=headers, data=json.dumps(data))
 
 
 

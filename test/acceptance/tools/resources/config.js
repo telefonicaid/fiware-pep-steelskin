@@ -20,7 +20,7 @@ config.resource = {
         /**
          * Port where the proxy is listening.
          */
-        port: 1025
+        port: 1028
     }
 };
 
@@ -112,13 +112,13 @@ config.middlewares = {
     /**
      * Indicates the module from where the middlewares will be loaded.
      */
-    require: 'lib/plugins/perseoPlugin',
+    require: 'lib/plugins/orionPlugin',
 
     /**
      * Indicates the list of middlewares to load.
      */
     functions: [
-        'extractAction'
+        'extractCBAction'
     ]
 };
 

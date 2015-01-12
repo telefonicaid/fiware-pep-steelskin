@@ -11,18 +11,12 @@ been supplied.
 """
 __author__ = 'Jon'
 
-import subprocess, os
+from iotqautils.idm_keystone import IdmUtils
+from lettuce import *
+from iotqautils.iotqaLogger import get_logger
 
 from tools.general_utils import *
-
-from iotqautils.idm_keystone import IdmUtils
-from iotqautils.accessControl import AC
-from iotqautils.pep_utils import Pep
-
-from lettuce import *
-
-from integration.properties import *
-from iotqautils.iotqaLogger import get_logger
+from properties import *
 
 log = get_logger('terrain')
 
@@ -35,7 +29,10 @@ def before_all_scenarios():
     """
     world.test_time_init = time.strftime("%c")
     log.debug('Starting environment')
+    # Start proxys and mocks
     start_environment()
+
+    # At first, there are not configuration for PEP
     world.config_set = ''
 
     log.debug('Initialize environment')
@@ -45,9 +42,9 @@ def before_all_scenarios():
     initialize_keystone(world.ks['platform'], world.ks['environment_domain'])
     initialize_keystone(world.ks['platform'], world.ks['environment_project'])
     initialize_keystone(world.ks['platform'], world.ks['environment_bypass'])
-
     world.structure = IdmUtils.get_structure(world.ks['platform'])
-    #General
+
+    # General
     user_roles_general = [(world.ks['user_all'], x['name']) for x in
                           world.ks['environment_general']['domains'][0]['users'][0]['projects'][0]['roles']]
     initialize_ac(user_roles_general,
@@ -65,7 +62,7 @@ def before_all_scenarios():
                   world.ks['domain_domain_only'],
                   world.ks['project_domain_only'],
                   'domain')
-    #Project
+    # Project
     user_roles_project = [(x['name'], x['projects'][0]['roles'][0]['name']) for x in
                           world.ks['environment_project']['domains'][0]['users']]
     initialize_ac(user_roles_project,
@@ -84,12 +81,14 @@ def after_all_scenarios(scenario):
     Show the initial and final time of the tests completed
     :param scenario:
     """
-    # stop_mock(world.mock.pid)
-    # IdmUtils.clean_service(world.ks['platform'], world.ks['domain_ok'])
-    # IdmUtils.clean_service(world.ks['platform'], world.ks['domain_project_only'])
-    # IdmUtils.clean_service(world.ks['platform'], world.ks['domain_domain_only'])
-    # world.ac_utils.delete_tenant_policies(world.ks['domain_ok'])
-    # world.ac_utils.delete_tenant_policies(world.ks['domain_project_only'])
-    # world.ac_utils.delete_tenant_policies(world.ks['domain_domain_only'])
+    IdmUtils.clean_service(world.ks['platform'], world.ks['domain_ok'])
+    IdmUtils.clean_service(world.ks['platform'], world.ks['domain_ko'])
+    IdmUtils.clean_service(world.ks['platform'], world.ks['domain_no_roles'])
+    IdmUtils.clean_service(world.ks['platform'], world.ks['domain_project_only'])
+    IdmUtils.clean_service(world.ks['platform'], world.ks['domain_domain_only'])
+    IdmUtils.clean_service(world.ks['platform'], world.ks['domain_bypass'])
+    world.ac_utils.delete_tenant_policies(world.ks['domain_ok'])
+    world.ac_utils.delete_tenant_policies(world.ks['domain_project_only'])
+    world.ac_utils.delete_tenant_policies(world.ks['domain_domain_only'])
     stop_environment()
-    showTimes(world.test_time_init)
+    show_times(world.test_time_init)

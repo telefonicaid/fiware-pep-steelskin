@@ -18,69 +18,71 @@ import socket
 s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 s.connect(('8.8.8.8', 0))  # connecting to a UDP address doesn't send packets
 local_ip_address = s.getsockname()[0]
+# ***************************************************************************
 
+world.pep_host_ip = '192.168.1.35'
+
+# Values to the pep config file
+world.pep_log_level = 'DEBUG'
+world.pep_port = '1028'
+# ******************************
+
+# *********************LOCAL*****************
 # world.environment = 'local'
-# world.environment = 'remote'
-world.environment = 'docker'
+# world.pep_path = '/home/vagrant/pep/fiware-orion-pep'
+# *********************************************
+# *********************REMOTE*****************
+world.environment = 'remote'
+world.pep_host_user = 'vagrant'
+world.pep_host_password = 'vagrant'
+world.pep_path = '/home/vagrant/pep/fiware-orion-pep'
+# *********************************************
 
-world.docker_ip = '192.168.1.35'
-world.docker_user = 'vagrant'
-world.docker_password = 'vagrant'
+# *********************DOCKER*****************
+# world.environment = 'docker'
+# world.pep_path = '/fiware-orion-pep'
+# world.docker_ip = '192.168.1.35'
+# world.docker_user = 'vagrant'
+# world.docker_password = 'vagrant'
+# world.docker_pep_container = 'pep_c4'
+# world.docker_pep_user = 'root'
+# world.docker_pep_password = 'root'
+# *********************************************
 
-
+# Plugins configuration************************
+# Plugin keypass configuration
 world.keypass_extract_action = 'extractAction'
-world.cb_extract_action = 'extractCBAction'
-world.perseo_extract_action = 'extractAction'
 world.keypass_plug_in = 'keypassPlugin'
-world.cb_plug_in = 'orionPlugin'
-world.perseo_plug_in = 'perseoPlugin'
 
+# Plugin Context Broker configuration
+world.cb_extract_action = 'extractCBAction'
+world.cb_plug_in = 'orionPlugin'
+
+# Plugin Perseo configuration
+world.perseo_extract_action = 'extractAction'
+world.perseo_plug_in = 'perseoPlugin'
+# *********************************************
+
+# Proxys and mocks configuration***************
+# Keystone proxy configuration
 world.ks_proxy_bind_ip = '0.0.0.0'
 world.ks_proxy_ip = str(local_ip_address)
 world.ks_proxy_port = '5001'
-
+# Access control proxy configuration
 world.ac_proxy_bind_ip = '0.0.0.0'
 world.ac_proxy_ip = str(local_ip_address)
 world.ac_proxy_port = '8082'
-
-world.pep_log_level = 'DEBUG'
-
-world.pep_user = 'pep'
-world.pep_password = 'pep'
-world.pep_domain = 'admin_domain'
-world.pep_ip = '127.0.0.1'
-world.pep_port = '1025'
-
+# Destination mock configuration
 world.mock = {
     'ip': str(local_ip_address),
     'port': '1027'
 }
+# *********************************************
 
-world.ac = {}
 
-# AC rules
-world.ac['ip'] = '127.0.0.1'
-world.ac['port'] = '8080'
-world.ac['bypass_rol'] = 'bypass'
-world.ac['create_rol'] = 'create'
-world.ac['update_rol'] = 'update'
-world.ac['delete_rol'] = 'delete'
-world.ac['read_rol'] = 'read'
-world.ac['subscribe_rol'] = 'subscribe'
-world.ac['register_rol'] = 'register'
-world.ac['discover_rol'] = 'discover'
-world.ac['subscribe-availability_rol'] = 'subscribe-availability'
-world.ac['notify_rol'] = 'notify'
-world.ac['readRule_rol'] = 'readRule'
-world.ac['writeRule_rol'] = 'writeRule'
-world.ac['readPolicy_rol'] = 'readPolicy'
-world.ac['removePolicy_rol'] = 'deletePolicy'
-world.ac['createPolicy_rol'] = 'createPolicy'
-world.ac['listPolicies_rol'] = 'listPolicies'
-world.ac['deleteSubjectPolicies_rol'] = 'deleteSubjectPolicies'
-world.ac['deleteTenantPolicies_rol'] = 'deleteTenantPolicies'
 
 world.ks = {}
+# Real Keystone configuration
 world.ks['platform'] = {
     'GlobalServiceAdmin': {
         'user': 'admin',
@@ -110,11 +112,40 @@ world.ks['platform'] = {
         'name': 'admin'
     }
 }
+# ******************************
 
-# General
+world.ac = {}
+# Real Access Control configuration
+world.ac['ip'] = '127.0.0.1'
+world.ac['port'] = '8080'
+# ******************************
+
+# AC rules
+world.ac['bypass_rol'] = 'bypass'
+world.ac['create_rol'] = 'create'
+world.ac['update_rol'] = 'update'
+world.ac['delete_rol'] = 'delete'
+world.ac['read_rol'] = 'read'
+world.ac['subscribe_rol'] = 'subscribe'
+world.ac['register_rol'] = 'register'
+world.ac['discover_rol'] = 'discover'
+world.ac['subscribe-availability_rol'] = 'subscribe-availability'
+world.ac['notify_rol'] = 'notify'
+world.ac['readRule_rol'] = 'readRule'
+world.ac['writeRule_rol'] = 'writeRule'
+world.ac['readPolicy_rol'] = 'readPolicy'
+world.ac['removePolicy_rol'] = 'deletePolicy'
+world.ac['createPolicy_rol'] = 'createPolicy'
+world.ac['listPolicies_rol'] = 'listPolicies'
+world.ac['deleteSubjectPolicies_rol'] = 'deleteSubjectPolicies'
+world.ac['deleteTenantPolicies_rol'] = 'deleteTenantPolicies'
+
+# Keystone configuration
+# General configuration
 world.ks['user_all'] = 'octopus'
 world.ks['domain_ok'] = 'atlantic'
 world.ks['project_ok'] = '/coral'
+# Environment
 world.ks['environment_general'] = {
     'domains': [
         {
@@ -199,10 +230,11 @@ world.ks['environment_general'] = {
     ]
 }
 
-# General ko
+# General configuration with bad roles
 world.ks['user_all_ko'] = 'urchin'
 world.ks['domain_ko'] = 'atlantic_ko'
 world.ks['project_ko'] = '/coral_ko'
+# Environment
 world.ks['environment_general_ko'] = {
     'domains': [
         {
@@ -239,10 +271,11 @@ world.ks['environment_general_ko'] = {
     ]
 }
 
-# General no_roles
+# General configuration without roles
 world.ks['user_no_roles'] = 'seahorse'
 world.ks['domain_no_roles'] = 'atlantic_no_roles'
 world.ks['project_no_roles'] = '/coral_no_roles'
+# Environment
 world.ks['environment_general_no_roles'] = {
     'domains': [
         {
@@ -270,7 +303,10 @@ world.ks['environment_general_no_roles'] = {
 }
 
 
-# Project Only
+# Project Only Keystone configuration
+world.ks['domain_project_only'] = 'atlantic_only_project'
+world.ks['project_project_only'] = '/cave'
+# Users
 world.ks['user_create_project'] = 'krim_create'
 world.ks['user_update_project'] = 'krim_update'
 world.ks['user_delete_project'] = 'krim_delete'
@@ -288,8 +324,7 @@ world.ks['user_createPolicy_project'] = 'krim_createPolicy'
 world.ks['user_listPolicies_project'] = 'krim_listPolicies'
 world.ks['user_deleteSubjectPolicies_project'] = 'krim_deleteSubjectPolicies'
 world.ks['user_deleteTenantPolicies_project'] = 'krim_deleteTenantPolicies'
-world.ks['domain_project_only'] = 'atlantic_only_project'
-world.ks['project_project_only'] = '/cave'
+# Environment
 world.ks['environment_project'] = {
     'domains': [
         {
@@ -579,7 +614,10 @@ world.ks['environment_project'] = {
 }
 
 
-# Domain Only
+# Roles in the Domain Only configuration
+world.ks['domain_domain_only'] = 'atlantic_only_domain'
+world.ks['project_domain_only'] = '/'
+# Users
 world.ks['user_create_domain'] = 'crab_create'
 world.ks['user_update_domain'] = 'crab_update'
 world.ks['user_delete_domain'] = 'crab_delete'
@@ -597,8 +635,7 @@ world.ks['user_createPolicy_domain'] = 'crab_createPolicy'
 world.ks['user_listPolicies_domain'] = 'crab_listPolicies'
 world.ks['user_deleteSubjectPolicies_domain'] = 'crab_deleteSubjectPolicies'
 world.ks['user_deleteTenantPolicies_domain'] = 'crab_deleteTenantPolicies'
-world.ks['domain_domain_only'] = 'atlantic_only_domain'
-world.ks['project_domain_only'] = '/'
+# Environment
 world.ks['environment_domain'] = {
     'domains': [
         {
@@ -784,10 +821,11 @@ world.ks['environment_domain'] = {
     ]
 }
 
+# Bypass keystone configuration
 world.ks['domain_bypass'] = 'bypass_domain'
 world.ks['user_bypass'] = 'bypass_user'
 world.ks['project_bypass'] = 'bypass_project'
-
+# Environment
 world.ks['environment_bypass'] = {
     'domains': [
         {
