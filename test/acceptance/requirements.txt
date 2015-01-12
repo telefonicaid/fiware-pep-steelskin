@@ -1,0 +1,8 @@
+lettuce==0.2.20
+fabric==1.10.0
+flask==0.10.1
+requests==2.5.0
+colorama==0.2.5
+paramiko==1.15.1
+git+https://visitor:visitor@pdihub.hi.inet/fiware/fiware-iotqaUtils@develop
+git+https://github.com/telefonicaid/lettuce-tools.git#egg=lettuce_tools
