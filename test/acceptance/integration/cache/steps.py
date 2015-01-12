@@ -50,14 +50,10 @@ def the_history_off_petitions_adds_a_token_petition(step, petitions_added):
     history_list = eval(world.history)
     history_new_list = eval(resp)
     world.last_petition_added = history_new_list[len(history_new_list)-1]
-    print history_list
-    print history_new_list
     assert len(history_list)+int(petitions_added) == len(history_new_list)
 
 @step('the value added to the history is ok')
 def the_value_added_to_the_history_is(step):
-    print world.new_petition
-    print world.last_petition_added
     assert world.new_petition == world.last_petition_added
 
 @step('waits "([^"]*)" seconds to "([^"]*)" cache expire')

@@ -31,6 +31,4 @@ def a_keypass_petition_is_asked_to_pep(step, action):
     world.data = json.dumps(data)
     world.headers = headers
     world.method = action.lower()
-    print 'Data: %s' % str(data)
-    print 'Data dump: %s' % json.dumps(data)
     requests.request(action.lower(), 'http://{pep_ip}:{pep_port}'.format(pep_ip=world.pep_host_ip, pep_port=world.pep_port) +  world.url, headers=headers, data=json.dumps(data))

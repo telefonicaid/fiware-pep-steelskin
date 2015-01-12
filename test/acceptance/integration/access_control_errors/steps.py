@@ -44,6 +44,4 @@ def headers_of_bad_rol_environment_without_project(step):
 @step('the access control proxy receive the last petition "([^"]*)" from PEP')
 def the_keystone_proxy_doesnt_receive_any_petition(step, last_petition):
     resp = requests.request('GET', 'http://{ac_proxy_ip}:{ac_proxy_port}/last_path'.format(ac_proxy_ip=world.ac_proxy_ip, ac_proxy_port=world.ac_proxy_port)).text
-    print 'last_petition: {last_petition}'.format(last_petition=last_petition)
-    print 'last_petition_received: {last_petition}'.format(last_petition=resp)
     assert resp == last_petition

@@ -136,14 +136,10 @@ def a_role_in_the_user_and_domain(step, role):
 def the_petition_gets_to_contextbroker_mock(step):
     resp = requests.get(
         'http://{mock_ip}:{mock_port}/last_value'.format(mock_ip=world.mock['ip'], mock_port=world.mock['port']))
-    print resp.text
     try:
-        print "Entro en try"
         sent = eval(world.data)
-        print "despues del sent"
         response = eval(json.loads(resp.text)['resp'])
     except Exception as e:
-        print "Entro en except: %s" % e
         sent = world.data
         response = json.loads(resp.text)['resp']
     assert sent == response, 'The payload sent is "%s (%s)" and the payload proxied is "%s (%s)"' % (
@@ -171,8 +167,7 @@ def step_impl(step):
 
     world.config_set = 'cache_gradual'
     set_config_cache_gradual()
-    start_docker_pep(world.docker_ip, world.docker_user, world.docker_password,
-                     world.docker_pep_user, world.docker_pep_password, world.docker_pep_container)
+    start_pep_app()
     time.sleep(5)
 
 
@@ -183,8 +178,7 @@ def step_impl(step):
     """
     world.config_set = 'cache_projects'
     set_config_cache_projects()
-    start_docker_pep(world.docker_ip, world.docker_user, world.docker_password,
-                     world.docker_pep_user, world.docker_pep_password, world.docker_pep_container)
+    start_pep_app()
     time.sleep(5)
 
 
@@ -195,8 +189,7 @@ def step_impl(step):
     """
     world.config_set = 'cache_roles'
     set_config_cache_roles()
-    start_docker_pep(world.docker_ip, world.docker_user, world.docker_password,
-                     world.docker_pep_user, world.docker_pep_password, world.docker_pep_container)
+    start_pep_app()
     time.sleep(5)
 
 
@@ -208,8 +201,7 @@ def step_impl(step):
     if world.config_set != 'ks':
         world.config_set = 'ks'
         set_config_keypass()
-        start_docker_pep(world.docker_ip, world.docker_user, world.docker_password,
-                         world.docker_pep_user, world.docker_pep_password, world.docker_pep_container)
+        start_pep_app()
         time.sleep(5)
 
 
@@ -221,8 +213,7 @@ def step_impl(step):
     if world.config_set != 'cep':
         world.config_set = 'cep'
         set_config_perseo()
-        start_docker_pep(world.docker_ip, world.docker_user, world.docker_password,
-                         world.docker_pep_user, world.docker_pep_password, world.docker_pep_container)
+        start_pep_app()
         time.sleep(5)
 
 
@@ -234,8 +225,7 @@ def step_impl(step):
     if world.config_set != 'bypass':
         world.config_set = 'bypass'
         set_config_bypass()
-        start_docker_pep(world.docker_ip, world.docker_user, world.docker_password,
-                         world.docker_pep_user, world.docker_pep_password, world.docker_pep_container)
+        start_pep_app()
         time.sleep(5)
 
 
@@ -252,8 +242,6 @@ def the_petition_is_asked(step, action):
 @step('the Keystone proxy receive the last petition "([^"]*)" from PEP')
 def the_keystone_proxy_doesnt_receive_any_petition(step, last_petition):
     resp = requests.request('GET', 'http://{ks_proxy_ip}:{ks_proxy_port}/last_path'.format(ks_proxy_ip=world.ks_proxy_ip, ks_proxy_port=world.ks_proxy_port)).text
-    print 'last_petition: {last_petition}'.format(last_petition=last_petition)
-    print 'last_petition_received: {last_petition}'.format(last_petition=resp)
     assert resp == last_petition
 
 

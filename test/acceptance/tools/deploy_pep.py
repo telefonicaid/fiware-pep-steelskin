@@ -12,7 +12,7 @@ been supplied.
 
 __author__ = 'Jon'
 
-from fabric.api import run, env, cd, put, sudo, local
+from fabric.api import run, env, cd, put, sudo, local, output
 import os
 import platform
 
@@ -110,6 +110,9 @@ def start_docker_pep(ip_host, user_host, password_host, container_user, containe
     env.host_string = ip_host
     env.user = user_host
     env.password = password_host
+    output['stdout'] = False
+    output['running'] = False
+    output['warnings'] = False
     container_port = get_ssh_port(container_name)
     start_pep(ip_host, container_user, container_pass, container_port, pep_path)
 
@@ -129,6 +132,9 @@ def start_pep(ip, user, password, port='22', pep_path='/fiware-orion-pep'):
     env.user = user
     env.password = password
     env.sudo_password = password
+    output['stdout'] = False
+    output['running'] = False
+    output['warnings'] = False
     path, fl = os.path.split(os.path.realpath(__file__))
     if platform.system() == 'Windows':
         config = path + '\\resources\\' + 'config.js'
@@ -136,9 +142,10 @@ def start_pep(ip, user, password, port='22', pep_path='/fiware-orion-pep'):
         config = path + '/resources/' + 'config.js'
     else:
         raise NameError('The SO is not supported')
-    pid = sudo('ps -ef | grep "node bin/pepProxy" | grep -v grep | awk \'{print $2}\'')
+    pid = sudo('ps -ef | grep "nodejs bin/pepProxy" | grep -v grep | awk \'{print $2}\'')
     if pid != '':
-        sudo('kill -9 {pid}'.format(pid=pid))
+        for proc_pid in pid.split('\n'):
+            sudo('kill -9 {pid}'.format(pid=proc_pid.strip()))
     with cd(pep_path):
         put(config, '{path}/config.js'.format(path=pep_path))
         sudo('dtach -n `mktemp -u /tmp/dtach.XXXX` /bin/bash -c \' nodejs bin/pepProxy >> /tmp/pep.log\'')
@@ -150,6 +157,9 @@ def start_local_pep(pep_path='/fiware-orion-pep'):
     :param pep_path:
     :return:
     """
+    output['stdout'] = False
+    output['running'] = False
+    output['warnings'] = False
     path, fl = os.path.split(os.path.realpath(__file__))
     if platform.system() == 'Windows':
         config = path + '\\resources\\' + 'config.js'

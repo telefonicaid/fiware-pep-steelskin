@@ -20,7 +20,7 @@ s.connect(('8.8.8.8', 0))  # connecting to a UDP address doesn't send packets
 local_ip_address = s.getsockname()[0]
 # ***************************************************************************
 
-world.pep_host_ip = '192.168.1.35'
+world.pep_host_ip = '192.168.1.108'
 
 # Values to the pep config file
 world.pep_log_level = 'DEBUG'
