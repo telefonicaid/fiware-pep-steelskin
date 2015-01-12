@@ -31,7 +31,7 @@ var serverMocks = require('../tools/serverMocks'),
     config = require('../../config'),
     utils = require('../tools/utils'),
     should = require('should'),
-    request = require('request');
+    request = require('headers');
 
 describe('Top domain Service-path behavior', function() {
     var proxy,
@@ -87,7 +87,7 @@ describe('Top domain Service-path behavior', function() {
         });
     }
 
-    describe('When a request with the value "/" in the "fiware-service-path" header arrives and the user doesn\'t ' +
+    describe('When a headers with the value "/" in the "fiware-service-path" header arrives and the user doesn\'t ' +
         ' have domain roles', function() {
         var options = {
             uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
@@ -149,7 +149,7 @@ describe('Top domain Service-path behavior', function() {
         });
     });
 
-    describe('When a request with the value "/" in the "fiware-service-path" header arrives and the user ' +
+    describe('When a headers with the value "/" in the "fiware-service-path" header arrives and the user ' +
     ' has domain roles', function() {
         var options = {
             uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',

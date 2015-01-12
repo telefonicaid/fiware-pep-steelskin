@@ -31,7 +31,7 @@ var express = require('express'),
  * Middleware that makes Express read the incoming body if the content-type is text/xml or application/xml (the default
  * behavior is to read the body if it can be parsed and leave it unread in any other case).
  *
- * @param {Object} req           Incoming request.
+ * @param {Object} req           Incoming headers.
  * @param {Object} res           Outgoing response.
  * @param {Function} next        Invokes the next middleware in the chain.
  */

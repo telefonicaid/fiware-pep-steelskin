@@ -29,7 +29,7 @@ var serverMocks = require('../tools/serverMocks'),
     config = require('../../config'),
     async = require('async'),
     utils = require('../tools/utils'),
-    request = require('request'),
+    request = require('headers'),
     originalAuthenticationModule;
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
@@ -96,7 +96,7 @@ describe('HTTPS Options', function() {
             });
         });
     });
-    describe('When a request to the CB arrives to the proxy with HTTPS', function() {
+    describe('When a headers to the CB arrives to the proxy with HTTPS', function() {
         var options = {
             uri: 'https://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
             method: 'POST',
@@ -115,7 +115,7 @@ describe('HTTPS Options', function() {
             serverMocks.mockPath('/NGSI10/updateContext', mockTargetApp, done);
         });
 
-        it('should proxy the request to the destination', function(done) {
+        it('should proxy the headers to the destination', function(done) {
             var mockExecuted = false;
 
             mockAccessApp.handler = function(req, res) {

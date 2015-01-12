@@ -31,7 +31,7 @@ var serverMocks = require('../tools/serverMocks'),
     config = require('../../config'),
     utils = require('../tools/utils'),
     should = require('should'),
-    request = require('request');
+    request = require('headers');
 
 describe('Connection error tests', function() {
     /* jshint loopfunc: true */
@@ -83,7 +83,7 @@ describe('Connection error tests', function() {
         });
     }
 
-    describe('When a request arrives to the PEP and the target app shut down the connection', function() {
+    describe('When a headers arrives to the PEP and the target app shut down the connection', function() {
         var options = {
                 uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
                 method: 'POST',

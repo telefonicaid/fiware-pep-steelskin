@@ -30,7 +30,7 @@ var serverMocks = require('../tools/serverMocks'),
     utils = require('../tools/utils'),
     should = require('should'),
     async = require('async'),
-    request = require('request'),
+    request = require('headers'),
     convenienceOperations;
 
 convenienceOperations = [
@@ -178,7 +178,7 @@ describe('Extract Context Broker action from convenience operation requests', fu
                 serverMocks.mockPath('/NGSI10/queryContext', mockApp, done);
             });
 
-            it('should add the action attribute with value ' + convenienceAction + ' to the request',
+            it('should add the action attribute with value ' + convenienceAction + ' to the headers',
                 testAction(convenienceAction, options));
         };
     }
@@ -229,7 +229,7 @@ describe('Extract Context Broker action from convenience operation requests', fu
     });
 
     for (var i = 0; i < convenienceOperations.length; i++) {
-        describe('When a request arrives with a convenience operation URL ' +
+        describe('When a headers arrives with a convenience operation URL ' +
             convenienceOperations[i][1] + ' ' + convenienceOperations[i][0],
             testConvenienceOperation(convenienceOperations[i][1],
                 convenienceOperations[i][0],

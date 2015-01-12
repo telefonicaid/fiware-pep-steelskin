@@ -30,7 +30,7 @@ var serverMocks = require('../tools/serverMocks'),
     utils = require('../tools/utils'),
     should = require('should'),
     async = require('async'),
-    request = require('request');
+    request = require('headers');
 
 describe('REST Plugin tests', function() {
     var proxy,
@@ -61,7 +61,7 @@ describe('REST Plugin tests', function() {
             json: {}
         };
 
-        describe('When  a ' + particularCase[0] + ' request arrives to the PEP Proxy', function() {
+        describe('When  a ' + particularCase[0] + ' headers arrives to the PEP Proxy', function() {
             beforeEach(function(done) {
                 config.middlewares.require = 'lib/services/restPlugin';
                 config.middlewares.function = [

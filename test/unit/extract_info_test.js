@@ -29,7 +29,7 @@ var serverMocks = require('../tools/serverMocks'),
     utils = require('../tools/utils'),
     async = require('async'),
     should = require('should'),
-    request = require('request'),
+    request = require('headers'),
     originalAuthenticationModule;
 
 
@@ -90,7 +90,7 @@ describe('Extract information from requests', function() {
         });
     });
 
-    describe('When a request to the CB arrives to the proxy with all the information', function() {
+    describe('When a headers to the CB arrives to the proxy with all the information', function() {
         var options = {
             uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
             method: 'POST',
@@ -108,7 +108,7 @@ describe('Extract information from requests', function() {
             serverMocks.mockPath('/NGSI10/updateContext', mockApp, done);
         });
 
-        it('should extract the organization to an attribute in the request', function(done) {
+        it('should extract the organization to an attribute in the headers', function(done) {
             var extractionExecuted = false;
 
             var testExtraction = function(req, res, callback) {
@@ -126,7 +126,7 @@ describe('Extract information from requests', function() {
             });
         });
 
-        it('should extract the user token to an attribute in the request', function(done) {
+        it('should extract the user token to an attribute in the headers', function(done) {
             var extractionExecuted = false;
 
             var testExtraction = function(req, res, callback) {
@@ -144,7 +144,7 @@ describe('Extract information from requests', function() {
             });
         });
 
-        it('should proxy the request to the target URL', function(done) {
+        it('should proxy the headers to the target URL', function(done) {
             var mockExecuted = false;
 
             mockApp.handler = function(req, res) {
@@ -159,7 +159,7 @@ describe('Extract information from requests', function() {
         });
     });
 
-    describe('When a request arrives to the CB without a user token', function() {
+    describe('When a headers arrives to the CB without a user token', function() {
         var options = {
             uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
             method: 'POST',
@@ -175,14 +175,14 @@ describe('Extract information from requests', function() {
             serverMocks.mockPath('/NGSI10/updateContext', mockApp, done);
         });
 
-        it('should reject the request with a 403 error code', function(done) {
+        it('should reject the headers with a 403 error code', function(done) {
             request(options, function(error, response, body) {
                 response.statusCode.should.equal(403);
                 done();
             });
         });
 
-        it('should not proxy the request', function(done) {
+        it('should not proxy the headers', function(done) {
             var mockExecuted = false;
 
             mockApp.handler = function(req, res) {
@@ -197,7 +197,7 @@ describe('Extract information from requests', function() {
         });
     });
 
-    describe('When a request arrives to the CB without a Fiware Service', function() {
+    describe('When a headers arrives to the CB without a Fiware Service', function() {
         var options = {
             uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
             method: 'POST',
@@ -213,14 +213,14 @@ describe('Extract information from requests', function() {
             serverMocks.mockPath('/NGSI10/updateContext', mockApp, done);
         });
 
-        it('should reject the request with a 403 error code', function(done) {
+        it('should reject the headers with a 403 error code', function(done) {
             request(options, function(error, response, body) {
                 response.statusCode.should.equal(403);
                 done();
             });
         });
 
-        it('should not proxy the request', function(done) {
+        it('should not proxy the headers', function(done) {
             var mockExecuted = false;
 
             mockApp.handler = function(req, res) {

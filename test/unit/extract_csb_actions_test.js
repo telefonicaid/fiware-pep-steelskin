@@ -30,10 +30,10 @@ var serverMocks = require('../tools/serverMocks'),
     utils = require('../tools/utils'),
     async = require('async'),
     should = require('should'),
-    request = require('request');
+    request = require('headers');
 
 
-describe('Extract Context Broker action from request', function() {
+describe('Extract Context Broker action from headers', function() {
     var proxy,
         mockServer,
         mockApp,
@@ -140,7 +140,7 @@ describe('Extract Context Broker action from request', function() {
                 json: utils.readExampleFile('./test/orionRequests/queryContext.json')
             };
 
-            it('should add the action attribute with value "' + action + '" to the request',
+            it('should add the action attribute with value "' + action + '" to the headers',
                 testAction(action, options));
         };
     }
@@ -170,7 +170,7 @@ describe('Extract Context Broker action from request', function() {
             serverMocks.mockPath('/NGSI10/queryContext', mockApp, done);
         });
 
-        it('should add the action attribute with value "create" to the request', testAction('create', options));
+        it('should add the action attribute with value "create" to the headers', testAction('create', options));
     });
 
     describe('When a create action arrives with JSON payload and the "/v1" prefix', function() {
@@ -191,7 +191,7 @@ describe('Extract Context Broker action from request', function() {
             serverMocks.mockPath('/NGSI10/queryContext', mockApp, done);
         });
 
-        it('should add the action attribute with value "create" to the request', testAction('create', options));
+        it('should add the action attribute with value "create" to the headers', testAction('create', options));
     });
 
     describe('When a update action arrives with JSON payload', function() {
@@ -212,7 +212,7 @@ describe('Extract Context Broker action from request', function() {
             serverMocks.mockPath('/NGSI10/queryContext', mockApp, done);
         });
 
-        it('should add the action attribute with value "update" to the request', testAction('update', options));
+        it('should add the action attribute with value "update" to the headers', testAction('update', options));
     });
     describe('When a delete action arrives with JSON payload', function() {
         var options = {
@@ -232,7 +232,7 @@ describe('Extract Context Broker action from request', function() {
             serverMocks.mockPath('/NGSI10/queryContext', mockApp, done);
         });
 
-        it('should add the action attribute with value "delete" to the request', testAction('delete', options));
+        it('should add the action attribute with value "delete" to the headers', testAction('delete', options));
     });
 
     describe('When a create action arrives with XML payload', function() {
@@ -253,7 +253,7 @@ describe('Extract Context Broker action from request', function() {
             serverMocks.mockPath('/NGSI10/queryContext', mockApp, done);
         });
 
-        it('should add the action attribute with value "create" to the request', testAction('create', options));
+        it('should add the action attribute with value "create" to the headers', testAction('create', options));
     });
 
     describe('When a update action arrives with XML payload', function() {
@@ -274,7 +274,7 @@ describe('Extract Context Broker action from request', function() {
             serverMocks.mockPath('/NGSI10/queryContext', mockApp, done);
         });
 
-        it('should add the action attribute with value "update" to the request', testAction('update', options));
+        it('should add the action attribute with value "update" to the headers', testAction('update', options));
     });
     describe('When a delete action arrives with XML payload', function() {
         var options = {
@@ -294,7 +294,7 @@ describe('Extract Context Broker action from request', function() {
             serverMocks.mockPath('/NGSI10/queryContext', mockApp, done);
         });
 
-        it('should add the action attribute with value "delete" to the request', testAction('delete', options));
+        it('should add the action attribute with value "delete" to the headers', testAction('delete', options));
     });
 
     describe('When a update action arrives with JSON payload without the \'updateAction\' attribute', function() {
@@ -315,7 +315,7 @@ describe('Extract Context Broker action from request', function() {
             serverMocks.mockPath('/NGSI10/queryContext', mockApp, done);
         });
 
-        it('should reject the request with an Unauthorized code', function(done) {
+        it('should reject the headers with an Unauthorized code', function(done) {
             request(options, function(error, response, body) {
                 response.statusCode.should.equal(403);
                 done();
@@ -341,7 +341,7 @@ describe('Extract Context Broker action from request', function() {
             serverMocks.mockPath('/NGSI10/queryContext', mockApp, done);
         });
 
-        it('should reject the request with an Unauthorized code', function(done) {
+        it('should reject the headers with an Unauthorized code', function(done) {
             request(options, function(error, response, body) {
                 response.statusCode.should.equal(403);
                 done();
@@ -367,7 +367,7 @@ describe('Extract Context Broker action from request', function() {
             serverMocks.mockPath('/NGSI10/queryContext', mockApp, done);
         });
 
-        it('should reject the request with an Unauthorized code', function(done) {
+        it('should reject the headers with an Unauthorized code', function(done) {
             request(options, function(error, response, body) {
                 response.statusCode.should.equal(403);
                 done();
@@ -393,7 +393,7 @@ describe('Extract Context Broker action from request', function() {
             serverMocks.mockPath('/NGSI10/queryContext', mockApp, done);
         });
 
-        it('should reject the request with a 403', function(done) {
+        it('should reject the headers with a 403', function(done) {
             request(options, function(error, response, body) {
                 response.statusCode.should.equal(403);
                 done();
@@ -418,7 +418,7 @@ describe('Extract Context Broker action from request', function() {
             serverMocks.mockPath('/NGSI10/queryContext', mockApp, done);
         });
 
-        it('should reject the request with a 403', function(done) {
+        it('should reject the headers with a 403', function(done) {
             request(options, function(error, response, body) {
                 response.statusCode.should.equal(403);
                 done();
@@ -426,7 +426,7 @@ describe('Extract Context Broker action from request', function() {
         });
     });
 
-    describe('When a request arrives with an unknown body type', function() {
+    describe('When a headers arrives with an unknown body type', function() {
         var options = {
             uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
             method: 'POST',
@@ -444,7 +444,7 @@ describe('Extract Context Broker action from request', function() {
             serverMocks.mockPath('/NGSI10/queryContext', mockApp, done);
         });
 
-        it('should reject the request with a 403 error', function(done) {
+        it('should reject the headers with a 403 error', function(done) {
             request(options, function(error, response, body) {
                 response.statusCode.should.equal(403);
                 done();
@@ -452,7 +452,7 @@ describe('Extract Context Broker action from request', function() {
         });
     });
 
-    describe('When a request arrives with an XML body with a wrong syntax', function() {
+    describe('When a headers arrives with an XML body with a wrong syntax', function() {
         var options = {
             uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
             method: 'POST',
@@ -470,7 +470,7 @@ describe('Extract Context Broker action from request', function() {
             serverMocks.mockPath('/NGSI10/queryContext', mockApp, done);
         });
 
-        it('should reject the request with a 403 error', function(done) {
+        it('should reject the headers with a 403 error', function(done) {
             request(options, function(error, response, body) {
                 response.statusCode.should.equal(403);
                 done();
@@ -478,7 +478,7 @@ describe('Extract Context Broker action from request', function() {
         });
     });
 
-    describe('When a request arrives with a JSON body with a wrong syntax', function() {
+    describe('When a headers arrives with a JSON body with a wrong syntax', function() {
         var options = {
             uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
             method: 'POST',
@@ -496,7 +496,7 @@ describe('Extract Context Broker action from request', function() {
             serverMocks.mockPath('/NGSI10/queryContext', mockApp, done);
         });
 
-        it('should reject the request with a 400 error', function(done) {
+        it('should reject the headers with a 400 error', function(done) {
             request(options, function(error, response, body) {
                 response.statusCode.should.equal(400);
                 done();
@@ -504,7 +504,7 @@ describe('Extract Context Broker action from request', function() {
         });
     });
 
-    describe('When a request arrives with a valid XML payload to the proxy', function() {
+    describe('When a headers arrives with a valid XML payload to the proxy', function() {
         var options = {
             uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
             method: 'POST',
@@ -528,7 +528,7 @@ describe('Extract Context Broker action from request', function() {
             ], done);
         });
 
-        it('should proxy the request to the target URL', function(done) {
+        it('should proxy the headers to the target URL', function(done) {
             var mockExecuted = false;
 
             mockApp.handler = function(req, res) {
@@ -545,7 +545,7 @@ describe('Extract Context Broker action from request', function() {
     });
 
 
-    describe('When a request arrives with a valid JSON payload to the proxy', function() {
+    describe('When a headers arrives with a valid JSON payload to the proxy', function() {
         var options = {
             uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
             method: 'POST',
@@ -569,7 +569,7 @@ describe('Extract Context Broker action from request', function() {
             ], done);
         });
 
-        it('should proxy the request to the target URL', function(done) {
+        it('should proxy the headers to the target URL', function(done) {
             var mockExecuted = false;
 
             mockApp.handler = function(req, res) {

@@ -31,7 +31,7 @@ var serverMocks = require('../tools/serverMocks'),
     config = require('../../config'),
     utils = require('../tools/utils'),
     should = require('should'),
-    request = require('request');
+    request = require('headers');
 
 describe('Reuse authentication tokens', function() {
     var proxy,
@@ -129,7 +129,7 @@ describe('Reuse authentication tokens', function() {
             });
         });
 
-        it('should not ask Keystone for another token', function(done) {
+        it('should not ask keystone_errors for another token', function(done) {
             var mockExecuted = false;
 
             mockOAuthApp.handler = function(req, res) {
@@ -191,7 +191,7 @@ describe('Reuse authentication tokens', function() {
             });
         });
 
-        it('should ask Keystone for another token', function(done) {
+        it('should ask keystone_errors for another token', function(done) {
             var mockExecuted = false,
                 roleAccesses = 0;
 
