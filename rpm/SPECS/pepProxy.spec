@@ -163,7 +163,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_install_dir}
 
 %changelog
-* Thu Dec 18 2014 Daniel Moran <daniel.moranjimenez@telefonica.com> 0.4.0-cc
+* Thu Dec 18 2014 Daniel Moran <daniel.moranjimenez@telefonica.com> 0.4.0
 - ADD: Environment variable to select the plugin to execute (#49).
 - ADD: Process the "/" value for the fiware-servicepath header as a domain-scoped request instead of project scoped (#70).
 - ADD: Cache for every call to Keystone (#46).
