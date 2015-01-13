@@ -174,12 +174,10 @@ rm -rf $RPM_BUILD_ROOT
 - FIX: Make the retries on Keystone requests dependent on the error type (#78)
 - FIX: Fixed subscribe action (it was 'suscribe') (#94)
 
-* Tue Dec 02 2014 Daniel Moran <daniel.moranjimenez@telefonica.com> 0.3.0-rel
+* Tue Dec 02 2014 Daniel Moran <daniel.moranjimenez@telefonica.com> 0.3.0
 - Add: Reuse the token instead of authenticating for each request (Issue #22).
 - Add: Support for Keystone as the authentication mechanism.
 - Add: Admin role bypass for privileged usage of the proxy.
 - Add: Plugin to sucure Keypass PAP.
 - Add: Plugin to secure Perseo CEP Rules API.
 - Add: Change expected headers form UUIDs to Names (and resolve UUIDs against Keystone).
-
-
