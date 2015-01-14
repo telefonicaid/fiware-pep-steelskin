@@ -27,6 +27,11 @@ Communication with the Access Control is based on the [XACML protocol](http://do
 
 Along this document, the term IDM (Identity Manager) will be used, as a general term to refer to the server providing user and role creation and authentication. The currently supported IDM is Keystone; a Keyrock IDM option is provided as well, but it may be deprecated in the near future.
 
+Two other documents provide further information about the PEP Proxy:
+
+* [Operations Manual](OPERATIONS.md)
+* [Architecture information](ARCHITECTURE.md)
+
 ## <a name="architecture"/> Architecture Description
 Orion Policy Enforcement Point Proxy is part of the authorization mechanism of the FIWARE platform. This authorization mechanism is based in OAuth 2.0, and it makes use of tokens to identify the user. 
  
@@ -328,8 +333,8 @@ In this example, only those users with `subjectId` (user's role) "admin" may wri
 Any number of policies can be included in the Access Control for each pair (tenant, subject). If any of the policies can be applied to the request and `Permit` the request, then the global result is a `Permit`. If none of the policies can be applied (no target exist for the tenant, subservice and subject of the request) the result will be `NotApplicable`. If there are policies that can be applied but all of them deny the access, the result will be a `Deny`.
 
 ## <a name="administration"/> Administration
-###Service operations
-####	Start service
+
+#### Start service
 To start the service, use either the service command:
 service pepProxy start
 
@@ -354,7 +359,7 @@ Or just the launch script:
 /etc/init.d/pepProxy stop
 ```
 ###	How to check service status
-####	Checking the process is running
+#### Checking the process is running
 The status of the process can be retrieved using the service command:
 ```
 service pepProxy status
