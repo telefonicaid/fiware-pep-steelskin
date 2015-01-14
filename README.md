@@ -2,7 +2,6 @@
 ## Index
 
 * [Overview](#overview)
-* [Architecture](#architecture)
 * [Deployment](#deployment)
 * [Usage](#usage)
 * [Administration](#administration)
