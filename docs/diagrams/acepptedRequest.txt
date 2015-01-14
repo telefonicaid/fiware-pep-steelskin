@@ -1,0 +1,13 @@
+title Accepted request
+
+Client->PEP: UpdateContext in Orion
+PEP->Keystone: Get PEP Token
+Keystone-->PEP: New Token
+PEP->Keystone: Validate user token
+PEP->Keystone: Get user roles
+PEP->Keystone: Get project ID
+PEP->AccessControl: Validate client request for roles
+AccessControl-->PEP: Permit
+PEP->Orion: redirect updateContext request
+Orion-->Client: response of the updateContext
+  
