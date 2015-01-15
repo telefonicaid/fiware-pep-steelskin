@@ -20,6 +20,9 @@
 # iot_support at tid dot es
 
 PROXY_VERSION=$2
+if [ -z "$PROXY_VERSION" ]; then
+  PROXY_VERSION=0.4.0_next
+fi
 PROXY_RELEASE=$1
 RPM_TOPDIR=$PWD
 PROXY_USER=pepproxy
