@@ -76,7 +76,8 @@ def start_mock(filename, ip, port):
         raise NameError('The SO is not recognize, start the mock manually')
     # path += '\\mocks\\'
     DEVNULL = open(os.devnull, 'wb')
-    return subprocess.Popen('python %s%s %s %s' % (path, filename, ip, port), stdout=DEVNULL, stderr=DEVNULL)
+    command = ('python %s%s %s %s' % (path, filename, ip, port)).split(' ')
+    return subprocess.Popen(command, stdout=DEVNULL, stderr=DEVNULL)
 
 
 def stop_process(process):
@@ -110,9 +111,8 @@ def start_proxy(ip_proxy, port_proxy, ip_destination, port_destination):
     else:
         raise NameError('The SO is not recognize, start the proxys manually')
     DEVNULL = open(os.devnull, 'wb')
-    proxy_proc = subprocess.Popen(
-        'python %sproxy.py %s %s %s %s' % (path, ip_proxy, port_proxy, ip_destination, port_destination),
-        stdout=DEVNULL, stderr=DEVNULL)
+    command = ('python %sproxy.py %s %s %s %s' % (path, ip_proxy, port_proxy, ip_destination, port_destination)).split(' ')
+    proxy_proc = subprocess.Popen(command, stdout=DEVNULL, stderr=DEVNULL)
     return proxy_proc
 
 
