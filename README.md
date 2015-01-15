@@ -28,8 +28,8 @@ Along this document, the term IDM (Identity Manager) will be used, as a general 
 
 Two other documents provide further information about the PEP Proxy:
 
-* [Operations Manual](OPERATIONS.md)
-* [Architecture information](ARCHITECTURE.md)
+* [Operations Manual](operations.md)
+* [Architecture information](architecture.md)
 
 ## <a name="deployment"/> Deployment
 ### Dependencies
