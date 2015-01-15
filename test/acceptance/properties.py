@@ -41,6 +41,8 @@ world.pep_port = '1028'
 
 # *********************LOCAL*****************
 # world.environment = 'local'
+# world.pep_host_user = 'vagrant'
+# world.pep_host_password = 'vagrant'
 # world.pep_path = '/home/vagrant/pep/fiware-orion-pep'
 # *********************************************
 # *********************REMOTE*****************
@@ -53,7 +55,7 @@ world.pep_path = '/home/vagrant/pep/fiware-orion-pep'
 # *********************DOCKER*****************
 # world.environment = 'docker'
 # world.pep_path = '/fiware-orion-pep'
-# world.docker_ip = '192.168.1.35'
+# world.docker_ip = '192.168.1.108'
 # world.docker_user = 'vagrant'
 # world.docker_password = 'vagrant'
 # world.docker_pep_container = 'pep_c4'
