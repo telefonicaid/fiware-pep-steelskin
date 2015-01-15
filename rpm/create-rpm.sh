@@ -24,6 +24,9 @@ if [ -z "$PROXY_VERSION" ]; then
   PROXY_VERSION=0.4.0_next
 fi
 PROXY_RELEASE=$1
+if [ -z "$PROXY_RELEASE" ]; then
+  PROXY_RELEASE=0
+fi
 RPM_TOPDIR=$PWD
 PROXY_USER=pepproxy
 
