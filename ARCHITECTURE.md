@@ -17,6 +17,7 @@ There is a special flow allowed for service administrators, that can be configur
 
 
 ## Sequence Diagramas
+The following diagrams show the most common scenarios for PEP Proxy use. In this section, Orion is used as example of protected resource, but take into account that this PEP is general-purpose, so it could be used with other GEris or even third-party API servers belonging to the user.
 
 ### Accepted request (without cache)
 ![Alt text](docs/img/acceptedRequestNoCache.png "Accepted request (no cache)")
