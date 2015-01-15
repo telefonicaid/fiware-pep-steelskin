@@ -2,7 +2,6 @@
 ## Index
 
 * [Overview](#overview)
-* [Architecture](#architecture)
 * [Deployment](#deployment)
 * [Usage](#usage)
 * [Administration](#administration)
@@ -27,20 +26,10 @@ Communication with the Access Control is based on the [XACML protocol](http://do
 
 Along this document, the term IDM (Identity Manager) will be used, as a general term to refer to the server providing user and role creation and authentication. The currently supported IDM is Keystone; a Keyrock IDM option is provided as well, but it may be deprecated in the near future.
 
-## <a name="architecture"/> Architecture Description
-Orion Policy Enforcement Point Proxy is part of the authorization mechanism of the FIWARE platform. This authorization mechanism is based in OAuth 2.0, and it makes use of tokens to identify the user. 
- 
-![Alt text](https://raw.githubusercontent.com/telefonicaid/fiware-orion-pep/develop/img/arquitecture.png "Authorization Architecture")
+Two other documents provide further information about the PEP Proxy:
 
-Each request to a component holds some extra information (apart from the token) that can be used to identify what kind of action is requested to be executed and over what entity. This information may be explicit (using headers) or implicit (being part of the payload or the URL). The first task of the proxy is to extract this information; the way of extracting it depends on the particular component that it's being proxied (currently there are four plugins, supporing Orion Context Broker, Perseo Complex Event Processing and Keypass PAP API, as well as a generic REST one).
-
-For each request, the proxy asks the IDM to validate the access token of the user (2). If the token is valid, the IDM answer with a response that contain the user roles (3). With those roles, the selected actions and resources (identified by the extra information) the PEP Proxy makes a request to the Access Manager for validation (4). This is an HTTP request using the XACML Request format. The Access Control component validates all the information and checks the retrieved data against the XACML Access Rules defined in the Identity Manager (4) (where each role for each user is associated with n permissions, each one of them defined using an XACML Rule). 
-
-Actions (2) and (3) may actually involve some more calls in the case of Keystone, in order to resolve organization names or user information, and in order to retrieve the PEP's own authoerization token. All this calls are not depicted in the diagram as they can be safely cached (the cache being configurable in the config file).
-
-If the user is allowed to execute the requested action (5), the HTTP request is resend to the component (6); if it is not, it is rejected.
-
-There is a special flow allowed for service administrators, that can be configured in the config file. A service administrator role ID can be configured in the `bypassRoleId` attribute, so that any request coming into the PEP Proxy with an authorization token belonging to a user with that role will not be validated against the Access Control server, but will be automatically proxied insted. A flag is also provided in the configuration to enable and disable this mechanism for the proxy (`bypass`).
+* [Operations Manual](operations.md)
+* [Architecture information](architecture.md)
 
 ## <a name="deployment"/> Deployment
 ### Dependencies
@@ -328,8 +317,8 @@ In this example, only those users with `subjectId` (user's role) "admin" may wri
 Any number of policies can be included in the Access Control for each pair (tenant, subject). If any of the policies can be applied to the request and `Permit` the request, then the global result is a `Permit`. If none of the policies can be applied (no target exist for the tenant, subservice and subject of the request) the result will be `NotApplicable`. If there are policies that can be applied but all of them deny the access, the result will be a `Deny`.
 
 ## <a name="administration"/> Administration
-###Service operations
-####	Start service
+
+#### Start service
 To start the service, use either the service command:
 service pepProxy start
 
@@ -354,7 +343,7 @@ Or just the launch script:
 /etc/init.d/pepProxy stop
 ```
 ###	How to check service status
-####	Checking the process is running
+#### Checking the process is running
 The status of the process can be retrieved using the service command:
 ```
 service pepProxy status
