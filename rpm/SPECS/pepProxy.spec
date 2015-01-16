@@ -163,6 +163,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_install_dir}
 
 %changelog
+* Fri Jan 16 2015 Daniel Moran <daniel.moranjimenez@telefonica.com> 0.6.1
+- FIX XML requests wrongly forwarded as an empty JSON (#103).
+- FIX Logs don't show Access Control response due to a wrong format placeholder (#105).
+
 * Thu Dec 18 2014 Daniel Moran <daniel.moranjimenez@telefonica.com> 0.4.0
 - ADD: Environment variable to select the plugin to execute (#49).
 - ADD: Process the "/" value for the fiware-servicepath header as a domain-scoped request instead of project scoped (#70).
