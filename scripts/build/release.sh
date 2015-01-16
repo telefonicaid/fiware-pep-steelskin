@@ -154,7 +154,7 @@ echo "new version:     $NEW_VERSION"
 #
 # Edit files that depend on the current version (which just changed)
 #
-sed "s/\"version\": $currentVersion/\"version\": $NEW_VERSION/" package.json        > /tmp/package.json
+sed "s/\"version\": \"$currentVersion\"/\"version\": \"$NEW_VERSION\"/" package.json        > /tmp/package.json
 sed "s/$currentVersion/$NEW_VERSION/" rpm/create-rpm.sh        > /tmp/create-rpm.sh
 
 mv /tmp/package.json              package.json
