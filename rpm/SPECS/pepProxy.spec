@@ -6,6 +6,7 @@ License: AGPLv3
 BuildRoot: %{_topdir}/BUILDROOT/
 BuildArch: noarch
 # Requires: nodejs >= 0.10.24
+Requires: logrotate
 Requires(post): /sbin/chkconfig, /usr/sbin/useradd npm
 Requires(preun): /sbin/chkconfig, /sbin/service
 Requires(postun): /sbin/service
