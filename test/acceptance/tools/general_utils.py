@@ -145,7 +145,7 @@ def initialize_keystone(platform, environment):
         IdmUtils.prepare_environment(platform, environment)
 
 
-def initialize_ac(user_roles, ac_ip, structure, domain, project, policy_name):
+def initialize_ac(user_roles, ac_ip, ac_port, structure, domain, project, policy_name):
     """
     Initialize the AccessControl environment needed to the tests
     :param user_roles:
@@ -156,7 +156,7 @@ def initialize_ac(user_roles, ac_ip, structure, domain, project, policy_name):
     :param policy_name:
     :return:
     """
-    ac = AC(ac_ip)
+    ac = AC(ac_ip, port=ac_port)
     ac.delete_tenant_policies(domain)
     if project == '/':
         for user_rol in user_roles:
