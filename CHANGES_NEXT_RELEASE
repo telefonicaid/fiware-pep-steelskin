@@ -1,2 +1,0 @@
-- FIX XML requests wrongly forwarded as an empty JSON (#103).
-- FIX Logs don't show Access Control response due to a wrong format placeholder (#105).
