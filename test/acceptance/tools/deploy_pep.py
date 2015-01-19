@@ -249,21 +249,21 @@ def start_pep_local(pep_path='/fiware-orion-pep'):
         config = path + '/resources/' + 'config.js'
     else:
         raise NameError('The SO is not supported')
-    so = local('cat /etc/issue').split('\n')[0].split(' ')[0]
+    so = local('cat /etc/issue', capture=False).split('\n')[0].split(' ')[0]
     if so == 'CentOS':
-        pid = local('ps -ef | grep "node bin/pepProxy" | grep -v grep | awk \'{print $2}\'')
+        pid = local('ps -ef | grep "node bin/pepProxy" | grep -v grep | awk \'{print $2}\'', capture=False)
     elif so == 'Ubuntu':
-        pid = local('ps -ef | grep "nodejs bin/pepProxy" | grep -v grep | awk \'{print $2}\'')
+        pid = local('ps -ef | grep "nodejs bin/pepProxy" | grep -v grep | awk \'{print $2}\'', capture=False)
     else:
         raise NameError('Pep only can be started in Ubuntu and CentOS systems')
     if pid != '':
         for proc_pid in pid.split('\n'):
-            local('kill -9 {pid}'.format(pid=proc_pid.strip()))
+            local('kill -9 {pid}'.format(pid=proc_pid.strip()), capture=False)
     with cd(pep_path):
-        local('cp {config} {path}/config.js'.format(config=config, path=pep_path))
+        local('cp {config} {path}/config.js'.format(config=config, path=pep_path), capture=False)
         if so == 'CentOS':
-            local('dtach -n `mktemp -u /tmp/dtach.XXXX` /bin/bash -c \' node bin/pepProxy >> /tmp/pep.log\'')
+            local('dtach -n `mktemp -u /tmp/dtach.XXXX` /bin/bash -c \' node bin/pepProxy >> /tmp/pep.log\'', capture=False)
         elif so == 'Ubuntu':
-            local('dtach -n `mktemp -u /tmp/dtach.XXXX` /bin/bash -c \' nodejs bin/pepProxy >> /tmp/pep.log\'')
+            local('dtach -n `mktemp -u /tmp/dtach.XXXX` /bin/bash -c \' nodejs bin/pepProxy >> /tmp/pep.log\'', capture=False)
         else:
             raise NameError('Pep only can be started in Ubuntu and CentOS systems')
