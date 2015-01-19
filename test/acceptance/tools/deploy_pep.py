@@ -227,3 +227,43 @@ def stop_pep(ip, user, password, port='22'):
         for proc_pid in pid.split('\n'):
             sudo('kill -9 {pid}'.format(pid=proc_pid.strip()))
 
+
+def start_pep_local(pep_path='/fiware-orion-pep'):
+    """
+    Given a ssh connection data, stop PEP if its running, put the new configuration, and start is.
+    The machina have to has the "dtach" package
+    :param ip:
+    :param user:
+    :param password:
+    :param port:
+    :param pep_path:
+    :return:
+    """
+    output['stdout'] = False
+    output['running'] = False
+    output['warnings'] = False
+    path, fl = os.path.split(os.path.realpath(__file__))
+    if platform.system() == 'Windows':
+        config = path + '\\resources\\' + 'config.js'
+    elif platform.system() == 'Linux':
+        config = path + '/resources/' + 'config.js'
+    else:
+        raise NameError('The SO is not supported')
+    so = local('cat /etc/issue').split('\n')[0].split(' ')[0]
+    if so == 'CentOS':
+        pid = local('ps -ef | grep "node bin/pepProxy" | grep -v grep | awk \'{print $2}\'')
+    elif so == 'Ubuntu':
+        pid = local('ps -ef | grep "nodejs bin/pepProxy" | grep -v grep | awk \'{print $2}\'')
+    else:
+        raise NameError('Pep only can be started in Ubuntu and CentOS systems')
+    if pid != '':
+        for proc_pid in pid.split('\n'):
+            local('kill -9 {pid}'.format(pid=proc_pid.strip()))
+    with cd(pep_path):
+        local('cp {config} {path}/config.js'.format(config=config, path=pep_path))
+        if so == 'CentOS':
+            local('dtach -n `mktemp -u /tmp/dtach.XXXX` /bin/bash -c \' node bin/pepProxy >> /tmp/pep.log\'')
+        elif so == 'Ubuntu':
+            local('dtach -n `mktemp -u /tmp/dtach.XXXX` /bin/bash -c \' nodejs bin/pepProxy >> /tmp/pep.log\'')
+        else:
+            raise NameError('Pep only can be started in Ubuntu and CentOS systems')

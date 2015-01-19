@@ -59,7 +59,7 @@ def start_pep_app():
     if world.environment == 'remote':
         start_pep(world.pep_host_ip, world.pep_host_user, world.pep_host_password, pep_path=world.pep_path)
     if world.environment == 'local':
-        start_pep('localhost', world.pep_host_user, world.pep_host_password, pep_path=world.pep_path)
+        start_pep_local(world.pep_path)
 
 def start_mock(filename, ip, port):
     """
