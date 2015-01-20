@@ -265,7 +265,7 @@ def the_pep_returns_an_error(step):
 
 @step('headers with format "([^"]*)"$')
 def with_format_group1(step, format):
-    token = IdmUtils.get_token(world.ks['user_all'], world.ks['user_all'], world.ks['domain_ok'], world.ks['platform']['address']['ip'])
+    token = IdmUtils.get_token(world.ks['user_all'], world.ks['user_all'], world.ks['domain_ok'], world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
     world.format = format
     headers = {
         "Accept": "application/%s" % world.format,

@@ -41,7 +41,7 @@ def headers_with_bad_token(step):
 
 @step('headers with bad domain')
 def headers_with_bad_domain(step):
-    token = IdmUtils.get_token(world.ks['user_all'], world.ks['user_all'], world.ks['domain_ok'], world.ks['platform']['address']['ip'])
+    token = IdmUtils.get_token(world.ks['user_all'], world.ks['user_all'], world.ks['domain_ok'], world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
     headers = {
         "Accept": "application/json",
         'content-type': 'application/json',
@@ -53,7 +53,7 @@ def headers_with_bad_domain(step):
 
 @step('headers with bad project')
 def headers_with_bad_project(step):
-    token = IdmUtils.get_token(world.ks['user_all'], world.ks['user_all'], world.ks['domain_ok'], world.ks['platform']['address']['ip'])
+    token = IdmUtils.get_token(world.ks['user_all'], world.ks['user_all'], world.ks['domain_ok'], world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
     headers = {
         "Accept": "application/json",
         'content-type': 'application/json',
@@ -65,7 +65,7 @@ def headers_with_bad_project(step):
 
 @step('headers with empty project')
 def headers_with_empty_project(step):
-    token = IdmUtils.get_token(world.ks['user_all'], world.ks['user_all'], world.ks['domain_ok'], world.ks['platform']['address']['ip'])
+    token = IdmUtils.get_token(world.ks['user_all'], world.ks['user_all'], world.ks['domain_ok'], world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
     headers = {
         "Accept": "application/json",
         'content-type': 'application/json',
@@ -77,7 +77,7 @@ def headers_with_empty_project(step):
 
 @step('headers with domain without roles')
 def headers_with_empty_project(step):
-    token = IdmUtils.get_token(world.ks['user_no_roles'], world.ks['user_no_roles'], world.ks['domain_no_roles'], world.ks['platform']['address']['ip'])
+    token = IdmUtils.get_token(world.ks['user_no_roles'], world.ks['user_no_roles'], world.ks['domain_no_roles'], world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
     headers = {
         "Accept": "application/json",
         'content-type': 'application/json',
@@ -89,7 +89,7 @@ def headers_with_empty_project(step):
 
 @step('headers with project without roles')
 def headers_with_empty_project(step):
-    token = IdmUtils.get_token(world.ks['user_no_roles'], world.ks['user_no_roles'], world.ks['domain_no_roles'], world.ks['platform']['address']['ip'])
+    token = IdmUtils.get_token(world.ks['user_no_roles'], world.ks['user_no_roles'], world.ks['domain_no_roles'], world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
     headers = {
         "Accept": "application/json",
         'content-type': 'application/json',
