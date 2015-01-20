@@ -213,7 +213,7 @@ def stop_environment():
     if world.environment == 'remote':
         stop_pep(world.pep_host_ip, world.pep_host_user, world.pep_host_password)
     if world.environment == 'local':
-        stop_pep('localhost', world.pep_host_user, world.pep_host_password)
+        stop_local_pep()
 
 
 def set_config_cb():
