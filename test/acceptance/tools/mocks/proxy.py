@@ -91,7 +91,6 @@ def proxy(path):
             del headers_resp['transfer-encoding']
         response_data = r.content
         status_code = r.status_code
-        content_type = headers_resp['content-type']
         flask_response = Response(response=response_data,
                                   status=status_code,
                                   headers=headers_resp.items())

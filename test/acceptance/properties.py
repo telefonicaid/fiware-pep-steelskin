@@ -32,24 +32,27 @@ s.connect(('8.8.8.8', 0))  # connecting to a UDP address doesn't send packets
 local_ip_address = s.getsockname()[0]
 # ***************************************************************************
 
-world.pep_host_ip = '192.168.1.108'
+world.pep_host_ip = 'localhost'
+world.access_control_host_ip = '127.0.0.1'
+world.access_control_host_port = '7070'
+world.keystone_host_ip = '127.0.0.1'
+world.keystone_host_port = '8081'
 
 # Values to the pep config file
 world.pep_log_level = 'DEBUG'
-world.pep_port = '1028'
+world.pep_port = '1026'
 # ******************************
 
 # *********************LOCAL*****************
-# world.environment = 'local'
+world.environment = 'local'
+world.pep_path = '/fiware-orion-pep'
+# *********************************************
+
+# *********************REMOTE*****************
+# world.environment = 'remote'
 # world.pep_host_user = 'vagrant'
 # world.pep_host_password = 'vagrant'
 # world.pep_path = '/home/vagrant/pep/fiware-orion-pep'
-# *********************************************
-# *********************REMOTE*****************
-world.environment = 'remote'
-world.pep_host_user = 'vagrant'
-world.pep_host_password = 'vagrant'
-world.pep_path = '/home/vagrant/pep/fiware-orion-pep'
 # *********************************************
 
 # *********************DOCKER*****************
@@ -110,8 +113,8 @@ world.ks['platform'] = {
         'password': 'password'
     },
     'address': {
-        'ip': '127.0.0.1',
-        'port': '5000'
+        'ip': world.keystone_host_ip,
+        'port': world.keystone_host_port
     },
     'pep': {
         'user': 'pep',
@@ -130,8 +133,8 @@ world.ks['platform'] = {
 
 world.ac = {}
 # Real Access Control configuration
-world.ac['ip'] = '127.0.0.1'
-world.ac['port'] = '8080'
+world.ac['ip'] = world.access_control_host_ip
+world.ac['port'] = world.access_control_host_port
 # ******************************
 
 # AC rules

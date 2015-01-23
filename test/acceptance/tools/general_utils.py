@@ -59,7 +59,7 @@ def start_pep_app():
     if world.environment == 'remote':
         start_pep(world.pep_host_ip, world.pep_host_user, world.pep_host_password, pep_path=world.pep_path)
     if world.environment == 'local':
-        start_pep('localhost', world.pep_host_user, world.pep_host_password, pep_path=world.pep_path)
+        start_pep_local(world.pep_path)
 
 def start_mock(filename, ip, port):
     """
@@ -145,7 +145,7 @@ def initialize_keystone(platform, environment):
         IdmUtils.prepare_environment(platform, environment)
 
 
-def initialize_ac(user_roles, ac_ip, structure, domain, project, policy_name):
+def initialize_ac(user_roles, ac_ip, ac_port, structure, domain, project, policy_name):
     """
     Initialize the AccessControl environment needed to the tests
     :param user_roles:
@@ -156,7 +156,7 @@ def initialize_ac(user_roles, ac_ip, structure, domain, project, policy_name):
     :param policy_name:
     :return:
     """
-    ac = AC(ac_ip)
+    ac = AC(ac_ip, port=ac_port)
     ac.delete_tenant_policies(domain)
     if project == '/':
         for user_rol in user_roles:
@@ -213,7 +213,7 @@ def stop_environment():
     if world.environment == 'remote':
         stop_pep(world.pep_host_ip, world.pep_host_user, world.pep_host_password)
     if world.environment == 'local':
-        stop_pep('localhost', world.pep_host_user, world.pep_host_password)
+        stop_local_pep()
 
 
 def set_config_cb():

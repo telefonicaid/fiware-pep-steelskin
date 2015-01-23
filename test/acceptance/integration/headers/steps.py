@@ -42,7 +42,7 @@ def headers_without_the_header_group1(step, header):
 
 @step('headers with format "([^"]*)" and "([^"]*)" action')
 def with_format_group1(step, format, action):
-    token = IdmUtils.get_token(world.ks['user_all'], world.ks['user_all'], world.ks['domain_ok'], world.ks['platform']['address']['ip'])
+    token = IdmUtils.get_token(world.ks['user_all'], world.ks['user_all'], world.ks['domain_ok'], world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
     world.format = format
     headers = {
         "Accept": "application/%s" % world.format,

@@ -31,7 +31,7 @@ import requests
 
 @step('headers of bad rol environment with project')
 def headers_of_bad_rol_environment_with_project(step):
-    token = IdmUtils.get_token(world.ks['user_all_ko'], world.ks['user_all_ko'], world.ks['domain_ko'], world.ks['platform']['address']['ip'])
+    token = IdmUtils.get_token(world.ks['user_all_ko'], world.ks['user_all_ko'], world.ks['domain_ko'], world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
     headers = {
         "Accept": "application/json",
         'content-type': 'application/json',
@@ -43,7 +43,7 @@ def headers_of_bad_rol_environment_with_project(step):
 
 @step('headers of bad rol environment without project')
 def headers_of_bad_rol_environment_without_project(step):
-    token = IdmUtils.get_token(world.ks['user_all_ko'], world.ks['user_all_ko'], world.ks['domain_ko'], world.ks['platform']['address']['ip'])
+    token = IdmUtils.get_token(world.ks['user_all_ko'], world.ks['user_all_ko'], world.ks['domain_ko'], world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
     headers = {
         "Accept": "application/json",
         'content-type': 'application/json',
