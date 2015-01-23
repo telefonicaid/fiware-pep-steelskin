@@ -231,7 +231,7 @@ def stop_pep(ip, user, password, port='22'):
 def start_pep_local(pep_path='/fiware-orion-pep'):
     """
     Given a ssh connection data, stop PEP if its running, put the new configuration, and start is.
-    The machina have to has the "dtach" package
+    The machine has to have the "dtach" package
     :param ip:
     :param user:
     :param password:
