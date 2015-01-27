@@ -115,6 +115,7 @@ describe('Extract Context Broker action from request', function() {
         ['/ngsi9/updateContextAvailabilitySubscription', 'subscribe-availability'],
         ['/ngsi9/unsubscribeContextAvailability', 'subscribe-availability'],
         ['/v1/queryContext', 'read'],
+        ['/v1/contextTypes', 'read'],
         ['/v1/subscribeContext', 'subscribe'],
         ['/v1/updateContextSubscription', 'subscribe'],
         ['/v1/unsubscribeContext', 'subscribe'],
