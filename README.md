@@ -507,7 +507,7 @@ This is the list of actions available for the Context Broker. For every action, 
 * `create`: URL contains `/v1/updateContext` and the `actionType` attribute of the payload (either with XML or JSON) is `APPEND`.
 * `update`: URL contains `/v1/updateContext` and the `actionType` attribute of the payload (either with XML or JSON) is `UPDATE`.
 * `delete`: URL contains `/v1/updateContext` and the `actionType` attribute of the payload (either with XML or JSON) is “DELETE”.
-* `read`: URL contains `/v1/queryContext`.
+* `read`: URL contains `/v1/queryContext` or `/v1/contextTypes`.
 * `subscribe`: URL contains  `/v1/subscribeContext`, `/v1/updateContextSubscription` o `/v1/unsubscribeContext`.
 * `register`: URL contains `/v1/registry/registerContext`.
 * `discover`: URL contains `/v1/registry/discoverContextAvailability`.
