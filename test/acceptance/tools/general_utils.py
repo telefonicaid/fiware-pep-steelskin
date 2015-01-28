@@ -33,6 +33,7 @@ from iotqautils.accessControl import AC
 from iotqautils.idm_keystone import IdmUtils
 from lettuce import world
 from deploy_pep import *
+import psutil
 
 
 def show_times(init_value):
@@ -57,7 +58,8 @@ def start_pep_app():
                          world.docker_pep_container, world.pep_path)
     if world.environment == 'remote':
         start_pep(world.pep_host_ip, world.pep_host_user, world.pep_host_password, pep_path=world.pep_path)
-
+    if world.environment == 'local':
+        start_pep_local(world.pep_path)
 
 def start_mock(filename, ip, port):
     """
@@ -76,7 +78,8 @@ def start_mock(filename, ip, port):
         raise NameError('The SO is not recognize, start the mock manually')
     # path += '\\mocks\\'
     DEVNULL = open(os.devnull, 'wb')
-    return subprocess.Popen('python %s%s %s %s' % (path, filename, ip, port), stdout=DEVNULL, stderr=DEVNULL)
+    command = ('python %s%s %s %s' % (path, filename, ip, port)).split(' ')
+    return subprocess.Popen(command, stdout=DEVNULL, stderr=DEVNULL)
 
 
 def stop_process(process):
@@ -88,9 +91,21 @@ def stop_process(process):
     if platform.system() == 'Windows':
         subprocess.Popen(['taskkill', '/F', '/T', '/PID', str(process.pid)])
     elif platform.system() == 'Linux':
-        subprocess.Popen(['kill', '-9', str(process.pid)])
+        kill(process.pid)
     else:
         raise NameError('The SO is not recognize, stop the process manually')
+
+
+def kill(proc_pid):
+    """
+    Funct to kill all process with his children
+    :param proc_pid:
+    :return:
+    """
+    process = psutil.Process(proc_pid)
+    for proc in process.get_children(recursive=True):
+        proc.kill()
+    process.kill()
 
 
 def start_proxy(ip_proxy, port_proxy, ip_destination, port_destination):
@@ -110,9 +125,8 @@ def start_proxy(ip_proxy, port_proxy, ip_destination, port_destination):
     else:
         raise NameError('The SO is not recognize, start the proxys manually')
     DEVNULL = open(os.devnull, 'wb')
-    proxy_proc = subprocess.Popen(
-        'python %sproxy.py %s %s %s %s' % (path, ip_proxy, port_proxy, ip_destination, port_destination),
-        stdout=DEVNULL, stderr=DEVNULL)
+    command = ('python %sproxy.py %s %s %s %s' % (path, ip_proxy, port_proxy, ip_destination, port_destination)).split(' ')
+    proxy_proc = subprocess.Popen(command, stdout=DEVNULL, stderr=DEVNULL)
     return proxy_proc
 
 
@@ -131,7 +145,7 @@ def initialize_keystone(platform, environment):
         IdmUtils.prepare_environment(platform, environment)
 
 
-def initialize_ac(user_roles, ac_ip, structure, domain, project, policy_name):
+def initialize_ac(user_roles, ac_ip, ac_port, structure, domain, project, policy_name):
     """
     Initialize the AccessControl environment needed to the tests
     :param user_roles:
@@ -142,7 +156,7 @@ def initialize_ac(user_roles, ac_ip, structure, domain, project, policy_name):
     :param policy_name:
     :return:
     """
-    ac = AC(ac_ip)
+    ac = AC(ac_ip, port=ac_port)
     ac.delete_tenant_policies(domain)
     if project == '/':
         for user_rol in user_roles:
@@ -192,6 +206,14 @@ def stop_environment():
     stop_process(world.ks_proxy)
     stop_process(world.ac_proxy)
     stop_process(world.mock_dest)
+    if world.environment == 'docker':
+        stop_docker_pep(world.docker_ip, world.docker_user, world.docker_password,
+                         world.docker_pep_user, world.docker_pep_password,
+                         world.docker_pep_container)
+    if world.environment == 'remote':
+        stop_pep(world.pep_host_ip, world.pep_host_user, world.pep_host_password)
+    if world.environment == 'local':
+        stop_local_pep()
 
 
 def set_config_cb():

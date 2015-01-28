@@ -31,7 +31,7 @@ import requests
 
 @step('headers of bad rol environment with project')
 def headers_of_bad_rol_environment_with_project(step):
-    token = IdmUtils.get_token(world.ks['user_all_ko'], world.ks['user_all_ko'], world.ks['domain_ko'], world.ks['platform']['address']['ip'])
+    token = IdmUtils.get_token(world.ks['user_all_ko'], world.ks['user_all_ko'], world.ks['domain_ko'], world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
     headers = {
         "Accept": "application/json",
         'content-type': 'application/json',
@@ -43,7 +43,7 @@ def headers_of_bad_rol_environment_with_project(step):
 
 @step('headers of bad rol environment without project')
 def headers_of_bad_rol_environment_without_project(step):
-    token = IdmUtils.get_token(world.ks['user_all_ko'], world.ks['user_all_ko'], world.ks['domain_ko'], world.ks['platform']['address']['ip'])
+    token = IdmUtils.get_token(world.ks['user_all_ko'], world.ks['user_all_ko'], world.ks['domain_ko'], world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
     headers = {
         "Accept": "application/json",
         'content-type': 'application/json',
@@ -56,4 +56,4 @@ def headers_of_bad_rol_environment_without_project(step):
 @step('the access control proxy receive the last petition "([^"]*)" from PEP')
 def the_keystone_proxy_doesnt_receive_any_petition(step, last_petition):
     resp = requests.request('GET', 'http://{ac_proxy_ip}:{ac_proxy_port}/last_path'.format(ac_proxy_ip=world.ac_proxy_ip, ac_proxy_port=world.ac_proxy_port)).text
-    assert resp == last_petition
+    assert resp == last_petition, 'The last petition done to ac is not the defined in the test'

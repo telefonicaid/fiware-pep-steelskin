@@ -32,7 +32,7 @@ from lettuce import step, world
 
 @step('the PEP returns an ok')
 def the_pep_returns_an_ok(step):
-    assert world.response.status_code == 200
+    assert world.response.status_code == 200, 'The PEP not return the ok response code'
 
 @step('the history is saved$')
 def the_history_is(step):
@@ -42,11 +42,11 @@ def the_history_is(step):
 @step('the history is the same as saved')
 def the_history_is(step):
     resp = requests.request('GET', 'http://{ks_proxy_ip}:{ks_proxy_port}/history'.format(ks_proxy_ip=world.ks_proxy_ip, ks_proxy_port=world.ks_proxy_port)).text
-    assert world.history == resp
+    assert world.history == resp, 'The history changed, it has to be equial'
 
 @step('headers general')
 def headers_general(step):
-    token = IdmUtils.get_token(world.ks['user_all'], world.ks['user_all'], world.ks['domain_ok'], world.ks['platform']['address']['ip'])
+    token = IdmUtils.get_token(world.ks['user_all'], world.ks['user_all'], world.ks['domain_ok'], world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
     headers = {
         "Accept": "application/json",
         'content-type': 'application/json',
@@ -62,11 +62,11 @@ def the_history_off_petitions_adds_a_token_petition(step, petitions_added):
     history_list = eval(world.history)
     history_new_list = eval(resp)
     world.last_petition_added = history_new_list[len(history_new_list)-1]
-    assert len(history_list)+int(petitions_added) == len(history_new_list)
+    assert len(history_list)+int(petitions_added) == len(history_new_list), 'The petitions added to the history are not the expected'
 
 @step('the value added to the history is ok')
 def the_value_added_to_the_history_is(step):
-    assert world.new_petition == world.last_petition_added
+    assert world.new_petition == world.last_petition_added, 'The petition asked is not the expected'
 
 @step('waits "([^"]*)" seconds to "([^"]*)" cache expire')
 def waits_group1_seconds_to_group2_cache_expire(step, time_to_sleep, cache_group):

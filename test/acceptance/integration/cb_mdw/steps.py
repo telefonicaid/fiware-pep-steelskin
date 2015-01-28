@@ -40,7 +40,7 @@ def a_url_with_group1_and_the_actiontype_attribute_group2(step, url, action_type
 
 @step('a context broker "([^"]*)" petition is asked to PEP with "([^"]*)" format')
 def a_context_broker_petition_is_asked_to_pep_with_format(step, action, format):
-    token = IdmUtils.get_token(world.user, world.user, world.domain, world.ks['platform']['address']['ip'])
+    token = IdmUtils.get_token(world.user, world.user, world.domain, world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
     headers = {
         "Accept": "application/%s" % format,
         'content-type': 'application/%s' % format,

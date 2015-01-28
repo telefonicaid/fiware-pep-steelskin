@@ -28,7 +28,7 @@ from iotqautils.idm_keystone import IdmUtils
 
 @step('headers$')
 def with_format_group1(step):
-    token = IdmUtils.get_token(world.ks['user_all'], world.ks['user_all'], world.ks['domain_ok'], world.ks['platform']['address']['ip'])
+    token = IdmUtils.get_token(world.ks['user_all'], world.ks['user_all'], world.ks['domain_ok'], world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
     headers = {
         "Accept": "application/json",
         'content-type': 'application/json',
