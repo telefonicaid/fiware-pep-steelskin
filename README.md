@@ -417,8 +417,10 @@ Some of the configuration values for the attributes above mentioned can be overr
 | LOG_LEVEL            | config.logLevel                     |
 | ACCESS_HOST          | config.access.host                  |
 | ACCESS_PORT          | config.access.port                  |
+| ACCESS_PROTOCOL      | config.access.protocol              |
 | AUTHENTICATION_HOST  | config.authentication.options.host  |
 | AUTHENTICATION_PORT  | config.authentication.options.port  |
+| AUTHENTICATION_PROTOCOL  | config.authentication.options.protocol  |
 | PROXY_USERNAME       | config.authentication.user          |
 | PROXY_PASSWORD       | config.authentication.password      |
 
