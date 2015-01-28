@@ -49,6 +49,7 @@ LOG_PATH=/var/log/pepProxy/${NAME}.log
 
 # Load the environment
 if [[ -f /etc/sysconfig/${NAME} ]]; then
+    set -a
     . /etc/sysconfig/${NAME}
 else
    echo "Configuration file /etc/sysconfig/${NAME} not found"
@@ -62,11 +63,6 @@ pepproxy_start()
     cd $PROXY_PATH
     if [[ -x ${EXECUTABLE} ]]; then
         cd $PROXY_PATH
-        export PROXY_PORT=$PROXY_PORT
-        export TARGET_PORT=$TARGET_PORT
-        export AUTHENTICATION_HOST=$AUTHENTICATION_HOST
-        export PROXY_USERNAME=$PROXY_USERNAME
-        export PROXY_PASSWORD=$PROXY_PASSWORD
         su $PROXY_USER -p -c "cd $PROXY_PATH; nohup ${EXECUTABLE} &>> $LOG_PATH & echo \$! > $PIDFILE"
         echo "Success"
     else
