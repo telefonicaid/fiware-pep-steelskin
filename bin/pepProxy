@@ -4,21 +4,21 @@ var proxy = require('../lib/fiware-orion-pep'),
     config = require('../config'),
     middlewareConfigs = {
         orion: {
-            require: 'lib/plugin/orionPlugin',
+            require: 'lib/plugins/orionPlugin',
 
             functions: [
                'extractCBAction'
             ]
         },
         keypass: {
-            require: 'lib/plugin/keypassPlugin',
+            require: 'lib/plugins/keypassPlugin',
 
             functions: [
                'extractAction'
             ]
         },
         perseo: {
-            require: 'lib/plugin/perseoPlugin',
+            require: 'lib/plugins/perseoPlugin',
 
             functions: [
                'extractAction'
