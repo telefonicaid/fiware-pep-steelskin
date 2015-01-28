@@ -31,6 +31,7 @@ from iotqautils.idm_keystone import IdmUtils
 from tools.general_utils import convert
 
 from integration.commons import *
+from requests.exceptions import ConnectionError
 
 @step('url with "([^"]*)" and the actionType attribute "([^"]*)"')
 def a_url_with_group1_and_the_actiontype_attribute_group2(step, url, action_type):
@@ -49,20 +50,31 @@ def a_context_broker_petition_is_asked_to_pep_with_format(step, action, format):
         'X-Auth-Token': token
     }
     world.headers = headers
-    if hasattr(world, 'action_type'):
+    url = 'http://{pep_ip}:{pep_port}/'.format(pep_ip=world.pep_host_ip, pep_port=world.pep_port) + world.url
+    if hasattr(world, 'action_type') and world.action_type != '':
         if format == 'json':
             data = {
                 'updateAction': world.action_type
             }
             world.data = json.dumps(data)
-            requests.request(action.lower(), 'http://{pep_ip}:{pep_port}/'.format(pep_ip=world.pep_host_ip, pep_port=world.pep_port) + world.url, headers=headers, data=json.dumps(data))
         else:
             data = "<updateAction>%s</updateAction>" % world.action_type
             world.data = data
-            requests.request(action.lower(), 'http://{pep_ip}:{pep_port}/'.format(pep_ip=world.pep_host_ip, pep_port=world.pep_port) + world.url, headers=headers, data=data)
     else:
-        world.data = {}
-        requests.request(action.lower(), 'http://{pep_ip}:{pep_port}/'.format(pep_ip=world.pep_host_ip, pep_port=world.pep_port) + world.url, headers=headers, data={})
+        if format == 'json':
+            world.data = json.dumps({})
+        else:
+            world.data = '<xml></xml>'
+    try:
+        requests.request(action.lower(), url, headers=headers, data=world.data)
+    except ConnectionError as e:
+        assert False, '''There was an error with the connection with the following data: \n
+        \tAction: {action}\n
+        \tUrl: {url}\n
+        \tHeaders: {headers}\n
+        \tData: {data}\n
+        \t error: {error}
+        '''.format(action=action.lower(), url=url, headers=headers, data=world.data, error=e)
 
 
 

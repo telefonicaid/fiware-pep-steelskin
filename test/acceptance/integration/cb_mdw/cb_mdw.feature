@@ -50,13 +50,15 @@ Feature: Context broker middleware
     Given a domain in KEYSTONE
     And a user in the domain
     And a project in the user
-    And a url with "v1/queryContext"
+    And a url with "<url>"
     When a context broker "POST" petition is asked to PEP with "<format>" format
     Then the petition gets to the mock
   Examples:
-    | format |
-    | xml    |
-    | json   |
+    | format | url             |
+    | xml    | v1/queryContext |
+    | json   | v1/queryContext |
+    | xml    | v1/contextTypes |
+    | json   | v1/contextTypes |
 
   @cb_mdwae
   Scenario Outline: Subscribe Standard operation

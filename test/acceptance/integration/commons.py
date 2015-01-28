@@ -32,6 +32,7 @@ from lettuce import world, step
 import requests
 import json
 import time
+from requests.exceptions import ConnectionError
 
 
 @step('a url with "([^"]*)"')
@@ -146,16 +147,23 @@ def a_role_in_the_user_and_domain(step, role):
 
 @step('the petition gets to the mock')
 def the_petition_gets_to_contextbroker_mock(step):
-    resp = requests.get(
-        'http://{mock_ip}:{mock_port}/last_value'.format(mock_ip=world.mock['ip'], mock_port=world.mock['port']))
+    mock_url = 'http://{mock_ip}:{mock_port}/last_value'.format(mock_ip=world.mock['ip'], mock_port=world.mock['port'])
+    try:
+        resp = requests.get(mock_url)
+    except ConnectionError as e:
+        assert False, 'There is a problem with the connection to the mock in the url: {url} \n Error: {error}'.format(
+            url=mock_url, error=e)
     try:
         sent = eval(world.data)
         response = eval(json.loads(resp.text)['resp'])
     except Exception as e:
         sent = world.data
-        response = json.loads(resp.text)['resp']
+        try:
+            response = json.loads(resp.text)['resp']
+        except ValueError as e:
+            assert False, 'The info returned by the mock is: {response}'.format(response=resp.text)
     assert sent == response, 'The payload sent is "%s (%s)" and the payload proxied is "%s (%s)"' % (
-    sent, type(sent), response, type(response))
+        sent, type(sent), response, type(response))
     assert resp.status_code == 200, 'The response code is not 200, is: %s' % resp.status_code
 
 
@@ -246,16 +254,20 @@ def the_keystone_proxy_history_reset(step):
     requests.request('get', 'http://{ks_proxy_ip}:{ks_proxy_port}/reset_history'.format(ks_proxy_ip=world.ks_proxy_ip,
                                                                                         ks_proxy_port=world.ks_proxy_port))
 
+
 @step('the petition action "([^"]*)" is asked without data')
 def the_petition_is_asked(step, action):
-    world.response = requests.request(action.lower(), 'http://{pep_ip}:{pep_port}/'.format(pep_ip=world.pep_host_ip, pep_port=world.pep_port) + world.url, headers=world.headers, data={})
+    world.response = requests.request(action.lower(), 'http://{pep_ip}:{pep_port}/'.format(pep_ip=world.pep_host_ip,
+                                                                                           pep_port=world.pep_port) + world.url,
+                                      headers=world.headers, data={})
 
 
 @step('the Keystone proxy receive the last petition "([^"]*)" from PEP')
 def the_keystone_proxy_doesnt_receive_any_petition(step, last_petition):
-    resp = requests.request('GET', 'http://{ks_proxy_ip}:{ks_proxy_port}/last_path'.format(ks_proxy_ip=world.ks_proxy_ip, ks_proxy_port=world.ks_proxy_port)).text
+    resp = requests.request('GET',
+                            'http://{ks_proxy_ip}:{ks_proxy_port}/last_path'.format(ks_proxy_ip=world.ks_proxy_ip,
+                                                                                    ks_proxy_port=world.ks_proxy_port)).text
     assert resp == last_petition, 'The last petition done to ks is not the defined in the test'
-
 
 
 @step('the PEP returns an error')
@@ -265,7 +277,8 @@ def the_pep_returns_an_error(step):
 
 @step('headers with format "([^"]*)"$')
 def with_format_group1(step, format):
-    token = IdmUtils.get_token(world.ks['user_all'], world.ks['user_all'], world.ks['domain_ok'], world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
+    token = IdmUtils.get_token(world.ks['user_all'], world.ks['user_all'], world.ks['domain_ok'],
+                               world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
     world.format = format
     headers = {
         "Accept": "application/%s" % world.format,
