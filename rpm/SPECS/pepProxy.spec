@@ -6,6 +6,7 @@ License: AGPLv3
 BuildRoot: %{_topdir}/BUILDROOT/
 BuildArch: noarch
 # Requires: nodejs >= 0.10.24
+Requires: logrotate
 Requires(post): /sbin/chkconfig, /usr/sbin/useradd npm
 Requires(preun): /sbin/chkconfig, /sbin/service
 Requires(postun): /sbin/service
@@ -160,6 +161,9 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(755,%{_project_user},%{_project_user},755)
 %config /etc/init.d/%{_service_name}
 %config /etc/sysconfig/%{_service_name}
+%config /etc/sysconfig/logrotate-pepproxy-size
+%config /etc/logrotate.d/logrotate-pepproxy.conf
+%config /etc/cron.d/cron-logrotate-pepproxy-size
 %{_install_dir}
 
 %changelog

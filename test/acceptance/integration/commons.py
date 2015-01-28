@@ -50,7 +50,7 @@ def a_project_in_the_user(step):
                         found = True
                         world.project = world.ks['project_ok']
                         break
-    assert found
+    assert found, 'The project ok is not defined'
 
 
 @step("a user in the domain")
@@ -62,7 +62,7 @@ def a_user_in_the_domain(step):
                 found = True
                 world.user = world.ks['user_all']
                 break
-    assert found
+    assert found, 'The user ok is not defined'
 
 
 @step('a domain in KEYSTONE')
@@ -71,7 +71,7 @@ def a_domain_in_keystone(step):
     if world.ks['domain_ok'] in [x['name'] for x in world.ks['environment_general']['domains']]:
         found = True
         world.domain = world.ks['domain_ok']
-    assert found
+    assert found, 'the domain ok is not defined'
 
 
 @step('a domain for project_only in KEYSTONE')
@@ -80,7 +80,7 @@ def a_domain_for_project_only_in_keystone(step):
     if world.ks['domain_project_only'] in [x['name'] for x in world.ks['environment_project']['domains']]:
         found = True
         world.domain = world.ks['domain_project_only']
-    assert found
+    assert found, 'The domain for roles only in projects is not defined'
 
 
 @step('a without role in domain and with "([^"]*)" user in project')
@@ -92,7 +92,7 @@ def a_without_role_user(step, user):
                 found = True
                 world.user = world.ks[user]
                 break
-    assert found
+    assert found, 'The user without role is not defined'
 
 
 @step('a "([^"]*)" role in the user project')
@@ -106,7 +106,7 @@ def a_role_in_the_user_project(step, role):
                         found = True
                         world.project = user['projects'][0]['name']
                         break
-    assert found
+    assert found, 'The role is not in the user project'
 
 
 @step('a domain without projects in KEYSTONE')
@@ -127,7 +127,7 @@ def a_group1_user_in_domain_without_projects(step, user):
                 found = True
                 world.user = world.ks[user]
                 break
-    assert found
+    assert found, 'the user is not defined in the domain without projects'
 
 
 @step('a "([^"]*)" role in the user and domain')
@@ -141,7 +141,7 @@ def a_role_in_the_user_and_domain(step, role):
                         found = True
                         world.project = '/'
                         break
-    assert found
+    assert found, 'The role is not in the user and domain'
 
 
 @step('the petition gets to the mock')
@@ -254,18 +254,18 @@ def the_petition_is_asked(step, action):
 @step('the Keystone proxy receive the last petition "([^"]*)" from PEP')
 def the_keystone_proxy_doesnt_receive_any_petition(step, last_petition):
     resp = requests.request('GET', 'http://{ks_proxy_ip}:{ks_proxy_port}/last_path'.format(ks_proxy_ip=world.ks_proxy_ip, ks_proxy_port=world.ks_proxy_port)).text
-    assert resp == last_petition
+    assert resp == last_petition, 'The last petition done to ks is not the defined in the test'
 
 
 
 @step('the PEP returns an error')
 def the_pep_returns_an_error(step):
-    assert str(world.response.status_code) == '403'
+    assert str(world.response.status_code) == '403', 'PEP dontr returnet the error expected (403)'
 
 
 @step('headers with format "([^"]*)"$')
 def with_format_group1(step, format):
-    token = IdmUtils.get_token(world.ks['user_all'], world.ks['user_all'], world.ks['domain_ok'], world.ks['platform']['address']['ip'])
+    token = IdmUtils.get_token(world.ks['user_all'], world.ks['user_all'], world.ks['domain_ok'], world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
     world.format = format
     headers = {
         "Accept": "application/%s" % world.format,

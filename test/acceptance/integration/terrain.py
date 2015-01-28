@@ -60,7 +60,7 @@ def before_all_scenarios():
     user_roles_general = [(world.ks['user_all'], x['name']) for x in
                           world.ks['environment_general']['domains'][0]['users'][0]['projects'][0]['roles']]
     initialize_ac(user_roles_general,
-                  world.ac['ip'],
+                  world.ac['ip'], world.ac['port'],
                   world.structure,
                   world.ks['domain_ok'],
                   world.ks['project_ok'],
@@ -69,7 +69,7 @@ def before_all_scenarios():
     user_roles_domain = [(x['name'], x['roles'][0]['name']) for x in
                          world.ks['environment_domain']['domains'][0]['users']]
     initialize_ac(user_roles_domain,
-                  world.ac['ip'],
+                  world.ac['ip'], world.ac['port'],
                   world.structure,
                   world.ks['domain_domain_only'],
                   world.ks['project_domain_only'],
@@ -78,7 +78,7 @@ def before_all_scenarios():
     user_roles_project = [(x['name'], x['projects'][0]['roles'][0]['name']) for x in
                           world.ks['environment_project']['domains'][0]['users']]
     initialize_ac(user_roles_project,
-                  world.ac['ip'],
+                  world.ac['ip'], world.ac['port'],
                   world.structure,
                   world.ks['domain_project_only'],
                   world.ks['project_project_only'],
@@ -99,7 +99,7 @@ def after_all_scenarios(scenario):
     IdmUtils.clean_service(world.ks['platform'], world.ks['domain_project_only'])
     IdmUtils.clean_service(world.ks['platform'], world.ks['domain_domain_only'])
     IdmUtils.clean_service(world.ks['platform'], world.ks['domain_bypass'])
-    ac_utils = AC(world.ac['ip'])
+    ac_utils = AC(world.ac['ip'], port=world.ac['port'])
     ac_utils.delete_tenant_policies(world.ks['domain_ok'])
     ac_utils.delete_tenant_policies(world.ks['domain_project_only'])
     ac_utils.delete_tenant_policies(world.ks['domain_domain_only'])
