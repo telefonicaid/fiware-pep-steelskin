@@ -85,6 +85,23 @@ def before_all_scenarios():
                   'project')
     log.debug('Environment ready')
 
+@after.each_scenario
+def after_each_scenario(scenario):
+    world.data = ''
+    world.url = ''
+    world.action_type = ''
+    world.headers = ''
+    world.method = ''
+    world.domain = ''
+    world.project = ''
+    world.user = ''
+    world.history = ''
+    world.last_petition_added = ''
+    world.response = ''
+    world.new_petition = ''
+    world.format = ''
+
+
 
 @after.all
 def after_all_scenarios(scenario):

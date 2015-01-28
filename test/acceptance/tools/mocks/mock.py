@@ -41,6 +41,7 @@ path_access = ''
 
 @app.route('/v1/updateContext', methods=['POST'])
 @app.route('/v1/queryContext', methods=['POST'])
+@app.route('/v1/contextTypes', methods=['POST'])
 @app.route('/v1/subscribeContext', methods=['POST'])
 @app.route('/v1/updateContextSubscription', methods=['POST'])
 @app.route('/v1/unsubscribeContext', methods=['POST'])

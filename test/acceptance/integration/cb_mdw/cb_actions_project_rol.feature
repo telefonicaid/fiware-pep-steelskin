@@ -50,13 +50,15 @@ Feature: Context broker actions when the rol is defined only in a project
     Given a domain for project_only in KEYSTONE
     And a without role in domain and with "user_read_project" user in project
     And a "read_rol" role in the user project
-    And a url with "v1/queryContext"
+    And a url with "<url>"
     When a context broker "POST" petition is asked to PEP with "<format>" format
     Then the petition gets to the mock
   Examples:
-    | format |
-    | xml    |
-    | json   |
+    | format | url             |
+    | xml    | v1/queryContext |
+    | json   | v1/queryContext |
+    | xml    | v1/contextTypes |
+    | json   | v1/contextTypes |
 
   @cb_actions_project_rol
   Scenario Outline: Subscribe Standard operation
@@ -143,6 +145,7 @@ Feature: Context broker actions when the rol is defined only in a project
     | json   | v1/contextEntityTypes/typeName/attributeDomains/attributeDomainName | GET    |
     | xml    | v1/contextEntityTypes/typeName                                      | GET    |
     | json   | v1/contextEntityTypes/typeName                                      | GET    |
+
   @cb_actions_project_rol
   Scenario Outline: Update Convenience operation
     Given a domain for project_only in KEYSTONE
@@ -159,6 +162,7 @@ Feature: Context broker actions when the rol is defined only in a project
     | json   | v1/contextEntities/EntityID/attributes/attributeName         | PUT    |
     | xml    | v1/contextEntities/EntityID/attributes/attributeName/valueID | PUT    |
     | json   | v1/contextEntities/EntityID/attributes/attributeName/valueID | PUT    |
+
   @cb_actions_project_rol
   Scenario Outline: Create Convenience operation
     Given a domain for project_only in KEYSTONE
@@ -173,6 +177,7 @@ Feature: Context broker actions when the rol is defined only in a project
     | json   | v1/contextEntities/EntityID                          | POST   |
     | xml    | v1/contextEntities/EntityID/attributes/attributeName | POST   |
     | json   | v1/contextEntities/EntityID/attributes/attributeName | POST   |
+
   @cb_actions_project_rol
   Scenario Outline: Subscribe Convenience operation
     Given a domain for project_only in KEYSTONE
@@ -189,6 +194,7 @@ Feature: Context broker actions when the rol is defined only in a project
     | json   | v1/contextSubscriptions/subscriptionID | PUT    |
     | xml    | v1/contextSubscriptions/subscriptionID | DELETE |
     | json   | v1/contextSubscriptions/subscriptionID | DELETE |
+
   @cb_actions_project_rol
   Scenario Outline: Discover Convenience operation
     Given a domain for project_only in KEYSTONE
