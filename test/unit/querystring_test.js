@@ -132,9 +132,7 @@ describe('Proxy querystring behavior', function() {
             request(options, function(error, response, body) {
                 mockExecuted.should.equal(true);
                 should.deepEqual(finalQuery, options.qs);
-console.log('AQUIIIIIIIIIIII');
-console.log(finalQuery);
-console.log(options.qs);
+
                 done();
             });
         });
