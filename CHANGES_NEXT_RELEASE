@@ -1,2 +1,4 @@
 - Added /v1/contextTypes to the URL Mappings of Orion.
 - Fix right plugins directory in pepProxy binary.
+- Fix accept content-type header with charset
+- Fix proxy query params
