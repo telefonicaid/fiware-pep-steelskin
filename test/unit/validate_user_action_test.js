@@ -587,7 +587,9 @@ describe('Validate action with Access Control', function() {
                 } else {
                     should.exist(req.headers['x-auth-token']);
                     should.exist(req.query['user.id']);
+                    should.exist(req.query.effective);
                     req.query['user.id'].should.equal('5e817c5e0d624ee68dfb7a72d0d31ce4');
+                    req.query.effective.should.equal('true');
                     req.headers['x-auth-token'].should.equal('092016b75474ea6b492e29fb69d23029');
                     res.json(200, utils.readExampleFile('./test/keystoneResponses/rolesOfUserWithDomain.json'));
                     mockExecuted = true;
