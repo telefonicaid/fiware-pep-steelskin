@@ -37,6 +37,9 @@ PROXY_USER=pepproxy
 # Maximum level of logs to show (FATAL, ERROR, WARNING, INFO, DEBUG)
 LOG_LEVEL=ERROR
 
+# Indicates what component plugin should be loaded with this PEP: orion, keypass, perseo
+COMPONENT_PLUGIN=orion
+
 #
 # Access Control Configuration
 ############################################################################
