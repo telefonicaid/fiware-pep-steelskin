@@ -66,6 +66,7 @@ convenienceOperations = [
     ['POST', '/ngsi9/contextAvailabilitySubscriptions', 'subscribe-availability'],
     ['PUT', '/ngsi9/contextAvailabilitySubscriptions/TestedSubscriptionID002', 'subscribe-availability'],
     ['DELETE', '/ngsi9/contextAvailabilitySubscriptions/TestedSubscriptionID002', 'subscribe-availability'],
+
     /* "Classic" NGSI10 operations */
     ['GET', '/ngsi10/contextEntities/TestedEntityId002', 'read'],
     ['GET', '/ngsi10/contextEntities/type/TestedType01/id/TestedEntityId002', 'read'],
@@ -128,7 +129,15 @@ convenienceOperations = [
     ['GET', '/v1/contextSubscriptions', 'read'],
     ['GET', '/v1/contextSubscriptions/sub001', 'read'],
     ['GET', '/v1/contextTypes', 'read'],
-    ['GET', '/v1/contextTypes/typeOfEntity001', 'read']
+    ['GET', '/v1/contextTypes/typeOfEntity001', 'read'],
+
+    /* NGSI Operations with query params */
+    ['POST', '/v1/registry/contextAvailabilitySubscriptions?details=on&limit=15&offset=0 ',
+        'subscribe-availability'],
+    ['GET', '/v1/contextSubscriptions?details=on&limit=15&offset=0', 'read'],
+    ['POST', '/v1/registry/subscribeContextAvailability?details=on&limit=15&offset=0', 'subscribe-availability'],
+    ['POST', '/v1/registry/updateContextAvailabilitySubscription?details=on&limit=15&offset=0',
+        'subscribe-availability']
 ];
 
 describe('Extract Context Broker action from convenience operation requests', function() {
