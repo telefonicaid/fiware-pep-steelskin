@@ -38,7 +38,7 @@ PROXY_USER=pepproxy
 LOG_LEVEL=ERROR
 
 # Indicates what component plugin should be loaded with this PEP: orion, keypass, perseo
-COMPONENT=orion
+COMPONENT_PLUGIN=orion
 
 #
 # Access Control Configuration
