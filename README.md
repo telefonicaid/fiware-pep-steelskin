@@ -423,6 +423,8 @@ Some of the configuration values for the attributes above mentioned can be overr
 | AUTHENTICATION_PROTOCOL  | config.authentication.options.protocol  |
 | PROXY_USERNAME       | config.authentication.user          |
 | PROXY_PASSWORD       | config.authentication.password      |
+| PROXY_PASSWORD       | config.authentication.password      |
+| COMPONENT_PLUGIN       | config.middlewares      |
 
 ### Component configuration
 A special environment variable, called `COMPONENT_PLUGIN` can be set with one of this values: `orion`, `perseo`, `keypass`. This variable can be used to select what component plugin to load in order to determine the action of the incoming requests.
