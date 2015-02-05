@@ -2,3 +2,4 @@
 - Fix right plugins directory in pepProxy binary.
 - Fix accept content-type header with charset
 - Fix proxy query params
+- Add "effective" flag to the request to Keystone (#147)
