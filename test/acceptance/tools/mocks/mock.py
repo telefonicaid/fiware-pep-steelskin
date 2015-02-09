@@ -35,11 +35,6 @@ path_access = ''
 parms = ''
 headers = ''
 
-# @app.route('/', defaults={'path': ''}, methods=['GET', 'POST', 'UPDATE', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'])
-# @app.route('/<path:path>', methods=['GET', 'POST', 'UPDATE', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'])
-# def proxy(path):
-#     print 'ALL'
-
 
 @app.route('/v1/updateContext', methods=['POST'])
 @app.route('/v1/queryContext', methods=['POST'])
