@@ -36,13 +36,14 @@ def a_cep_petition_is_asked_to_pep(step, action):
     token = IdmUtils.get_token(world.user, world.user, world.domain, world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
     headers = {
         "Accept": "application/json",
-        'content-type': 'application/json',
+        'content-type': 'application/json; charset: utf-8',
         'Fiware-Servicepath': world.project,
         'Fiware-Service': world.domain,
         'X-Auth-Token': token
     }
     data = {'test_payload': 'test_value'}
     world.data = json.dumps(data)
+    world.headers = headers
     requests.request(action.lower(), 'http://{pep_ip}:{pep_port}'.format(pep_ip=world.pep_host_ip, pep_port=world.pep_port) + world.url, headers=headers, data=json.dumps(data))
 
 

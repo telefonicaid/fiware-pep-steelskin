@@ -32,6 +32,8 @@ app = Flask(__name__)
 
 requested = ''
 path_access = ''
+parms = ''
+headers = ''
 
 # @app.route('/', defaults={'path': ''}, methods=['GET', 'POST', 'UPDATE', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'])
 # @app.route('/<path:path>', methods=['GET', 'POST', 'UPDATE', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'])
@@ -41,9 +43,10 @@ path_access = ''
 
 @app.route('/v1/updateContext', methods=['POST'])
 @app.route('/v1/queryContext', methods=['POST'])
-@app.route('/v1/contextTypes', methods=['POST'])
+@app.route('/v1/contextTypes', methods=['POST', 'GET'])
 @app.route('/v1/subscribeContext', methods=['POST'])
 @app.route('/v1/updateContextSubscription', methods=['POST'])
+@app.route('/v1/contextEntities', methods=['GET', 'POST'])
 @app.route('/v1/unsubscribeContext', methods=['POST'])
 @app.route('/v1/registry/registerContext', methods=['POST'])
 @app.route('/v1/registry/discoverContextAvailability', methods=['POST'])
@@ -52,12 +55,18 @@ path_access = ''
 @app.route('/v1/registry/unsubscribeContextAvailability', methods=['POST'])
 def cb_standard():
     global requested
+    global parms
+    global headers
+    global path_access
     requested = request.data
     headers = dict(request.headers)
+    parms = dict(request.args)
+    path_access = request.path
     return request.data, 200, headers
 
 
 @app.route('/v1/contextEntities/<path:path>', methods=['GET', 'POST', 'DELETE', 'PUT'])
+@app.route('/v1/contextTypes/<path:path>', methods=['GET', 'POST', 'DELETE', 'PUT'])
 @app.route('/v1/registry/contextEntities/<path:path>', methods=['GET', 'POST', 'DELETE', 'PUT'])
 @app.route('/v1/contextEntityTypes/<path:path>', methods=['GET', 'POST', 'DELETE', 'PUT'])
 @app.route('/v1/registry/contextEntityTypes/<path:path>', methods=['GET', 'POST', 'DELETE', 'PUT'])
@@ -66,8 +75,11 @@ def cb_standard():
 def cb_convenience(path):
     global requested
     global path_access
+    global parms
+    global headers
     requested = request.data
-    path_access = path
+    path_access = request.path
+    parms = dict(request.args)
     headers = dict(request.headers)
     return request.data, 200, headers
 
@@ -75,21 +87,14 @@ def cb_convenience(path):
 @app.route('/v1/registry/contextAvailabilitySubscriptions', methods=['GET', 'POST', 'DELETE', 'PUT'])
 def cb_convenience_without_path():
     global requested
+    global parms
+    global headers
+    global path_access
     requested = request.data
     headers = dict(request.headers)
+    parms = dict(request.args)
+    path_access = request.path
     return request.data, 200, headers
-
-@app.route('/last_value', methods=['GET'])
-def last_value():
-    global requested
-    global path_access
-    if requested != '':
-        resp = {"resp": str(requested), "path": str(path_access)}
-        requested = ''
-        path_access = ''
-        return json.dumps(resp), 200
-    else:
-        return 'There is no value in headers', 201
 
 
 @app.route('/notices', methods=['POST'])
@@ -97,8 +102,13 @@ def last_value():
 @app.route('/vrules', methods=['GET', 'POST'])
 def cep_withoutpath():
     global requested
+    global parms
+    global headers
+    global path_access
     requested = request.data
     headers = dict(request.headers)
+    parms = dict(request.args)
+    path_access = request.path
     return request.data, 200, headers
 
 
@@ -107,9 +117,12 @@ def cep_withoutpath():
 def cb_withpath(path):
     global requested
     global path_access
+    global parms
+    global headers
     requested = request.data
-    path_access = path
+    path_access = request.path
     headers = dict(request.headers)
+    parms = dict(request.args)
     return request.data, 200, headers
 
 
@@ -117,8 +130,13 @@ def cb_withpath(path):
 @app.route('/pap/v1', methods=['DELETE'])
 def ac_withoutpath():
     global requested
+    global parms
+    global headers
+    global path_access
     requested = request.data
     headers = dict(request.headers)
+    parms = dict(request.args)
+    path_access = request.path
     return request.data, 200, headers
 
 
@@ -126,10 +144,26 @@ def ac_withoutpath():
 def ac_withpath(path):
     global requested
     global path_access
+    global parms
+    global headers
     requested = request.data
-    path_access = path
+    path_access = request.path
     headers = dict(request.headers)
+    parms = dict(request.args)
     return request.data, 200, headers
+
+@app.route('/last_value', methods=['GET'])
+def last_value():
+    global requested
+    global path_access
+    global parms
+    global headers
+    resp = {"resp": str(requested), "path": str(path_access), "parms": str(parms), "headers": str(headers)}
+    requested = ''
+    path_access = ''
+    parms = ''
+    headers = ''
+    return json.dumps(resp), 200
 
 
 if __name__ == '__main__':

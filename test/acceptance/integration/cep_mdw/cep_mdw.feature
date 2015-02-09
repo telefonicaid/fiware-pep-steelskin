@@ -44,3 +44,23 @@ Feature: CEP middleware
     | /m2m/vrules    | POST   |
     | /m2m/vrules/id | DELETE |
     | /m2m/vrules/id | PUT    |
+
+  @cep_mdw
+  Scenario Outline: Parameters-Query in cep urls
+    Given a domain in KEYSTONE
+    And a user in the domain
+    And a project in the user
+    And a url with "<url>"
+    When a CEP "<action>" petition is asked to PEP
+    Then the petition gets to the mock
+  Examples:
+    | url                                         | action |
+    | /rules?details=on&limit=15&offset=0         | GET    |
+    | /rules/id?details=on&limit=15&offset=0      | GET    |
+    | /rules?details=on&limit=15&offset=0         | POST   |
+    | /rules/id?details=on&limit=15&offset=0      | DELETE |
+    | /m2m/vrules?details=on&limit=15&offset=0    | GET    |
+    | /m2m/vrules/id?details=on&limit=15&offset=0 | GET    |
+    | /m2m/vrules?details=on&limit=15&offset=0    | POST   |
+    | /m2m/vrules/id?details=on&limit=15&offset=0 | DELETE |
+    | /m2m/vrules/id?details=on&limit=15&offset=0 | PUT    |

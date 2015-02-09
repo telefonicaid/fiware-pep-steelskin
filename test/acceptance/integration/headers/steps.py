@@ -47,7 +47,7 @@ def with_format_group1(step, format, action):
     headers = {
         "Accept": "application/%s" % world.format,
         'content-type': 'application/%s' % world.format,
-        'Fiware-Servicepath': '/',
+        'Fiware-Servicepath': world.ks['project_ok'],
         'Fiware-Service': world.ks['domain_ok'],
         'X-Auth-Token': token
     }
@@ -60,9 +60,13 @@ def with_format_group1(step, format, action):
         world.data = data
 
 
-@step('the petition action "([^"]*)" is asked$')
-def the_petition_is_asked(step, action):
-    world.response = requests.request(action.lower(), 'http://{pep_ip}:{pep_port}/'.format(pep_ip=world.pep_host_ip, pep_port=world.pep_port) + world.url, headers=world.headers, data=world.data)
+@step('the content-type header with the value "([^"]*)"')
+def the_content_type_header_with_the_value_group1(step, content_type):
+    world.headers['content-type'] = content_type
 
-
-
+@step('the payload with the value "([^"]*)"')
+def the_payload_with_the_value_group1(step, payload):
+    try:
+        world.data = json.dumps(json.loads(payload.replace('\'', '"')))
+    except:
+        world.data = payload

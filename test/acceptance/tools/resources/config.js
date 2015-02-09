@@ -8,7 +8,7 @@ config.resource = {
         /**
          * Host that is being proxied.
          */
-        host: '192.168.1.106',
+        host: '192.168.1.104',
 
         /**
          * Port where the proxied server is listening.
@@ -20,7 +20,7 @@ config.resource = {
         /**
          * Port where the proxy is listening.
          */
-        port: 1028
+        port: 1025
     }
 };
 
@@ -38,7 +38,7 @@ config.access = {
     /**
      * Host where the Access Control is located.
      */
-    host: '192.168.1.106',
+    host: '192.168.1.104',
     /**
      * Port where the Access Control is listening.
      */
@@ -67,7 +67,7 @@ config.authentication = {
     },
     options: {
         protocol: 'http',
-        host: '192.168.1.106',
+        host: '192.168.1.104',
         port: 5001,
         path: '/v3/role_assignments',
         authPath: '/v3/auth/tokens'
@@ -112,13 +112,13 @@ config.middlewares = {
     /**
      * Indicates the module from where the middlewares will be loaded.
      */
-    require: 'lib/plugins/keypassPlugin',
+    require: 'lib/plugins/orionPlugin',
 
     /**
      * Indicates the list of middlewares to load.
      */
     functions: [
-        'extractAction'
+        'extractCBAction'
     ]
 };
 

@@ -50,7 +50,7 @@ def a_context_broker_petition_is_asked_to_pep_with_format(step, action, format):
         'X-Auth-Token': token
     }
     world.headers = headers
-    url = 'http://{pep_ip}:{pep_port}/'.format(pep_ip=world.pep_host_ip, pep_port=world.pep_port) + world.url
+    url = 'http://{pep_ip}:{pep_port}'.format(pep_ip=world.pep_host_ip, pep_port=world.pep_port) + world.url
     if hasattr(world, 'action_type') and world.action_type != '':
         if format == 'json':
             data = {
@@ -66,6 +66,9 @@ def a_context_broker_petition_is_asked_to_pep_with_format(step, action, format):
         else:
             world.data = '<xml></xml>'
     try:
+        print url
+        print headers
+        print world.data
         requests.request(action.lower(), url, headers=headers, data=world.data)
     except ConnectionError as e:
         assert False, '''There was an error with the connection with the following data: \n

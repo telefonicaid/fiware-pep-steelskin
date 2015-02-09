@@ -58,3 +58,20 @@ Feature: AC middleware
     And a url with "/pap/v1"
     When a KeyPass "DELETE" petition is asked to PEP
     Then the petition gets to the mock
+
+  @ac_mdw
+  Scenario Outline: Parameters-Query in ac urls
+    Given a domain in KEYSTONE
+    And a user in the domain
+    And a project in the user
+    And a url with "<url>"
+    When a KeyPass "<action>" petition is asked to PEP
+    Then the petition gets to the mock
+  Examples:
+    | url                                                                        | action |
+    | /pap/v1/subject/subjectName/policy/policyName?details=on&limit=15&offset=0 | GET    |
+    | /pap/v1/subject/subjectName/policy/policyName?details=on&limit=15&offset=0 | DELETE |
+    | /pap/v1/subject/subjectName?details=on&limit=15&offset=0                   | POST   |
+    | /pap/v1/subject/subjectName?details=on&limit=15&offset=0                   | GET    |
+    | /pap/v1/subject/subjectName?details=on&limit=15&offset=0                   | DELETE |
+    | /pap/v1?details=on&limit=15&offset=0                                       | DELETE |
