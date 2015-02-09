@@ -235,7 +235,26 @@ describe('Extract Context Broker action from request', function() {
 
         it('should add the action attribute with value "delete" to the request', testAction('delete', options));
     });
+    describe('When a delete action arrives with JSON payload', function() {
+        var options = {
+            uri: 'http://localhost:' + config.resource.proxy.port + '/v1/updateContext?details=on&limit=15&offset=0',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'fiware-service': 'SmartValencia',
+                'fiware-servicepath': 'Electricidad',
+                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
+            },
+            json: utils.readExampleFile('./test/orionRequests/entityDelete.json')
+        };
 
+        beforeEach(function(done) {
+            serverMocks.mockPath('/NGSI10/queryContext', mockApp, done);
+        });
+
+        it('should add the action attribute with value "delete" to the request', testAction('delete', options));
+    });
     describe('When a create action arrives with XML payload', function() {
         var options = {
             uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
