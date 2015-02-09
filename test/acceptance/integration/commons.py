@@ -33,6 +33,8 @@ import requests
 import json
 import time
 from requests.exceptions import ConnectionError
+from tools.general_utils import *
+import urlparse
 
 
 @step('a url with "([^"]*)"')
@@ -153,16 +155,44 @@ def the_petition_gets_to_contextbroker_mock(step):
     except ConnectionError as e:
         assert False, 'There is a problem with the connection to the mock in the url: {url} \n Error: {error}'.format(
             url=mock_url, error=e)
+    assert not(len(set(resp.json().values())) <= 1), 'The petition never gets to the mock'
+    # Check headers
+    headers = resp.json()['headers']
     try:
-        sent = eval(world.data)
-        response = eval(json.loads(resp.text)['resp'])
-    except Exception as e:
+        headers = eval(headers)
+    except:
+        raise TypeError('The headers are not a dict type, the headers are: {headers}'.format(headers=headers))
+    check_equals(headers, world.headers, ['accept', 'content-type', 'fiware-servicepath', 'fiware-service'])
+    assert "x-auth-token" not in headers, "The x-auth-token don't have to go to the endpoint"
+    # Check parms
+    parms_received = resp.json()['parms']
+    if parms_received == '{}':
+        parms_received = ''
+    else:
+        parms_received = eval(parms_received)
+    parms_send = urlparseargs_to_nodejsargs(world.url)
+    msg_not_equals = 'The parms sent to PEP are not the same than the parms send to final: \n Parm send: {parms_send} \n Parm received: {parms_received}'.format(parms_send=parms_send, parms_received=parms_received)
+    equals_objects(parms_received, parms_send, msg_not_equals)
+    # Check path
+    path_send = urlparse.urlsplit(world.url).path
+    path_received = resp.json()['path']
+    assert path_send == path_received, 'The path sent to PEP are not the same than the path send to final: \n Path_sent: {path_send} \n Path received: {path_received}'.format(path_send=path_send, path_received=path_received)
+    # Check the payload
+    if type(world.data) is dict:
         sent = world.data
+    elif type(world.data) is str or type(world.data) is unicode:
+        try:
+            sent = json.loads(world.data.replace('\'','"'))
+        except:
+            sent = world.data
+    try:
+        response = json.loads(json.loads(resp.text)['resp'].replace('\'','"'))
+    except Exception as e:
         try:
             response = json.loads(resp.text)['resp']
         except ValueError as e:
             assert False, 'The info returned by the mock is: {response}'.format(response=resp.text)
-    assert sent == response, 'The payload sent is "%s (%s)" and the payload proxied is "%s (%s)"' % (
+    assert sorted(sent) == sorted(response), 'The payload sent is "%s (%s)" and the payload proxied is "%s (%s)"' % (
         sent, type(sent), response, type(response))
     assert resp.status_code == 200, 'The response code is not 200, is: %s' % resp.status_code
 
@@ -175,6 +205,17 @@ def step_impl(step):
     if world.config_set != 'cb':
         world.config_set = 'cb'
         set_config_cb()
+        start_pep_app()
+        time.sleep(5)
+
+@step("the Headers Context Broker configuration without cache")
+def step_impl(step):
+    """
+    :type step lettuce.core.Step
+    """
+    if world.config_set != 'head':
+        world.config_set = 'head'
+        set_cb_config_withour_cache()
         start_pep_app()
         time.sleep(5)
 
@@ -257,9 +298,16 @@ def the_keystone_proxy_history_reset(step):
 
 @step('the petition action "([^"]*)" is asked without data')
 def the_petition_is_asked(step, action):
-    world.response = requests.request(action.lower(), 'http://{pep_ip}:{pep_port}/'.format(pep_ip=world.pep_host_ip,
+    world.response = requests.request(action.lower(), 'http://{pep_ip}:{pep_port}'.format(pep_ip=world.pep_host_ip,
                                                                                            pep_port=world.pep_port) + world.url,
-                                      headers=world.headers, data={})
+                                      headers=world.headers, data=json.dumps({}))
+
+
+@step('the petition action "([^"]*)" is asked$')
+def the_petition_is_asked(step, action):
+    world.response = requests.request(action.lower(), 'http://{pep_ip}:{pep_port}'.format(pep_ip=world.pep_host_ip,
+                                                                                           pep_port=world.pep_port) + world.url,
+                                      headers=world.headers, data=world.data)
 
 
 @step('the Keystone proxy receive the last petition "([^"]*)" from PEP')
@@ -267,7 +315,7 @@ def the_keystone_proxy_doesnt_receive_any_petition(step, last_petition):
     resp = requests.request('GET',
                             'http://{ks_proxy_ip}:{ks_proxy_port}/last_path'.format(ks_proxy_ip=world.ks_proxy_ip,
                                                                                     ks_proxy_port=world.ks_proxy_port)).text
-    assert resp == last_petition, 'The last petition done to ks is not the defined in the test'
+    assert resp == last_petition, 'The last petition done to ks is not the defined in the test, the'
 
 
 @step('the PEP returns an error')
@@ -283,7 +331,7 @@ def with_format_group1(step, format):
     headers = {
         "Accept": "application/%s" % world.format,
         'content-type': 'application/%s' % world.format,
-        'Fiware-Servicepath': '/',
+        'Fiware-Servicepath': world.ks['project_ok'],
         'Fiware-Service': world.ks['domain_ok'],
         'X-Auth-Token': token
     }

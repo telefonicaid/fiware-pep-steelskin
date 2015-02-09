@@ -8,7 +8,7 @@ Feature: Urls that not exist in ContextBroker plugin
   @urls_cb_ko
   Scenario Outline: Test bad URL CB KO
     Given headers with format "<format>"
-    And a url with "v1/queryContex"
+    And a url with "/v1/queryContex"
     When the petition action "POST" is asked without data
     Then the Keystone proxy receive the last petition "<last_petition>" from PEP
     And the PEP returns an error

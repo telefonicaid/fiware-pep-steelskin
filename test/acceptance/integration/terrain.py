@@ -21,6 +21,8 @@ If not, seehttp://www.gnu.org/licenses/.
 For those usages not covered by the GNU Affero General Public License
 please contact with::[iot_support@tid.es]
 """
+import sys
+
 __author__ = 'Jon'
 
 from iotqautils.idm_keystone import IdmUtils
@@ -100,6 +102,7 @@ def after_each_scenario(scenario):
     world.response = ''
     world.new_petition = ''
     world.format = ''
+    sys.stdout.write(("*****Se ha ejecutado el scenario: " + str(scenario.name).encode('utf-8')))
 
 
 
