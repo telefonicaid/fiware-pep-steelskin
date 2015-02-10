@@ -4,4 +4,4 @@
 - Fix proxy query params 
 - Fix some urls are not recognized with query params (#148)
 - Add "effective" flag to the request to Keystone (#147)
-
+- Fix UpdateContext operations with query parameters are not recognized (#155)
