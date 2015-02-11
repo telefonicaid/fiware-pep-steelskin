@@ -90,18 +90,6 @@ echo "[INFO] Configuring application"
     setfacl -d -m g::rwx %{_pepProxy_log_dir}
     setfacl -d -m o::rx %{_pepProxy_log_dir}
 
-    echo "[INFO] Checking Context Broker installations"
-    service --status-all |grep contextBroker
-    CONTEXT_BROKER=$?
-
-    if [ -e /etc/sysconfig/contextBroker ] && [ $CONTEXT_BROKER = 0 ]; then
-            service contextBroker stop
-            CURRENT_PORT=$(cat  /etc/sysconfig/contextBroker |grep "BROKER_PORT=" |awk -F '=' '{print $2}')
-            sed -i s/BROKER_PORT=.*/BROKER_PORT=10026/g /etc/sysconfig/contextBroker
-            sed -i "s/PROXY_PORT=.*/PROXY_PORT=$CURRENT_PORT/g" /etc/sysconfig/pepProxy
-            service contextBroker start
-    fi
-
     echo "[INFO] Configuring application service"
     cd /etc/init.d
     chkconfig --add %{_service_name}
