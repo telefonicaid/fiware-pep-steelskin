@@ -64,11 +64,6 @@ yum --nogpgcheck localinstall  pep-proxy-X.Y-Z.noarch.rpm
 
 It should automatically download all the dependencies provided they are available (Node.js and NPM may require the EPEL repositories to be added).
 
-### Deployment within a Context Broker installation
-If the PEP Proxy is deployed in a machine with an installed Context Broker service, the PEP Proxy will automatically change the Context Broker port to the 10026 and install itself on the port where the Context Broker was listening.
-
-During the uninstallation of the PEP Proxy, this process is reversed, to revert the Broker to its original state.
-
 ### Undeployment
 In order to undeploy the proxy:
 * If it was installed directly from the GIT repositories, just kill the process and remove the directory.
@@ -626,7 +621,7 @@ The following table show the map from method and path of the request to the acti
 | DELETE    | /pap/v1/subject/{subjectId}/policy/{policyId}      | deletePolicy  |
 
 ## <a name="customizing"/> Customizing PEP Proxy for other components
-Although the Orion PEP Proxy was meant to protect the access to the Context Broker using the rules defined in the Access Control, it was designed to easily adapt to other components. Most of the code of the proxy (i.e. the extraction of user data, the communication with the Keystone Proxy and the proxy process itself) will execute exactly the same for all the components. The exception is the rule to determine the action the request is trying to perform. To address this behavior and possible actions different customizations of the proxy could need, the proxy allows for the introduction of middlewares in the validation process.
+Most of the code of the proxy (i.e. the extraction of user data, the communication with the Keystone Proxy and the proxy process itself) will execute exactly the same for all the components. The exception is the rule to determine the action the request is trying to perform. To address this behavior and possible actions different customizations of the proxy could need, the proxy allows for the introduction of middlewares in the validation process.
 
 ### Middleware definition
 The middlewares are quite similar to the ones used by the Connect (or Express) framework. A middleware is a function that receives three parameters:
