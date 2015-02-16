@@ -3,3 +3,4 @@
 - Fix accept content-type header with charset
 - Fix proxy query params
 - Add "effective" flag to the request to Keystone (#147)
+- Fix UpdateContext operations with query parameters are not recognized (#155)
