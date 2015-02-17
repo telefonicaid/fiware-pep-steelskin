@@ -364,6 +364,17 @@ can be used to check the process is listening in the appropriate port (provided 
 ```
 tcp   0   0  0.0.0.0:1026     0.0.0.0:*   LISTEN   12179/node
 ```
+#### Checking the version in the Administration API
+The PEP Proxy provides an Administration port that can be used to check whether the proxy is up and listening or down.
+The administration API consists in a single `/version` path, that returns useful information from the proxy (currently just the listening port and version).
+
+Example of output:
+```
+{
+  "version": "0.4.1-next",
+  "port": 1026
+}
+```
 
 ## <a name="configuration"/> Configuration
 All the configuration of the proxy is stored in the `config.js` file in the root of the project folder. The values set inside config.js operate as the default values for all the important pieces of configuration data, so it is important none of them are removed (you can change them to suit your needs, as long as they have a valid value).
@@ -372,10 +383,11 @@ Another way of configuring the component is through the use of environment varia
 
 ### Basic Configuration
 In order to have the proxy running, there are several basic pieces of information to fill:
-* `config.resource.proxy`: The information of the server proxy itself (mainly the port). E.g.:
+* `config.resource.proxy`: The information of the server proxy itself. Two ports must be configured for the proxy: `port` indicates in which port is the proxy listening for requests; `adminPort` indicates the administration port. E.g.:
 ```
 {
-    port: 1026
+    port: 1026,
+    adminPort: 11211
 }
 ```
 * `config.resource.original`: The address and port of the proxied server. E.g.:
