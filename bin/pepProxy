@@ -1,7 +1,31 @@
 #!/usr/bin/env node
 
 var proxy = require('../lib/fiware-orion-pep'),
-    config = require('../config');
+    config = require('../config'),
+    middlewareConfigs = {
+        orion: {
+            require: 'lib/plugins/orionPlugin',
+
+            functions: [
+               'extractCBAction'
+            ]
+        },
+        keypass: {
+            require: 'lib/plugins/keypassPlugin',
+
+            functions: [
+               'extractAction'
+            ]
+        },
+        perseo: {
+            require: 'lib/plugins/perseoPlugin',
+
+            functions: [
+               'extractAction'
+            ]
+        }
+    };
+
 
 
 function loadConfiguration() {
@@ -12,8 +36,10 @@ function loadConfiguration() {
         'LOG_LEVEL',
         'ACCESS_HOST',
         'ACCESS_PORT',
+        'ACCESS_PROTOCOL',
         'AUTHENTICATION_HOST',
         'AUTHENTICATION_PORT',
+        'AUTHENTICATION_PROTOCOL',
         'PROXY_USERNAME',
         'PROXY_PASSWORD'
     ];
@@ -42,17 +68,31 @@ function loadConfiguration() {
     if (process.env.ACCESS_PORT) {
         config.access.port = process.env.ACCESS_PORT;
     }
+    if (process.env.ACCESS_PROTOCOL) {
+        config.access.protocol = process.env.ACCESS_PROTOCOL;
+    }
     if (process.env.AUTHENTICATION_HOST) {
         config.authentication.options.host = process.env.AUTHENTICATION_HOST;
     }
     if (process.env.AUTHENTICATION_PORT) {
         config.authentication.options.port = process.env.AUTHENTICATION_PORT;
     }
+    if (process.env.AUTHENTICATION_PROTOCOL) {
+        config.authentication.options.protocol = process.env.AUTHENTICATION_PROTOCOL;
+    }
     if (process.env.PROXY_USERNAME) {
         config.authentication.user = process.env.PROXY_USERNAME;
     }
     if (process.env.PROXY_PASSWORD) {
         config.authentication.password = process.env.PROXY_PASSWORD;
+    }
+    if (process.env.COMPONENT_PLUGIN) {
+        if (middlewareConfigs[process.env.COMPONENT_PLUGIN]) {
+            config.middlewares = middlewareConfigs[process.env.COMPONENT_PLUGIN];
+        } else {
+            console.log('FATAL ERROR: Component plugin not found');
+            process.exit();
+        }
     }
 }
 

@@ -32,7 +32,24 @@ CHANGELOG_FILE="CHANGES_NEXT_RELEASE"
 #
 function usage
 {
-  echo "$progName <NEW_VERSION> [dev | rel]"
+  cat <<EOF
+
+Usage:
+   $progName <NEW_VERSION> [dev | cc | sprint]
+        Creates a new release changing the version to the one specified in the arguments.
+        The second argument indicates what type of release is it going to be released:
+
+        - sprint: releases that are meant to be created each sprint end. A tag is automatically
+        generated along with the branch and develop is merged with master.
+
+        - cc: code complete releases meant to be created when the product is about to go
+        into production with the rest of the platform. No tag is generated and master is not
+        updated.
+
+        - dev: intermediate releases that do not require following the same SCM specs.
+
+EOF
+
   exit 1
 }
 
@@ -62,7 +79,7 @@ export PEP_RELEASE=$2
 # correct date format
 #
 DATE=$(LANG=C date +"%a %b %d %Y")
-export dateLine="$DATE Daniel Moran <daniel.moranjimenez@telefonica.com> ${NEW_VERSION}-${PEP_RELEASE}"
+export dateLine="$DATE Daniel Moran <daniel.moranjimenez@telefonica.com> ${NEW_VERSION}"
 
 
 # Modify rpm/SPECS/pepProxy.spec only when step to a non-devel release
@@ -137,7 +154,7 @@ echo "new version:     $NEW_VERSION"
 #
 # Edit files that depend on the current version (which just changed)
 #
-sed "s/$currentVersion/$NEW_VERSION/" package.json        > /tmp/package.json
+sed "s/\"version\": \"$currentVersion\"/\"version\": \"$NEW_VERSION\"/" package.json        > /tmp/package.json
 sed "s/$currentVersion/$NEW_VERSION/" rpm/create-rpm.sh        > /tmp/create-rpm.sh
 
 mv /tmp/package.json              package.json
@@ -160,18 +177,38 @@ then
     git add CHANGES_NEXT_RELEASE
     git commit -m "ADD Step: $currentVersion -> $NEW_VERSION"
     git push origin develop
+
     # We do the tag only and merge to master only in the case of  non "dev" release
-    if [ "$PEP_RELEASE" != "dev" ]
+    if [ "$PEP_RELEASE" = "sprint" ]
     then
        git checkout master
-       git pull
+       git pull origin master
        git merge develop
        git push origin master
        git checkout -b release/$NEW_VERSION
        git tag $NEW_VERSION
        git push --tags origin release/$NEW_VERSION
        git checkout $CURRENT_BRANCH
+    elif [ "$PEP_RELEASE" = "cc" ]
+    then
+       git checkout -b release/$NEW_VERSION
+       git push origin release/$NEW_VERSION
+       git checkout $CURRENT_BRANCH
     fi
+
+    #
+    # Prepare develop for the next version
+    #
+    sed "s/$NEW_VERSION/$NEW_VERSION-next/" package.json        > /tmp/package.json
+    sed "s/$NEW_VERSION/$NEW_VERSION-next/" rpm/create-rpm.sh        > /tmp/create-rpm.sh
+    mv /tmp/package.json              package.json
+    mv /tmp/create-rpm.sh             rpm/create-rpm.sh
+
+    git add rpm/create-rpm.sh
+    git add package.json
+    git commit -m "ADD Prepare new version numbers for develop"
+    git push origin develop
+
 else
     echo "Your current branch is $CURRENT_BRANCH. You need to be at develop branch to do the final part of the process"
 fi

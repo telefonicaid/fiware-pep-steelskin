@@ -1,0 +1,6 @@
+title Invalid user token
+
+Client->PEP: UpdateContext in Orion
+PEP->Keystone: Validate user token
+Keystone-->PEP: Token not valid
+PEP->Client: 403 Forbidden

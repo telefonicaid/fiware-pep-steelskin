@@ -25,7 +25,7 @@
 
 var serverMocks = require('../tools/serverMocks'),
     proxyLib = require('../../lib/fiware-orion-pep'),
-    orionPlugin = require('../../lib/services/orionPlugin'),
+    orionPlugin = require('../../lib/plugins/orionPlugin'),
     config = require('../../config'),
     utils = require('../tools/utils'),
     should = require('should'),
@@ -66,6 +66,7 @@ convenienceOperations = [
     ['POST', '/ngsi9/contextAvailabilitySubscriptions', 'subscribe-availability'],
     ['PUT', '/ngsi9/contextAvailabilitySubscriptions/TestedSubscriptionID002', 'subscribe-availability'],
     ['DELETE', '/ngsi9/contextAvailabilitySubscriptions/TestedSubscriptionID002', 'subscribe-availability'],
+
     /* "Classic" NGSI10 operations */
     ['GET', '/ngsi10/contextEntities/TestedEntityId002', 'read'],
     ['GET', '/ngsi10/contextEntities/type/TestedType01/id/TestedEntityId002', 'read'],
@@ -109,16 +110,17 @@ convenienceOperations = [
     ['GET', '/ngsi10/contextEntities/type/TestedType01/id/TestedEntityId002/attributeDomains/TestedDomainName001',
             'read'],
     ['GET', '/ngsi10/contextEntityTypes/TestedTypeName001', 'read'],
+    ['GET', '/v1/contextEntities/{EntityID}', 'read'],
     ['GET', '/ngsi10/contextEntityTypes/TestedTypeName001/attributes', 'N/A'],
     ['GET', '/ngsi10/contextEntityTypes/TestedTypeName001/attributes/TestedAttributeName001', 'read'],
     ['GET', '/ngsi10/contextEntityTypes/TestedTypeName001/attributeDomains/TestedDomainName001', 'read'],
-    ['POST', '/ngsi10/contextSubscriptions', 'suscribe'],
-    ['PUT', '/ngsi10/contextSubscriptions/TestedSubscriptionID001', 'suscribe'],
-    ['DELETE', '/ngsi10/contextSubscriptions/TestedSubscriptionID001', 'suscribe'],
+    ['POST', '/ngsi10/contextSubscriptions', 'subscribe'],
+    ['PUT', '/ngsi10/contextSubscriptions/TestedSubscriptionID001', 'subscribe'],
+    ['DELETE', '/ngsi10/contextSubscriptions/TestedSubscriptionID001', 'subscribe'],
     /* Testing a subset of "classic" operations in v1/ prefix (we don't need to be exahustive) */
-    ['PUT', '/v1/contextSubscriptions/TestedSubscriptionID001', 'suscribe'],
-    ['DELETE', '/v1/contextSubscriptions/TestedSubscriptionID001', 'suscribe'],
-    ['PUT', '/v1/contextSubscriptions/TestedSubscriptionID001', 'suscribe'],
+    ['PUT', '/v1/contextSubscriptions/TestedSubscriptionID001', 'subscribe'],
+    ['DELETE', '/v1/contextSubscriptions/TestedSubscriptionID001', 'subscribe'],
+    ['PUT', '/v1/contextSubscriptions/TestedSubscriptionID001', 'subscribe'],
     ['GET', '/v1/registry/contextEntityTypes/TestedTypeName001', 'discover'],
     ['POST', '/v1/registry/contextEntityTypes/TestedTypeName001', 'register'],
     /* New operations in v1/ */
@@ -127,7 +129,15 @@ convenienceOperations = [
     ['GET', '/v1/contextSubscriptions', 'read'],
     ['GET', '/v1/contextSubscriptions/sub001', 'read'],
     ['GET', '/v1/contextTypes', 'read'],
-    ['GET', '/v1/contextTypes/typeOfEntity001', 'read']
+    ['GET', '/v1/contextTypes/typeOfEntity001', 'read'],
+
+    /* NGSI Operations with query params */
+    ['POST', '/v1/registry/contextAvailabilitySubscriptions?details=on&limit=15&offset=0 ',
+        'subscribe-availability'],
+    ['GET', '/v1/contextSubscriptions?details=on&limit=15&offset=0', 'read'],
+    ['POST', '/v1/registry/subscribeContextAvailability?details=on&limit=15&offset=0', 'subscribe-availability'],
+    ['POST', '/v1/registry/updateContextAvailabilitySubscription?details=on&limit=15&offset=0',
+        'subscribe-availability']
 ];
 
 describe('Extract Context Broker action from convenience operation requests', function() {
@@ -177,7 +187,7 @@ describe('Extract Context Broker action from convenience operation requests', fu
                 serverMocks.mockPath('/NGSI10/queryContext', mockApp, done);
             });
 
-            it('should add the action attribute with value "create" to the request',
+            it('should add the action attribute with value ' + convenienceAction + ' to the request',
                 testAction(convenienceAction, options));
         };
     }
@@ -228,7 +238,7 @@ describe('Extract Context Broker action from convenience operation requests', fu
     });
 
     for (var i = 0; i < convenienceOperations.length; i++) {
-        describe('When a create action arrives with a convenience task URL ' +
+        describe('When a request arrives with a convenience operation URL ' +
             convenienceOperations[i][1] + ' ' + convenienceOperations[i][0],
             testConvenienceOperation(convenienceOperations[i][1],
                 convenienceOperations[i][0],

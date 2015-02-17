@@ -25,7 +25,8 @@
 
 var serverMocks = require('../tools/serverMocks'),
     proxyLib = require('../../lib/fiware-orion-pep'),
-    orionPlugin = require('../../lib/services/orionPlugin'),
+    orionPlugin = require('../../lib/plugins/orionPlugin'),
+    keystoneAuth = require('../../lib/services/keystoneAuth'),
     async = require('async'),
     config = require('../../config'),
     utils = require('../tools/utils'),
@@ -101,6 +102,8 @@ describe('Reuse authentication tokens', function() {
             };
 
         beforeEach(function(done) {
+            keystoneAuth.cleanCache();
+
             initializeUseCase(currentAuthentication, function() {
                 async.series([
                     async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
@@ -171,6 +174,7 @@ describe('Reuse authentication tokens', function() {
                     async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
                 ], function() {
                     request(options, function(error, response, body) {
+                        keystoneAuth.cleanCache();
                         done();
                     });
                 });

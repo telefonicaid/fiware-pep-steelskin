@@ -18,9 +18,14 @@ config.resource = {
 
     proxy: {
         /**
-         * Port where the proxy is listening.
+         * Port where the proxy is listening to redirect requests.
          */
-        port: 1026
+        port: 1026,
+
+        /**
+         * Administration port for the proxy.
+         */
+        adminPort: 11211
     }
 };
 
@@ -59,7 +64,12 @@ config.authentication = {
     user: 'pepproxy',
     password: 'pepproxy',
     domainName: 'Default',
-    retries: 5,
+    retries: 3,
+    cacheTTLs: {
+        users: 1000,
+        projectIds: 1000,
+        roles: 60
+    },
     options: {
         protocol: 'http',
         host: 'localhost',
@@ -107,7 +117,7 @@ config.middlewares = {
     /**
      * Indicates the module from where the middlewares will be loaded.
      */
-    require: 'lib/services/orionPlugin',
+    require: 'lib/plugins/orionPlugin',
 
     /**
      * Indicates the list of middlewares to load.

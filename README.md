@@ -2,7 +2,6 @@
 ## Index
 
 * [Overview](#overview)
-* [Architecture](#architecture)
 * [Deployment](#deployment)
 * [Usage](#usage)
 * [Administration](#administration)
@@ -10,6 +9,7 @@
 * [API With Access Control](#apiaccesscontrol)
 * [Rules to determine the Context Broker action from the request](#rules)
 * [Rules to determine the Perseo action from the request](#rulesPerseo)
+* [Rules to determine the Keypass Access Control action from the request](#rulesKeypass)
 * [Customizing PEP Proxy for other components](#customizing)
 * [License](#licence)
 * [Development documentation](#development)
@@ -24,16 +24,12 @@ The Orion Policy Enforcement Point (PEP) is a proxy meant to secure independent 
 
 Communication with the Access Control is based on the [XACML protocol](http://docs.oasis-open.org/xacml/3.0/xacml-3.0-core-spec-os-en.html).
 
-## <a name="architecture"/> Architecture Description
-Orion Policy Enforcement Point Proxy is part of the authorization mechanism of the FIWARE platform. This authorization mechanism is based in OAuth 2.0, and it makes use of tokens to identify the user. 
- 
-![Alt text](https://raw.githubusercontent.com/telefonicaid/fiware-orion-pep/develop/img/arquitecture.png "Authorization Architecture")
+Along this document, the term IDM (Identity Manager) will be used, as a general term to refer to the server providing user and role creation and authentication. The currently supported IDM is Keystone; a Keyrock IDM option is provided as well, but it may be deprecated in the near future.
 
-Each request to a component holds some extra information (apart from the token) that can be used to identify what kind of action is requested to be executed and over what entity. This information may be explicit (using headers) or implicit (being part of the payload or the URL). The first task of the proxy is to extract this information (currently focused on the Context Broker, but will be compatible with other components in the future).
+Two other documents provide further information about the PEP Proxy:
 
-For each request, the proxy asks the IDM to validate the access token of the user (2). If the token is valid, the IDM answer with a response that contain the user roles (3). With those roles, the selected actions and resources (identified by the extra information) the PEP Proxy makes a request to the Access Manager for validation (4). This is an HTTP request using the XACML Request format. The Access Control component validates all the information and checks the retrieved data against the XACML Access Rules defined in the Identity Manager (4) (where each role for each user is associated with n permissions, each one of them defined using an XACML Rule). 
-
-If the user is allowed to execute the requested action (5), the HTTP request is resend to the component (6); if it is not, it is rejected.
+* [Operations Manual](operations.md)
+* [Architecture information](architecture.md)
 
 ## <a name="deployment"/> Deployment
 ### Dependencies
@@ -60,18 +56,13 @@ execute the following command:
 
 This command will generate some folders, including one called RPMS, holding the RPM created for every architecture (noarch is currently generated).
 
-In order to install the generated RPM from the local file, use the following command:
+In order to install the generated RPM from the local file, use the following command (changing the PEP RPM for the one you have just generated; X.Y.Z being the version you are about to install):
 
 ```
-yum --nogpgcheck localinstall  pep-proxy-0.1-1.noarch.rpm
+yum --nogpgcheck localinstall  pep-proxy-X.Y-Z.noarch.rpm
 ```
 
 It should automatically download all the dependencies provided they are available (Node.js and NPM may require the EPEL repositories to be added).
-
-### Deployment within a Context Broker installation
-If the PEP Proxy is deployed in a machine with an installed Context Broker service, the PEP Proxy will automatically change the Context Broker port to the 10026 and install itself on the port where the Context Broker was listening.
-
-During the uninstallation of the PEP Proxy, this process is reversed, to revert the Broker to its original state.
 
 ### Undeployment
 In order to undeploy the proxy:
@@ -321,8 +312,8 @@ In this example, only those users with `subjectId` (user's role) "admin" may wri
 Any number of policies can be included in the Access Control for each pair (tenant, subject). If any of the policies can be applied to the request and `Permit` the request, then the global result is a `Permit`. If none of the policies can be applied (no target exist for the tenant, subservice and subject of the request) the result will be `NotApplicable`. If there are policies that can be applied but all of them deny the access, the result will be a `Deny`.
 
 ## <a name="administration"/> Administration
-###Service operations
-####	Start service
+
+#### Start service
 To start the service, use either the service command:
 service pepProxy start
 
@@ -347,7 +338,7 @@ Or just the launch script:
 /etc/init.d/pepProxy stop
 ```
 ###	How to check service status
-####	Checking the process is running
+#### Checking the process is running
 The status of the process can be retrieved using the service command:
 ```
 service pepProxy status
@@ -366,18 +357,84 @@ can be used to check the process is listening in the appropriate port (provided 
 ```
 tcp   0   0  0.0.0.0:1026     0.0.0.0:*   LISTEN   12179/node
 ```
+#### Checking the version in the Administration API
+The PEP Proxy provides an Administration port that can be used to check whether the proxy is up and listening or down.
+The administration API consists in a single `/version` path, that returns useful information from the proxy (currently just the listening port and version).
+
+Example of output:
+```
+{
+  "version": "0.4.1-next",
+  "port": 1026
+}
+```
 
 ## <a name="configuration"/> Configuration
-All the configuration of the proxy is stored in the `config.js` file in the root of the project folder.
+All the configuration of the proxy is stored in the `config.js` file in the root of the project folder. The values set inside config.js operate as the default values for all the important pieces of configuration data, so it is important none of them are removed (you can change them to suit your needs, as long as they have a valid value).
+
+Another way of configuring the component is through the use of environment variables, although less configuration options are exposed with this mechanism.
 
 ### Basic Configuration
 In order to have the proxy running, there are several basic pieces of information to fill:
-* `config.resource.proxy`: The information of the server proxy itself (mainly the port).
-* `config.resource.original`: The address and port of the proxied server.
-* `config.authentication.username`: username of the PEP proxy in the IDM.
+* `config.resource.proxy`: The information of the server proxy itself. Two ports must be configured for the proxy: `port` indicates in which port is the proxy listening for requests; `adminPort` indicates the administration port. E.g.:
+```
+{
+    port: 1026,
+    adminPort: 11211
+}
+```
+* `config.resource.original`: The address and port of the proxied server. E.g.:
+```
+{
+    host: 'localhost',
+    port: 10026
+},
+```
+* `config.access`: connection information to the selected Access Control PDP API. E.g.:
+```
+{
+    protocol: 'http',
+    host: 'localhost',
+    port: 7070,
+    path: '/pdp/v3'
+}
+```
+* `config.componentName`: name of the component that will be used to compose the FRN that will identify the resource to be accessed. E.g.: `orion`.
+* `config.resourceNamePrefix`: string prefix that will be used to compose the FRN that will identify the resource to be accessed. E.g.: `fiware:`.
+* `config.bypass`: used to activate the administration bypass in the proxy. Valid values are `true` or `false`.
+* `config.bypassRoleId`: ID of the role that will be considered to have administrative rights over the proxy (so being transparently proxied without validation). Valid values are Role UUIDs. E.g.: `db50362d5f264c8292bebdb5c5783741`.
+
+### Authentication configuration
+* `config.authentication.module`: indicates what type of authentication server should be used: keystone or idm. The currently supported one (and default) is `keystone`.
+* `config.authentication.username`: username of the PEP proxy in the IDM. 
 * `config.authentication.password`: password of the PEP proxy in the IDM.
-* `config.authentication.host`: host where the authentication host is listening (for the proxy to authenticate itself).
-* `config.access.host`: hot where the Keystone proxy is located (usually the same as the authentication host).
+* `config.authentication.domainName`: (only meaningful for Keystone) name of the administration domain the PEP proxy user belongs to.
+* `config.authentication.retries`: as the authentication is based in the use of tokens that can expire, the operations against Keystone are meant to retry with a fresh token. This configuration value indicates how many retries the PEP should perform in case the communication against Keystone fails.
+* `cacheTTLs`: the values in this object correspond to the Time To Live of the values of the different caches the PEP uses to cache requests for information in Keystone. The value is expressed in seconds.
+* `config.authentication.options`: address, port and other communication data needed to communicate with the Identity Manager. Apart from the host and port, default values should be used. 
+
+### Configuration based on environment variables
+Some of the configuration values for the attributes above mentioned can be overriden with values in environment variables. The following table shows the environment variables and what attribute they map to.
+
+| Environment variable | Configuration attribute             |
+|:-------------------- |:----------------------------------- |
+| PROXY_PORT           | config.resource.proxy.port          | 
+| TARGET_HOST          | config.resource.original.host       |
+| TARGET_PORT          | config.resource.original.port       |
+| LOG_LEVEL            | config.logLevel                     |
+| ACCESS_HOST          | config.access.host                  |
+| ACCESS_PORT          | config.access.port                  |
+| ACCESS_PROTOCOL      | config.access.protocol              |
+| AUTHENTICATION_HOST  | config.authentication.options.host  |
+| AUTHENTICATION_PORT  | config.authentication.options.port  |
+| AUTHENTICATION_PROTOCOL  | config.authentication.options.protocol  |
+| PROXY_USERNAME       | config.authentication.user          |
+| PROXY_PASSWORD       | config.authentication.password      |
+| PROXY_PASSWORD       | config.authentication.password      |
+| COMPONENT_PLUGIN       | config.middlewares      |
+
+### Component configuration
+A special environment variable, called `COMPONENT_PLUGIN` can be set with one of this values: `orion`, `perseo`, `keypass`. This variable can be used to select what component plugin to load in order to determine the action of the incoming requests.
 
 ### SSL Configuration
 If SSL Termination is not available, the PEP Proxy can be configured to listen HTTPS instead of plain HTTP. To activate the SSL:
@@ -455,16 +512,17 @@ This is the list of actions available for the Context Broker. For every action, 
 | register | Reg           |
 | discover | Dis            |
 | subscribe-availability | S-A            |
+| N/A | - |
 
 ### Standard operations
-* `create`: URL contains `/ngsi10/updateContext` and the `actionType` attribute of the payload (either with XML or JSON) is `APPEND`.
-* `update`: URL contains `/ngsi10/updateContext` and the `actionType` attribute of the payload (either with XML or JSON) is `UPDATE`.
-* `delete`: URL contains `/ngsi10/updateContext` and the `actionType` attribute of the payload (either with XML or JSON) is “DELETE”.
-* `read`: URL contains `/ngsi10/queryContext`.
-* `subscribe`: URL contains  `/ngsi10/subscribeContext`, `/ngsi10/updateContextSubscription` o `/ngsi10/unsubscribeContext`.
-* `register`: URL contains `/ngsi9/registerContext`.
-* `discover`: URL contains `/nsgi9/discoverContextAvailability`.
-* `subscribe-availability`: URL contains `/ngsi9/subscribeContextAvailability`, `/ngsi9/updateContextAvailabilitySubscription` o `/ngsi9/unsubscribeContextAvailability`.
+* `create`: URL contains `/v1/updateContext` and the `actionType` attribute of the payload (either with XML or JSON) is `APPEND`.
+* `update`: URL contains `/v1/updateContext` and the `actionType` attribute of the payload (either with XML or JSON) is `UPDATE`.
+* `delete`: URL contains `/v1/updateContext` and the `actionType` attribute of the payload (either with XML or JSON) is “DELETE”.
+* `read`: URL contains `/v1/queryContext` or `/v1/contextTypes`.
+* `subscribe`: URL contains  `/v1/subscribeContext`, `/v1/updateContextSubscription` o `/v1/unsubscribeContext`.
+* `register`: URL contains `/v1/registry/registerContext`.
+* `discover`: URL contains `/v1/registry/discoverContextAvailability`.
+* `subscribe-availability`: URL contains `/v1/registry/subscribeContextAvailability`, `/v1/registry/updateContextAvailabilitySubscription` o `/v1/registry/unsubscribeContextAvailability`.
 
 ### Convenience operations
 The following tables show the rules for detemining the action based on Method and path of the request. 
@@ -474,52 +532,54 @@ An up-to-date list of the convenience operations can be found [here](https://doc
 #### NGSI9 (context information availability)
 | Method | Path                                                                                     | Action |
 | ------ |:--------------------------------------------------------------------------------------- | ---:|
-| GET    | /ngsi9/contextEntities/{EntityId}                                                      	| Dis |
-| POST   | /ngsi9/contextEntities/{EntityId}                                                      	| Reg |
-| GET    | /ngsi9/contextEntities/{EntityId}/attributes                                           	| -   |
-| POST   | /ngsi9/contextEntities/{EntityId}/attributes                                           	| -   |
-| GET    | /ngsi9/contextEntities/{EntityId}/attributes/{attributeName}                           	| Dis |
-| POST   | /ngsi9/contextEntities/{EntityId}/attributes/{attributeName}                          	| Reg |
-| GET    | /ngsi9/contextEntities/{EntityId}/attributeDomains/{attributeDomainName}               	| Dis |
-| POST   | /ngsi9/contextEntities/{EntityId}/attributeDomains/{attributeDomainName}               	| Reg |
-| GET    | /ngsi9/contextEntityTypes/{typeName}                                                   	| Dis |
-| POST   | /ngsi9/contextEntityTypes/{typeName}                                                   	| Reg |
-| GET    | /ngsi9/contextEntityTypes/{typeName}/attributes                                        	| -   |
-| POST   | /ngsi9/contextEntityTypes/{typeName}/attributes                                        	| -   |
-| GET    | /ngsi9/contextEntityTypes/{typeName}/attributes/{attributeName}                        	| Dis |
-| POST   | /ngsi9/contextEntityTypes/{typeName}/attributes/{attributeName}                        	| Reg |
-| GET    | /ngsi9/contextEntityTypes/{typeName}/attributeDomains/{attributeDomainName}            	| Dis |
-| POST   | /ngsi9/contextEntityTypes/{typeName}/attributeDomains/{attributeDomainName}            	| Reg |
-| POST   | /ngsi9/contextAvailabilitySubscriptions                                                	| S-A |
-| PUT    | /ngsi9/contextAvailabilitySubscriptions/{subscriptionId}                               	| S-A |
-| DELETE | /ngsi9/contextAvailabilitySubscriptions/{subscriptionId}                               	| S-A |
+| GET    | /v1/registry/contextEntities/{EntityId}                                                      	| Dis |
+| POST   | /v1/registry/contextEntities/{EntityId}                                                      	| Reg |
+| GET    | /v1/registry/contextEntities/{EntityId}/attributes                                           	| -   |
+| POST   | /v1/registry/contextEntities/{EntityId}/attributes                                           	| -   |
+| GET    | /v1/registry/contextEntities/{EntityId}/attributes/{attributeName}                           	| Dis |
+| POST   | /v1/registry/contextEntities/{EntityId}/attributes/{attributeName}                          	| Reg |
+| GET    | /v1/registry/contextEntities/{EntityId}/attributeDomains/{attributeDomainName}               	| Dis |
+| POST   | /v1/registry/contextEntities/{EntityId}/attributeDomains/{attributeDomainName}               	| Reg |
+| GET    | /v1/registry/contextEntityTypes/{typeName}                                                   	| Dis |
+| POST   | /v1/registry/contextEntityTypes/{typeName}                                                   	| Reg |
+| GET    | /v1/registry/contextEntityTypes/{typeName}/attributes                                        	| -   |
+| POST   | /v1/registry/contextEntityTypes/{typeName}/attributes                                        	| -   |
+| GET    | /v1/registry/contextEntityTypes/{typeName}/attributes/{attributeName}                        	| Dis |
+| POST   | /v1/registry/contextEntityTypes/{typeName}/attributes/{attributeName}                        	| Reg |
+| GET    | /v1/registry/contextEntityTypes/{typeName}/attributeDomains/{attributeDomainName}            	| Dis |
+| POST   | /v1/registry/contextEntityTypes/{typeName}/attributeDomains/{attributeDomainName}            	| Reg |
+| POST   | /v1/registry/contextAvailabilitySubscriptions                                                	| S-A |
+| PUT    | /v1/registry/contextAvailabilitySubscriptions/{subscriptionId}                               	| S-A |
+| DELETE | /v1/registry/contextAvailabilitySubscriptions/{subscriptionId}                               	| S-A |
 
 #### NGS10 (context information availability)
 | Method | Path                                                                                     | Action |
 | ------ |:--------------------------------------------------------------------------------------- | ---:|
-| GET    | /ngsi10/contextEntities/{EntityID}                                                     	| R |
-| PUT    | /ngsi10/contextEntities/{EntityID}                                                     	| U |
-| POST   | /ngsi10/contextEntities/{EntityID}                                                     	| C |
-| DELETE | /ngsi10/contextEntities/{EntityID}                                                     	| D |
-| GET    | /ngsi10/contextEntities/{EntityID}/attributes                                          	| - |
-| PUT    | /ngsi10/contextEntities/{EntityID}/attributes                                          	| - |
-| POST   | /ngsi10/contextEntities/{EntityID}/attributes                                          	| - |
-| DELETE | /ngsi10/contextEntities/{EntityID}/attributes                                          	| - |
-| GET    | /ngsi10/contextEntities/{EntityID}/attributes/{attributeName}                          	| R |
-| POST   | /ngsi10/contextEntities/{EntityID}/attributes/{attributeName}                          	| C |
-| PUT    | /ngsi10/contextEntities/{EntityID}/attributes/{attributeName}                          	| U |
-| DELETE | /ngsi10/contextEntities/{EntityID}/attributes/{attributeName}                          	| D |
-| GET    | /ngsi10/contextEntities/{EntityID}/attributes/{attributeName}/{valueID}                	| R |
-| PUT    | /ngsi10/contextEntities/{EntityID}/attributes/{attributeName}/{valueID}                	| U |
-| DELETE | /ngsi10/contextEntities/{EntityID}/attributes/{attributeName}/{valueID}                	| D |
-| GET    | /ngsi10/contextEntities/{EntityID}/attributeDomains/{attributeDomainName}              	| R |
-| GET    | /ngsi10/contextEntityTypes/{typeName}                                                  	| R |
-| GET    | /ngsi10/contextEntityTypes/{typeName}/attributes                                       	| - |
-| GET    | /ngsi10/contextEntityTypes/{typeName}/attributes/{attributeName}                       	| R |
-| GET    | /ngsi10/contextEntityTypes/{typeName}/attributeDomains/{attributeDomainName}           	| R |
-| POST   | /ngsi10/contextSubscriptions                                                           	| S |
-| PUT    | /ngsi10/contextSubscriptions/{subscriptionID}                                          	| S |
-| DELETE | /ngsi10/contextSubscriptions/{subscriptionID}                                          	| S |
+| GET    | /v1/contextEntities/{EntityID}                                                     	| R |
+| PUT    | /v1/contextEntities/{EntityID}                                                     	| U |
+| POST   | /v1/contextEntities/{EntityID}                                                     	| C |
+| DELETE | /v1/contextEntities/{EntityID}                                                     	| D |
+| GET    | /v1/contextEntities/{EntityID}/attributes                                          	| - |
+| PUT    | /v1/contextEntities/{EntityID}/attributes                                          	| - |
+| POST   | /v1/contextEntities/{EntityID}/attributes                                          	| - |
+| DELETE | /v1/contextEntities/{EntityID}/attributes                                          	| - |
+| GET    | /v1/contextEntities/{EntityID}/attributes/{attributeName}                          	| R |
+| POST   | /v1/contextEntities/{EntityID}/attributes/{attributeName}                          	| C |
+| PUT    | /v1/contextEntities/{EntityID}/attributes/{attributeName}                          	| U |
+| DELETE | /v1/contextEntities/{EntityID}/attributes/{attributeName}                          	| D |
+| GET    | /v1/contextEntities/{EntityID}/attributes/{attributeName}/{valueID}                	| R |
+| PUT    | /v1/contextEntities/{EntityID}/attributes/{attributeName}/{valueID}                	| U |
+| DELETE | /v1/contextEntities/{EntityID}/attributes/{attributeName}/{valueID}                	| D |
+| GET    | /v1/contextEntities/{EntityID}/attributeDomains/{attributeDomainName}              	| R |
+| GET    | /v1/contextEntityTypes/{typeName}                                                  	| R |
+| GET    | /v1/contextEntityTypes/{typeName}/attributes                                       	| - |
+| GET    | /v1/contextEntityTypes/{typeName}/attributes/{attributeName}                       	| R |
+| GET    | /v1/contextEntityTypes/{typeName}/attributeDomains/{attributeDomainName}           	| R |
+| POST   | /v1/contextSubscriptions                                                           	| S |
+| PUT    | /v1/contextSubscriptions/{subscriptionID}                                          	| S |
+| DELETE | /v1/contextSubscriptions/{subscriptionID}                                          	| S |
+
+Operations marked with a slash, "-" are now deprecated. All those operations will be tagged with the special action "N/A". If you want to allow them anyway, just add a rule to the Access Control allowing the "N/A" action for the desired roles.
 
 ## <a name="rulesPerseo"/> Rules to determine the Perseo CEP action from the request
 
@@ -552,9 +612,28 @@ The following tables show the map from method and path of the request to the act
 | DELETE | /m2m/vrules/{id}    	| writeRule |
 | PUT    | /m2m/vrules/{id}       | writeRule |
 
+## <a name="rulesKeypass"/> Rules to determine the Keypass Access Control action from the request
+The available actions are:
+* **createPolicy**: to create a new policy for a subject in Keypass.
+* **listPolicies**: to list all the policies belonging to a subject.
+* **deleteSubjectPolicies**: to remove all the policies for a particular subject.
+* **deleteTenantPolicies**: to remove all the policies for all the subjects of a tenant.
+* **readPolicy**: to get the policy body for a particular policy.
+* **deletePolicy**: to remove a single policy of a subject.
+
+The following table show the map from method and path of the request to the action.
+
+| Method | Path        | Action|
+| ------ |:-------------|:-----------|
+| POST    | /pap/v1/subject/{subjectId}      | createPolicy  |
+| GET    | /pap/v1/subject/{subjectId}       | listPolicies  |
+| DELETE    | /pap/v1/subject/{subjectId}       | deleteSubjectPolicies  |
+| DELETE    | /pap/v1      | deleteTenantPolicies  |
+| GET    | /pap/v1/subject/{subjectId}/policy/{policyId}      | readPolicy  |
+| DELETE    | /pap/v1/subject/{subjectId}/policy/{policyId}      | deletePolicy  |
 
 ## <a name="customizing"/> Customizing PEP Proxy for other components
-Although the Orion PEP Proxy was meant to protect the access to the Context Broker using the rules defined in the Access Control, it was designed to easily adapt to other components. Most of the code of the proxy (i.e. the extraction of user data, the communication with the Keystone Proxy and the proxy process itself) will execute exactly the same for all the components. The exception is the rule to determine the action the request is trying to perform. To address this behavior and possible actions different customizations of the proxy could need, the proxy allows for the introduction of middlewares in the validation process.
+Most of the code of the proxy (i.e. the extraction of user data, the communication with the Keystone Proxy and the proxy process itself) will execute exactly the same for all the components. The exception is the rule to determine the action the request is trying to perform. To address this behavior and possible actions different customizations of the proxy could need, the proxy allows for the introduction of middlewares in the validation process.
 
 ### Middleware definition
 The middlewares are quite similar to the ones used by the Connect (or Express) framework. A middleware is a function that receives three parameters:

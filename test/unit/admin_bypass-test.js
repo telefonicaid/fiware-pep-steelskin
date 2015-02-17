@@ -25,7 +25,7 @@
 
 var serverMocks = require('../tools/serverMocks'),
     proxyLib = require('../../lib/fiware-orion-pep'),
-    orionPlugin = require('../../lib/services/orionPlugin'),
+    orionPlugin = require('../../lib/plugins/orionPlugin'),
     async = require('async'),
     config = require('../../config'),
     utils = require('../tools/utils'),
@@ -146,7 +146,5 @@ describe('Admin bypass tests', function() {
                 done();
             });
         });
-
-
     });
 });

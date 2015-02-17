@@ -25,7 +25,7 @@
 
 var serverMocks = require('../tools/serverMocks'),
     proxyLib = require('../../lib/fiware-orion-pep'),
-    perseoPlugin = require('../../lib/services/perseoPlugin'),
+    perseoPlugin = require('../../lib/plugins/perseoPlugin'),
     config = require('../../config'),
     utils = require('../tools/utils'),
     should = require('should'),

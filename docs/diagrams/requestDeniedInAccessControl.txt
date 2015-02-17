@@ -1,0 +1,8 @@
+title Request denied in Access Control
+
+Client->PEP: UpdateContext in Orion
+PEP->Keystone: Validate user token
+Keystone-->PEP: Valid token
+PEP->AccessControl: Validate client request for roles
+AccessControl-->PEP: Deny
+PEP->Client: 403 Forbidden

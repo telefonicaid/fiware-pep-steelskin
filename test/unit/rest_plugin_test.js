@@ -25,7 +25,7 @@
 
 var serverMocks = require('../tools/serverMocks'),
     proxyLib = require('../../lib/fiware-orion-pep'),
-    restPlugin = require('../../lib/services/restPlugin'),
+    restPlugin = require('../../lib/plugins/restPlugin'),
     config = require('../../config'),
     utils = require('../tools/utils'),
     should = require('should'),

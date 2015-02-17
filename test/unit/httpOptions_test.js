@@ -25,7 +25,7 @@
 
 var serverMocks = require('../tools/serverMocks'),
     proxyLib = require('../../lib/fiware-orion-pep'),
-    orionPlugin = require('../../lib/services/orionPlugin'),
+    orionPlugin = require('../../lib/plugins/orionPlugin'),
     config = require('../../config'),
     async = require('async'),
     utils = require('../tools/utils'),
