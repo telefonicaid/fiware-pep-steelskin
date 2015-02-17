@@ -25,7 +25,7 @@ The following sections list all the errors that can appear in the log files, the
 A request has been received without the appropriate organization header. This is an error originated from the client and should not require intervention (if the request is coming from an internal component, that component's version should be checked).
 #### PROXY-GEN-002: User ID headers not found
 A request has been received without a user Token, so it couldn't be identified. This is an error originated from the client and should not require intervention (if the request is coming from an internal component, that component's version should be checked).
-#### PROXY-GEN-003: Error initializing proxy: %s
+#### PROXY-GEN-003: Error initializing proxy: %s or Error initializing administration server: %s
 There was an error creating the HTTP server socket for the process. The specific nature of the error will be stated in the message. This error is critical, and makes the service unavailable.
 The most likely occurrence of this error will be when the IP address and port are already in use by other process (or an old instance of this service). Check the port is available using the netstat command.
 
