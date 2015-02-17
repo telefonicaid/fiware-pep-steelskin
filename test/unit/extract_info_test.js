@@ -98,7 +98,7 @@ describe('Extract information from requests', function() {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
                 'Fiware-Service': 'frn:contextbroker:admin_domain:::',
-                'Fiware-Path': 'admin_domain',
+                'Fiware-ServicePath': 'admin_domain',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
@@ -175,9 +175,9 @@ describe('Extract information from requests', function() {
             serverMocks.mockPath('/NGSI10/updateContext', mockApp, done);
         });
 
-        it('should reject the request with a 403 error code', function(done) {
+        it('should reject the request with a 400 error code', function(done) {
             request(options, function(error, response, body) {
-                response.statusCode.should.equal(403);
+                response.statusCode.should.equal(400);
                 done();
             });
         });
@@ -197,7 +197,7 @@ describe('Extract information from requests', function() {
         });
     });
 
-    describe('When a request arrives to the CB without a Fiware Service', function() {
+    describe('When a request arrives to the CB without a Fiware Service header', function() {
         var options = {
             uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
             method: 'POST',
@@ -213,9 +213,9 @@ describe('Extract information from requests', function() {
             serverMocks.mockPath('/NGSI10/updateContext', mockApp, done);
         });
 
-        it('should reject the request with a 403 error code', function(done) {
+        it('should reject the request with a 400 error code', function(done) {
             request(options, function(error, response, body) {
-                response.statusCode.should.equal(403);
+                response.statusCode.should.equal(400);
                 done();
             });
         });

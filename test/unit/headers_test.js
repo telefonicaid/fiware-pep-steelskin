@@ -99,7 +99,7 @@ describe('Control header behavior', function() {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
                 'Fiware-Service': 'frn:contextbroker:admin_domain:::',
-                'Fiware-Path': 'admin_domain',
+                'Fiware-ServicePath': 'admin_domain',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
@@ -141,7 +141,7 @@ describe('Control header behavior', function() {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
                 'Fiware-Service': 'frn:contextbroker:admin_domain:::',
-                'Fiware-Path': 'admin_domain',
+                'Fiware-ServicePath': 'admin_domain',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q',
                 'X-Forwarded-For': '192.168.2.1'
             },
@@ -183,7 +183,7 @@ describe('Control header behavior', function() {
             headers: {
                 'Accept': 'application/xml',
                 'Fiware-Service': 'frn:contextbroker:admin_domain:::',
-                'Fiware-Path': 'admin_domain',
+                'Fiware-ServicePath': 'admin_domain',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q',
                 'X-Forwarded-For': '192.168.2.1'
             },
@@ -259,7 +259,7 @@ describe('Control header behavior', function() {
             headers: {
                 'Accept': 'application/json',
                 'Fiware-Service': 'frn:contextbroker:admin_domain:::',
-                'Fiware-Path': 'admin_domain',
+                'Fiware-ServicePath': 'admin_domain',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q',
                 'X-Forwarded-For': '192.168.2.1'
             },
@@ -335,7 +335,7 @@ describe('Control header behavior', function() {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
                 'Fiware-Service': 'frn:contextbroker:admin_domain:::',
-                'Fiware-Path': 'admin_domain',
+                'Fiware-ServicePath': 'admin_domain',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
@@ -368,4 +368,48 @@ describe('Control header behavior', function() {
             });
         });
     });
+
+    function checkHeader(headerTest) {
+        describe('When a request to the CB arrives to the proxy without "' + headerTest + '" header', function() {
+            var options;
+
+            beforeEach(function(done) {
+                options = {
+                    uri: 'http://localhost:' + config.resource.proxy.port + '/v1/updateContext',
+                    method: 'POST',
+                    headers: {
+                        'content-type': 'application/json',
+                        'accept': 'application/json',
+                        'fiware-service': 'frn:contextbroker:admin_domain:::',
+                        'fiware-servicepath': 'admin_domain',
+                        'x-auth-token': 'UAidNA9uQJiIVYSCg0IQ8Q'
+                    },
+                    json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
+                };
+
+                delete options.headers[headerTest];
+                serverMocks.mockPath('/pdp/v3', mockAccessApp, done);
+                serverMocks.mockPath('/NGSI10/updateContext', mockTargetApp, done);
+            });
+
+            it('should return a 400 error indicating the missing header', function(done) {
+                request(options, function(error, response, body) {
+                    response.statusCode.should.equal(400);
+                    should.exist(body);
+                    body.message.should.match(new RegExp('.*' + headerTest + '.*'));
+                    done();
+                });
+            });
+        });
+    }
+
+    var mandatoryHeaders = [
+        'fiware-service',
+        'fiware-servicepath',
+        'x-auth-token'
+    ];
+
+    for (var i = 0; i < mandatoryHeaders.length; i++) {
+        checkHeader(mandatoryHeaders[i]);
+    }
 });
