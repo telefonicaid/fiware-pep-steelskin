@@ -25,24 +25,14 @@
 
 var should = require('should'),
     proxyLib = require('../../lib/fiware-orion-pep'),
-    orionPlugin = require('../../lib/plugins/orionPlugin'),
     config = require('../../config'),
-    async = require('async'),
-    utils = require('../tools/utils'),
-    request = require('request'),
-    originalAuthenticationModule;
+    request = require('request');
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 
 describe('Sanity check', function() {
-    var proxy,
-        mockTarget,
-        mockTargetApp,
-        mockAccess,
-        mockAccessApp,
-        mockOAuth,
-        mockOAuthApp;
+    var proxy;
 
     beforeEach(function(done) {
         proxyLib.start(function(error, proxyObj) {
