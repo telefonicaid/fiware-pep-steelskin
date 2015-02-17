@@ -98,7 +98,7 @@ describe('Proxy querystring behavior', function() {
             headers: {
                 'Accept': 'application/json',
                 'Fiware-Service': 'frn:contextbroker:admin_domain:::',
-                'Fiware-Path': 'admin_domain',
+                'Fiware-ServicePath': 'admin_domain',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             qs: {

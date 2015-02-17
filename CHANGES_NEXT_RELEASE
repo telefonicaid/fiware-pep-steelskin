@@ -6,3 +6,4 @@
 - Add "effective" flag to the request to Keystone (#147)
 - Fix UpdateContext operations with query parameters are not recognized (#155)
 - Remove specific setup for RPM installation in Context Broker uses (#159)
+- Check all the mandatory headers before processing the request (#165) (#110)
