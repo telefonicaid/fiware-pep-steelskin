@@ -18,9 +18,14 @@ config.resource = {
 
     proxy: {
         /**
-         * Port where the proxy is listening.
+         * Port where the proxy is listening to redirect requests.
          */
-        port: 1026
+        port: 1026,
+
+        /**
+         * Administration port for the proxy.
+         */
+        adminPort: 11211
     }
 };
 
