@@ -12,18 +12,18 @@ Feature: Test request headers
     And a url with "/v1/updateContext"
     When the petition action "GET" is asked
     Then the Keystone proxy receive the last petition "<last_petition>" from pep
-    And the PEP returns an error
+    And the PEP returns an error with code "<error_code>"
 
   Examples:
-    | header             | format | last_petition       |
-    | Fiware-Servicepath | json   | v3/projects         |
-    | Fiware-Servicepath | xml    | v3/projects         |
-    | Fiware-Service     | json   |                     |
-    | Fiware-Service     | xml    |                     |
-    | content-type       | json   |                     |
-    | content-type       | xml    |                     |
-    | X-Auth-Token       | json   |                     |
-    | X-Auth-Token       | xml    |                     |
+    | header             | format | last_petition | error_code |
+    | Fiware-Servicepath | json   |               | 400        |
+    | Fiware-Servicepath | xml    |               | 400        |
+    | Fiware-Service     | json   |               | 400        |
+    | Fiware-Service     | xml    |               | 400        |
+    | content-type       | json   |               | 403        |
+    | content-type       | xml    |               | 403        |
+    | X-Auth-Token       | json   |               | 400        |
+    | X-Auth-Token       | xml    |               | 400        |
 
   @headers
   Scenario Outline: Test incomplete headers CB KO update Action
@@ -32,18 +32,18 @@ Feature: Test request headers
     And a url with "/v1/updateContext"
     When the petition action "GET" is asked
     Then the Keystone proxy receive the last petition "<last_petition>" from pep
-    And the PEP returns an error
+    And the PEP returns an error with code "<error_code>"
 
   Examples:
-    | header             | format | last_petition       |
-    | Fiware-Servicepath | json   | v3/projects         |
-    | Fiware-Servicepath | xml    | v3/projects         |
-    | Fiware-Service     | json   |                     |
-    | Fiware-Service     | xml    |                     |
-    | content-type       | json   |                     |
-    | content-type       | xml    |                     |
-    | X-Auth-Token       | json   |                     |
-    | X-Auth-Token       | xml    |                     |
+    | header             | format | last_petition | error_code |
+    | Fiware-Servicepath | json   |               | 400        |
+    | Fiware-Servicepath | xml    |               | 400        |
+    | Fiware-Service     | json   |               | 400        |
+    | Fiware-Service     | xml    |               | 400        |
+    | content-type       | json   |               | 403        |
+    | content-type       | xml    |               | 403        |
+    | X-Auth-Token       | json   |               | 400        |
+    | X-Auth-Token       | xml    |               | 400        |
 
   @headers
   Scenario Outline: Test incomplete headers CB KO delete Action
@@ -52,18 +52,18 @@ Feature: Test request headers
     And a url with "/v1/updateContext"
     When the petition action "GET" is asked
     Then the Keystone proxy receive the last petition "<last_petition>" from pep
-    And the PEP returns an error
+    And the PEP returns an error with code "<error_code>"
 
   Examples:
-    | header             | format | last_petition       |
-    | Fiware-Servicepath | json   | v3/projects         |
-    | Fiware-Servicepath | xml    | v3/projects         |
-    | Fiware-Service     | json   |                     |
-    | Fiware-Service     | xml    |                     |
-    | content-type       | json   |                     |
-    | content-type       | xml    |                     |
-    | X-Auth-Token       | json   |                     |
-    | X-Auth-Token       | xml    |                     |
+    | header             | format | last_petition | error_code |
+    | Fiware-Servicepath | json   |               | 400        |
+    | Fiware-Servicepath | xml    |               | 400        |
+    | Fiware-Service     | json   |               | 400        |
+    | Fiware-Service     | xml    |               | 400        |
+    | content-type       | json   |               | 403        |
+    | content-type       | xml    |               | 403        |
+    | X-Auth-Token       | json   |               | 400        |
+    | X-Auth-Token       | xml    |               | 400        |
 
 
   @headers
@@ -73,16 +73,16 @@ Feature: Test request headers
     And a url with "/v1/queryContext"
     When the petition action "POST" is asked without data
     Then the Keystone proxy receive the last petition "<last_petition>" from pep
-    And the PEP returns an error
+    And the PEP returns an error with code "<error_code>"
 
   Examples:
-    | header             | format | last_petition       |
-    | Fiware-Servicepath | json   | v3/projects         |
-    | Fiware-Servicepath | xml    | v3/projects         |
-    | Fiware-Service     | json   |                     |
-    | Fiware-Service     | xml    |                     |
-    | X-Auth-Token       | json   |                     |
-    | X-Auth-Token       | xml    |                     |
+    | header             | format | last_petition | error_code |
+    | Fiware-Servicepath | json   |               | 400        |
+    | Fiware-Servicepath | xml    |               | 400        |
+    | Fiware-Service     | json   |               | 400        |
+    | Fiware-Service     | xml    |               | 400        |
+    | X-Auth-Token       | json   |               | 400        |
+    | X-Auth-Token       | xml    |               | 400        |
 
 
   @headers

@@ -155,7 +155,7 @@ def the_petition_gets_to_contextbroker_mock(step):
     except ConnectionError as e:
         assert False, 'There is a problem with the connection to the mock in the url: {url} \n Error: {error}'.format(
             url=mock_url, error=e)
-    assert not(len(set(resp.json().values())) <= 1), 'The petition never gets to the mock'
+    assert not (len(set(resp.json().values())) <= 1), 'The petition never gets to the mock'
     # Check headers
     headers = resp.json()['headers']
     try:
@@ -171,22 +171,24 @@ def the_petition_gets_to_contextbroker_mock(step):
     else:
         parms_received = eval(parms_received)
     parms_send = urlparseargs_to_nodejsargs(world.url)
-    msg_not_equals = 'The parms sent to PEP are not the same than the parms send to final: \n Parm send: {parms_send} \n Parm received: {parms_received}'.format(parms_send=parms_send, parms_received=parms_received)
+    msg_not_equals = 'The parms sent to PEP are not the same than the parms send to final: \n Parm send: {parms_send} \n Parm received: {parms_received}'.format(
+        parms_send=parms_send, parms_received=parms_received)
     equals_objects(parms_received, parms_send, msg_not_equals)
     # Check path
     path_send = urlparse.urlsplit(world.url).path
     path_received = resp.json()['path']
-    assert path_send == path_received, 'The path sent to PEP are not the same than the path send to final: \n Path_sent: {path_send} \n Path received: {path_received}'.format(path_send=path_send, path_received=path_received)
+    assert path_send == path_received, 'The path sent to PEP are not the same than the path send to final: \n Path_sent: {path_send} \n Path received: {path_received}'.format(
+        path_send=path_send, path_received=path_received)
     # Check the payload
     if type(world.data) is dict:
         sent = world.data
     elif type(world.data) is str or type(world.data) is unicode:
         try:
-            sent = json.loads(world.data.replace('\'','"'))
+            sent = json.loads(world.data.replace('\'', '"'))
         except:
             sent = world.data
     try:
-        response = json.loads(json.loads(resp.text)['resp'].replace('\'','"'))
+        response = json.loads(json.loads(resp.text)['resp'].replace('\'', '"'))
     except Exception as e:
         try:
             response = json.loads(resp.text)['resp']
@@ -207,6 +209,7 @@ def step_impl(step):
         set_config_cb()
         start_pep_app()
         time.sleep(5)
+
 
 @step("the Headers Context Broker configuration without cache")
 def step_impl(step):
@@ -299,14 +302,16 @@ def the_keystone_proxy_history_reset(step):
 @step('the petition action "([^"]*)" is asked without data')
 def the_petition_is_asked(step, action):
     world.response = requests.request(action.lower(), 'http://{pep_ip}:{pep_port}'.format(pep_ip=world.pep_host_ip,
-                                                                                           pep_port=world.pep_port) + world.url,
+                                                                                          pep_port=world.pep_port) + world.url,
                                       headers=world.headers, data=json.dumps({}))
 
 
 @step('the petition action "([^"]*)" is asked$')
 def the_petition_is_asked(step, action):
+    print "headers: {headers}".format(headers=world.headers)
+    print "data: {data}".format(data=world.data)
     world.response = requests.request(action.lower(), 'http://{pep_ip}:{pep_port}'.format(pep_ip=world.pep_host_ip,
-                                                                                           pep_port=world.pep_port) + world.url,
+                                                                                          pep_port=world.pep_port) + world.url,
                                       headers=world.headers, data=world.data)
 
 
@@ -315,12 +320,25 @@ def the_keystone_proxy_doesnt_receive_any_petition(step, last_petition):
     resp = requests.request('GET',
                             'http://{ks_proxy_ip}:{ks_proxy_port}/last_path'.format(ks_proxy_ip=world.ks_proxy_ip,
                                                                                     ks_proxy_port=world.ks_proxy_port)).text
-    assert resp == last_petition, 'The last petition done to ks is not the defined in the test, the'
+    assert resp == last_petition, 'The last petition done to KS is not the defined in the test, \n\tdefined: {done}\n\tdone: {resp}'.format(
+        resp=resp, done=last_petition)
 
 
-@step('the PEP returns an error')
+@step('the PEP returns an error$')
 def the_pep_returns_an_error(step):
-    assert str(world.response.status_code) == '403', 'PEP dontr returnet the error expected (403)'
+    print world.response.text
+    print world.response.headers
+    assert str(
+        world.response.status_code) != '200', 'PEP do not return the error expected (403), returned: {error_returnet}'.format(
+        error_returnet=str(world.response.status_code))
+
+@step('the PEP returns an error with code "([^"]*)"')
+def the_pep_returns_an_error(step, error_code):
+    print world.response.text
+    print world.response.headers
+    assert str(
+        world.response.status_code) == error_code, 'PEP do not return the error expected (403), returned: {error_returnet}'.format(
+        error_returnet=str(world.response.status_code))
 
 
 @step('headers with format "([^"]*)"$')

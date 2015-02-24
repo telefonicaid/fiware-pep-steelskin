@@ -272,7 +272,7 @@ Feature: Context broker middleware
     | xml    | /v1/registry/contextAvailabilitySubscriptions/subscriptionId | DELETE |
     | json   | /v1/registry/contextAvailabilitySubscriptions/subscriptionId | DELETE |
 
-  @cb_mdwae @act
+  @cb_mdwae
   Scenario Outline: Parameters-Query in cb urls with operation in the payload
     Given a domain in KEYSTONE
     And a user in the domain
