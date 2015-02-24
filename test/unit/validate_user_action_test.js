@@ -266,7 +266,7 @@ describe('Validate action with Access Control', function() {
                 });
             });
 
-            it('should reject the request with a 503 error', function(done) {
+            it('should reject the request with a 500 error', function(done) {
                 var mockExecuted = false;
 
                 mockAccessApp.handler = function(req, res) {
@@ -276,7 +276,7 @@ describe('Validate action with Access Control', function() {
 
                 request(options, function(error, response, body) {
                     should.exist(mockExecuted);
-                    response.statusCode.should.equal(503);
+                    response.statusCode.should.equal(500);
                     done();
                 });
             });
@@ -321,7 +321,7 @@ describe('Validate action with Access Control', function() {
                 });
             });
 
-            it('should reject the request with a 503 error', function(done) {
+            it('should reject the request with a 500 error', function(done) {
                 var mockExecuted = false;
 
                 mockAccessApp.handler = function(req, res) {
@@ -331,7 +331,7 @@ describe('Validate action with Access Control', function() {
 
                 request(options, function(error, response, body) {
                     should.exist(mockExecuted);
-                    response.statusCode.should.equal(503);
+                    response.statusCode.should.equal(500);
                     done();
                 });
             });
@@ -510,7 +510,7 @@ describe('Validate action with Access Control', function() {
             });
         });
 
-        it('should forbid its access with a 403', function(done) {
+        it('should forbid its access with a 401', function(done) {
             var mockExecuted = false;
 
             mockOAuthApp.handler = function(req, res) {
@@ -528,7 +528,7 @@ describe('Validate action with Access Control', function() {
 
             request(options, function(error, response, body) {
                 mockExecuted.should.equal(true);
-                response.statusCode.should.equal(403);
+                response.statusCode.should.equal(401);
                 done();
             });
         });
@@ -642,9 +642,9 @@ describe('Validate action with Access Control', function() {
             });
         });
 
-        it('should reject the request with a 403', function(done) {
+        it('should reject the request with a 401', function(done) {
             request(options, function(error, response, body) {
-                response.statusCode.should.equal(403);
+                response.statusCode.should.equal(401);
                 done();
             });
         });

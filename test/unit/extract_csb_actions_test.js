@@ -337,7 +337,8 @@ describe('Extract Context Broker action from request', function() {
 
         it('should reject the request with an Unauthorized code', function(done) {
             request(options, function(error, response, body) {
-                response.statusCode.should.equal(403);
+                response.statusCode.should.equal(400
+                );
                 done();
             });
         });
@@ -363,7 +364,7 @@ describe('Extract Context Broker action from request', function() {
 
         it('should reject the request with an Unauthorized code', function(done) {
             request(options, function(error, response, body) {
-                response.statusCode.should.equal(403);
+                response.statusCode.should.equal(400);
                 done();
             });
         });
@@ -387,9 +388,9 @@ describe('Extract Context Broker action from request', function() {
             serverMocks.mockPath('/NGSI10/queryContext', mockApp, done);
         });
 
-        it('should reject the request with an Unauthorized code', function(done) {
+        it('should reject the request with a 400 Bad Request code', function(done) {
             request(options, function(error, response, body) {
-                response.statusCode.should.equal(403);
+                response.statusCode.should.equal(400);
                 done();
             });
         });
@@ -413,9 +414,9 @@ describe('Extract Context Broker action from request', function() {
             serverMocks.mockPath('/NGSI10/queryContext', mockApp, done);
         });
 
-        it('should reject the request with a 403', function(done) {
+        it('should reject the request with a 400', function(done) {
             request(options, function(error, response, body) {
-                response.statusCode.should.equal(403);
+                response.statusCode.should.equal(400);
                 done();
             });
         });
@@ -438,9 +439,9 @@ describe('Extract Context Broker action from request', function() {
             serverMocks.mockPath('/NGSI10/queryContext', mockApp, done);
         });
 
-        it('should reject the request with a 403', function(done) {
+        it('should reject the request with a 400', function(done) {
             request(options, function(error, response, body) {
-                response.statusCode.should.equal(403);
+                response.statusCode.should.equal(400);
                 done();
             });
         });
@@ -464,9 +465,9 @@ describe('Extract Context Broker action from request', function() {
             serverMocks.mockPath('/NGSI10/queryContext', mockApp, done);
         });
 
-        it('should reject the request with a 403 error', function(done) {
+        it('should reject the request with a 400 error', function(done) {
             request(options, function(error, response, body) {
-                response.statusCode.should.equal(403);
+                response.statusCode.should.equal(400);
                 done();
             });
         });
@@ -490,9 +491,9 @@ describe('Extract Context Broker action from request', function() {
             serverMocks.mockPath('/NGSI10/queryContext', mockApp, done);
         });
 
-        it('should reject the request with a 403 error', function(done) {
+        it('should reject the request with a 400 error', function(done) {
             request(options, function(error, response, body) {
-                response.statusCode.should.equal(403);
+                response.statusCode.should.equal(400);
                 done();
             });
         });
