@@ -465,9 +465,9 @@ describe('Extract Context Broker action from request', function() {
             serverMocks.mockPath('/NGSI10/queryContext', mockApp, done);
         });
 
-        it('should reject the request with a 400 error', function(done) {
+        it('should reject the request with a 415 error', function(done) {
             request(options, function(error, response, body) {
-                response.statusCode.should.equal(400);
+                response.statusCode.should.equal(415);
                 done();
             });
         });
