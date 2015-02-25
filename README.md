@@ -115,7 +115,7 @@ Note that, in order for a request to be authorized through the Access Control, i
 
 This headers are used by the IDM and Access Control systems to make the decisions about the request, so if any of them are missing, the request will not progress any further, and will be rejected with a 400 HTTP error code. For a detailed explanation of the returned errors, please refer to the [API Error codes](errorcodes.md).
 
-The proxy can also work in an authentication-only mode (usin the `config.access.disable` flag), in which case the `fiware-service` and `fiware-servicepath` headers can be marked as optional, or checked anyway for validity (controlled by the `config.authentication.checkHeaders` flag). Header checking cannot be disabled for PEP Proxies performing authorization processes.
+The proxy can also work in an authentication-only mode (using the `config.access.disable` flag), in which case the `fiware-service` and `fiware-servicepath` headers can be marked as optional, or checked anyway for validity (controlled by the `config.authentication.checkHeaders` flag). Header checking cannot be disabled for PEP Proxies performing authorization processes.
 
 ### Authentication
 
