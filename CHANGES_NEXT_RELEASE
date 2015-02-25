@@ -10,3 +10,4 @@
 - Check all the mandatory headers before processing the request (#165) (#110)
 - Group and redefine error codes.
 - Add execution mode without Access Control authorization for the PEP Proxy (#173)
+- Check the service and subservice headers for content (#176)
