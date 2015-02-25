@@ -143,7 +143,7 @@ describe('Top domain Service-path behavior', function() {
 
             request(options, function(error, response, body) {
                 should.not.exist(error);
-                response.statusCode.should.equal(403);
+                response.statusCode.should.equal(401);
                 done();
             });
         });
