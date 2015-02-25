@@ -37,6 +37,11 @@ config.resource = {
  */
 config.access = {
     /**
+     * Indicates whether the access control validation should be enabled. Defaults to false.
+     */
+    disable: false,
+
+    /**
      * Protocol to use to access the Access Control.
      */
     protocol: 'http',
