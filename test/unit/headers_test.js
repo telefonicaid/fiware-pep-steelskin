@@ -369,7 +369,7 @@ describe('Control header behavior', function() {
         });
     });
 
-    function checkHeader(headerTest) {
+    function checkUnexistentHeader(headerTest) {
         describe('When a request to the CB arrives to the proxy without "' + headerTest + '" header', function() {
             var options;
 
@@ -403,6 +403,40 @@ describe('Control header behavior', function() {
         });
     }
 
+    function checkEmptyHeader(headerTest) {
+        describe('When a request arrives to the proxy with an empty "' + headerTest + '" header', function() {
+            var options;
+
+            beforeEach(function(done) {
+                options = {
+                    uri: 'http://localhost:' + config.resource.proxy.port + '/v1/updateContext',
+                    method: 'POST',
+                    headers: {
+                        'content-type': 'application/json',
+                        'accept': 'application/json',
+                        'fiware-service': 'frn:contextbroker:admin_domain:::',
+                        'fiware-servicepath': 'admin_domain',
+                        'x-auth-token': 'UAidNA9uQJiIVYSCg0IQ8Q'
+                    },
+                    json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
+                };
+
+                options.headers[headerTest] = '';
+                serverMocks.mockPath('/pdp/v3', mockAccessApp, done);
+                serverMocks.mockPath('/NGSI10/updateContext', mockTargetApp, done);
+            });
+
+            it('should return a 400 error indicating the empty header', function(done) {
+                request(options, function(error, response, body) {
+                    response.statusCode.should.equal(400);
+                    should.exist(body);
+                    body.message.should.match(new RegExp('.*' + headerTest + '.*'));
+                    done();
+                });
+            });
+        });
+    }
+
     var mandatoryHeaders = [
         'fiware-service',
         'fiware-servicepath',
@@ -410,6 +444,7 @@ describe('Control header behavior', function() {
     ];
 
     for (var i = 0; i < mandatoryHeaders.length; i++) {
-        checkHeader(mandatoryHeaders[i]);
+        checkEmptyHeader(mandatoryHeaders[i]);
+        checkUnexistentHeader(mandatoryHeaders[i]);
     }
 });
