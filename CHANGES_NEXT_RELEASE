@@ -11,3 +11,4 @@
 - Group and redefine error codes.
 - Add execution mode without Access Control authorization for the PEP Proxy (#173)
 - Check the service and subservice headers for content (#176)
+- Fix the Keystone user authentication error was raised as a connection one (#174)
