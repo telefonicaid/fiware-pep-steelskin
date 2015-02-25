@@ -721,8 +721,7 @@ describe('Validate action with Access Control', function() {
         });
 
         it('should not check for the presence of the headers', function(done) {
-            var keystoneCalled = false,
-                rolesExtracted = false;
+            var keystoneCalled = false;
 
             mockOAuthApp.handler = function(req, res) {
                 if (req.path === currentAuthentication.authPath && req.method === 'POST') {
