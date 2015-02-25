@@ -9,4 +9,4 @@
 - Add administration port with Version resource (#164)
 - Check all the mandatory headers before processing the request (#165) (#110)
 - Group and redefine error codes.
-- Add unvalidated execution mode for the PEP Proxy (#173)
+- Add execution mode without Access Control authorization for the PEP Proxy (#173)
