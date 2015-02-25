@@ -415,7 +415,7 @@ In order to have the proxy running, there are several basic pieces of informatio
 * `config.bypassRoleId`: ID of the role that will be considered to have administrative rights over the proxy (so being transparently proxied without validation). Valid values are Role UUIDs. E.g.: `db50362d5f264c8292bebdb5c5783741`.
 
 ### Authentication configuration
-* `config.authentication.checkHeaders`: when the proxy is working with the access control disabled (just user authentication), indicates whether the `fiware-service` and `fiware-servicepath` headers should be checked for existance and validity (checking against the IDM if the user is really part of that service). This option is ignored when authorization is enabled, and considered to be `true` (as the headers constitute a mandatory part of the authorization process). Default value is `true`.
+* `config.authentication.checkHeaders`: when the proxy is working with the access control disabled (just user authentication), indicates whether the `fiware-service` and `fiware-servicepath` headers should be checked for existance and validity (checking: the headers exist, thy are not empty and the user is really part of the service and subservice mentioned in the header). This option is ignored when authorization is enabled, and considered to be `true` (as the headers constitute a mandatory part of the authorization process). Default value is `true`.
 * `config.authentication.module`: indicates what type of authentication server should be used: keystone or idm. The currently supported one (and default) is `keystone`.
 * `config.authentication.username`: username of the PEP proxy in the IDM. 
 * `config.authentication.password`: password of the PEP proxy in the IDM.
