@@ -645,8 +645,9 @@ describe('Validate action with Access Control', function() {
             });
         });
 
-        it('should send not call the Access Control', function(done) {
-            var mockExecuted = false;
+        it('should send not call the Access Control and should not extract the roles', function(done) {
+            var accessControlCalled = false,
+                rolesExtracted = false;
 
             mockOAuthApp.handler = function(req, res) {
                 if (req.path === currentAuthentication.authPath && req.method === 'POST') {
@@ -655,19 +656,22 @@ describe('Validate action with Access Control', function() {
                 } else if (req.path === currentAuthentication.authPath && req.method === 'GET') {
                     res.json(200, utils.readExampleFile('./test/keystoneResponses/getUser.json'));
                 } else if (req.url === '/v3/projects' && req.method === 'GET') {
+                    rolesExtracted = true;
                     res.json(200, utils.readExampleFile('./test/keystoneResponses/getProjects.json'));
                 } else {
+                    rolesExtracted = true;
                     res.json(200, utils.readExampleFile('./test/keystoneResponses/rolesOfUserWithDomain.json'));
                 }
             };
 
             mockAccessApp.handler = function(req, res) {
-                mockExecuted = true;
+                accessControlCalled = true;
                 res.status(200).send(utils.readExampleFile('./test/accessControlResponses/permitResponse.xml', true));
             };
 
             request(options, function(error, response, body) {
-                mockExecuted.should.equal(false);
+                accessControlCalled.should.equal(false);
+                rolesExtracted.should.equal(false);
                 done();
             });
         });
