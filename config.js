@@ -60,6 +60,7 @@ config.access = {
  * Information about the Identity Manager server from where the information about a user will be drawn.
  */
 config.authentication = {
+    checkHeaders: true,
     module: 'keystone',
     user: 'pepproxy',
     password: 'pepproxy',
