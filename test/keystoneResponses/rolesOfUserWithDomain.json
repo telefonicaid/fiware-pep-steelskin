@@ -1,7 +1,7 @@
 {
   "role_assignments": [
     {
-      "scope": {"project": {"id": "b9b09e3d682a437d8a7235bb39cc0423"}},
+      "scope": {"project": {"id": "833"}},
       "role": {"id": "347ff5e93be44cdf8d0f4e2e0bf5e30d"},
       "user": {"id": "53b46372c86644a3bf4c909d4269f195"},
       "links": {"assignment": "http://172.17.0.3:5000/v3/projects/b9b09e3d682a437d8a7235bb39cc0423/users/53b46372c86644a3bf4c909d4269f195/roles/347ff5e93be44cdf8d0f4e2e0bf5e30d"}
