@@ -113,7 +113,7 @@ Note that, in order for a request to be processed, it's mandatory that it contai
 * **fiware-service**: should contain the name of a service created in the IDM and the user must have access to it.
 * **fiware-servicepath**: should contain a route to a subservice, begining with a slash '/' symbol.
 
-This headers are used by the IDM and Access Control systems to make the decisions about the request, so if any of them are missing, the request will not progress any further, and will be rejected with a 400 HTTP error code.
+This headers are used by the IDM and Access Control systems to make the decisions about the request, so if any of them are missing, the request will not progress any further, and will be rejected with a 400 HTTP error code. For a detailed explanation of the returned errors, please refer to the [API Error codes](errorcodes.md).
 
 ### Authentication
 

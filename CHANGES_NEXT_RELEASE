@@ -8,3 +8,4 @@
 - Remove specific setup for RPM installation in Context Broker uses (#159)
 - Add administration port with Version resource (#164)
 - Check all the mandatory headers before processing the request (#165) (#110)
+- Group and redefine error codes.
