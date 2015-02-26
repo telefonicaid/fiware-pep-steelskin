@@ -21,11 +21,12 @@ If not, seehttp://www.gnu.org/licenses/.
 For those usages not covered by the GNU Affero General Public License
 please contact with::[iot_support@tid.es]
 """
-from iotqautils.idm_keystone import IdmUtils
 
-__author__ = 'Jon'
+
+__author__ = 'Jon Calderin Goñi <jon.caldering@gmail.com>'
 
 from lettuce import step, world
+from iotqautils.idm_keystone import IdmUtils
 
 
 @step('headers with bad token')
@@ -39,9 +40,11 @@ def headers_with_bad_token(step):
     }
     world.headers = headers
 
+
 @step('headers with bad domain')
 def headers_with_bad_domain(step):
-    token = IdmUtils.get_token(world.ks['user_all'], world.ks['user_all'], world.ks['domain_ok'], world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
+    token = IdmUtils.get_token(world.ks['user_all'], world.ks['user_all'], world.ks['domain_ok'],
+                               world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
     headers = {
         "Accept": "application/json",
         'content-type': 'application/json',
@@ -51,9 +54,11 @@ def headers_with_bad_domain(step):
     }
     world.headers = headers
 
+
 @step('headers with bad project')
 def headers_with_bad_project(step):
-    token = IdmUtils.get_token(world.ks['user_all'], world.ks['user_all'], world.ks['domain_ok'], world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
+    token = IdmUtils.get_token(world.ks['user_all'], world.ks['user_all'], world.ks['domain_ok'],
+                               world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
     headers = {
         "Accept": "application/json",
         'content-type': 'application/json',
@@ -63,9 +68,11 @@ def headers_with_bad_project(step):
     }
     world.headers = headers
 
+
 @step('headers with empty project')
 def headers_with_empty_project(step):
-    token = IdmUtils.get_token(world.ks['user_all'], world.ks['user_all'], world.ks['domain_ok'], world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
+    token = IdmUtils.get_token(world.ks['user_all'], world.ks['user_all'], world.ks['domain_ok'],
+                               world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
     headers = {
         "Accept": "application/json",
         'content-type': 'application/json',
@@ -75,9 +82,11 @@ def headers_with_empty_project(step):
     }
     world.headers = headers
 
+
 @step('headers with domain without roles')
-def headers_with_empty_project(step):
-    token = IdmUtils.get_token(world.ks['user_no_roles'], world.ks['user_no_roles'], world.ks['domain_no_roles'], world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
+def headers_with_domain_without_roles(step):
+    token = IdmUtils.get_token(world.ks['user_no_roles'], world.ks['user_no_roles'], world.ks['domain_no_roles'],
+                               world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
     headers = {
         "Accept": "application/json",
         'content-type': 'application/json',
@@ -87,9 +96,11 @@ def headers_with_empty_project(step):
     }
     world.headers = headers
 
+
 @step('headers with project without roles')
-def headers_with_empty_project(step):
-    token = IdmUtils.get_token(world.ks['user_no_roles'], world.ks['user_no_roles'], world.ks['domain_no_roles'], world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
+def headers_with_project_without_roles(step):
+    token = IdmUtils.get_token(world.ks['user_no_roles'], world.ks['user_no_roles'], world.ks['domain_no_roles'],
+                               world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
     headers = {
         "Accept": "application/json",
         'content-type': 'application/json',

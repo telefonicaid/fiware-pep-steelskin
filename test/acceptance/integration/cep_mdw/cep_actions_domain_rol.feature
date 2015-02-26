@@ -1,11 +1,32 @@
-# Created by Jon at 16/12/2014
+# Copyright 2014 Telefonica Investigación y Desarrollo, S.A.U
+#
+# This file is part of fiware-orion-pep
+#
+# fiware-orion-pep is free software: you can redistribute it and/or
+# modify it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the License,
+# or (at your option) any later version.
+#
+# fiware-orion-pep is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# See the GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License along with fiware-orion-pep.
+# If not, seehttp://www.gnu.org/licenses/.
+#
+# For those usages not covered by the GNU Affero General Public License
+# please contact with::[iot_support@tid.es]
+# __author__ = 'Jon Calderin Goñi (jon dot caldering at gmail dot com)'
+
+@cep_actions_domain
 Feature: CEP actions when the rol is defined only in the domain
   Check if all urls of CEP are mapped to the correct action. This actions are defined in the domain of the user in Keystone
 
   Background:
     Given the Perseo configuration
 
-  @cep_actions_domain
   Scenario: Notify action
     Given a domain without projects in KEYSTONE
     And a "user_notify_domain" user in domain without projects
@@ -14,7 +35,6 @@ Feature: CEP actions when the rol is defined only in the domain
     When a CEP "POST" petition is asked to PEP
     Then the petition gets to the mock
 
-  @cep_actions_domain
   Scenario Outline: Read Rule action
     Given a domain without projects in KEYSTONE
     And a "user_readRule_domain" user in domain without projects
@@ -29,7 +49,6 @@ Feature: CEP actions when the rol is defined only in the domain
     | /m2m/vrules    | GET    |
     | /m2m/vrules/id | GET    |
 
-  @cep_actions_domain
   Scenario Outline: Write Rule action
     Given a domain without projects in KEYSTONE
     And a "user_writeRule_domain" user in domain without projects

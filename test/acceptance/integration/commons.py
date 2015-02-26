@@ -26,7 +26,7 @@ from tools.deploy_pep import start_docker_pep
 from tools.general_utils import set_config_cb, set_config_keypass, set_config_perseo, set_config_bypass, \
     set_config_cache_projects, set_config_cache_roles, set_config_cache_gradual, start_pep, start_pep_app
 
-__author__ = 'Jon'
+__author__ = 'Jon Calderin Goñi <jon.caldering@gmail.com>'
 
 from lettuce import world, step
 import requests
@@ -87,7 +87,7 @@ def a_domain_for_project_only_in_keystone(step):
 
 
 @step('a without role in domain and with "([^"]*)" user in project')
-def a_without_role_user(step, user):
+def a_without_role_in_domain_and_with_user_in_project(step, user):
     found = False
     for domain in world.ks['environment_project']['domains']:
         if domain['name'] == world.ks['domain_project_only']:
@@ -122,7 +122,7 @@ def a_domain_without_projects_in_keystone(step):
 
 
 @step('a "([^"]*)" user in domain without projects')
-def a_group1_user_in_domain_without_projects(step, user):
+def a_user_in_domain_without_projects(step, user):
     found = False
     for domain in world.ks['environment_domain']['domains']:
         if domain['name'] == world.ks['domain_domain_only']:
@@ -148,7 +148,7 @@ def a_role_in_the_user_and_domain(step, role):
 
 
 @step('the petition gets to the mock')
-def the_petition_gets_to_contextbroker_mock(step):
+def the_petition_gets_to_the_mock(step):
     mock_url = 'http://{mock_ip}:{mock_port}/last_value'.format(mock_ip=world.mock['ip'], mock_port=world.mock['port'])
     try:
         resp = requests.get(mock_url)
@@ -200,7 +200,7 @@ def the_petition_gets_to_contextbroker_mock(step):
 
 
 @step("the Context Broker configuration")
-def step_impl(step):
+def the_context_broker_configuration(step):
     """
     :type step lettuce.core.Step
     """
@@ -212,7 +212,7 @@ def step_impl(step):
 
 
 @step("the Headers Context Broker configuration without cache")
-def step_impl(step):
+def the_headers_context_broker_configuration_without_cache(step):
     """
     :type step lettuce.core.Step
     """
@@ -223,12 +223,56 @@ def step_impl(step):
         time.sleep(5)
 
 
-@step("the cache gradual configuration")
-def step_impl(step):
+@step("restart pep with bad ks configuration")
+def restart_pep_with_bad_ks_configuration(step):
     """
     :type step lettuce.core.Step
     """
+    if world.config_set != 'bad_ks':
+        world.config_set = 'bad_ks'
+        set_cb_config_with_bad_ks_ip()
+        start_pep_app()
+        time.sleep(5)
 
+@step("restart pep with bad ac configuration")
+def restart_pep_with_bad_ac_configuration(step):
+    """
+    :type step lettuce.core.Step
+    """
+    if world.config_set != 'bad_ac':
+        world.config_set = 'bad_ac'
+        set_cb_config_with_bad_ac_ip()
+        start_pep_app()
+        time.sleep(5)
+
+@step("restart pep with bad target configuration")
+def restart_pep_with_bad_target_configuration(step):
+    """
+    :type step lettuce.core.Step
+    """
+    if world.config_set != 'bad_target':
+        world.config_set = 'bad_target'
+        set_cb_config_with_bad_target_ip()
+        start_pep_app()
+        time.sleep(5)
+
+@step("restart pep with bad pep user")
+def restart_pep_with_bad_pep_user(step):
+    """
+    :type step lettuce.core.Step
+    """
+    if world.config_set != 'bad_pep_user':
+        world.config_set = 'bad_pep_user'
+        set_cb_config_with_bad_pep_user()
+        start_pep_app()
+        time.sleep(5)
+
+
+@step("the cache gradual configuration")
+def the_cache_gradual_configuration(step):
+    """
+    :type step lettuce.core.Step
+    """
     world.config_set = 'cache_gradual'
     set_config_cache_gradual()
     start_pep_app()
@@ -236,7 +280,7 @@ def step_impl(step):
 
 
 @step("the cache projects configuration")
-def step_impl(step):
+def the_cache_projects_configuration(step):
     """
     :type step lettuce.core.Step
     """
@@ -247,7 +291,7 @@ def step_impl(step):
 
 
 @step("the cache roles configuration")
-def step_impl(step):
+def the_cache_roles_configuration(step):
     """
     :type step lettuce.core.Step
     """
@@ -258,7 +302,7 @@ def step_impl(step):
 
 
 @step("the Keypass configuration")
-def step_impl(step):
+def the_keystone_configuration(step):
     """
     :type step lettuce.core.Step
     """
@@ -270,7 +314,7 @@ def step_impl(step):
 
 
 @step("the Perseo configuration")
-def step_impl(step):
+def the_perseo_configuration(step):
     """
     :type step lettuce.core.Step
     """
@@ -282,7 +326,7 @@ def step_impl(step):
 
 
 @step("the Bypass configuration")
-def step_impl(step):
+def the_bypass_configuration(step):
     """
     :type step lettuce.core.Step
     """
@@ -300,23 +344,21 @@ def the_keystone_proxy_history_reset(step):
 
 
 @step('the petition action "([^"]*)" is asked without data')
-def the_petition_is_asked(step, action):
+def the_petition_action_is_asked_without_data(step, action):
     world.response = requests.request(action.lower(), 'http://{pep_ip}:{pep_port}'.format(pep_ip=world.pep_host_ip,
                                                                                           pep_port=world.pep_port) + world.url,
                                       headers=world.headers, data=json.dumps({}))
 
 
 @step('the petition action "([^"]*)" is asked$')
-def the_petition_is_asked(step, action):
-    print "headers: {headers}".format(headers=world.headers)
-    print "data: {data}".format(data=world.data)
+def the_petition_action_is_asked(step, action):
     world.response = requests.request(action.lower(), 'http://{pep_ip}:{pep_port}'.format(pep_ip=world.pep_host_ip,
                                                                                           pep_port=world.pep_port) + world.url,
                                       headers=world.headers, data=world.data)
 
 
 @step('the Keystone proxy receive the last petition "([^"]*)" from PEP')
-def the_keystone_proxy_doesnt_receive_any_petition(step, last_petition):
+def the_keystone_proxy_receive_the_last_petition_from_pep(step, last_petition):
     resp = requests.request('GET',
                             'http://{ks_proxy_ip}:{ks_proxy_port}/last_path'.format(ks_proxy_ip=world.ks_proxy_ip,
                                                                                     ks_proxy_port=world.ks_proxy_port)).text
@@ -326,23 +368,28 @@ def the_keystone_proxy_doesnt_receive_any_petition(step, last_petition):
 
 @step('the PEP returns an error$')
 def the_pep_returns_an_error(step):
-    print world.response.text
-    print world.response.headers
     assert str(
         world.response.status_code) != '200', 'PEP do not return the error expected (403), returned: {error_returnet}'.format(
         error_returnet=str(world.response.status_code))
 
-@step('the PEP returns an error with code "([^"]*)"')
-def the_pep_returns_an_error(step, error_code):
-    print world.response.text
-    print world.response.headers
+@step('the PEP returns an error with code "([^"]*)"$')
+def the_pep_returns_an_error_with_code(step, error_code):
     assert str(
-        world.response.status_code) == error_code, 'PEP do not return the error expected (403), returned: {error_returnet}'.format(
-        error_returnet=str(world.response.status_code))
+        world.response.status_code) == error_code, 'PEP do not return the error expected ({error_code}), returned: {error_returnet}'.format(
+        error_returnet=str(world.response.status_code), error_code=error_code)
+
+@step('the PEP returns an error with code "([^"]*)" and name "([^"]*)"')
+def the_pep_returns_an_error_with_code_and_name(step, error_code, error_name):
+    assert str(
+        world.response.status_code) == error_code and world.response.json()['name'] == error_name, 'PEP do not return \
+        the error expected ({error_code_expected}), returned: {error_returned} \
+        or error name expected {error_name_expected}, returned: {error_name_returned}'\
+        .format(error_returned=str(world.response.status_code), error_code_expected=error_code,
+                error_name_expected=error_name, error_name_returned=world.response.json()['name'])
 
 
 @step('headers with format "([^"]*)"$')
-def with_format_group1(step, format):
+def headers_with_format(step, format):
     token = IdmUtils.get_token(world.ks['user_all'], world.ks['user_all'], world.ks['domain_ok'],
                                world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
     world.format = format
@@ -354,3 +401,60 @@ def with_format_group1(step, format):
         'X-Auth-Token': token
     }
     world.headers = headers
+
+@step('restart "([^"]*)" process with bad final component port')
+def restart_process_with_nad_final_component_port(step, component):
+    if component == 'ks':
+        stop_process(world.ks_proxy)
+        world.ks_proxy = start_proxy(world.ks_proxy_bind_ip, world.ks_proxy_port, world.ks['platform']['address']['ip'],
+                                     9876)
+        world.ks_faked = True
+    elif component == 'ac':
+        stop_process(world.ac_proxy)
+        world.ac_proxy = start_proxy(world.ac_proxy_bind_ip, world.ac_proxy_port, world.ac['ip'], 9875)
+        world.ac_faked = True
+    elif component == 'target':
+        stop_process(world.mock_dest)
+        world.mock_dest = start_mock('mock.py', world.mock['ip'], 9874)
+        world.target_faked = True
+    else:
+        raise ValueError('The process indicated is wrong, the possible values are "ks", "ac" or "target", \
+        and the indicated process is: {component}'.format(component=component))
+    time.sleep(3)
+
+@step('restart "([^"]*)" process with bad proxy port')
+def restar_process_with_bad_proxy_port(step, component):
+    if component == 'ks':
+        stop_process(world.ks_proxy)
+        world.ks_proxy = start_proxy(world.ks_proxy_bind_ip, 9876, world.ks['platform']['address']['ip'],
+                                     world.ks['platform']['address']['port'])
+        world.ks_faked = True
+    elif component == 'ac':
+        stop_process(world.ac_proxy)
+        world.ac_proxy = start_proxy('1.1.1.1', 9875, world.ac['ip'], world.ac['port'])
+        world.ac_faked = True
+    else:
+        raise ValueError('The process indicated is wrong, the possible values are "ks" or "ac", \
+        and the indicated process is: {component}'.format(component=component))
+    time.sleep(3)
+
+
+@step('restore the process "([^"]*)"')
+def restore_the_process(step, component):
+    if component == 'ks':
+        stop_process(world.ks_proxy)
+        world.ks_proxy = start_proxy(world.ks_proxy_bind_ip, world.ks_proxy_port, world.ks['platform']['address']['ip'],
+                                     world.ks['platform']['address']['port'])
+        world.ks_faked = False
+    elif component == 'ac':
+        stop_process(world.ac_proxy)
+        world.ac_proxy = start_proxy(world.ac_proxy_bind_ip, world.ac_proxy_port, world.ac['ip'], world.ac['port'])
+        world.ac_faked = False
+    elif component == 'target':
+        stop_process(world.mock_dest)
+        world.mock_dest = start_mock('mock.py', world.mock['ip'], world.mock['port'])
+        world.target_faked = False
+    else:
+        raise ValueError('The process indicated is wrong, the possible values are "ks", "ac" or "target", \
+        and the indicated process is: {component}'.format(component=component))
+    time.sleep(3)

@@ -1,4 +1,26 @@
-# Created by Jon at 15/12/2014
+# Copyright 2014 Telefonica Investigación y Desarrollo, S.A.U
+#
+# This file is part of fiware-orion-pep
+#
+# fiware-orion-pep is free software: you can redistribute it and/or
+# modify it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the License,
+# or (at your option) any later version.
+#
+# fiware-orion-pep is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# See the GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License along with fiware-orion-pep.
+# If not, seehttp://www.gnu.org/licenses/.
+#
+# For those usages not covered by the GNU Affero General Public License
+# please contact with::[iot_support@tid.es]
+# __author__ = 'Jon Calderin Goñi (jon dot caldering at gmail dot com)'
+
+@cb_actions_domain
 Feature: Context broker actions when the rol is defined only in a domain
   Check if all urls of CB are mapped to the correct action. This actions are defined in the domain of the user in Keystone
 
@@ -6,7 +28,6 @@ Feature: Context broker actions when the rol is defined only in a domain
     Given the Context Broker configuration
 
   #Standard operations
-  @cb_actions_domain
   Scenario Outline: Create Standard operation
     Given a domain without projects in KEYSTONE
     And a "user_create_domain" user in domain without projects
@@ -20,7 +41,6 @@ Feature: Context broker actions when the rol is defined only in a domain
     | xml    |
     | json   |
 
-  @cb_actions_domain
   Scenario Outline: Update Standard operation
     Given a domain without projects in KEYSTONE
     And a "user_update_domain" user in domain without projects
@@ -33,7 +53,6 @@ Feature: Context broker actions when the rol is defined only in a domain
     | xml    |
     | json   |
 
-  @cb_actions_domain
   Scenario Outline: Delete Standard operation
     Given a domain without projects in KEYSTONE
     And a "user_delete_domain" user in domain without projects
@@ -46,7 +65,6 @@ Feature: Context broker actions when the rol is defined only in a domain
     | xml    |
     | json   |
 
-  @cb_actions_domain
   Scenario Outline: Read Standard operation
     Given a domain without projects in KEYSTONE
     And a "user_read_domain" user in domain without projects
@@ -61,7 +79,6 @@ Feature: Context broker actions when the rol is defined only in a domain
     | xml    | /v1/contextTypes |
     | json   | /v1/contextTypes |
 
-  @cb_actions_domain
   Scenario Outline: Subscribe Standard operation
     Given a domain without projects in KEYSTONE
     And a "user_subscribe_domain" user in domain without projects
@@ -78,7 +95,6 @@ Feature: Context broker actions when the rol is defined only in a domain
     | xml    | /v1/unsubscribeContext        |
     | json   | /v1/unsubscribeContext        |
 
-  @cb_actions_domain
   Scenario Outline: Register Standard operation
     Given a domain without projects in KEYSTONE
     And a "user_register_domain" user in domain without projects
@@ -91,7 +107,6 @@ Feature: Context broker actions when the rol is defined only in a domain
     | xml    |
     | json   |
 
-  @cb_actions_domain
   Scenario Outline: Discover Standard operation
     Given a domain without projects in KEYSTONE
     And a "user_discover_domain" user in domain without projects
@@ -104,7 +119,6 @@ Feature: Context broker actions when the rol is defined only in a domain
     | xml    |
     | json   |
 
-  @cb_actions_domain
   Scenario Outline: subscribe-availability Standard operation
     Given a domain without projects in KEYSTONE
     And a "user_subscribe-availability_domain" user in domain without projects
@@ -122,7 +136,6 @@ Feature: Context broker actions when the rol is defined only in a domain
     | json   | /v1/registry/unsubscribeContextAvailability        |
 
   #Convenience operations
-  @cb_actions_domain
   Scenario Outline: Read Convenience operation
     Given a domain without projects in KEYSTONE
     And a "user_read_domain" user in domain without projects
@@ -147,7 +160,6 @@ Feature: Context broker actions when the rol is defined only in a domain
     | xml    | /v1/contextEntityTypes/typeName                                      | GET    |
     | json   | /v1/contextEntityTypes/typeName                                      | GET    |
 
-  @cb_actions_domain
   Scenario Outline: Update Convenience operation
     Given a domain without projects in KEYSTONE
     And a "user_update_domain" user in domain without projects
@@ -164,7 +176,6 @@ Feature: Context broker actions when the rol is defined only in a domain
     | xml    | /v1/contextEntities/EntityID/attributes/attributeName/valueID | PUT    |
     | json   | /v1/contextEntities/EntityID/attributes/attributeName/valueID | PUT    |
 
-  @cb_actions_domain
   Scenario Outline: Create Convenience operation
     Given a domain without projects in KEYSTONE
     And a "user_create_domain" user in domain without projects
@@ -179,7 +190,6 @@ Feature: Context broker actions when the rol is defined only in a domain
     | xml    | /v1/contextEntities/EntityID/attributes/attributeName | POST   |
     | json   | /v1/contextEntities/EntityID/attributes/attributeName | POST   |
 
-  @cb_actions_domain
   Scenario Outline: Subscribe Convenience operation
     Given a domain without projects in KEYSTONE
     And a "user_subscribe_domain" user in domain without projects
@@ -196,7 +206,6 @@ Feature: Context broker actions when the rol is defined only in a domain
     | xml    | /v1/contextSubscriptions/subscriptionID | DELETE |
     | json   | /v1/contextSubscriptions/subscriptionID | DELETE |
 
-  @cb_actions_domain
   Scenario Outline: Discover Convenience operation
     Given a domain without projects in KEYSTONE
     And a "user_discover_domain" user in domain without projects
@@ -219,7 +228,6 @@ Feature: Context broker actions when the rol is defined only in a domain
     | xml    | /v1/registry/contextEntityTypes/typeName                                      | GET    |
     | json   | /v1/registry/contextEntityTypes/typeName                                      | GET    |
 
-  @cb_actions_domain
   Scenario Outline: Register Convenience operation
     Given a domain without projects in KEYSTONE
     And a "user_register_domain" user in domain without projects
@@ -242,7 +250,6 @@ Feature: Context broker actions when the rol is defined only in a domain
     | xml    | /v1/registry/contextEntityTypes/typeName                                      | POST   |
     | json   | /v1/registry/contextEntityTypes/typeName                                      | POST   |
 
-  @cb_actions_domain
   Scenario Outline: Subscribe-availability Convenience operation
     Given a domain without projects in KEYSTONE
     And a "user_subscribe-availability_domain" user in domain without projects

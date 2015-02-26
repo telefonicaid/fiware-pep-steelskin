@@ -22,7 +22,7 @@ For those usages not covered by the GNU Affero General Public License
 please contact with::[iot_support@tid.es]
 """
 
-__author__ = 'Jon'
+__author__ = 'Jon Calderin Goñi <jon.caldering@gmail.com>'
 
 from fabric.api import run, env, cd, put, sudo, local, output
 import os
@@ -232,10 +232,6 @@ def start_pep_local(pep_path='/fiware-orion-pep'):
     """
     Given a ssh connection data, stop PEP if its running, put the new configuration, and start is.
     The machine has to have the "dtach" package
-    :param ip:
-    :param user:
-    :param password:
-    :param port:
     :param pep_path:
     :return:
     """
@@ -271,10 +267,6 @@ def start_pep_local(pep_path='/fiware-orion-pep'):
 def stop_local_pep():
     """
     Stop pep process
-    :param ip:
-    :param user:
-    :param password:
-    :param port:
     :return:
     """
     output['stdout'] = False

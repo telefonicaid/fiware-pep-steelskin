@@ -21,10 +21,10 @@ If not, seehttp://www.gnu.org/licenses/.
 For those usages not covered by the GNU Affero General Public License
 please contact with::[iot_support@tid.es]
 """
+
+
+__author__ = 'Jon Calderin Goñi <jon.caldering@gmail.com>'
 import sys
-
-__author__ = 'Jon'
-
 from iotqautils.idm_keystone import IdmUtils
 from lettuce import *
 from iotqautils.iotqaLogger import get_logger
@@ -102,7 +102,23 @@ def after_each_scenario(scenario):
     world.response = ''
     world.new_petition = ''
     world.format = ''
+    """ If the mocks/proxys are changed, restore ir after each test """
+    if hasattr(world, 'ks_faked') and world.ks_faked:
+        stop_process(world.ks_proxy)
+        world.ks_proxy = start_proxy(world.ks_proxy_bind_ip, world.ks_proxy_port, world.ks['platform']['address']['ip'],
+                                     world.ks['platform']['address']['port'])
+        world.ks_faked = False
+    if hasattr(world, 'ac_faked') and world.ac_faked:
+        stop_process(world.ac_proxy)
+        world.ac_proxy = start_proxy(world.ac_proxy_bind_ip, world.ac_proxy_port, world.ac['ip'], world.ac['port'])
+        world.ac_faked = False
+    if hasattr(world, 'target_faked') and world.target_faked:
+        stop_process(world.mock_dest)
+        world.mock_dest = start_mock('mock.py', world.mock['ip'], world.mock['port'])
+        world.target_faked = False
     sys.stdout.write(("*****Se ha ejecutado el scenario: " + str(scenario.name).encode('utf-8')))
+
+
 
 
 

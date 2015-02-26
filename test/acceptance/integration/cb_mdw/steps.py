@@ -22,7 +22,7 @@ For those usages not covered by the GNU Affero General Public License
 please contact with::[iot_support@tid.es]
 """
 
-__author__ = 'jon'
+__author__ = 'Jon Calderin Goñi <jon.caldering@gmail.com>'
 
 import requests
 import json
@@ -66,9 +66,6 @@ def a_context_broker_petition_is_asked_to_pep_with_format(step, action, format):
         else:
             world.data = '<xml></xml>'
     try:
-        print url
-        print headers
-        print world.data
         requests.request(action.lower(), url, headers=headers, data=world.data)
     except ConnectionError as e:
         assert False, '''There was an error with the connection with the following data: \n

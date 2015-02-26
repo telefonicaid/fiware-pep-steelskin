@@ -21,12 +21,12 @@ If not, seehttp://www.gnu.org/licenses/.
 For those usages not covered by the GNU Affero General Public License
 please contact with::[iot_support@tid.es]
 """
-from iotqautils.idm_keystone import IdmUtils
 
-__author__ = 'Jon'
+__author__ = 'Jon Calderin Goñi <jon.caldering@gmail.com>'
 
 from lettuce import step, world
 import requests
+from iotqautils.idm_keystone import IdmUtils
 
 
 @step('headers of bad rol environment with project')

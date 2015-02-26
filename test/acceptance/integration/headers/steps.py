@@ -22,7 +22,7 @@ For those usages not covered by the GNU Affero General Public License
 please contact with::[iot_support@tid.es]
 """
 
-__author__ = 'Jon'
+__author__ = 'Jon Calderin Goñi <jon.caldering@gmail.com>'
 from lettuce import step, world
 
 from iotqautils.idm_keystone import IdmUtils, RequestUtils
@@ -32,16 +32,16 @@ import requests
 import json
 
 @step('headers without the header "([^"]*)"')
-def headers_without_the_header_group1(step, header):
+def headers_without_the_header(step, header):
     del world.headers[header]
 
 @step('header "([^"]*)" inexistent in KEYSTONE')
-def headers_without_the_header_group1(step, header):
+def headers_inexistent_in_keystone(step, header):
     world.headers[header] = 'inexistant'
 
 
 @step('headers with format "([^"]*)" and "([^"]*)" action')
-def with_format_group1(step, format, action):
+def headers_with_format_and_action(step, format, action):
     token = IdmUtils.get_token(world.ks['user_all'], world.ks['user_all'], world.ks['domain_ok'], world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
     world.format = format
     headers = {

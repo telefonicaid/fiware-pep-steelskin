@@ -26,7 +26,7 @@ from iotqautils.idm_keystone import IdmUtils
 import requests
 import time
 
-__author__ = 'Jon'
+__author__ = 'Jon Calderin Goñi <jon.caldering@gmail.com>'
 
 from lettuce import step, world
 
@@ -35,12 +35,12 @@ def the_pep_returns_an_ok(step):
     assert world.response.status_code == 200, 'The PEP not return the ok response code'
 
 @step('the history is saved$')
-def the_history_is(step):
+def the_history_is_saved(step):
     resp = requests.request('GET', 'http://{ks_proxy_ip}:{ks_proxy_port}/history'.format(ks_proxy_ip=world.ks_proxy_ip, ks_proxy_port=world.ks_proxy_port)).text
     world.history = resp
 
 @step('the history is the same as saved')
-def the_history_is(step):
+def the_history_is_the_same_as_saved(step):
     resp = requests.request('GET', 'http://{ks_proxy_ip}:{ks_proxy_port}/history'.format(ks_proxy_ip=world.ks_proxy_ip, ks_proxy_port=world.ks_proxy_port)).text
     assert world.history == resp, 'The history changed, it has to be equial'
 
@@ -65,7 +65,7 @@ def the_history_off_petitions_adds_a_token_petition(step, petitions_added):
     assert len(history_list)+int(petitions_added) == len(history_new_list), 'The petitions added to the history are not the expected'
 
 @step('the value added to the history is ok')
-def the_value_added_to_the_history_is(step):
+def the_value_added_to_the_history_is_ok(step):
     assert world.new_petition == world.last_petition_added, 'The petition asked is not the expected'
 
 @step('waits "([^"]*)" seconds to "([^"]*)" cache expire')

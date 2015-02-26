@@ -1,4 +1,26 @@
-# Created by Jon at 15/12/2014
+# Copyright 2014 Telefonica Investigación y Desarrollo, S.A.U
+#
+# This file is part of fiware-orion-pep
+#
+# fiware-orion-pep is free software: you can redistribute it and/or
+# modify it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the License,
+# or (at your option) any later version.
+#
+# fiware-orion-pep is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# See the GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License along with fiware-orion-pep.
+# If not, seehttp://www.gnu.org/licenses/.
+#
+# For those usages not covered by the GNU Affero General Public License
+# please contact with::[iot_support@tid.es]
+# __author__ = 'Jon Calderin Goñi (jon dot caldering at gmail dot com)'
+
+@cb_actions_project_rol
 Feature: Context broker actions when the rol is defined only in a project
   Check if all urls of CB are mapped to the correct action. This action are defined in the project of the user in Keystone
 
@@ -6,7 +28,6 @@ Feature: Context broker actions when the rol is defined only in a project
     Given the Context Broker configuration
 
   #Standard operations
-  @cb_actions_project_rol
   Scenario Outline: Create Standard operation
     Given a domain for project_only in KEYSTONE
     And a without role in domain and with "user_create_project" user in project
@@ -19,7 +40,6 @@ Feature: Context broker actions when the rol is defined only in a project
     | xml    |
     | json   |
 
-  @cb_actions_project_rol
   Scenario Outline: Update Standard operation
     Given a domain for project_only in KEYSTONE
     And a without role in domain and with "user_update_project" user in project
@@ -32,7 +52,6 @@ Feature: Context broker actions when the rol is defined only in a project
     | xml    |
     | json   |
 
-  @cb_actions_project_rol
   Scenario Outline: Delete Standard operation
     Given a domain for project_only in KEYSTONE
     And a without role in domain and with "user_delete_project" user in project
@@ -45,7 +64,6 @@ Feature: Context broker actions when the rol is defined only in a project
     | xml    |
     | json   |
 
-  @cb_actions_project_rol
   Scenario Outline: Read Standard operation
     Given a domain for project_only in KEYSTONE
     And a without role in domain and with "user_read_project" user in project
@@ -60,7 +78,6 @@ Feature: Context broker actions when the rol is defined only in a project
     | xml    | /v1/contextTypes |
     | json   | /v1/contextTypes |
 
-  @cb_actions_project_rol
   Scenario Outline: Subscribe Standard operation
     Given a domain for project_only in KEYSTONE
     And a without role in domain and with "user_subscribe_project" user in project
@@ -77,7 +94,6 @@ Feature: Context broker actions when the rol is defined only in a project
     | xml    | /v1/unsubscribeContext        |
     | json   | /v1/unsubscribeContext        |
 
-  @cb_actions_project_rol
   Scenario Outline: Register Standard operation
     Given a domain for project_only in KEYSTONE
     And a without role in domain and with "user_register_project" user in project
@@ -90,7 +106,6 @@ Feature: Context broker actions when the rol is defined only in a project
     | xml    |
     | json   |
 
-  @cb_actions_project_rol
   Scenario Outline: Discover Standard operation
     Given a domain for project_only in KEYSTONE
     And a without role in domain and with "user_discover_project" user in project
@@ -103,7 +118,6 @@ Feature: Context broker actions when the rol is defined only in a project
     | xml    |
     | json   |
 
-  @cb_actions_project_rol
   Scenario Outline: subscribe-availability Standard operation
     Given a domain for project_only in KEYSTONE
     And a without role in domain and with "user_subscribe-availability_project" user in project
@@ -121,7 +135,6 @@ Feature: Context broker actions when the rol is defined only in a project
     | json   | /v1/registry/unsubscribeContextAvailability        |
 
   #Convenience operations
-  @cb_actions_project_rol
   Scenario Outline: Read Convenience operation
     Given a domain for project_only in KEYSTONE
     And a without role in domain and with "user_read_project" user in project
@@ -146,7 +159,6 @@ Feature: Context broker actions when the rol is defined only in a project
     | xml    | /v1/contextEntityTypes/typeName                                      | GET    |
     | json   | /v1/contextEntityTypes/typeName                                      | GET    |
 
-  @cb_actions_project_rol
   Scenario Outline: Update Convenience operation
     Given a domain for project_only in KEYSTONE
     And a without role in domain and with "user_update_project" user in project
@@ -163,7 +175,6 @@ Feature: Context broker actions when the rol is defined only in a project
     | xml    | /v1/contextEntities/EntityID/attributes/attributeName/valueID | PUT    |
     | json   | /v1/contextEntities/EntityID/attributes/attributeName/valueID | PUT    |
 
-  @cb_actions_project_rol
   Scenario Outline: Create Convenience operation
     Given a domain for project_only in KEYSTONE
     And a without role in domain and with "user_create_project" user in project
@@ -178,7 +189,6 @@ Feature: Context broker actions when the rol is defined only in a project
     | xml    | /v1/contextEntities/EntityID/attributes/attributeName | POST   |
     | json   | /v1/contextEntities/EntityID/attributes/attributeName | POST   |
 
-  @cb_actions_project_rol
   Scenario Outline: Subscribe Convenience operation
     Given a domain for project_only in KEYSTONE
     And a without role in domain and with "user_subscribe_project" user in project
@@ -195,7 +205,6 @@ Feature: Context broker actions when the rol is defined only in a project
     | xml    | /v1/contextSubscriptions/subscriptionID | DELETE |
     | json   | /v1/contextSubscriptions/subscriptionID | DELETE |
 
-  @cb_actions_project_rol
   Scenario Outline: Discover Convenience operation
     Given a domain for project_only in KEYSTONE
     And a without role in domain and with "user_discover_project" user in project
@@ -218,7 +227,6 @@ Feature: Context broker actions when the rol is defined only in a project
     | xml    | /v1/registry/contextEntityTypes/typeName                                      | GET    |
     | json   | /v1/registry/contextEntityTypes/typeName                                      | GET    |
 
-  @cb_actions_project_rol
   Scenario Outline: Register Convenience operation
     Given a domain for project_only in KEYSTONE
     And a without role in domain and with "user_register_project" user in project
@@ -241,7 +249,6 @@ Feature: Context broker actions when the rol is defined only in a project
     | xml    | /v1/registry/contextEntityTypes/typeName                                      | POST   |
     | json   | /v1/registry/contextEntityTypes/typeName                                      | POST   |
 
-  @cb_actions_project_rol
   Scenario Outline: Subscribe-availability Convenience operation
     Given a domain for project_only in KEYSTONE
     And a without role in domain and with "user_subscribe-availability_project" user in project
