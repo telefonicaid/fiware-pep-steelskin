@@ -199,7 +199,6 @@ then
     #
     # Prepare develop for the next version
     #
-
     sed "s/\"version\": \"$NEW_VERSION\"/\"version\": \"$NEW_VERSION-next\"/" package.json        > /tmp/package.json
     sed "s/$NEW_VERSION/$NEW_VERSION-next/" rpm/create-rpm.sh        > /tmp/create-rpm.sh
     mv /tmp/package.json              package.json
