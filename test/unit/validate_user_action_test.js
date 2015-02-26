@@ -604,6 +604,70 @@ describe('Validate action with Access Control', function() {
     });
 
     describe('[' + authenticationMechanisms[1].module + '] ' +
+    'When a request arrives for a user and the token is not valid', function() {
+        var options = {
+                uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'Fiware-Service': 'SmartValencia',
+                    'fiware-servicepath': 'Electricidad',
+                    'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
+                },
+                json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
+            },
+            currentAuthentication = authenticationMechanisms[1];
+
+        beforeEach(function(done) {
+            keystonePlugin.cleanCache();
+            initializeUseCase(currentAuthentication, function() {
+                async.series([
+                    async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
+                    async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
+                    async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
+                    async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
+                    async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
+                ], done);
+            });
+        });
+
+        afterEach(function(done) {
+            proxyLib.stop(proxy, function(error) {
+                serverMocks.stop(mockTarget, function() {
+                    serverMocks.stop(mockAccess, function() {
+                        serverMocks.stop(mockOAuth, done);
+                    });
+                });
+            });
+        });
+
+        it('should return a 401 error, indicating the authentication was not valid', function(done) {
+            var accessControlCalled = false;
+
+            mockOAuthApp.handler = function(req, res) {
+                if (req.path === currentAuthentication.authPath && req.method === 'POST') {
+                    res.setHeader('X-Subject-Token', '092016b75474ea6b492e29fb69d23029');
+                    res.json(201, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
+                } else if (req.path === currentAuthentication.authPath && req.method === 'GET') {
+                    res.json(404, utils.readExampleFile('./test/keystoneResponses/tokenExpired.json'));
+                }
+            };
+
+            mockAccessApp.handler = function(req, res) {
+                accessControlCalled = true;
+                res.status(200).send(utils.readExampleFile('./test/accessControlResponses/permitResponse.xml', true));
+            };
+
+            request(options, function(error, response, body) {
+                response.statusCode.should.equal(401);
+                accessControlCalled.should.equal(false);
+                done();
+            });
+        });
+    });
+
+    describe('[' + authenticationMechanisms[1].module + '] ' +
     'When a request arrives for a user and the access.disable flag is true', function() {
         var options = {
                 uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
