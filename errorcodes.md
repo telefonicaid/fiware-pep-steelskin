@@ -10,7 +10,6 @@ This document shows the list of error codes that can be returned from the API, a
 |ACTION_NOT_FOUND|400|The system wasn't able to guess the action type or the request|
 |WRONG_XML_PAYLOAD|400|The system wasn't able to parse the given XML payload|
 |WRONG_JSON_PAYLOAD|400|The system wasn't able to parse the given JSON payload (either it was empty or wrong)|
-|WRONG_XML_VALIDATION_RESPONSE|500|The system wasn't able to parse the XML obtained from the Access Control|
 |ACCESS_CONTROL_CONNECTION_ERROR|500|There was a connection error accessing the Access Control: %s|
 |ACCESS_CONTROL_VALIDATION_ERROR|500|The Access Control failed to make a decision due to the following error: %s|
 |KEYSTONE_AUTHENTICATION_ERROR|500|There was a connection error while authenticating to Keystone: %s|
