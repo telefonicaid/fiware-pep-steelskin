@@ -336,12 +336,64 @@ describe('Validate action with Access Control', function() {
                 });
             });
         });
-
-        describe('[' + authenticationMechanisms[q].module + '] ' +
-            'When a request arrives and the authentication token has expired', function() {
-            it('should reject the request with a 503 temporary unavailable message');
-        });
     }
+
+    describe('[' + authenticationMechanisms[1].module + '] ' +
+    'When a request arrives and the authentication token has expired', function() {
+        var options = {
+                uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'Fiware-Service': 'SmartValencia',
+                    'fiware-servicepath': 'Electricidad',
+                    'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
+                },
+                json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
+            },
+            currentAuthentication = authenticationMechanisms[1];
+
+        beforeEach(function(done) {
+            keystonePlugin.cleanCache();
+
+            initializeUseCase(currentAuthentication, function() {
+                async.series([
+                    keystonePlugin.invalidate,
+                    async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
+                    async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
+                    async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
+                    async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
+                    async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
+                ], done);
+            });
+        });
+
+        afterEach(function(done) {
+            proxyLib.stop(proxy, function(error) {
+                serverMocks.stop(mockTarget, function() {
+                    serverMocks.stop(mockAccess, function() {
+                        serverMocks.stop(mockOAuth, done);
+                    });
+                });
+            });
+        });
+
+        it('should reject the request with a 500 error', function(done) {
+            mockOAuthApp.handler = function(req, res) {
+                if (req.path === currentAuthentication.authPath && req.method === 'POST') {
+                    res.json(401, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
+                }
+            };
+
+            request(options, function(error, response, body) {
+                response.statusCode.should.equal(500);
+                should.exist(body.name);
+                body.name.should.equal('PEP_PROXY_AUTHENTICATION_REJECTED');
+                done();
+            });
+        });
+    });
 
     describe('[' + authenticationMechanisms[1].module + '] ' +
         'When a request is validated using Keystone', function() {
