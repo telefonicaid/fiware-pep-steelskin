@@ -155,6 +155,25 @@ rm -rf $RPM_BUILD_ROOT
 %{_install_dir}
 
 %changelog
+* Fri Feb 27 2015 Daniel Moran <daniel.moranjimenez@telefonica.com> 0.5.0
+- Added /v1/contextTypes to the URL Mappings of Orion.
+- Fix right plugins directory in pepProxy binary.
+- Fix accept content-type header with charset
+- Fix proxy query params 
+- Fix some urls are not recognized with query params (#148)
+- Add "effective" flag to the request to Keystone (#147)
+- Fix UpdateContext operations with query parameters are not recognized (#155)
+- Remove specific setup for RPM installation in Context Broker uses (#159)
+- Add administration port with Version resource (#164)
+- Check all the mandatory headers before processing the request (#165) (#110)
+- Group and redefine error codes.
+- Add execution mode without Access Control authorization for the PEP Proxy (#173)
+- Check the service and subservice headers for content (#176)
+- Fix the Keystone user authentication error was raised as a connection one (#174)
+- Fix type of error when authenticating PEP Proxy (#182)
+- Fix some errors appear in the API documentation and don't ever occur (#180)
+- Add a guard in the release script to abort if there are unstagged git changes (#181)
+
 * Fri Jan 16 2015 Daniel Moran <daniel.moranjimenez@telefonica.com> 0.4.1
 - FIX XML requests wrongly forwarded as an empty JSON (#103).
 - FIX Logs don't show Access Control response due to a wrong format placeholder (#105).
