@@ -14,3 +14,4 @@
 - Fix the Keystone user authentication error was raised as a connection one (#174)
 - Fix type of error when authenticating PEP Proxy (#182)
 - Fix some errors appear in the API documentation an don't ever occur (#180)
+- Add a guard in the release script to abort if there are unstagged git changes (#181)
