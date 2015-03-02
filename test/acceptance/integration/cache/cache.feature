@@ -32,7 +32,7 @@ Feature: PeP cache in user, project and roles
     And a url with "/v1/queryContext"
     When the petition action "POST" is asked without data
     And the history is saved
-    And the petition action "POST" is asked without data
+    When the petition action "POST" is asked without data
     Then the PEP returns an ok
     And the history is the same as saved
     And waits "35" seconds to "all" cache expire
@@ -44,7 +44,7 @@ Feature: PeP cache in user, project and roles
     When the petition action "POST" is asked without data
     And the history is saved
     And headers general
-    And the petition action "POST" is asked without data
+    When the petition action "POST" is asked without data
     Then the PEP returns an ok
     And the history of petitions adds "1" token petition
     And waits "35" seconds to "all" cache expire
@@ -56,7 +56,7 @@ Feature: PeP cache in user, project and roles
     When the petition action "POST" is asked without data
     And the history is saved
     And waits "10" seconds to "all" cache expire
-    And the petition action "POST" is asked without data
+    When the petition action "POST" is asked without data
     Then the PEP returns an ok
     And the history of petitions adds "1" token petition
     And waits "35" seconds to "all" cache expire
@@ -68,7 +68,7 @@ Feature: PeP cache in user, project and roles
     When the petition action "POST" is asked without data
     And the history is saved
     And waits "20" seconds to "all" cache expire
-    And the petition action "POST" is asked without data
+    When the petition action "POST" is asked without data
     Then the PEP returns an ok
     And the history of petitions adds "2" token petition
     And waits "35" seconds to "all" cache expire
@@ -80,7 +80,7 @@ Feature: PeP cache in user, project and roles
     When the petition action "POST" is asked without data
     And the history is saved
     And waits "30" seconds to "all" cache expire
-    And the petition action "POST" is asked without data
+    When the petition action "POST" is asked without data
     Then the PEP returns an ok
     And the history of petitions adds "3" token petition
     And waits "35" seconds to "all" cache expire
@@ -92,7 +92,7 @@ Feature: PeP cache in user, project and roles
     When the petition action "POST" is asked without data
     And the history is saved
     And waits "10" seconds to "projects" cache expire
-    And the petition action "POST" is asked without data
+    When the petition action "POST" is asked without data
     Then the PEP returns an ok
     And the history of petitions adds "1" token petition
     And the value added to the history is ok
@@ -105,7 +105,7 @@ Feature: PeP cache in user, project and roles
     When the petition action "POST" is asked without data
     And the history is saved
     And waits "10" seconds to "roles" cache expire
-    And the petition action "POST" is asked without data
+    When the petition action "POST" is asked without data
     Then the PEP returns an ok
     And the history of petitions adds "1" token petition
     And the value added to the history is ok
