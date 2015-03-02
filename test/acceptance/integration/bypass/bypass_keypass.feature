@@ -31,7 +31,7 @@ Feature: Test bypass functionality
   Scenario: Get to AC with a user with bypass role in domain
     Given a bypass domain in KEYSTONE
     And a user bypass in the domain
-    And a "bypass_rol" rol in the domain
+    And a "bypass_role" role in the domain
     And a url with "/pap/v1/subject/subjectName/policy/policyName"
     When a KeyPass "GET" petition is asked to PEP
     Then the petition gets to the mock
@@ -39,7 +39,7 @@ Feature: Test bypass functionality
   Scenario: Get to AC with a user with bypass role in project
     Given a bypass domain in KEYSTONE
     And a user bypass in the domain
-    And a "bypass_rol" rol in the project "project_bypass"
+    And a "bypass_role" role in the project "project_bypass"
     And a url with "/pap/v1/subject/subjectName/policy/policyName"
     When a KeyPass "GET" petition is asked to PEP
     Then the petition gets to the mock

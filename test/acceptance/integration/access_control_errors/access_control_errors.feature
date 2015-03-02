@@ -27,16 +27,16 @@ Feature: Errors raised by PEP because of errors from/to Keystone
     Given the Context Broker configuration
 
   @access_denied
-  Scenario: Access denied because rol in project
-    Given headers of bad rol environment with project
+  Scenario: Access denied because role in project
+    Given headers of bad role environment with project
     And a url with "/v1/queryContext"
     When the petition action "POST" is asked without data
     Then the access control proxy receive the last petition "pdp/v3" from PEP
     And the PEP returns an error with code "403" and name "ACCESS_DENIED"
 
   @access_denied
-  Scenario: Access denied because rol in domain
-    Given headers of bad rol environment without project
+  Scenario: Access denied because role in domain
+    Given headers of bad role environment without project
     And a url with "/v1/queryContext"
     When the petition action "POST" is asked
     Then the access control proxy receive the last petition "pdp/v3" from PEP

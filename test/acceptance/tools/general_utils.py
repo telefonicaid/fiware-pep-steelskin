@@ -231,15 +231,15 @@ def initialize_ac(user_roles, ac_ip, ac_port, structure, domain, project, policy
     ac = AC(ac_ip, port=ac_port)
     ac.delete_tenant_policies(domain)
     if project == '/':
-        for user_rol in user_roles:
-            customer_role_id = structure[domain]['users'][user_rol[0]]['roles'][user_rol[1]]['id']
-            ac.create_policy(domain, customer_role_id, policy_name + '_' + user_rol[1],
-                             'fiware:orion:%s:%s::' % (domain, project), user_rol[1])
+        for user_role in user_roles:
+            customer_role_id = structure[domain]['users'][user_role[0]]['roles'][user_role[1]]['id']
+            ac.create_policy(domain, customer_role_id, policy_name + '_' + user_role[1],
+                             'fiware:orion:%s:%s::' % (domain, project), user_role[1])
     else:
-        for user_rol in user_roles:
-            customer_role_id = structure[domain]['projects'][project]['users'][user_rol[0]]['roles'][user_rol[1]]['id']
-            ac.create_policy(domain, customer_role_id, policy_name + '_' + user_rol[1],
-                             'fiware:orion:%s:%s::' % (domain, project), user_rol[1])
+        for user_role in user_roles:
+            customer_role_id = structure[domain]['projects'][project]['users'][user_role[0]]['roles'][user_role[1]]['id']
+            ac.create_policy(domain, customer_role_id, policy_name + '_' + user_role[1],
+                             'fiware:orion:%s:%s::' % (domain, project), user_role[1])
 
 
 def start_environment():
@@ -315,7 +315,7 @@ def set_config_bypass():
                          world.ks['platform']['cloud_domain']['name'], world.ks_proxy_ip, world.ks_proxy_port,
                          'DEBUG', world.keypass_plug_in, world.keypass_extract_action, 'true',
                          world.structure[world.ks['domain_bypass']]['users'][world.ks['user_bypass']]['roles'][
-                             world.ac['bypass_rol']]['id'])
+                             world.ac['bypass_role']]['id'])
 
 
 def set_config_cache_gradual():

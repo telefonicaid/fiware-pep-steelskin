@@ -21,7 +21,7 @@
 # __author__ = 'Jon Calderin Goñi (jon dot caldering at gmail dot com)'
 
 @cb_actions_domain
-Feature: Context broker actions when the rol is defined only in a domain
+Feature: Context broker actions when the role is defined only in a domain
   Check if all urls of CB are mapped to the correct action. This actions are defined in the domain of the user in Keystone
 
   Background:
@@ -31,7 +31,7 @@ Feature: Context broker actions when the rol is defined only in a domain
   Scenario Outline: Create Standard operation
     Given a domain without projects in KEYSTONE
     And a "user_create_domain" user in domain without projects
-    And a "create_rol" role in the user and domain
+    And a "create_role" role in the user and domain
     And url with "/v1/updateContext" and the actionType attribute "APPEND"
     When a context broker "POST" petition is asked to PEP with "<format>" format
     Then the petition gets to the mock
@@ -44,7 +44,7 @@ Feature: Context broker actions when the rol is defined only in a domain
   Scenario Outline: Update Standard operation
     Given a domain without projects in KEYSTONE
     And a "user_update_domain" user in domain without projects
-    And a "update_rol" role in the user and domain
+    And a "update_role" role in the user and domain
     And url with "/v1/updateContext" and the actionType attribute "UPDATE"
     When a context broker "POST" petition is asked to PEP with "<format>" format
     Then the petition gets to the mock
@@ -56,7 +56,7 @@ Feature: Context broker actions when the rol is defined only in a domain
   Scenario Outline: Delete Standard operation
     Given a domain without projects in KEYSTONE
     And a "user_delete_domain" user in domain without projects
-    And a "delete_rol" role in the user and domain
+    And a "delete_role" role in the user and domain
     And url with "/v1/updateContext" and the actionType attribute "DELETE"
     When a context broker "POST" petition is asked to PEP with "<format>" format
     Then the petition gets to the mock
@@ -68,7 +68,7 @@ Feature: Context broker actions when the rol is defined only in a domain
   Scenario Outline: Read Standard operation
     Given a domain without projects in KEYSTONE
     And a "user_read_domain" user in domain without projects
-    And a "read_rol" role in the user and domain
+    And a "read_role" role in the user and domain
     And a url with "<url>"
     When a context broker "POST" petition is asked to PEP with "<format>" format
     Then the petition gets to the mock
@@ -82,7 +82,7 @@ Feature: Context broker actions when the rol is defined only in a domain
   Scenario Outline: Subscribe Standard operation
     Given a domain without projects in KEYSTONE
     And a "user_subscribe_domain" user in domain without projects
-    And a "subscribe_rol" role in the user and domain
+    And a "subscribe_role" role in the user and domain
     And a url with "<url>"
     When a context broker "POST" petition is asked to PEP with "<format>" format
     Then the petition gets to the mock
@@ -98,7 +98,7 @@ Feature: Context broker actions when the rol is defined only in a domain
   Scenario Outline: Register Standard operation
     Given a domain without projects in KEYSTONE
     And a "user_register_domain" user in domain without projects
-    And a "register_rol" role in the user and domain
+    And a "register_role" role in the user and domain
     And a url with "/v1/registry/registerContext"
     When a context broker "POST" petition is asked to PEP with "<format>" format
     Then the petition gets to the mock
@@ -110,7 +110,7 @@ Feature: Context broker actions when the rol is defined only in a domain
   Scenario Outline: Discover Standard operation
     Given a domain without projects in KEYSTONE
     And a "user_discover_domain" user in domain without projects
-    And a "discover_rol" role in the user and domain
+    And a "discover_role" role in the user and domain
     And a url with "/v1/registry/discoverContextAvailability"
     When a context broker "POST" petition is asked to PEP with "<format>" format
     Then the petition gets to the mock
@@ -122,7 +122,7 @@ Feature: Context broker actions when the rol is defined only in a domain
   Scenario Outline: subscribe-availability Standard operation
     Given a domain without projects in KEYSTONE
     And a "user_subscribe-availability_domain" user in domain without projects
-    And a "subscribe-availability_rol" role in the user and domain
+    And a "subscribe-availability_role" role in the user and domain
     And a url with "<url>"
     When a context broker "POST" petition is asked to PEP with "<format>" format
     Then the petition gets to the mock
@@ -139,7 +139,7 @@ Feature: Context broker actions when the rol is defined only in a domain
   Scenario Outline: Read Convenience operation
     Given a domain without projects in KEYSTONE
     And a "user_read_domain" user in domain without projects
-    And a "read_rol" role in the user and domain
+    And a "read_role" role in the user and domain
     And a url with "<url>"
     When a context broker "<action>" petition is asked to PEP with "<format>" format
     Then the petition gets to the mock
@@ -163,7 +163,7 @@ Feature: Context broker actions when the rol is defined only in a domain
   Scenario Outline: Update Convenience operation
     Given a domain without projects in KEYSTONE
     And a "user_update_domain" user in domain without projects
-    And a "update_rol" role in the user and domain
+    And a "update_role" role in the user and domain
     And a url with "<url>"
     When a context broker "<action>" petition is asked to PEP with "<format>" format
     Then the petition gets to the mock
@@ -179,7 +179,7 @@ Feature: Context broker actions when the rol is defined only in a domain
   Scenario Outline: Create Convenience operation
     Given a domain without projects in KEYSTONE
     And a "user_create_domain" user in domain without projects
-    And a "create_rol" role in the user and domain
+    And a "create_role" role in the user and domain
     And a url with "<url>"
     When a context broker "<action>" petition is asked to PEP with "<format>" format
     Then the petition gets to the mock
@@ -193,7 +193,7 @@ Feature: Context broker actions when the rol is defined only in a domain
   Scenario Outline: Subscribe Convenience operation
     Given a domain without projects in KEYSTONE
     And a "user_subscribe_domain" user in domain without projects
-    And a "subscribe_rol" role in the user and domain
+    And a "subscribe_role" role in the user and domain
     And a url with "<url>"
     When a context broker "<action>" petition is asked to PEP with "<format>" format
     Then the petition gets to the mock
@@ -209,7 +209,7 @@ Feature: Context broker actions when the rol is defined only in a domain
   Scenario Outline: Discover Convenience operation
     Given a domain without projects in KEYSTONE
     And a "user_discover_domain" user in domain without projects
-    And a "discover_rol" role in the user and domain
+    And a "discover_role" role in the user and domain
     And a url with "<url>"
     When a context broker "<action>" petition is asked to PEP with "<format>" format
     Then the petition gets to the mock
@@ -231,7 +231,7 @@ Feature: Context broker actions when the rol is defined only in a domain
   Scenario Outline: Register Convenience operation
     Given a domain without projects in KEYSTONE
     And a "user_register_domain" user in domain without projects
-    And a "register_rol" role in the user and domain
+    And a "register_role" role in the user and domain
     And a url with "<url>"
     When a context broker "<action>" petition is asked to PEP with "<format>" format
     Then the petition gets to the mock
@@ -253,7 +253,7 @@ Feature: Context broker actions when the rol is defined only in a domain
   Scenario Outline: Subscribe-availability Convenience operation
     Given a domain without projects in KEYSTONE
     And a "user_subscribe-availability_domain" user in domain without projects
-    And a "subscribe-availability_rol" role in the user and domain
+    And a "subscribe-availability_role" role in the user and domain
     And a url with "<url>"
     When a context broker "<action>" petition is asked to PEP with "<format>" format
     Then the petition gets to the mock

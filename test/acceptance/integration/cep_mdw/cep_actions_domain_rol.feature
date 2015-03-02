@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 # Copyright 2014 Telefonica Investigación y Desarrollo, S.A.U
 #
 # This file is part of fiware-orion-pep
@@ -21,7 +22,7 @@
 # __author__ = 'Jon Calderin Goñi (jon dot caldering at gmail dot com)'
 
 @cep_actions_domain
-Feature: CEP actions when the rol is defined only in the domain
+Feature: CEP actions when the role is defined only in the domain
   Check if all urls of CEP are mapped to the correct action. This actions are defined in the domain of the user in Keystone
 
   Background:
@@ -30,7 +31,7 @@ Feature: CEP actions when the rol is defined only in the domain
   Scenario: Notify action
     Given a domain without projects in KEYSTONE
     And a "user_notify_domain" user in domain without projects
-    And a "notify_rol" role in the user and domain
+    And a "notify_role" role in the user and domain
     And a url with "/notices"
     When a CEP "POST" petition is asked to PEP
     Then the petition gets to the mock
@@ -38,7 +39,7 @@ Feature: CEP actions when the rol is defined only in the domain
   Scenario Outline: Read Rule action
     Given a domain without projects in KEYSTONE
     And a "user_readRule_domain" user in domain without projects
-    And a "readRule_rol" role in the user and domain
+    And a "readRule_role" role in the user and domain
     And a url with "<url>"
     When a CEP "<action>" petition is asked to PEP
     Then the petition gets to the mock
@@ -52,7 +53,7 @@ Feature: CEP actions when the rol is defined only in the domain
   Scenario Outline: Write Rule action
     Given a domain without projects in KEYSTONE
     And a "user_writeRule_domain" user in domain without projects
-    And a "writeRule_rol" role in the user and domain
+    And a "writeRule_role" role in the user and domain
     And a url with "<url>"
     When a CEP "<action>" petition is asked to PEP
     Then the petition gets to the mock

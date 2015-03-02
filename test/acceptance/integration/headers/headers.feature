@@ -22,7 +22,7 @@
 
 @headers
 Feature: Test request headers
-  The environment is set, with one user, with rol in the domain and in a project inside the domain
+  The environment is set, with one user, with role in the domain and in a project inside the domain
 
   Background:
     Given the Headers Context Broker configuration without cache

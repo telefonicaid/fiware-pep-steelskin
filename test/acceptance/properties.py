@@ -138,24 +138,24 @@ world.ac['port'] = world.access_control_host_port
 # ******************************
 
 # AC rules
-world.ac['bypass_rol'] = 'bypass'
-world.ac['create_rol'] = 'create'
-world.ac['update_rol'] = 'update'
-world.ac['delete_rol'] = 'delete'
-world.ac['read_rol'] = 'read'
-world.ac['subscribe_rol'] = 'subscribe'
-world.ac['register_rol'] = 'register'
-world.ac['discover_rol'] = 'discover'
-world.ac['subscribe-availability_rol'] = 'subscribe-availability'
-world.ac['notify_rol'] = 'notify'
-world.ac['readRule_rol'] = 'readRule'
-world.ac['writeRule_rol'] = 'writeRule'
-world.ac['readPolicy_rol'] = 'readPolicy'
-world.ac['removePolicy_rol'] = 'deletePolicy'
-world.ac['createPolicy_rol'] = 'createPolicy'
-world.ac['listPolicies_rol'] = 'listPolicies'
-world.ac['deleteSubjectPolicies_rol'] = 'deleteSubjectPolicies'
-world.ac['deleteTenantPolicies_rol'] = 'deleteTenantPolicies'
+world.ac['bypass_role'] = 'bypass'
+world.ac['create_role'] = 'create'
+world.ac['update_role'] = 'update'
+world.ac['delete_role'] = 'delete'
+world.ac['read_role'] = 'read'
+world.ac['subscribe_role'] = 'subscribe'
+world.ac['register_role'] = 'register'
+world.ac['discover_role'] = 'discover'
+world.ac['subscribe-availability_role'] = 'subscribe-availability'
+world.ac['notify_role'] = 'notify'
+world.ac['readRule_role'] = 'readRule'
+world.ac['writeRule_role'] = 'writeRule'
+world.ac['readPolicy_role'] = 'readPolicy'
+world.ac['removePolicy_role'] = 'deletePolicy'
+world.ac['createPolicy_role'] = 'createPolicy'
+world.ac['listPolicies_role'] = 'listPolicies'
+world.ac['deleteSubjectPolicies_role'] = 'deleteSubjectPolicies'
+world.ac['deleteTenantPolicies_role'] = 'deleteTenantPolicies'
 
 # Keystone configuration
 # General configuration
@@ -188,55 +188,55 @@ world.ks['environment_general'] = {
                             'description': 'Nemos house',
                             'roles': [
                                 {
-                                    'name': world.ac['create_rol']
+                                    'name': world.ac['create_role']
                                 },
                                 {
-                                    'name': world.ac['update_rol']
+                                    'name': world.ac['update_role']
                                 },
                                 {
-                                    'name': world.ac['delete_rol']
+                                    'name': world.ac['delete_role']
                                 },
                                 {
-                                    'name': world.ac['read_rol']
+                                    'name': world.ac['read_role']
                                 },
                                 {
-                                    'name': world.ac['subscribe_rol']
+                                    'name': world.ac['subscribe_role']
                                 },
                                 {
-                                    'name': world.ac['register_rol']
+                                    'name': world.ac['register_role']
                                 },
                                 {
-                                    'name': world.ac['discover_rol']
+                                    'name': world.ac['discover_role']
                                 },
                                 {
-                                    'name': world.ac['subscribe-availability_rol']
+                                    'name': world.ac['subscribe-availability_role']
                                 },
                                 {
-                                    'name': world.ac['notify_rol']
+                                    'name': world.ac['notify_role']
                                 },
                                 {
-                                    'name': world.ac['readRule_rol']
+                                    'name': world.ac['readRule_role']
                                 },
                                 {
-                                    'name': world.ac['writeRule_rol']
+                                    'name': world.ac['writeRule_role']
                                 },
                                 {
-                                    'name': world.ac['readPolicy_rol']
+                                    'name': world.ac['readPolicy_role']
                                 },
                                 {
-                                    'name': world.ac['removePolicy_rol']
+                                    'name': world.ac['removePolicy_role']
                                 },
                                 {
-                                    'name': world.ac['createPolicy_rol']
+                                    'name': world.ac['createPolicy_role']
                                 },
                                 {
-                                    'name': world.ac['listPolicies_rol']
+                                    'name': world.ac['listPolicies_role']
                                 },
                                 {
-                                    'name': world.ac['deleteSubjectPolicies_rol']
+                                    'name': world.ac['deleteSubjectPolicies_role']
                                 },
                                 {
-                                    'name': world.ac['deleteTenantPolicies_rol']
+                                    'name': world.ac['deleteTenantPolicies_role']
                                 }
                             ]
                         }
@@ -268,7 +268,7 @@ world.ks['environment_general_ko'] = {
                     'description': 'Tentacles guy',
                     'roles': [
                         {
-                            'name': 'ko_rol'
+                            'name': 'ko_role'
                         }
                     ],
                     'projects': [
@@ -277,7 +277,7 @@ world.ks['environment_general_ko'] = {
                             'description': 'Nemos house',
                             'roles': [
                                 {
-                                    'name': 'ko_rol'
+                                    'name': 'ko_role'
                                 }
                             ]
                         }
@@ -362,7 +362,7 @@ world.ks['environment_project'] = {
                             'description': 'Cave in the ocean',
                             'roles': [
                                 {
-                                    'name': world.ac['create_rol']
+                                    'name': world.ac['create_role']
                                 },
                             ]
                         }
@@ -378,7 +378,7 @@ world.ks['environment_project'] = {
                             'description': 'Cave in the ocean',
                             'roles': [
                                 {
-                                    'name': world.ac['update_rol']
+                                    'name': world.ac['update_role']
                                 },
                             ]
                         }
@@ -394,7 +394,7 @@ world.ks['environment_project'] = {
                             'description': 'Cave in the ocean',
                             'roles': [
                                 {
-                                    'name': world.ac['delete_rol']
+                                    'name': world.ac['delete_role']
                                 },
                             ]
                         }
@@ -410,7 +410,7 @@ world.ks['environment_project'] = {
                             'description': 'Cave in the ocean',
                             'roles': [
                                 {
-                                    'name': world.ac['read_rol']
+                                    'name': world.ac['read_role']
                                 },
                             ]
                         }
@@ -426,7 +426,7 @@ world.ks['environment_project'] = {
                             'description': 'Cave in the ocean',
                             'roles': [
                                 {
-                                    'name': world.ac['subscribe_rol']
+                                    'name': world.ac['subscribe_role']
                                 },
                             ]
                         }
@@ -442,7 +442,7 @@ world.ks['environment_project'] = {
                             'description': 'Cave in the ocean',
                             'roles': [
                                 {
-                                    'name': world.ac['register_rol']
+                                    'name': world.ac['register_role']
                                 },
                             ]
                         }
@@ -458,7 +458,7 @@ world.ks['environment_project'] = {
                             'description': 'Cave in the ocean',
                             'roles': [
                                 {
-                                    'name': world.ac['discover_rol']
+                                    'name': world.ac['discover_role']
                                 },
                             ]
                         }
@@ -474,7 +474,7 @@ world.ks['environment_project'] = {
                             'description': 'Cave in the ocean',
                             'roles': [
                                 {
-                                    'name': world.ac['subscribe-availability_rol']
+                                    'name': world.ac['subscribe-availability_role']
                                 },
                             ]
                         }
@@ -490,7 +490,7 @@ world.ks['environment_project'] = {
                             'description': 'Cave in the ocean',
                             'roles': [
                                 {
-                                    'name': world.ac['notify_rol']
+                                    'name': world.ac['notify_role']
                                 },
                             ]
                         }
@@ -506,7 +506,7 @@ world.ks['environment_project'] = {
                             'description': 'Cave in the ocean',
                             'roles': [
                                 {
-                                    'name': world.ac['readRule_rol']
+                                    'name': world.ac['readRule_role']
                                 },
                             ]
                         }
@@ -522,7 +522,7 @@ world.ks['environment_project'] = {
                             'description': 'Cave in the ocean',
                             'roles': [
                                 {
-                                    'name': world.ac['writeRule_rol']
+                                    'name': world.ac['writeRule_role']
                                 },
                             ]
                         }
@@ -538,7 +538,7 @@ world.ks['environment_project'] = {
                             'description': 'Cave in the ocean',
                             'roles': [
                                 {
-                                    'name': world.ac['readPolicy_rol']
+                                    'name': world.ac['readPolicy_role']
                                 },
                             ]
                         }
@@ -554,7 +554,7 @@ world.ks['environment_project'] = {
                             'description': 'Cave in the ocean',
                             'roles': [
                                 {
-                                    'name': world.ac['removePolicy_rol']
+                                    'name': world.ac['removePolicy_role']
                                 },
                             ]
                         }
@@ -570,7 +570,7 @@ world.ks['environment_project'] = {
                             'description': 'Cave in the ocean',
                             'roles': [
                                 {
-                                    'name': world.ac['createPolicy_rol']
+                                    'name': world.ac['createPolicy_role']
                                 },
                             ]
                         }
@@ -586,7 +586,7 @@ world.ks['environment_project'] = {
                             'description': 'Cave in the ocean',
                             'roles': [
                                 {
-                                    'name': world.ac['listPolicies_rol']
+                                    'name': world.ac['listPolicies_role']
                                 },
                             ]
                         }
@@ -602,7 +602,7 @@ world.ks['environment_project'] = {
                             'description': 'Cave in the ocean',
                             'roles': [
                                 {
-                                    'name': world.ac['deleteSubjectPolicies_rol']
+                                    'name': world.ac['deleteSubjectPolicies_role']
                                 },
                             ]
                         }
@@ -618,7 +618,7 @@ world.ks['environment_project'] = {
                             'description': 'Cave in the ocean',
                             'roles': [
                                 {
-                                    'name': world.ac['deleteTenantPolicies_rol']
+                                    'name': world.ac['deleteTenantPolicies_role']
                                 },
                             ]
                         }
@@ -669,7 +669,7 @@ world.ks['environment_domain'] = {
                     'description': 'Claws guy',
                     'roles': [
                         {
-                            'name': world.ac['create_rol']
+                            'name': world.ac['create_role']
                         }
                     ]
                 },
@@ -679,7 +679,7 @@ world.ks['environment_domain'] = {
                     'description': 'Claws guy',
                     'roles': [
                         {
-                            'name': world.ac['update_rol']
+                            'name': world.ac['update_role']
                         }
                     ]
                 },
@@ -689,7 +689,7 @@ world.ks['environment_domain'] = {
                     'description': 'Claws guy',
                     'roles': [
                         {
-                            'name': world.ac['delete_rol']
+                            'name': world.ac['delete_role']
                         }
                     ]
                 },
@@ -699,7 +699,7 @@ world.ks['environment_domain'] = {
                     'description': 'Claws guy',
                     'roles': [
                         {
-                            'name': world.ac['read_rol']
+                            'name': world.ac['read_role']
                         }
                     ]
                 },
@@ -709,7 +709,7 @@ world.ks['environment_domain'] = {
                     'description': 'Claws guy',
                     'roles': [
                         {
-                            'name': world.ac['subscribe_rol']
+                            'name': world.ac['subscribe_role']
                         }
                     ]
                 },
@@ -719,7 +719,7 @@ world.ks['environment_domain'] = {
                     'description': 'Claws guy',
                     'roles': [
                         {
-                            'name': world.ac['register_rol']
+                            'name': world.ac['register_role']
                         }
                     ]
                 },
@@ -729,7 +729,7 @@ world.ks['environment_domain'] = {
                     'description': 'Claws guy',
                     'roles': [
                         {
-                            'name': world.ac['discover_rol']
+                            'name': world.ac['discover_role']
                         }
                     ]
                 },
@@ -739,7 +739,7 @@ world.ks['environment_domain'] = {
                     'description': 'Claws guy',
                     'roles': [
                         {
-                            'name': world.ac['subscribe-availability_rol']
+                            'name': world.ac['subscribe-availability_role']
                         }
                     ]
                 },
@@ -749,7 +749,7 @@ world.ks['environment_domain'] = {
                     'description': 'Claws guy',
                     'roles': [
                         {
-                            'name': world.ac['notify_rol']
+                            'name': world.ac['notify_role']
                         }
                     ]
                 },
@@ -759,7 +759,7 @@ world.ks['environment_domain'] = {
                     'description': 'Claws guy',
                     'roles': [
                         {
-                            'name': world.ac['readRule_rol']
+                            'name': world.ac['readRule_role']
                         }
                     ]
                 },
@@ -769,7 +769,7 @@ world.ks['environment_domain'] = {
                     'description': 'Claws guy',
                     'roles': [
                         {
-                            'name': world.ac['writeRule_rol']
+                            'name': world.ac['writeRule_role']
                         }
                     ]
                 },
@@ -779,7 +779,7 @@ world.ks['environment_domain'] = {
                     'description': 'Claws guy',
                     'roles': [
                         {
-                            'name': world.ac['readPolicy_rol']
+                            'name': world.ac['readPolicy_role']
                         }
                     ]
                 },
@@ -789,7 +789,7 @@ world.ks['environment_domain'] = {
                     'description': 'Claws guy',
                     'roles': [
                         {
-                            'name': world.ac['removePolicy_rol']
+                            'name': world.ac['removePolicy_role']
                         }
                     ]
                 },
@@ -799,7 +799,7 @@ world.ks['environment_domain'] = {
                     'description': 'Claws guy',
                     'roles': [
                         {
-                            'name': world.ac['createPolicy_rol']
+                            'name': world.ac['createPolicy_role']
                         }
                     ]
                 },
@@ -809,7 +809,7 @@ world.ks['environment_domain'] = {
                     'description': 'Claws guy',
                     'roles': [
                         {
-                            'name': world.ac['listPolicies_rol']
+                            'name': world.ac['listPolicies_role']
                         }
                     ]
                 },
@@ -819,7 +819,7 @@ world.ks['environment_domain'] = {
                     'description': 'Claws guy',
                     'roles': [
                         {
-                            'name': world.ac['deleteSubjectPolicies_rol']
+                            'name': world.ac['deleteSubjectPolicies_role']
                         }
                     ]
                 },
@@ -829,7 +829,7 @@ world.ks['environment_domain'] = {
                     'description': 'Claws guy',
                     'roles': [
                         {
-                            'name': world.ac['deleteTenantPolicies_rol']
+                            'name': world.ac['deleteTenantPolicies_role']
                         }
                     ]
                 }
@@ -859,7 +859,7 @@ world.ks['environment_bypass'] = {
                     'description': 'Little animal',
                     'roles': [
                         {
-                            'name': world.ac['bypass_rol']
+                            'name': world.ac['bypass_role']
                         }
                     ],
                     'projects': [
@@ -868,7 +868,7 @@ world.ks['environment_bypass'] = {
                             'description': 'Cave in the ocean',
                             'roles': [
                                 {
-                                    'name': world.ac['bypass_rol']
+                                    'name': world.ac['bypass_role']
                                 }
                             ]
                         }
