@@ -1,11 +1,32 @@
-# Created by Jon at 16/12/2014
+# Copyright 2014 Telefonica Investigación y Desarrollo, S.A.U
+#
+# This file is part of fiware-orion-pep
+#
+# fiware-orion-pep is free software: you can redistribute it and/or
+# modify it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the License,
+# or (at your option) any later version.
+#
+# fiware-orion-pep is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# See the GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License along with fiware-orion-pep.
+# If not, see http://www.gnu.org/licenses/.
+#
+# For those usages not covered by the GNU Affero General Public License
+# please contact with::[iot_support@tid.es]
+# __author__ = 'Jon Calderin Goñi (jon dot caldering at gmail dot com)'
+
+@cep_mdw
 Feature: CEP middleware
   check if all urls of EPB, with the correct permissions in AC, could connect with CEP
 
   Background:
     Given the Perseo configuration
 
-  @cep_mdw
   Scenario: Notifications urls
     Given a domain in KEYSTONE
     And a user in the domain
@@ -14,7 +35,6 @@ Feature: CEP middleware
     When a CEP "POST" petition is asked to PEP
     Then the petition gets to the mock
 
-  @cep_mdw
   Scenario Outline: Rules urls
     Given a domain in KEYSTONE
     And a user in the domain
@@ -29,7 +49,6 @@ Feature: CEP middleware
     | /rules    | POST   |
     | /rules/id | DELETE |
 
-  @cep_mdw
   Scenario Outline: Visual Rules urls
     Given a domain in KEYSTONE
     And a user in the domain
@@ -45,7 +64,6 @@ Feature: CEP middleware
     | /m2m/vrules/id | DELETE |
     | /m2m/vrules/id | PUT    |
 
-  @cep_mdw
   Scenario Outline: Parameters-Query in cep urls
     Given a domain in KEYSTONE
     And a user in the domain

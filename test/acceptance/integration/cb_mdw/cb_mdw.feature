@@ -1,4 +1,26 @@
-# Created by jon at 03/12/2014
+# Copyright 2014 Telefonica Investigación y Desarrollo, S.A.U
+#
+# This file is part of fiware-orion-pep
+#
+# fiware-orion-pep is free software: you can redistribute it and/or
+# modify it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the License,
+# or (at your option) any later version.
+#
+# fiware-orion-pep is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# See the GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License along with fiware-orion-pep.
+# If not, see http://www.gnu.org/licenses/.
+#
+# For those usages not covered by the GNU Affero General Public License
+# please contact with::[iot_support@tid.es]
+# __author__ = 'Jon Calderin Goñi (jon dot caldering at gmail dot com)'
+
+@cb_mdwae
 Feature: Context broker middleware
   Check if all urls of CB, with the correct user permissions in AC, could connect with CB
 
@@ -6,7 +28,6 @@ Feature: Context broker middleware
     Given the Context Broker configuration
 
   #Standard operations
-  @cb_mdwae
   Scenario Outline: Create Standard operation
     Given a domain in KEYSTONE
     And a user in the domain
@@ -19,7 +40,6 @@ Feature: Context broker middleware
     | xml    |
     | json   |
 
-  @cb_mdwae
   Scenario Outline: Update Standard operation
     Given a domain in KEYSTONE
     And a user in the domain
@@ -32,7 +52,6 @@ Feature: Context broker middleware
     | xml    |
     | json   |
 
-  @cb_mdwae
   Scenario Outline: Delete Standard operation
     Given a domain in KEYSTONE
     And a user in the domain
@@ -45,7 +64,6 @@ Feature: Context broker middleware
     | xml    |
     | json   |
 
-  @cb_mdwae
   Scenario Outline: Read Standard operation
     Given a domain in KEYSTONE
     And a user in the domain
@@ -60,7 +78,6 @@ Feature: Context broker middleware
     | xml    | /v1/contextTypes |
     | json   | /v1/contextTypes |
 
-  @cb_mdwae
   Scenario Outline: Subscribe Standard operation
     Given a domain in KEYSTONE
     And a user in the domain
@@ -77,7 +94,6 @@ Feature: Context broker middleware
     | xml    | /v1/unsubscribeContext        |
     | json   | /v1/unsubscribeContext        |
 
-  @cb_mdwae
   Scenario Outline: Register Standard operation
     Given a domain in KEYSTONE
     And a user in the domain
@@ -90,7 +106,6 @@ Feature: Context broker middleware
     | xml    |
     | json   |
 
-  @cb_mdwae
   Scenario Outline: Discover Standard operation
     Given a domain in KEYSTONE
     And a user in the domain
@@ -103,7 +118,6 @@ Feature: Context broker middleware
     | xml    |
     | json   |
 
-  @cb_mdwae
   Scenario Outline: subscribe-availability Standard operation
     Given a domain in KEYSTONE
     And a user in the domain
@@ -121,8 +135,6 @@ Feature: Context broker middleware
     | json   | /v1/registry/unsubscribeContextAvailability        |
 
   #Convenience operations
-
-  @cb_mdwae
   Scenario Outline: Read Convenience operation
     Given a domain in KEYSTONE
     And a user in the domain
@@ -157,7 +169,6 @@ Feature: Context broker middleware
     | xml    | /v1/contextTypes/typeName                                            | GET    |
     | json   | /v1/contextTypes/typeName                                            | GET    |
 
-  @cb_mdwae
   Scenario Outline: Update Convenience operation
     Given a domain in KEYSTONE
     And a user in the domain
@@ -174,7 +185,6 @@ Feature: Context broker middleware
     | xml    | /v1/contextEntities/EntityID/attributes/attributeName/valueID | PUT    |
     | json   | /v1/contextEntities/EntityID/attributes/attributeName/valueID | PUT    |
 
-  @cb_mdwae
   Scenario Outline: Create Convenience operation
     Given a domain in KEYSTONE
     And a user in the domain
@@ -191,7 +201,6 @@ Feature: Context broker middleware
     | xml    | /v1/contextEntities                                   | POST   |
     | json   | /v1/contextEntities                                   | POST   |
 
-  @cb_mdwae
   Scenario Outline: Subscribe Convenience operation
     Given a domain in KEYSTONE
     And a user in the domain
@@ -208,7 +217,6 @@ Feature: Context broker middleware
     | xml    | /v1/contextSubscriptions/subscriptionID | DELETE |
     | json   | /v1/contextSubscriptions/subscriptionID | DELETE |
 
-  @cb_mdwae
   Scenario Outline: Discover Convenience operation
     Given a domain in KEYSTONE
     And a user in the domain
@@ -232,7 +240,6 @@ Feature: Context broker middleware
     | json   | /v1/registry/contextEntityTypes/typeName                                      | GET    |
 
 
-  @cb_mdwae
   Scenario Outline: Register Convenience operation
     Given a domain in KEYSTONE
     And a user in the domain
@@ -255,7 +262,6 @@ Feature: Context broker middleware
     | xml    | /v1/registry/contextEntityTypes/typeName                                      | POST   |
     | json   | /v1/registry/contextEntityTypes/typeName                                      | POST   |
 
-  @cb_mdwae
   Scenario Outline: Subscribe-availability Convenience operation
     Given a domain in KEYSTONE
     And a user in the domain
@@ -272,7 +278,6 @@ Feature: Context broker middleware
     | xml    | /v1/registry/contextAvailabilitySubscriptions/subscriptionId | DELETE |
     | json   | /v1/registry/contextAvailabilitySubscriptions/subscriptionId | DELETE |
 
-  @cb_mdwae
   Scenario Outline: Parameters-Query in cb urls with operation in the payload
     Given a domain in KEYSTONE
     And a user in the domain
@@ -289,7 +294,6 @@ Feature: Context broker middleware
     | xml    | DELETE    |
     | json   | DELETE    |
 
-  @cb_mdwae
   Scenario Outline: Parameters-Query in cb urls
     Given a domain in KEYSTONE
     And a user in the domain

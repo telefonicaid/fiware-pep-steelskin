@@ -16,13 +16,13 @@ See the GNU Affero General Public License for more details.
 
 You should have received a copy of the GNU Affero General Public
 License along with fiware-orion-pep.
-If not, seehttp://www.gnu.org/licenses/.
+If not, see http://www.gnu.org/licenses/.
 
 For those usages not covered by the GNU Affero General Public License
 please contact with::[iot_support@tid.es]
 """
 
-__author__ = 'jon'
+__author__ = 'Jon Calderin Goñi <jon.caldering@gmail.com>'
 
 import requests
 import json
@@ -35,12 +35,26 @@ from requests.exceptions import ConnectionError
 
 @step('url with "([^"]*)" and the actionType attribute "([^"]*)"')
 def a_url_with_group1_and_the_actiontype_attribute_group2(step, url, action_type):
+    """
+    Define the url and the action type sent in the payload
+    :param step:
+    :param url:
+    :param action_type:
+    :return:
+    """
     world.url = url
     world.action_type = action_type
 
 
 @step('a context broker "([^"]*)" petition is asked to PEP with "([^"]*)" format')
 def a_context_broker_petition_is_asked_to_pep_with_format(step, action, format):
+    """
+    Set the header with the format and action given, and the action_type, project, domain and url set before. Then send the request to PEP
+    :param step:
+    :param action:
+    :param format:
+    :return:
+    """
     token = IdmUtils.get_token(world.user, world.user, world.domain, world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
     headers = {
         "Accept": "application/%s" % format,
@@ -66,9 +80,6 @@ def a_context_broker_petition_is_asked_to_pep_with_format(step, action, format):
         else:
             world.data = '<xml></xml>'
     try:
-        print url
-        print headers
-        print world.data
         requests.request(action.lower(), url, headers=headers, data=world.data)
     except ConnectionError as e:
         assert False, '''There was an error with the connection with the following data: \n

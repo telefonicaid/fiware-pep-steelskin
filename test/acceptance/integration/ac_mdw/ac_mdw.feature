@@ -1,11 +1,32 @@
-# Created by Jon at 18/12/2014
+# Copyright 2014 Telefonica Investigación y Desarrollo, S.A.U
+#
+# This file is part of fiware-orion-pep
+#
+# fiware-orion-pep is free software: you can redistribute it and/or
+# modify it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the License,
+# or (at your option) any later version.
+#
+# fiware-orion-pep is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+# See the GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License along with fiware-orion-pep.
+# If not, see http://www.gnu.org/licenses/.
+#
+# For those usages not covered by the GNU Affero General Public License
+# please contact with::[iot_support@tid.es]
+# __author__ = 'Jon Calderin Goñi (jon dot caldering at gmail dot com)'
+
+@ac_mdw
 Feature: AC middleware
-  check if all urls of EPB, with the correct permissions in AC, could connect with CEP
+  check if all urls of AC, with the correct permissions in AC, get for its destination
 
   Background:
     Given the Keypass configuration
 
-  @ac_mdw
   Scenario: Read policy
     Given a domain in KEYSTONE
     And a user in the domain
@@ -14,7 +35,6 @@ Feature: AC middleware
     When a KeyPass "GET" petition is asked to PEP
     Then the petition gets to the mock
 
-  @ac_mdw
   Scenario: Remove policy
     Given a domain in KEYSTONE
     And a user in the domain
@@ -23,7 +43,6 @@ Feature: AC middleware
     When a KeyPass "DELETE" petition is asked to PEP
     Then the petition gets to the mock
 
-  @ac_mdw
   Scenario: Create policy
     Given a domain in KEYSTONE
     And a user in the domain
@@ -32,7 +51,6 @@ Feature: AC middleware
     When a KeyPass "POST" petition is asked to PEP
     Then the petition gets to the mock
 
-  @ac_mdw
   Scenario: List policies
     Given a domain in KEYSTONE
     And a user in the domain
@@ -41,7 +59,6 @@ Feature: AC middleware
     When a KeyPass "GET" petition is asked to PEP
     Then the petition gets to the mock
 
-  @ac_mdw
   Scenario: Delete subject policies
     Given a domain in KEYSTONE
     And a user in the domain
@@ -50,7 +67,6 @@ Feature: AC middleware
     When a KeyPass "DELETE" petition is asked to PEP
     Then the petition gets to the mock
 
-  @ac_mdw
   Scenario: Delete tenant policies
     Given a domain in KEYSTONE
     And a user in the domain
@@ -59,7 +75,6 @@ Feature: AC middleware
     When a KeyPass "DELETE" petition is asked to PEP
     Then the petition gets to the mock
 
-  @ac_mdw
   Scenario Outline: Parameters-Query in ac urls
     Given a domain in KEYSTONE
     And a user in the domain

@@ -16,14 +16,14 @@ See the GNU Affero General Public License for more details.
 
 You should have received a copy of the GNU Affero General Public
 License along with fiware-orion-pep.
-If not, seehttp://www.gnu.org/licenses/.
+If not, see http://www.gnu.org/licenses/.
 
 For those usages not covered by the GNU Affero General Public License
 please contact with::[iot_support@tid.es]
 """
 import urlparse
 
-__author__ = 'Jon'
+__author__ = 'Jon Calderin Goñi <jon.caldering@gmail.com>'
 
 import time
 import subprocess
@@ -35,6 +35,7 @@ from iotqautils.idm_keystone import IdmUtils
 from lettuce import world
 from deploy_pep import *
 import psutil
+
 
 def convert(data):
     """
@@ -50,6 +51,7 @@ def convert(data):
         return type(data)(map(convert, data))
     else:
         return data
+
 
 def ordered_elements(obj):
     if isinstance(obj, dict):
@@ -69,8 +71,12 @@ def check_equals(dict1, dict2, keys):
     dict2_lower = lower_dict_keys(dict2)
     for key in keys:
         if key not in dict1_lower or key not in dict2_lower:
-            raise KeyError('One of the dicts has not the key "{key}": \n {dict1} \n\n {dict2}'.format(key=key, dict1=dict1_lower, dict2=dict2_lower))
-        assert dict1_lower[key] == dict2_lower[key], 'The key "{key}" is different in: \n{dict1}\n\n{dict2}'.format(key=key, dict1=dict1_lower, dict2=dict2_lower)
+            raise KeyError(
+                'One of the dicts has not the key "{key}": \n {dict1} \n\n {dict2}'.format(key=key, dict1=dict1_lower,
+                                                                                           dict2=dict2_lower))
+        assert dict1_lower[key] == dict2_lower[key], 'The key "{key}" is different in: \n{dict1}\n\n{dict2}'.format(
+            key=key, dict1=dict1_lower, dict2=dict2_lower)
+
 
 def urlparseargs_to_nodejsargs(url):
     args_to_parse = urlparse.urlsplit(url).query
@@ -85,7 +91,8 @@ def urlparseargs_to_nodejsargs(url):
 
 def equals_objects(object1, object2, msg=''):
     if msg == '':
-        msg_not_assert = 'The elements are not equals: \n {object1} \n\n {obejct2}'.format(object1=object1, object2=object2)
+        msg_not_assert = 'The elements are not equals: \n {object1} \n\n {obejct2}'.format(object1=object1,
+                                                                                           object2=object2)
     else:
         msg_not_assert = msg
     if type(object1) is dict:
@@ -123,6 +130,7 @@ def start_pep_app():
         start_pep(world.pep_host_ip, world.pep_host_user, world.pep_host_password, pep_path=world.pep_path)
     if world.environment == 'local':
         start_pep_local(world.pep_path)
+
 
 def start_mock(filename, ip, port):
     """
@@ -188,7 +196,8 @@ def start_proxy(ip_proxy, port_proxy, ip_destination, port_destination):
     else:
         raise NameError('The SO is not recognize, start the proxys manually')
     DEVNULL = open(os.devnull, 'wb')
-    command = ('python %sproxy.py %s %s %s %s' % (path, ip_proxy, port_proxy, ip_destination, port_destination)).split(' ')
+    command = ('python %sproxy.py %s %s %s %s' % (path, ip_proxy, port_proxy, ip_destination, port_destination)).split(
+        ' ')
     proxy_proc = subprocess.Popen(command, stdout=DEVNULL, stderr=DEVNULL)
     return proxy_proc
 
@@ -222,18 +231,15 @@ def initialize_ac(user_roles, ac_ip, ac_port, structure, domain, project, policy
     ac = AC(ac_ip, port=ac_port)
     ac.delete_tenant_policies(domain)
     if project == '/':
-        for user_rol in user_roles:
-            customer_role_id = structure[domain]['users'][user_rol[0]]['roles'][user_rol[1]]['id']
-            ac.create_policy(domain, customer_role_id, policy_name + '_' + user_rol[1],
-                             'fiware:orion:%s:%s::' % (domain, project), user_rol[1])
+        for user_role in user_roles:
+            customer_role_id = structure[domain]['users'][user_role[0]]['roles'][user_role[1]]['id']
+            ac.create_policy(domain, customer_role_id, policy_name + '_' + user_role[1],
+                             'fiware:orion:%s:%s::' % (domain, project), user_role[1])
     else:
-        for user_rol in user_roles:
-            customer_role_id = structure[domain]['projects'][project]['users'][user_rol[0]]['roles'][user_rol[1]]['id']
-            ac.create_policy(domain, customer_role_id, policy_name + '_' + user_rol[1],
-                             'fiware:orion:%s:%s::' % (domain, project), user_rol[1])
-
-
-
+        for user_role in user_roles:
+            customer_role_id = structure[domain]['projects'][project]['users'][user_role[0]]['roles'][user_role[1]]['id']
+            ac.create_policy(domain, customer_role_id, policy_name + '_' + user_role[1],
+                             'fiware:orion:%s:%s::' % (domain, project), user_role[1])
 
 
 def start_environment():
@@ -258,8 +264,8 @@ def stop_environment():
     stop_process(world.mock_dest)
     if world.environment == 'docker':
         stop_docker_pep(world.docker_ip, world.docker_user, world.docker_password,
-                         world.docker_pep_user, world.docker_pep_password,
-                         world.docker_pep_container)
+                        world.docker_pep_user, world.docker_pep_password,
+                        world.docker_pep_container)
     if world.environment == 'remote':
         stop_pep(world.pep_host_ip, world.pep_host_user, world.pep_host_password)
     if world.environment == 'local':
@@ -309,7 +315,7 @@ def set_config_bypass():
                          world.ks['platform']['cloud_domain']['name'], world.ks_proxy_ip, world.ks_proxy_port,
                          'DEBUG', world.keypass_plug_in, world.keypass_extract_action, 'true',
                          world.structure[world.ks['domain_bypass']]['users'][world.ks['user_bypass']]['roles'][
-                             world.ac['bypass_rol']]['id'])
+                             world.ac['bypass_role']]['id'])
 
 
 def set_config_cache_gradual():
@@ -347,6 +353,7 @@ def set_config_cache_roles():
                          'DEBUG', world.cb_plug_in, world.cb_extract_action,
                          cache_users='30', cache_projects='30', cache_roles='10')
 
+
 def set_cb_config_withour_cache():
     """
     Set the configuration to test cache when the roles expire first
@@ -354,6 +361,54 @@ def set_cb_config_withour_cache():
     """
     set_variables_config(world.mock['ip'], world.mock['port'], world.pep_port, world.ac_proxy_port, world.ac_proxy_ip,
                          world.ks['platform']['pep']['user'], world.ks['platform']['pep']['password'],
+                         world.ks['platform']['cloud_domain']['name'], world.ks_proxy_ip, world.ks_proxy_port,
+                         'DEBUG', world.cb_plug_in, world.cb_extract_action,
+                         cache_users='-1', cache_projects='-1', cache_roles='-1')
+
+
+def set_cb_config_with_bad_ks_ip():
+    """
+    Set the configuration to test error connection with the ks
+    :return:
+    """
+    set_variables_config(world.mock['ip'], world.mock['port'], world.pep_port, world.ac_proxy_port, world.ac_proxy_ip,
+                         world.ks['platform']['pep']['user'], world.ks['platform']['pep']['password'],
+                         world.ks['platform']['cloud_domain']['name'], '1', world.ks_proxy_port,
+                         'DEBUG', world.cb_plug_in, world.cb_extract_action,
+                         cache_users='-1', cache_projects='-1', cache_roles='-1')
+
+
+def set_cb_config_with_bad_ac_ip():
+    """
+    Set the configuration to test error connection with the ac
+    :return:
+    """
+    set_variables_config(world.mock['ip'], world.mock['port'], world.pep_port, world.ac_proxy_port, '1',
+                         world.ks['platform']['pep']['user'], world.ks['platform']['pep']['password'],
+                         world.ks['platform']['cloud_domain']['name'], world.ks_proxy_ip, world.ks_proxy_port,
+                         'DEBUG', world.cb_plug_in, world.cb_extract_action,
+                         cache_users='-1', cache_projects='-1', cache_roles='-1')
+
+
+def set_cb_config_with_bad_target_ip():
+    """
+    Set the configuration to test error connection with the final target
+    :return:
+    """
+    set_variables_config('1', world.mock['port'], world.pep_port, world.ac_proxy_port, world.ac_proxy_ip,
+                         world.ks['platform']['pep']['user'], world.ks['platform']['pep']['password'],
+                         world.ks['platform']['cloud_domain']['name'], world.ks_proxy_ip, world.ks_proxy_port,
+                         'DEBUG', world.cb_plug_in, world.cb_extract_action,
+                         cache_users='-1', cache_projects='-1', cache_roles='-1')
+
+
+def set_cb_config_with_bad_pep_user():
+    """
+    Set the configuration to bad pep credentials
+    :return:
+    """
+    set_variables_config('1', world.mock['port'], world.pep_port, world.ac_proxy_port, world.ac_proxy_ip,
+                         'bad_pep_user', world.ks['platform']['pep']['password'],
                          world.ks['platform']['cloud_domain']['name'], world.ks_proxy_ip, world.ks_proxy_port,
                          'DEBUG', world.cb_plug_in, world.cb_extract_action,
                          cache_users='-1', cache_projects='-1', cache_roles='-1')

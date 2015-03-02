@@ -16,13 +16,13 @@ See the GNU Affero General Public License for more details.
 
 You should have received a copy of the GNU Affero General Public
 License along with fiware-orion-pep.
-If not, seehttp://www.gnu.org/licenses/.
+If not, see http://www.gnu.org/licenses/.
 
 For those usages not covered by the GNU Affero General Public License
 please contact with::[iot_support@tid.es]
 """
 
-__author__ = 'Jon'
+__author__ = 'Jon Calderin Goñi <jon.caldering@gmail.com>'
 
 from fabric.api import run, env, cd, put, sudo, local, output
 import os
@@ -192,10 +192,11 @@ def start_pep(ip, user, password, port='22', pep_path='/fiware-orion-pep'):
             sudo('kill -9 {pid}'.format(pid=proc_pid.strip()))
     with cd(pep_path):
         put(config, '{path}/config.js'.format(path=pep_path))
+        sudo('mkdir -p /tmp/pep')
         if so == 'CentOS':
-            sudo('dtach -n `mktemp -u /tmp/dtach.XXXX` /bin/bash -c \' node bin/pepProxy >> /tmp/pep.log\'')
+            sudo('dtach -n `mktemp -u /tmp/pep/dtach.XXXX` /bin/bash -c \' node bin/pepProxy >> /tmp/pep.log\'')
         elif so == 'Ubuntu':
-            sudo('dtach -n `mktemp -u /tmp/dtach.XXXX` /bin/bash -c \' nodejs bin/pepProxy >> /tmp/pep.log\'')
+            sudo('dtach -n `mktemp -u /tmp/pep/dtach.XXXX` /bin/bash -c \' nodejs bin/pepProxy >> /tmp/pep.log\'')
         else:
             raise NameError('Pep only can be started in Ubuntu and CentOS systems')
 
@@ -223,6 +224,7 @@ def stop_pep(ip, user, password, port='22'):
         pid = sudo('ps -ef | grep "nodejs bin/pepProxy" | grep -v grep | awk \'{print $2}\'')
     else:
         raise NameError('Pep only can be started in Ubuntu and CentOS systems')
+    sudo('rm /tmp/pep/*')
     if pid != '':
         for proc_pid in pid.split('\n'):
             sudo('kill -9 {pid}'.format(pid=proc_pid.strip()))
@@ -232,10 +234,6 @@ def start_pep_local(pep_path='/fiware-orion-pep'):
     """
     Given a ssh connection data, stop PEP if its running, put the new configuration, and start is.
     The machine has to have the "dtach" package
-    :param ip:
-    :param user:
-    :param password:
-    :param port:
     :param pep_path:
     :return:
     """
@@ -260,10 +258,11 @@ def start_pep_local(pep_path='/fiware-orion-pep'):
         for proc_pid in pid.split('\n'):
             local('kill -9 {pid}'.format(pid=proc_pid.strip()), capture=True)
     local('cp {config} {path}/config.js'.format(config=config, path=pep_path), capture=True)
+    local('mkdir -p /tmp/pep')
     if so == 'CentOS':
-        local('dtach -n `mktemp -u /tmp/dtach.XXXX` /bin/bash -c \' cd {path} && node bin/pepProxy >> /tmp/pep.log\''.format(path=pep_path), capture=True)
+        local('dtach -n `mktemp -u /tmp/pep/dtach.XXXX` /bin/bash -c \' cd {path} && node bin/pepProxy >> /tmp/pep.log\''.format(path=pep_path), capture=True)
     elif so == 'Ubuntu':
-        local('dtach -n `mktemp -u /tmp/dtach.XXXX` /bin/bash -c \' cd {path} && nodejs bin/pepProxy >> /tmp/pep.log\''.format(path=pep_path), capture=True)
+        local('dtach -n `mktemp -u /tmp/pep/dtach.XXXX` /bin/bash -c \' cd {path} && nodejs bin/pepProxy >> /tmp/pep.log\''.format(path=pep_path), capture=True)
     else:
         raise NameError('Pep only can be started in Ubuntu and CentOS systems')
 
@@ -271,10 +270,6 @@ def start_pep_local(pep_path='/fiware-orion-pep'):
 def stop_local_pep():
     """
     Stop pep process
-    :param ip:
-    :param user:
-    :param password:
-    :param port:
     :return:
     """
     output['stdout'] = False
@@ -287,6 +282,7 @@ def stop_local_pep():
         pid = local('ps -ef | grep "nodejs bin/pepProxy" | grep -v grep | awk \'{print $2}\'', capture=True)
     else:
         raise NameError('Pep only can be started in Ubuntu and CentOS systems')
+    local('rm /tmp/pep/*')
     if pid != '':
         for proc_pid in pid.split('\n'):
             local('kill -9 {pid}'.format(pid=proc_pid.strip()), capture=True)

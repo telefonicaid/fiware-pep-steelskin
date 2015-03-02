@@ -16,12 +16,12 @@ See the GNU Affero General Public License for more details.
 
 You should have received a copy of the GNU Affero General Public
 License along with fiware-orion-pep.
-If not, seehttp://www.gnu.org/licenses/.
+If not, see http://www.gnu.org/licenses/.
 
 For those usages not covered by the GNU Affero General Public License
 please contact with::[iot_support@tid.es]
 """
-__author__ = 'Jon'
+__author__ = 'Jon Calderin Goñi <jon.caldering@gmail.com>'
 
 from flask import Flask, request, Response
 import requests
@@ -39,6 +39,11 @@ last_path = ''
 history = []
 
 def convert(data):
+    """
+    Convert from unicode to str interable objects
+    :param data:
+    :return:
+    """
     if isinstance(data, basestring):
         return str(data)
     elif isinstance(data, collections.Mapping):
@@ -52,6 +57,16 @@ def convert(data):
 @app.route('/', defaults={'path': ''}, methods=['GET', 'POST', 'UPDATE', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'])
 @app.route('/<path:path>', methods=['GET', 'POST', 'UPDATE', 'DELETE', 'PATCH', 'HEAD', 'OPTIONS'])
 def proxy(path):
+    """
+    Capture all petitions in any path.
+    If path is
+        - last_path: Return the last path requested
+        - history: Return the history of the paths requested
+        - reset_history: Reset the history stored
+        - Other: Store the last path and add the path to the history, then redirect the petition
+    :param path:
+    :return:
+    """
     global requested
     global last_path
     global history
