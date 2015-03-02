@@ -33,7 +33,7 @@ The most likely occurrence of this error will be when the IP address and port ar
 #### VALIDATION-GEN-001: Error connecting to Access Control: %d
 There was a connection error sending a request to the Access Control. The specific nature of the error will be specified in the message. This is error is severe, and may have a big impact in the service.
 This error can be caused by a transient network error, or a transient problem in the Access Control service, in which case it may not require human intervention. If the error is reproduced again, there may be a persistent problem: check the connectivity from the proxy machine to the Access Control one, and make sure the Access Control service is running in the appropriate port and responding to messages.
-####VALIDATION-GEN-002: Wrong status received by Access Control: %d
+#### VALIDATION-GEN-002: Wrong status received by Access Control: %d
 An unexpected status code was received for a request to the Access Control (on that was not specified in the API). This might be a transient problem (a 500 error due to any internal problem in the Access Control) or it might be consequence of a difference in the APIs (maybe because of a change in the version of the Access Control without a proper update in the PEP Proxy side).
 If this error appears frequently, it may be critical, and compatibility of the versions of both components should be checked.
 #### VALIDATION-GEN-003: Error connecting to Keystone authentication: %s
@@ -43,6 +43,11 @@ This error can be caused by a transient network error, or a transient problem in
 This error happens when Keystone rejects an authentication attempt of the PEP Proxy. This is a critical error: the proxy can't work at all without an authorization token.
 This problem may be caused by a change in the credentials accepted by Keystone, and should require manual intervention to be solved. Check the PROXY_USERNAME and PROXY_PASSWORD in the /etc/sysconfig/pepProxy configuration file are valid credentials for the Keystone Proxy. Check Keystone's administration guid to see how to check the validity of a set of credentials.
 If the credentials are not valid, a new set of credentials must be generated in the Keystone Proxy and configured in the PEP Proxy.
+#### VALIDATION-GEN-005: Authentication error trying to authenticate the PEP Proxy %s
+This error happens when Keystone fails to authenticate the PEP proxy (with a status code different than 401 or 404). This means
+an internal error has happened in Keystone, and it may be incapable of processing requests. The problem might be transient but
+it is critical: human supervision is highly advisable. Check the Keystone instance for error in its log and find the soluction in
+the Keystone Operations Manual.
 
 ### Orion errors
 #### ORION-PLUGIN-001: Wrong XML Payload. Action not found

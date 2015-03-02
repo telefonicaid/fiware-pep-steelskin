@@ -53,7 +53,18 @@ EOF
   exit 1
 }
 
+#
+# Check git status and abort if it is dirty
+#
+function checkGitStatus() {
+  git status |grep "Changes not staged for commit" > /dev/null
+  RESULT=$?
 
+  if [ $RESULT = 0 ]; then
+    echo "There are unstaged changes in your git workspace. Clean them before proceeding with the release"
+    exit 0
+  fi
+}
 
 #
 # Chewcking command line parameters
@@ -81,6 +92,7 @@ export PEP_RELEASE=$2
 DATE=$(LANG=C date +"%a %b %d %Y")
 export dateLine="$DATE Daniel Moran <daniel.moranjimenez@telefonica.com> ${NEW_VERSION}"
 
+checkGitStatus
 
 # Modify rpm/SPECS/pepProxy.spec only when step to a non-devel release
 if [ "$PEP_RELEASE" != "dev" ]
@@ -199,7 +211,7 @@ then
     #
     # Prepare develop for the next version
     #
-    sed "s/$NEW_VERSION/$NEW_VERSION-next/" package.json        > /tmp/package.json
+    sed "s/\"version\": \"$NEW_VERSION\"/\"version\": \"$NEW_VERSION-next\"/" package.json        > /tmp/package.json
     sed "s/$NEW_VERSION/$NEW_VERSION-next/" rpm/create-rpm.sh        > /tmp/create-rpm.sh
     mv /tmp/package.json              package.json
     mv /tmp/create-rpm.sh             rpm/create-rpm.sh
