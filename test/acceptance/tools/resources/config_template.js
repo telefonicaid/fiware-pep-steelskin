@@ -20,7 +20,12 @@ config.resource = {
         /**
          * Port where the proxy is listening.
          */
-        port: {{port_listening}}
+        port: {{port_listening}},
+
+        /**
+         * Administration port for the proxy.
+         */
+        adminPort: 11211
     }
 };
 
@@ -31,6 +36,11 @@ config.resource = {
  * validation.
  */
 config.access = {
+    /**
+     * Indicates whether the access control validation should be enabled. Defaults to false.
+     */
+    disable: false,
+
     /**
      * Protocol to use to access the Access Control.
      */
@@ -55,6 +65,7 @@ config.access = {
  * Information about the Identity Manager server from where the information about a user will be drawn.
  */
 config.authentication = {
+    checkHeaders: true,
     module: 'keystone',
     user: '{{pep_user}}',
     password: '{{pep_password}}',
