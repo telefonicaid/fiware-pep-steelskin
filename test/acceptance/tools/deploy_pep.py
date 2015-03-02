@@ -192,6 +192,7 @@ def start_pep(ip, user, password, port='22', pep_path='/fiware-orion-pep'):
             sudo('kill -9 {pid}'.format(pid=proc_pid.strip()))
     with cd(pep_path):
         put(config, '{path}/config.js'.format(path=pep_path))
+        sudo('mkdir -p /tmp/pep')
         if so == 'CentOS':
             sudo('dtach -n `mktemp -u /tmp/pep/dtach.XXXX` /bin/bash -c \' node bin/pepProxy >> /tmp/pep.log\'')
         elif so == 'Ubuntu':
@@ -257,6 +258,7 @@ def start_pep_local(pep_path='/fiware-orion-pep'):
         for proc_pid in pid.split('\n'):
             local('kill -9 {pid}'.format(pid=proc_pid.strip()), capture=True)
     local('cp {config} {path}/config.js'.format(config=config, path=pep_path), capture=True)
+    local('mkdir -p /tmp/pep')
     if so == 'CentOS':
         local('dtach -n `mktemp -u /tmp/pep/dtach.XXXX` /bin/bash -c \' cd {path} && node bin/pepProxy >> /tmp/pep.log\''.format(path=pep_path), capture=True)
     elif so == 'Ubuntu':
