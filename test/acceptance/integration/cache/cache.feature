@@ -46,7 +46,7 @@ Feature: PeP cache in user, project and roles
     And headers general
     When the petition action "POST" is asked without data
     Then the PEP returns an ok
-    And the history of petitions adds "1" token petition
+    And the history of petitions adds "1" petition
     And waits "35" seconds to "all" cache expire
 
   Scenario: Test cache user expired
@@ -58,7 +58,7 @@ Feature: PeP cache in user, project and roles
     And waits "10" seconds to "all" cache expire
     When the petition action "POST" is asked without data
     Then the PEP returns an ok
-    And the history of petitions adds "1" token petition
+    And the history of petitions adds "1" petition
     And waits "35" seconds to "all" cache expire
 
   Scenario: Test cache user and projects expired
@@ -70,7 +70,7 @@ Feature: PeP cache in user, project and roles
     And waits "20" seconds to "all" cache expire
     When the petition action "POST" is asked without data
     Then the PEP returns an ok
-    And the history of petitions adds "2" token petition
+    And the history of petitions adds "2" petition
     And waits "35" seconds to "all" cache expire
 
   Scenario: Test cache expired completed
@@ -82,7 +82,7 @@ Feature: PeP cache in user, project and roles
     And waits "30" seconds to "all" cache expire
     When the petition action "POST" is asked without data
     Then the PEP returns an ok
-    And the history of petitions adds "3" token petition
+    And the history of petitions adds "3" petition
     And waits "35" seconds to "all" cache expire
 
   Scenario: Test cache projects expired
@@ -94,7 +94,7 @@ Feature: PeP cache in user, project and roles
     And waits "10" seconds to "projects" cache expire
     When the petition action "POST" is asked without data
     Then the PEP returns an ok
-    And the history of petitions adds "1" token petition
+    And the history of petitions adds "1" petition
     And the value added to the history is ok
     And waits "35" seconds to "all" cache expire
 
@@ -107,6 +107,6 @@ Feature: PeP cache in user, project and roles
     And waits "10" seconds to "roles" cache expire
     When the petition action "POST" is asked without data
     Then the PEP returns an ok
-    And the history of petitions adds "1" token petition
+    And the history of petitions adds "1" petition
     And the value added to the history is ok
     And waits "35" seconds to "all" cache expire

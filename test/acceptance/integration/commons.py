@@ -39,11 +39,22 @@ import urlparse
 
 @step('a url with "([^"]*)"')
 def a_url_with_url(step, url):
+    """
+    Set the url
+    :param step:
+    :param url:
+    :return:
+    """
     world.url = url
 
 
 @step('a project in the user')
 def a_project_in_the_user(step):
+    """
+    Set the project, checking if it exist in the configuration
+    :param step:
+    :return:
+    """
     found = False
     for domain in world.ks['environment_general']['domains']:
         if domain['name'] == world.ks['domain_ok']:
@@ -58,6 +69,11 @@ def a_project_in_the_user(step):
 
 @step("a user in the domain")
 def a_user_in_the_domain(step):
+    """
+    Set the user checking if it exist in the configuration
+    :param step:
+    :return:
+    """
     found = False
     for domain in world.ks['environment_general']['domains']:
         if domain['name'] == world.ks['domain_ok']:
@@ -70,6 +86,11 @@ def a_user_in_the_domain(step):
 
 @step('a domain in KEYSTONE')
 def a_domain_in_keystone(step):
+    """
+    Set the domain checking if it exist in the configuration
+    :param step:
+    :return:
+    """
     found = False
     if world.ks['domain_ok'] in [x['name'] for x in world.ks['environment_general']['domains']]:
         found = True
@@ -79,6 +100,11 @@ def a_domain_in_keystone(step):
 
 @step('a domain for project_only in KEYSTONE')
 def a_domain_for_project_only_in_keystone(step):
+    """
+    Set a domain configured with toles only in project
+    :param step:
+    :return:
+    """
     found = False
     if world.ks['domain_project_only'] in [x['name'] for x in world.ks['environment_project']['domains']]:
         found = True
@@ -88,6 +114,12 @@ def a_domain_for_project_only_in_keystone(step):
 
 @step('a without role in domain and with "([^"]*)" user in project')
 def a_without_role_in_domain_and_with_user_in_project(step, user):
+    """
+    Set a user with role given in project and not in domain
+    :param step:
+    :param user:
+    :return:
+    """
     found = False
     for domain in world.ks['environment_project']['domains']:
         if domain['name'] == world.ks['domain_project_only']:
@@ -100,6 +132,12 @@ def a_without_role_in_domain_and_with_user_in_project(step, user):
 
 @step('a "([^"]*)" role in the user project')
 def a_role_in_the_user_project(step, role):
+    """
+    Set a project withe the role given
+    :param step:
+    :param role:
+    :return:
+    """
     found = False
     for domain in world.ks['environment_project']['domains']:
         if domain['name'] == world.domain:
@@ -114,6 +152,11 @@ def a_role_in_the_user_project(step, role):
 
 @step('a domain without projects in KEYSTONE')
 def a_domain_without_projects_in_keystone(step):
+    """
+    Set a domain without projects configured in keystone
+    :param step:
+    :return:
+    """
     found = False
     if world.ks['domain_domain_only'] in [x['name'] for x in world.ks['environment_domain']['domains']]:
         found = True
@@ -123,6 +166,12 @@ def a_domain_without_projects_in_keystone(step):
 
 @step('a "([^"]*)" user in domain without projects')
 def a_user_in_domain_without_projects(step, user):
+    """
+    Set a user given without projects in the domain
+    :param step:
+    :param user:
+    :return:
+    """
     found = False
     for domain in world.ks['environment_domain']['domains']:
         if domain['name'] == world.ks['domain_domain_only']:
@@ -135,6 +184,12 @@ def a_user_in_domain_without_projects(step, user):
 
 @step('a "([^"]*)" role in the user and domain')
 def a_role_in_the_user_and_domain(step, role):
+    """
+    Set the project with '/' if the role given is configured in the domain
+    :param step:
+    :param role:
+    :return:
+    """
     found = False
     for domain in world.ks['environment_domain']['domains']:
         if domain['name'] == world.domain:
@@ -149,6 +204,11 @@ def a_role_in_the_user_and_domain(step, role):
 
 @step('the petition gets to the mock')
 def the_petition_gets_to_the_mock(step):
+    """
+    Check the petition gets to the mock with the data sent
+    :param step:
+    :return:
+    """
     mock_url = 'http://{mock_ip}:{mock_port}/last_value'.format(mock_ip=world.mock['ip'], mock_port=world.mock['port'])
     try:
         resp = requests.get(mock_url)
@@ -202,6 +262,7 @@ def the_petition_gets_to_the_mock(step):
 @step("the Context Broker configuration")
 def the_context_broker_configuration(step):
     """
+    Set the context broker plugin (if it is not set) and restart pep
     :type step lettuce.core.Step
     """
     if world.config_set != 'cb':
@@ -214,6 +275,7 @@ def the_context_broker_configuration(step):
 @step("the Headers Context Broker configuration without cache")
 def the_headers_context_broker_configuration_without_cache(step):
     """
+    Set the context broker plugin (if it is not set) without cache
     :type step lettuce.core.Step
     """
     if world.config_set != 'head':
@@ -226,6 +288,7 @@ def the_headers_context_broker_configuration_without_cache(step):
 @step("restart pep with bad ks configuration")
 def restart_pep_with_bad_ks_configuration(step):
     """
+    Set the context broker plugin (if it is not set) setting a bad ip of kesytone
     :type step lettuce.core.Step
     """
     if world.config_set != 'bad_ks':
@@ -237,6 +300,7 @@ def restart_pep_with_bad_ks_configuration(step):
 @step("restart pep with bad ac configuration")
 def restart_pep_with_bad_ac_configuration(step):
     """
+    Set the context broker plugin (if it is not set) setting a bad ip of access control
     :type step lettuce.core.Step
     """
     if world.config_set != 'bad_ac':
@@ -248,6 +312,7 @@ def restart_pep_with_bad_ac_configuration(step):
 @step("restart pep with bad target configuration")
 def restart_pep_with_bad_target_configuration(step):
     """
+    Set the context broker plugin (if it is not set) setting a bad ip of target
     :type step lettuce.core.Step
     """
     if world.config_set != 'bad_target':
@@ -259,6 +324,7 @@ def restart_pep_with_bad_target_configuration(step):
 @step("restart pep with bad pep user")
 def restart_pep_with_bad_pep_user(step):
     """
+    Set the context broker plugin (if it is not set) setting a bad pep user credential
     :type step lettuce.core.Step
     """
     if world.config_set != 'bad_pep_user':
@@ -271,6 +337,7 @@ def restart_pep_with_bad_pep_user(step):
 @step("the cache gradual configuration")
 def the_cache_gradual_configuration(step):
     """
+    Set the context broker plugin setting the cache expired time gradual
     :type step lettuce.core.Step
     """
     world.config_set = 'cache_gradual'
@@ -282,6 +349,7 @@ def the_cache_gradual_configuration(step):
 @step("the cache projects configuration")
 def the_cache_projects_configuration(step):
     """
+    Set the context broker plugin setting the cache project expire first
     :type step lettuce.core.Step
     """
     world.config_set = 'cache_projects'
@@ -293,6 +361,7 @@ def the_cache_projects_configuration(step):
 @step("the cache roles configuration")
 def the_cache_roles_configuration(step):
     """
+    Ste the context broker plugin setting the cache roles expire first
     :type step lettuce.core.Step
     """
     world.config_set = 'cache_roles'
@@ -304,6 +373,7 @@ def the_cache_roles_configuration(step):
 @step("the Keypass configuration")
 def the_keystone_configuration(step):
     """
+    Set the keypass (Access Control) configuration (if it is not set) and restart pep
     :type step lettuce.core.Step
     """
     if world.config_set != 'ks':
@@ -316,6 +386,7 @@ def the_keystone_configuration(step):
 @step("the Perseo configuration")
 def the_perseo_configuration(step):
     """
+    Set the CEP (Perseo) configuration (if it is not set) and restart pep
     :type step lettuce.core.Step
     """
     if world.config_set != 'cep':
@@ -328,6 +399,7 @@ def the_perseo_configuration(step):
 @step("the Bypass configuration")
 def the_bypass_configuration(step):
     """
+    Seth the context broker configuration (if its not set) setting the bypass configuration (enabling it)
     :type step lettuce.core.Step
     """
     if world.config_set != 'bypass':
@@ -339,12 +411,23 @@ def the_bypass_configuration(step):
 
 @step('the keystone proxy history reset')
 def the_keystone_proxy_history_reset(step):
+    """
+    Reset the history of the keystone proxy
+    :param step:
+    :return:
+    """
     requests.request('get', 'http://{ks_proxy_ip}:{ks_proxy_port}/reset_history'.format(ks_proxy_ip=world.ks_proxy_ip,
                                                                                         ks_proxy_port=world.ks_proxy_port))
 
 
 @step('the petition action "([^"]*)" is asked without data')
 def the_petition_action_is_asked_without_data(step, action):
+    """
+    Ask a request to pep without data (with the url and headers set before)
+    :param step:
+    :param action:
+    :return:
+    """
     world.response = requests.request(action.lower(), 'http://{pep_ip}:{pep_port}'.format(pep_ip=world.pep_host_ip,
                                                                                           pep_port=world.pep_port) + world.url,
                                       headers=world.headers, data=json.dumps({}))
@@ -352,6 +435,12 @@ def the_petition_action_is_asked_without_data(step, action):
 
 @step('the petition action "([^"]*)" is asked$')
 def the_petition_action_is_asked(step, action):
+    """
+    Ask a request to pep with the action given (with url, data and headers set before)
+    :param step:
+    :param action:
+    :return:
+    """
     world.response = requests.request(action.lower(), 'http://{pep_ip}:{pep_port}'.format(pep_ip=world.pep_host_ip,
                                                                                           pep_port=world.pep_port) + world.url,
                                       headers=world.headers, data=world.data)
@@ -359,6 +448,12 @@ def the_petition_action_is_asked(step, action):
 
 @step('the Keystone proxy receive the last petition "([^"]*)" from PEP')
 def the_keystone_proxy_receive_the_last_petition_from_pep(step, last_petition):
+    """
+    Check if the last path proxy received is the same as given one
+    :param step:
+    :param last_petition:
+    :return:
+    """
     resp = requests.request('GET',
                             'http://{ks_proxy_ip}:{ks_proxy_port}/last_path'.format(ks_proxy_ip=world.ks_proxy_ip,
                                                                                     ks_proxy_port=world.ks_proxy_port)).text
@@ -368,18 +463,36 @@ def the_keystone_proxy_receive_the_last_petition_from_pep(step, last_petition):
 
 @step('the PEP returns an error$')
 def the_pep_returns_an_error(step):
+    """
+    Check if PEP returns any http error
+    :param step:
+    :return:
+    """
     assert str(
         world.response.status_code) != '200', 'PEP do not return the error expected (403), returned: {error_returnet}'.format(
         error_returnet=str(world.response.status_code))
 
 @step('the PEP returns an error with code "([^"]*)"$')
 def the_pep_returns_an_error_with_code(step, error_code):
+    """
+    Check if PEP returns an specific http error given
+    :param step:
+    :param error_code:
+    :return:
+    """
     assert str(
         world.response.status_code) == error_code, 'PEP do not return the error expected ({error_code}), returned: {error_returnet}'.format(
         error_returnet=str(world.response.status_code), error_code=error_code)
 
 @step('the PEP returns an error with code "([^"]*)" and name "([^"]*)"')
 def the_pep_returns_an_error_with_code_and_name(step, error_code, error_name):
+    """
+    Check if PEP returns the given error with the given name
+    :param step:
+    :param error_code:
+    :param error_name:
+    :return:
+    """
     assert str(
         world.response.status_code) == error_code and world.response.json()['name'] == error_name, 'PEP do not return \
         the error expected ({error_code_expected}), returned: {error_returned} \
@@ -390,6 +503,12 @@ def the_pep_returns_an_error_with_code_and_name(step, error_code, error_name):
 
 @step('headers with format "([^"]*)"$')
 def headers_with_format(step, format):
+    """
+    Set headers with the universal user, password, project and domain, and the pyaload format given
+    :param step:
+    :param format:
+    :return:
+    """
     token = IdmUtils.get_token(world.ks['user_all'], world.ks['user_all'], world.ks['domain_ok'],
                                world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
     world.format = format
@@ -404,6 +523,12 @@ def headers_with_format(step, format):
 
 @step('restart "([^"]*)" process with bad final component port')
 def restart_process_with_nad_final_component_port(step, component):
+    """
+    Restart a proxy or mock given with a bad port configuration for the final target
+    :param step:
+    :param component:
+    :return:
+    """
     if component == 'ks':
         stop_process(world.ks_proxy)
         world.ks_proxy = start_proxy(world.ks_proxy_bind_ip, world.ks_proxy_port, world.ks['platform']['address']['ip'],
@@ -424,6 +549,12 @@ def restart_process_with_nad_final_component_port(step, component):
 
 @step('restart "([^"]*)" process with bad proxy port')
 def restar_process_with_bad_proxy_port(step, component):
+    """
+    Restart a proxy with a bad port
+    :param step:
+    :param component:
+    :return:
+    """
     if component == 'ks':
         stop_process(world.ks_proxy)
         world.ks_proxy = start_proxy(world.ks_proxy_bind_ip, 9876, world.ks['platform']['address']['ip'],
@@ -441,6 +572,12 @@ def restar_process_with_bad_proxy_port(step, component):
 
 @step('restore the process "([^"]*)"')
 def restore_the_process(step, component):
+    """
+    Restart a proxy or mock given with the correct configuration
+    :param step:
+    :param component:
+    :return:
+    """
     if component == 'ks':
         stop_process(world.ks_proxy)
         world.ks_proxy = start_proxy(world.ks_proxy_bind_ip, world.ks_proxy_port, world.ks['platform']['address']['ip'],

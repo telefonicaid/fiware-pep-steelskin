@@ -28,6 +28,11 @@ from iotqautils.idm_keystone import IdmUtils
 
 @step('headers$')
 def headers(step):
+    """
+    Universal headers with roles in domain
+    :param step:
+    :return:
+    """
     token = IdmUtils.get_token(world.ks['user_all'], world.ks['user_all'], world.ks['domain_ok'], world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
     headers = {
         "Accept": "application/json",

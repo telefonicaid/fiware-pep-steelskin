@@ -31,6 +31,12 @@ from iotqautils.idm_keystone import IdmUtils
 
 @step('a KeyPass "([^"]*)" petition is asked to PEP')
 def a_keypass_petition_is_asked_to_pep(step, action):
+    """
+    Set headers (with user, domain and project defined before), payload and action. Then, sent the petition to pep
+    :param step:
+    :param action:
+    :return:
+    """
     token = IdmUtils.get_token(world.user, world.user, world.domain, world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
     headers = {
         "Accept": "application/json",

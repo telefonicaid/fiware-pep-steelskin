@@ -33,15 +33,34 @@ import json
 
 @step('headers without the header "([^"]*)"')
 def headers_without_the_header(step, header):
+    """
+    Delete the header given
+    :param step:
+    :param header:
+    :return:
+    """
     del world.headers[header]
 
 @step('header "([^"]*)" inexistent in KEYSTONE')
 def headers_inexistent_in_keystone(step, header):
+    """
+    Set the value "inexistant" to the header given
+    :param step:
+    :param header:
+    :return:
+    """
     world.headers[header] = 'inexistant'
 
 
 @step('headers with format "([^"]*)" and "([^"]*)" action')
 def headers_with_format_and_action(step, format, action):
+    """
+    Set headers with the universal domain, user and project, with given format and action
+    :param step:
+    :param format:
+    :param action:
+    :return:
+    """
     token = IdmUtils.get_token(world.ks['user_all'], world.ks['user_all'], world.ks['domain_ok'], world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
     world.format = format
     headers = {
@@ -62,10 +81,22 @@ def headers_with_format_and_action(step, format, action):
 
 @step('the content-type header with the value "([^"]*)"')
 def the_content_type_header_with_the_value_group1(step, content_type):
+    """
+    Set the content-type header
+    :param step:
+    :param content_type:
+    :return:
+    """
     world.headers['content-type'] = content_type
 
 @step('the payload with the value "([^"]*)"')
 def the_payload_with_the_value_group1(step, payload):
+    """
+    Set the payload given.
+    :param step:
+    :param payload:
+    :return:
+    """
     try:
         world.data = json.dumps(json.loads(payload.replace('\'', '"')))
     except:

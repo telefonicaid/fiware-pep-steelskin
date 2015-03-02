@@ -33,6 +33,12 @@ from iotqautils.idm_keystone import IdmUtils
 
 @step('a CEP "([^"]*)" petition is asked to PEP')
 def a_cep_petition_is_asked_to_pep(step, action):
+    """
+    Set the headers with the action given (and the domain and project set before). Then send the request to PEP
+    :param step:
+    :param action:
+    :return:
+    """
     token = IdmUtils.get_token(world.user, world.user, world.domain, world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
     headers = {
         "Accept": "application/json",

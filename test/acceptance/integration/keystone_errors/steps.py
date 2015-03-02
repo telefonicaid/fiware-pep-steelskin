@@ -31,6 +31,11 @@ from iotqautils.idm_keystone import IdmUtils
 
 @step('headers with bad token')
 def headers_with_bad_token(step):
+    """
+    Headers with universal domain, empty project and bad token
+    :param step:
+    :return:
+    """
     headers = {
         "Accept": "application/json",
         'content-type': 'application/json',
@@ -43,6 +48,11 @@ def headers_with_bad_token(step):
 
 @step('headers with bad domain')
 def headers_with_bad_domain(step):
+    """
+    Headers with universal user, empty project and bad domain (not existent)
+    :param step:
+    :return:
+    """
     token = IdmUtils.get_token(world.ks['user_all'], world.ks['user_all'], world.ks['domain_ok'],
                                world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
     headers = {
@@ -57,6 +67,11 @@ def headers_with_bad_domain(step):
 
 @step('headers with bad project')
 def headers_with_bad_project(step):
+    """
+    Headers with universal user and domain, but bad project( not exitent)
+    :param step:
+    :return:
+    """
     token = IdmUtils.get_token(world.ks['user_all'], world.ks['user_all'], world.ks['domain_ok'],
                                world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
     headers = {
@@ -71,6 +86,11 @@ def headers_with_bad_project(step):
 
 @step('headers with empty project')
 def headers_with_empty_project(step):
+    """
+    Headers with universal user and domain but empty project
+    :param step:
+    :return:
+    """
     token = IdmUtils.get_token(world.ks['user_all'], world.ks['user_all'], world.ks['domain_ok'],
                                world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
     headers = {
@@ -85,6 +105,11 @@ def headers_with_empty_project(step):
 
 @step('headers with domain without roles')
 def headers_with_domain_without_roles(step):
+    """
+    Headers with a user and domain configured without roles
+    :param step:
+    :return:
+    """
     token = IdmUtils.get_token(world.ks['user_no_roles'], world.ks['user_no_roles'], world.ks['domain_no_roles'],
                                world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
     headers = {
@@ -99,6 +124,11 @@ def headers_with_domain_without_roles(step):
 
 @step('headers with project without roles')
 def headers_with_project_without_roles(step):
+    """
+    headers with a user, domain and project without roles configured
+    :param step:
+    :return:
+    """
     token = IdmUtils.get_token(world.ks['user_no_roles'], world.ks['user_no_roles'], world.ks['domain_no_roles'],
                                world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
     headers = {
