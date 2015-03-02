@@ -16,18 +16,23 @@ See the GNU Affero General Public License for more details.
 
 You should have received a copy of the GNU Affero General Public
 License along with fiware-orion-pep.
-If not, seehttp://www.gnu.org/licenses/.
+If not, see http://www.gnu.org/licenses/.
 
 For those usages not covered by the GNU Affero General Public License
 please contact with::[iot_support@tid.es]
 """
-__author__ = 'Jon'
+__author__ = 'Jon Calderin Goñi <jon.caldering@gmail.com>'
 
 from lettuce import step, world
 from iotqautils.idm_keystone import IdmUtils
 
 @step('headers$')
-def with_format_group1(step):
+def headers(step):
+    """
+    Universal headers with roles in domain
+    :param step:
+    :return:
+    """
     token = IdmUtils.get_token(world.ks['user_all'], world.ks['user_all'], world.ks['domain_ok'], world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
     headers = {
         "Accept": "application/json",

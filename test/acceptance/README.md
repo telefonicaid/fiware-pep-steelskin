@@ -42,16 +42,16 @@ Some examples:
 ### Tests Coverage (features):
 
 - Errors raised by PEP because of errors from/to Keystone.
-- AC actions when the rol is defined only in the domain.
-- AC actions when the rol is defined only in a project.
+- AC actions when the role is defined only in the domain.
+- AC actions when the role is defined only in a project.
 - AC middleware.
 - Test bypass functionality.
 - PeP cache in user, project and roles.
-- Context broker actions when the rol is defined only in a domain.
-- Context broker actions when the rol is defined only in a project.
+- Context broker actions when the role is defined only in a domain.
+- Context broker actions when the role is defined only in a project.
 - Context broker middleware.
-- CEP actions when the rol is defined only in the domain.
-- CEP actions when the rol is defined only in a project.
+- CEP actions when the role is defined only in the domain.
+- CEP actions when the role is defined only in a project.
 - CEP middleware.
 - Test request headers.
 - Errors raised by PEP because of errors from/to Keystone.

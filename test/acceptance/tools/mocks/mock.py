@@ -16,12 +16,12 @@ See the GNU Affero General Public License for more details.
 
 You should have received a copy of the GNU Affero General Public
 License along with fiware-orion-pep.
-If not, seehttp://www.gnu.org/licenses/.
+If not, see http://www.gnu.org/licenses/.
 
 For those usages not covered by the GNU Affero General Public License
 please contact with::[iot_support@tid.es]
 """
-__author__ = 'Jon'
+__author__ = 'Jon Calderin Goñi <jon.caldering@gmail.com>'
 
 
 import sys, json
@@ -49,6 +49,10 @@ headers = ''
 @app.route('/v1/registry/updateContextAvailabilitySubscription', methods=['POST'])
 @app.route('/v1/registry/unsubscribeContextAvailability', methods=['POST'])
 def cb_standard():
+    """
+    Store the petition and respond with the same data and an ok
+    :return:
+    """
     global requested
     global parms
     global headers
@@ -68,6 +72,10 @@ def cb_standard():
 @app.route('/v1/contextSubscriptions/<path:path>', methods=['GET', 'POST', 'DELETE', 'PUT'])
 @app.route('/v1/registry/contextAvailabilitySubscriptions/<path:path>', methods=['GET', 'POST', 'DELETE', 'PUT'])
 def cb_convenience(path):
+    """
+    Store the petition and respond with the same data and an ok
+    :return:
+    """
     global requested
     global path_access
     global parms
@@ -81,6 +89,10 @@ def cb_convenience(path):
 @app.route('/v1/contextSubscriptions', methods=['GET', 'POST', 'DELETE', 'PUT'])
 @app.route('/v1/registry/contextAvailabilitySubscriptions', methods=['GET', 'POST', 'DELETE', 'PUT'])
 def cb_convenience_without_path():
+    """
+    Store the petition and respond with the same data and an ok
+    :return:
+    """
     global requested
     global parms
     global headers
@@ -96,6 +108,10 @@ def cb_convenience_without_path():
 @app.route('/rules', methods=['GET', 'POST'])
 @app.route('/vrules', methods=['GET', 'POST'])
 def cep_withoutpath():
+    """
+    Store the petition and respond with the same data and an ok
+    :return:
+    """
     global requested
     global parms
     global headers
@@ -109,7 +125,11 @@ def cep_withoutpath():
 
 @app.route('/rules/<path:path>', methods=['GET', 'DELETE'])
 @app.route('/m2m/<path:path>', methods=['GET', 'DELETE', 'PUT', 'POST'])
-def cb_withpath(path):
+def cep_with_path(path):
+    """
+    Store the petition and respond with the same data and an ok
+    :return:
+    """
     global requested
     global path_access
     global parms
@@ -124,6 +144,10 @@ def cb_withpath(path):
 
 @app.route('/pap/v1', methods=['DELETE'])
 def ac_withoutpath():
+    """
+    Store the petition and respond with the same data and an ok
+    :return:
+    """
     global requested
     global parms
     global headers
@@ -137,6 +161,10 @@ def ac_withoutpath():
 
 @app.route('/pap/v1/<path:path>', methods=['GET', 'DELETE', 'POST'])
 def ac_withpath(path):
+    """
+    Store the petition and respond with the same data and an ok
+    :return:
+    """
     global requested
     global path_access
     global parms
@@ -149,6 +177,10 @@ def ac_withpath(path):
 
 @app.route('/last_value', methods=['GET'])
 def last_value():
+    """
+    Get the last petition given
+    :return:
+    """
     global requested
     global path_access
     global parms
