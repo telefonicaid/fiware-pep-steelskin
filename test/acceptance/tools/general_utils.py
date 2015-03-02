@@ -414,10 +414,22 @@ def set_cb_config_with_bad_pep_user():
                          'DEBUG', world.cb_plug_in, world.cb_extract_action,
                          cache_users='-1', cache_projects='-1', cache_roles='-1', administration_port=world.administration_port)
 
+
 def get_package_json():
+    """
+    Get the package json content in python dict
+    :return:
+    """
     path, fl = os.path.split(os.path.realpath(__file__))
     if platform.system() == 'Windows':
         path_folders = path.split('\\')
         path = '\\'.join(path_folders[:len(path_folders)-3])
         file = open('{path}\\package.json'.format(path=path))
         return json.load(file)
+    elif platform.system() == 'Linux':
+        path_folders = path.split('/')
+        path = '/'.join(path_folders[:len(path_folders)-3])
+        file = open('{path}/package.json'.format(path=path))
+        return json.load(file)
+    else:
+        raise ValueError('SO not recognized')
