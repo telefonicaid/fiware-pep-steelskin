@@ -21,6 +21,7 @@ If not, see http://www.gnu.org/licenses/.
 For those usages not covered by the GNU Affero General Public License
 please contact with::[iot_support@tid.es]
 """
+import json
 import urlparse
 
 __author__ = 'Jon Calderin Goñi <jon.caldering@gmail.com>'
@@ -280,7 +281,7 @@ def set_config_cb():
     set_variables_config(world.mock['ip'], world.mock['port'], world.pep_port, world.ac_proxy_port, world.ac_proxy_ip,
                          world.ks['platform']['pep']['user'], world.ks['platform']['pep']['password'],
                          world.ks['platform']['cloud_domain']['name'], world.ks_proxy_ip, world.ks_proxy_port,
-                         'DEBUG', world.cb_plug_in, world.cb_extract_action)
+                         'DEBUG', world.cb_plug_in, world.cb_extract_action, administration_port=world.administration_port)
 
 
 def set_config_keypass():
@@ -291,7 +292,7 @@ def set_config_keypass():
     set_variables_config(world.mock['ip'], world.mock['port'], world.pep_port, world.ac_proxy_port, world.ac_proxy_ip,
                          world.ks['platform']['pep']['user'], world.ks['platform']['pep']['password'],
                          world.ks['platform']['cloud_domain']['name'], world.ks_proxy_ip, world.ks_proxy_port,
-                         'DEBUG', world.keypass_plug_in, world.keypass_extract_action)
+                         'DEBUG', world.keypass_plug_in, world.keypass_extract_action, administration_port=world.administration_port)
 
 
 def set_config_perseo():
@@ -302,7 +303,7 @@ def set_config_perseo():
     set_variables_config(world.mock['ip'], world.mock['port'], world.pep_port, world.ac_proxy_port, world.ac_proxy_ip,
                          world.ks['platform']['pep']['user'], world.ks['platform']['pep']['password'],
                          world.ks['platform']['cloud_domain']['name'], world.ks_proxy_ip, world.ks_proxy_port,
-                         'DEBUG', world.perseo_plug_in, world.perseo_extract_action)
+                         'DEBUG', world.perseo_plug_in, world.perseo_extract_action, administration_port=world.administration_port)
 
 
 def set_config_bypass():
@@ -315,7 +316,7 @@ def set_config_bypass():
                          world.ks['platform']['cloud_domain']['name'], world.ks_proxy_ip, world.ks_proxy_port,
                          'DEBUG', world.keypass_plug_in, world.keypass_extract_action, 'true',
                          world.structure[world.ks['domain_bypass']]['users'][world.ks['user_bypass']]['roles'][
-                             world.ac['bypass_role']]['id'])
+                             world.ac['bypass_role']]['id'], administration_port=world.administration_port)
 
 
 def set_config_cache_gradual():
@@ -327,7 +328,7 @@ def set_config_cache_gradual():
                          world.ks['platform']['pep']['user'], world.ks['platform']['pep']['password'],
                          world.ks['platform']['cloud_domain']['name'], world.ks_proxy_ip, world.ks_proxy_port,
                          'DEBUG', world.cb_plug_in, world.cb_extract_action,
-                         cache_users='10', cache_projects='20', cache_roles='30')
+                         cache_users='10', cache_projects='20', cache_roles='30', administration_port=world.administration_port)
 
 
 def set_config_cache_projects():
@@ -339,7 +340,7 @@ def set_config_cache_projects():
                          world.ks['platform']['pep']['user'], world.ks['platform']['pep']['password'],
                          world.ks['platform']['cloud_domain']['name'], world.ks_proxy_ip, world.ks_proxy_port,
                          'DEBUG', world.cb_plug_in, world.cb_extract_action,
-                         cache_users='30', cache_projects='10', cache_roles='30')
+                         cache_users='30', cache_projects='10', cache_roles='30', administration_port=world.administration_port)
 
 
 def set_config_cache_roles():
@@ -351,7 +352,7 @@ def set_config_cache_roles():
                          world.ks['platform']['pep']['user'], world.ks['platform']['pep']['password'],
                          world.ks['platform']['cloud_domain']['name'], world.ks_proxy_ip, world.ks_proxy_port,
                          'DEBUG', world.cb_plug_in, world.cb_extract_action,
-                         cache_users='30', cache_projects='30', cache_roles='10')
+                         cache_users='30', cache_projects='30', cache_roles='10', administration_port=world.administration_port)
 
 
 def set_cb_config_withour_cache():
@@ -363,7 +364,7 @@ def set_cb_config_withour_cache():
                          world.ks['platform']['pep']['user'], world.ks['platform']['pep']['password'],
                          world.ks['platform']['cloud_domain']['name'], world.ks_proxy_ip, world.ks_proxy_port,
                          'DEBUG', world.cb_plug_in, world.cb_extract_action,
-                         cache_users='-1', cache_projects='-1', cache_roles='-1')
+                         cache_users='-1', cache_projects='-1', cache_roles='-1', administration_port=world.administration_port)
 
 
 def set_cb_config_with_bad_ks_ip():
@@ -375,7 +376,7 @@ def set_cb_config_with_bad_ks_ip():
                          world.ks['platform']['pep']['user'], world.ks['platform']['pep']['password'],
                          world.ks['platform']['cloud_domain']['name'], '1', world.ks_proxy_port,
                          'DEBUG', world.cb_plug_in, world.cb_extract_action,
-                         cache_users='-1', cache_projects='-1', cache_roles='-1')
+                         cache_users='-1', cache_projects='-1', cache_roles='-1', administration_port=world.administration_port)
 
 
 def set_cb_config_with_bad_ac_ip():
@@ -387,7 +388,7 @@ def set_cb_config_with_bad_ac_ip():
                          world.ks['platform']['pep']['user'], world.ks['platform']['pep']['password'],
                          world.ks['platform']['cloud_domain']['name'], world.ks_proxy_ip, world.ks_proxy_port,
                          'DEBUG', world.cb_plug_in, world.cb_extract_action,
-                         cache_users='-1', cache_projects='-1', cache_roles='-1')
+                         cache_users='-1', cache_projects='-1', cache_roles='-1', administration_port=world.administration_port)
 
 
 def set_cb_config_with_bad_target_ip():
@@ -399,7 +400,7 @@ def set_cb_config_with_bad_target_ip():
                          world.ks['platform']['pep']['user'], world.ks['platform']['pep']['password'],
                          world.ks['platform']['cloud_domain']['name'], world.ks_proxy_ip, world.ks_proxy_port,
                          'DEBUG', world.cb_plug_in, world.cb_extract_action,
-                         cache_users='-1', cache_projects='-1', cache_roles='-1')
+                         cache_users='-1', cache_projects='-1', cache_roles='-1', administration_port=world.administration_port)
 
 
 def set_cb_config_with_bad_pep_user():
@@ -411,4 +412,12 @@ def set_cb_config_with_bad_pep_user():
                          'bad_pep_user', world.ks['platform']['pep']['password'],
                          world.ks['platform']['cloud_domain']['name'], world.ks_proxy_ip, world.ks_proxy_port,
                          'DEBUG', world.cb_plug_in, world.cb_extract_action,
-                         cache_users='-1', cache_projects='-1', cache_roles='-1')
+                         cache_users='-1', cache_projects='-1', cache_roles='-1', administration_port=world.administration_port)
+
+def get_package_json():
+    path, fl = os.path.split(os.path.realpath(__file__))
+    if platform.system() == 'Windows':
+        path_folders = path.split('\\')
+        path = '\\'.join(path_folders[:len(path_folders)-3])
+        file = open('{path}\\package.json'.format(path=path))
+        return json.load(file)
