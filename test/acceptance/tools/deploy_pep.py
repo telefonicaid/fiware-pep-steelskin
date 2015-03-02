@@ -193,9 +193,9 @@ def start_pep(ip, user, password, port='22', pep_path='/fiware-orion-pep'):
     with cd(pep_path):
         put(config, '{path}/config.js'.format(path=pep_path))
         if so == 'CentOS':
-            sudo('dtach -n `mktemp -u /tmp/dtach.XXXX` /bin/bash -c \' node bin/pepProxy >> /tmp/pep.log\'')
+            sudo('dtach -n `mktemp -u /tmp/pep/dtach.XXXX` /bin/bash -c \' node bin/pepProxy >> /tmp/pep.log\'')
         elif so == 'Ubuntu':
-            sudo('dtach -n `mktemp -u /tmp/dtach.XXXX` /bin/bash -c \' nodejs bin/pepProxy >> /tmp/pep.log\'')
+            sudo('dtach -n `mktemp -u /tmp/pep/dtach.XXXX` /bin/bash -c \' nodejs bin/pepProxy >> /tmp/pep.log\'')
         else:
             raise NameError('Pep only can be started in Ubuntu and CentOS systems')
 
@@ -223,6 +223,7 @@ def stop_pep(ip, user, password, port='22'):
         pid = sudo('ps -ef | grep "nodejs bin/pepProxy" | grep -v grep | awk \'{print $2}\'')
     else:
         raise NameError('Pep only can be started in Ubuntu and CentOS systems')
+    sudo('rm /tmp/pep/*')
     if pid != '':
         for proc_pid in pid.split('\n'):
             sudo('kill -9 {pid}'.format(pid=proc_pid.strip()))
@@ -257,9 +258,9 @@ def start_pep_local(pep_path='/fiware-orion-pep'):
             local('kill -9 {pid}'.format(pid=proc_pid.strip()), capture=True)
     local('cp {config} {path}/config.js'.format(config=config, path=pep_path), capture=True)
     if so == 'CentOS':
-        local('dtach -n `mktemp -u /tmp/dtach.XXXX` /bin/bash -c \' cd {path} && node bin/pepProxy >> /tmp/pep.log\''.format(path=pep_path), capture=True)
+        local('dtach -n `mktemp -u /tmp/pep/dtach.XXXX` /bin/bash -c \' cd {path} && node bin/pepProxy >> /tmp/pep.log\''.format(path=pep_path), capture=True)
     elif so == 'Ubuntu':
-        local('dtach -n `mktemp -u /tmp/dtach.XXXX` /bin/bash -c \' cd {path} && nodejs bin/pepProxy >> /tmp/pep.log\''.format(path=pep_path), capture=True)
+        local('dtach -n `mktemp -u /tmp/pep/dtach.XXXX` /bin/bash -c \' cd {path} && nodejs bin/pepProxy >> /tmp/pep.log\''.format(path=pep_path), capture=True)
     else:
         raise NameError('Pep only can be started in Ubuntu and CentOS systems')
 
@@ -279,6 +280,7 @@ def stop_local_pep():
         pid = local('ps -ef | grep "nodejs bin/pepProxy" | grep -v grep | awk \'{print $2}\'', capture=True)
     else:
         raise NameError('Pep only can be started in Ubuntu and CentOS systems')
+    local('rm /tmp/pep/*')
     if pid != '':
         for proc_pid in pid.split('\n'):
             local('kill -9 {pid}'.format(pid=proc_pid.strip()), capture=True)
