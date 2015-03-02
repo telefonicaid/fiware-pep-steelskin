@@ -22,7 +22,7 @@
 
 @ac_actions_project
 Feature: AC actions when the role is defined only in a project
-  check if all urls of EPB, with the correct permissions in AC, could connect with CEP
+  check if all urls of AC, with the correct permissions in AC, get for its destination
 
   Background:
     Given the Keypass configuration
