@@ -422,14 +422,13 @@ def get_package_json():
     """
     path, fl = os.path.split(os.path.realpath(__file__))
     if platform.system() == 'Windows':
-        path_folders = path.split('\\')
-        path = '\\'.join(path_folders[:len(path_folders)-3])
-        file = open('{path}\\package.json'.format(path=path))
-        return json.load(file)
+        separator = '\\'
     elif platform.system() == 'Linux':
-        path_folders = path.split('/')
-        path = '/'.join(path_folders[:len(path_folders)-3])
-        file = open('{path}/package.json'.format(path=path))
-        return json.load(file)
+        separator = '/'
     else:
         raise ValueError('SO not recognized')
+    path_folders = path.split(separator)
+    # The file "package.json" is three levels up this file
+    path = separator.join(path_folders[:len(path_folders)-3])
+    file = open('{path}{separator}package.json'.format(path=path, separator=separator))
+    return json.load(file)
