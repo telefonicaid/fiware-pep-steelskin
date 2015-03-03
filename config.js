@@ -69,7 +69,7 @@ config.authentication = {
     module: 'keystone',
     user: 'pepproxy',
     password: 'pepproxy',
-    domainName: 'Default',
+    domainName: 'admin_domain',
     retries: 3,
     cacheTTLs: {
         users: 1000,
