@@ -25,7 +25,7 @@ config.resource = {
         /**
          * Administration port for the proxy.
          */
-        adminPort: 11211
+        adminPort: {{administration_port}}
     }
 };
 

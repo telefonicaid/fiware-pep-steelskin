@@ -36,7 +36,7 @@ def set_variables_config(host_proxied_ip, host_proxied_port, port_listening,
                          log_level,
                          plug_in, plug_in_extract_action,
                          bypass_activation='false', bypass_id='',
-                         cache_users='1000', cache_projects='1000', cache_roles='60'):
+                         cache_users='1000', cache_projects='1000', cache_roles='60', administration_port='11211'):
     """
     Modify the variables in the PEP config_template file and write the final values in a PEP config file.
     :param host_proxied_ip:
@@ -77,7 +77,8 @@ def set_variables_config(host_proxied_ip, host_proxied_port, port_listening,
         'bypass_id': bypass_id,
         'cache_users': cache_users,
         'cache_projects': cache_projects,
-        'cache_roles': cache_roles
+        'cache_roles': cache_roles,
+        'administration_port': administration_port
     }
     path, fl = os.path.split(os.path.realpath(__file__))
     if platform.system() == 'Windows':

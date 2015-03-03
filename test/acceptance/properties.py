@@ -33,14 +33,15 @@ local_ip_address = s.getsockname()[0]
 # ***************************************************************************
 
 world.pep_host_ip = 'localhost'
-world.access_control_host_ip = '127.0.0.1'
-world.access_control_host_port = '7070'
-world.keystone_host_ip = '127.0.0.1'
-world.keystone_host_port = '8081'
+world.access_control_host_ip = 'localhost'
+world.access_control_host_port = '8080'
+world.keystone_host_ip = 'localhost'
+world.keystone_host_port = '5000'
 
 # Values to the pep config file
 world.pep_log_level = 'DEBUG'
 world.pep_port = '1026'
+world.administration_port = '11211'
 # ******************************
 
 # *********************LOCAL*****************
@@ -58,10 +59,10 @@ world.pep_path = '/fiware-orion-pep'
 # *********************DOCKER*****************
 # world.environment = 'docker'
 # world.pep_path = '/fiware-orion-pep'
-# world.docker_ip = '192.168.1.108'
+# world.docker_ip = 'localhost'
 # world.docker_user = 'vagrant'
 # world.docker_password = 'vagrant'
-# world.docker_pep_container = 'pep_c4'
+# world.docker_pep_container = 'pep_c'
 # world.docker_pep_user = 'root'
 # world.docker_pep_password = 'root'
 # *********************************************

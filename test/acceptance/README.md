@@ -41,23 +41,25 @@ Some examples:
 
 ### Tests Coverage (features):
 
-- Errors raised by PEP because of errors from/to Keystone.
-- AC actions when the role is defined only in the domain.
-- AC actions when the role is defined only in a project.
-- AC middleware.
-- Test bypass functionality.
-- PeP cache in user, project and roles.
-- Context broker actions when the role is defined only in a domain.
-- Context broker actions when the role is defined only in a project.
-- Context broker middleware.
-- CEP actions when the role is defined only in the domain.
-- CEP actions when the role is defined only in a project.
-- CEP middleware.
-- Test request headers.
-- Errors raised by PEP because of errors from/to Keystone.
-- Urls that not exist in Access Control plugin.
-- Urls that not exist in ContextBroker plugin.
-- Urls that not exist in Perseo plugin.
+- AC actions when the role is defined only in a project
+- AC actions when the role is defined only in the domain
+- AC middleware
+- CEP actions when the role is defined only in a project
+- CEP actions when the role is defined only in the domain
+- CEP middleware
+- Check the errors connecting with KS
+- Context broker actions when the role is defined only in a domain
+- Context broker actions when the role is defined only in a project
+- Context broker middleware
+- Errors raised by PEP because of errors from/to Keystone
+- Errors raised by PEP because of errors from/to Keystone
+- PeP cache in user, project and roles
+- Test bypass functionality
+- Test request headers
+- Test the pep version consult in the administration port
+- Urls that not exist in Access Control plugin
+- Urls that not exist in ContextBroker plugin
+- Urls that not exist in Perseo plugin
 
 ### properties.py
 
@@ -75,3 +77,41 @@ used to deploy the environment, needs it.
 
 There is a tag for each feature file
 
+```
+ac_actions_domain
+ac_actions_project
+ac_mdw
+access_control_connection_error
+access_control_errors
+access_control_validation_error
+access_denied
+action_not_found
+bypass_keypass
+cache
+cb_actions_domain
+cb_actions_project_rol
+cb_mdwae
+cep_actions_domain
+cep_actions_project
+cep_mdw
+connection_errors
+headers
+issue-174
+issue-182
+keystone_authentication_error
+keystone_authentication_rejected
+keystone_errors
+keystone_subservice_not_found
+missing_headers
+pep_proxy_authentication_rejected
+roles_not_found
+target_server_error
+token_does_not_match_service
+unexpected_content_type
+urls_ac_ko
+urls_cb_ko
+urls_cep_ko
+version
+wrong_json_payload
+wrong_xml_payload
+```
