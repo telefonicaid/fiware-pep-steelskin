@@ -414,6 +414,17 @@ def set_cb_config_with_bad_pep_user():
                          'DEBUG', world.cb_plug_in, world.cb_extract_action,
                          cache_users='-1', cache_projects='-1', cache_roles='-1', administration_port=world.administration_port)
 
+def set_cb_config_with_ac_and_headers_deactivated():
+    """
+    Set the configuration to bad pep credentials
+    :return:
+    """
+    set_variables_config('1', world.mock['port'], world.pep_port, world.ac_proxy_port, world.ac_proxy_ip,
+                         'bad_pep_user', world.ks['platform']['pep']['password'],
+                         world.ks['platform']['cloud_domain']['name'], world.ks_proxy_ip, world.ks_proxy_port,
+                         'DEBUG', world.cb_plug_in, world.cb_extract_action,
+                         cache_users='-1', cache_projects='-1', cache_roles='-1', administration_port=world.administration_port)
+
 
 def get_package_json():
     """

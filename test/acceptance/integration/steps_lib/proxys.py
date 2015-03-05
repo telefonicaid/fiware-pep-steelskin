@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Copyright 2014 Telefonica Investigación y Desarrollo, S.A.U
+Copyright 2015 Telefonica Investigación y Desarrollo, S.A.U
 
 This file is part of fiware-orion-pep
 
@@ -21,23 +21,49 @@ If not, see http://www.gnu.org/licenses/.
 For those usages not covered by the GNU Affero General Public License
 please contact with::[iot_support@tid.es]
 """
-import json
-from iotqautils.idm_keystone import IdmUtils
-import requests
-import time
 
 __author__ = 'Jon Calderin Goñi <jon.caldering@gmail.com>'
 
 from lettuce import step, world
+import requests
 
-@step('the PEP returns an ok')
-def the_pep_returns_an_ok(step):
+@step('the keystone proxy history reset')
+def the_keystone_proxy_history_reset(step):
     """
-    Check if PEP returns ok http code (200)
+    Reset the history of the keystone proxy
     :param step:
     :return:
     """
-    assert world.response.status_code == 200, 'The PEP not return the ok response code'
+    requests.request('get', 'http://{ks_proxy_ip}:{ks_proxy_port}/reset_history'.format(ks_proxy_ip=world.ks_proxy_ip,
+                                                                                        ks_proxy_port=world.ks_proxy_port))
+
+@step('the Keystone proxy receive the last petition "([^"]*)" from PEP')
+def the_keystone_proxy_receive_the_last_petition_from_pep(step, last_petition):
+    """
+    Check if the last path proxy received is the same as given one
+    :param step:
+    :param last_petition:
+    :return:
+    """
+    resp = requests.request('GET',
+                            'http://{ks_proxy_ip}:{ks_proxy_port}/last_path'.format(ks_proxy_ip=world.ks_proxy_ip,
+                                                                                    ks_proxy_port=world.ks_proxy_port)).text
+    assert resp == last_petition, 'The last petition done to KS is not the defined in the test, \n\tdefined: {done}\n\tdone: {resp}'.format(
+        resp=resp, done=last_petition)
+
+
+
+@step('the access control proxy receive the last petition "([^"]*)" from PEP')
+def the_access_control_proxy_receive_the_last_petition(step, last_petition):
+    """
+    Check the access control proxy and assert if the las petition given is the las petition asked by pep to access control
+    :param step:
+    :param last_petition:
+    :return:
+    """
+    resp = requests.request('GET', 'http://{ac_proxy_ip}:{ac_proxy_port}/last_path'.format(ac_proxy_ip=world.ac_proxy_ip, ac_proxy_port=world.ac_proxy_port)).text
+    assert resp == last_petition, 'The last petition done to ac is not the defined in the test'
+
 
 @step('the history is saved$')
 def the_history_is_saved(step):
@@ -59,22 +85,6 @@ def the_history_is_the_same_as_saved(step):
     resp = requests.request('GET', 'http://{ks_proxy_ip}:{ks_proxy_port}/history'.format(ks_proxy_ip=world.ks_proxy_ip, ks_proxy_port=world.ks_proxy_port)).text
     assert world.history == resp, 'The history changed, it has to be equal'
 
-@step('headers general')
-def headers_general(step):
-    """
-    A general headers with a universal configuration (User with all roles configured in the project specified)
-    :param step:
-    :return:
-    """
-    token = IdmUtils.get_token(world.ks['user_all'], world.ks['user_all'], world.ks['domain_ok'], world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
-    headers = {
-        "Accept": "application/json",
-        'content-type': 'application/json',
-        'Fiware-Servicepath': world.ks['project_ok'],
-        'Fiware-Service': world.ks['domain_ok'],
-        'X-Auth-Token': token
-    }
-    world.headers = headers
 
 @step('the history of petitions adds "([^"]*)" petition')
 def the_history_off_petitions_adds_a_petition(step, petitions_added):
@@ -90,6 +100,7 @@ def the_history_off_petitions_adds_a_petition(step, petitions_added):
     world.last_petition_added = history_new_list[len(history_new_list)-1]
     assert len(history_list)+int(petitions_added) == len(history_new_list), 'The petitions added to the history are not the expected'
 
+
 @step('the value added to the history is ok')
 def the_value_added_to_the_history_is_ok(step):
     """
@@ -98,20 +109,3 @@ def the_value_added_to_the_history_is_ok(step):
     :return:
     """
     assert world.new_petition == world.last_petition_added, 'The petition asked is not the expected'
-
-@step('waits "([^"]*)" seconds to "([^"]*)" cache expire')
-def waits_group1_seconds_to_group2_cache_expire(step, time_to_sleep, cache_group):
-    """
-    Store the new petition will be raised depending of which cache is expired (empty by default)
-    :param step:
-    :param time_to_sleep:
-    :param cache_group:
-    :return:
-    """
-    time.sleep(int(time_to_sleep) + 1)
-    if cache_group == 'users':
-        world.new_petition = 'v3/auth/tokens'
-    if cache_group == 'projects':
-        world.new_petition = 'v3/projects'
-    if cache_group == 'roles':
-        world.new_petition = 'v3/role_assignments'

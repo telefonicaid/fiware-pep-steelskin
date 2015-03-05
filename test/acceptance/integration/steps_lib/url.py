@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Copyright 2014 Telefonica Investigación y Desarrollo, S.A.U
+Copyright 2015 Telefonica Investigación y Desarrollo, S.A.U
 
 This file is part of fiware-orion-pep
 
@@ -25,9 +25,16 @@ please contact with::[iot_support@tid.es]
 __author__ = 'Jon Calderin Goñi <jon.caldering@gmail.com>'
 
 from lettuce import step, world
-import requests
-from tools.general_utils import get_package_json
 
+@step('a url with "([^"]*)"')
+def a_url_with_url(step, url):
+    """
+    Set the url
+    :param step:
+    :param url:
+    :return:
+    """
+    world.url = url
 
 @step('the url and path of pep version')
 def the_url_and_path_of_pep_version(step):
@@ -35,16 +42,14 @@ def the_url_and_path_of_pep_version(step):
                                                     pep_port=world.administration_port) + '/version'
 
 
-@step('the request is asked')
-def the_request_is_asked(step):
-    world.response = requests.request('get', world.url)
-
-
-@step('pep return the same version that are in package.json file')
-def pep_return_the_same_version_that_are_in_package_json_file(step):
-    package_json_version = get_package_json()['version']
-    version_returned = world.response.json()['version']
-    assert package_json_version == version_returned, 'The version indicated in the file is "{package_json_version}" and\
-     the version returned from pep is "{version_returned}"'.format(
-        package_json_version=package_json_version, version_returned=version_returned)
-
+@step('url with "([^"]*)" and the actionType attribute "([^"]*)"')
+def a_url_with_group1_and_the_actiontype_attribute_group2(step, url, action_type):
+    """
+    Define the url and the action type sent in the payload
+    :param step:
+    :param url:
+    :param action_type:
+    :return:
+    """
+    world.url = url
+    world.action_type = action_type
