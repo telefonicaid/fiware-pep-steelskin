@@ -16,7 +16,7 @@ If the user is allowed to execute the requested action (5), the HTTP request is 
 There is a special flow allowed for service administrators, that can be configured in the config file. A service administrator role ID can be configured in the `bypassRoleId` attribute, so that any request coming into the PEP Proxy with an authorization token belonging to a user with that role will not be validated against the Access Control server, but will be automatically proxied insted. A flag is also provided in the configuration to enable and disable this mechanism for the proxy (`bypass`).
 
 
-## Sequence Diagramas
+## Sequence Diagrams
 The following diagrams show the most common scenarios for PEP Proxy use. In this section, Orion is used as example of protected resource, but take into account that this PEP is general-purpose, so it could be used with other GEris or even third-party API servers belonging to the user.
 
 ### Accepted request (without cache)
