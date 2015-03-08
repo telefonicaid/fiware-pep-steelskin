@@ -44,7 +44,7 @@ def the_petition_gets_to_the_mock(step):
     except ConnectionError as e:
         assert False, 'There is a problem with the connection to the mock in the url: {url} \n Error: {error}'.format(
             url=mock_url, error=e)
-    assert not (len(set(resp.json().values())) <= 1), 'The petition never gets to the mock'
+    assert not (len(set(resp.json().values())) <= 1), 'The petition never gets to the mock. Mock data: {resp}'.format(resp=resp.json())
     # Check headers
     headers = resp.json()['headers']
     try:

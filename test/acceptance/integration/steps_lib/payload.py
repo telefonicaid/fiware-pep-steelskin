@@ -39,3 +39,28 @@ def the_payload_with_the_value_group1(step, payload):
         world.data = json.dumps(json.loads(payload.replace('\'', '"')))
     except:
         world.data = payload
+
+
+# Refactor
+
+@step('set the payload as "([^"]*)"')
+def set_the_payload_as(step, payload):
+    """
+    Set the payload to sent
+    :param step:
+    :param payload:
+    :return:
+    """
+    world.log.info('Setting the payload')
+    try:
+        world.data = json.dumps(eval(payload))
+        world.log.debug('Set the data as a dict, with eval')
+    except NameError as e:
+        world.log.error('Error setting the payload as a python dict: {exception}'.format(exception=e.message))
+        try:
+            world.data = json.dumps(json.loads(payload))
+            world.log.debug('Set the data as dict with json.loads')
+        except ValueError as e2:
+            world.log.error('Error setting the payload as a json loads: {excepction}'.format(exception=e2.message))
+            world.data = payload
+            world.log.debug('Set the data as text')

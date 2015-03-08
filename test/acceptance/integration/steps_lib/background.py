@@ -24,7 +24,7 @@ please contact with::[iot_support@tid.es]
 import time
 from tools.general_utils import set_config_cb, start_pep_app, set_cb_config_withour_cache, set_cb_config_with_bad_ks_ip, \
     set_cb_config_with_bad_ac_ip, set_cb_config_with_bad_target_ip, set_cb_config_with_bad_pep_user, \
-    set_config_cache_gradual, set_config_cache_projects, set_config_cache_roles, set_config_keypass, set_config_perseo, \
+    set_config_cache_gradual, set_config_cache_projects, set_config_cache_roles, set_config_access_control, set_config_perseo, \
     set_config_bypass, stop_process, start_proxy, start_mock
 
 __author__ = 'Jon Calderin Goñi <jon.caldering@gmail.com>'
@@ -44,14 +44,14 @@ def the_context_broker_configuration(step):
         time.sleep(5)
 
 
-@step("the Headers Context Broker configuration without cache")
-def the_headers_context_broker_configuration_without_cache(step):
+@step("the Context Broker configuration without cache")
+def the_context_broker_configuration_without_cache(step):
     """
     Set the context broker plugin (if it is not set) without cache
     :type step lettuce.core.Step
     """
-    if world.config_set != 'head':
-        world.config_set = 'head'
+    if world.config_set != 'cb_without_cache':
+        world.config_set = 'cb_without_cache'
         set_cb_config_withour_cache()
         start_pep_app()
         time.sleep(5)
@@ -142,15 +142,15 @@ def the_cache_roles_configuration(step):
     time.sleep(5)
 
 
-@step("the Keypass configuration")
-def the_keystone_configuration(step):
+@step("the Access Control configuration")
+def the_access_control_configuration(step):
     """
-    Set the keypass (Access Control) configuration (if it is not set) and restart pep
+    Set the Access Control (keypass) configuration (if it is not set) and restart pep
     :type step lettuce.core.Step
     """
-    if world.config_set != 'ks':
-        world.config_set = 'ks'
-        set_config_keypass()
+    if world.config_set != 'ac':
+        world.config_set = 'ac'
+        set_config_access_control()
         start_pep_app()
         time.sleep(5)
 
@@ -158,11 +158,11 @@ def the_keystone_configuration(step):
 @step("the Perseo configuration")
 def the_perseo_configuration(step):
     """
-    Set the CEP (Perseo) configuration (if it is not set) and restart pep
+    Set the Perseo (CEP) configuration (if it is not set) and restart pep
     :type step lettuce.core.Step
     """
-    if world.config_set != 'cep':
-        world.config_set = 'cep'
+    if world.config_set != 'perseo':
+        world.config_set = 'perseo'
         set_config_perseo()
         start_pep_app()
         time.sleep(5)

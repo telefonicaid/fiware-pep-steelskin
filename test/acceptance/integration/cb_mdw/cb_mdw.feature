@@ -29,9 +29,7 @@ Feature: Context broker middleware
 
   #Standard operations
   Scenario Outline: Create Standard operation
-    Given a domain in KEYSTONE
-    And a user in the domain
-    And a project in the user
+    Given a Keystone configuration with all roles in the same project
     And url with "/v1/updateContext" and the actionType attribute "APPEND"
     When a context broker "POST" petition is asked to PEP with "<format>" format
     Then the petition gets to the mock
@@ -41,9 +39,7 @@ Feature: Context broker middleware
     | json   |
 
   Scenario Outline: Update Standard operation
-    Given a domain in KEYSTONE
-    And a user in the domain
-    And a project in the user
+    Given a Keystone configuration with all roles in the same project
     And url with "/v1/updateContext" and the actionType attribute "UPDATE"
     When a context broker "POST" petition is asked to PEP with "<format>" format
     Then the petition gets to the mock
@@ -53,9 +49,7 @@ Feature: Context broker middleware
     | json   |
 
   Scenario Outline: Delete Standard operation
-    Given a domain in KEYSTONE
-    And a user in the domain
-    And a project in the user
+    Given a Keystone configuration with all roles in the same project
     And url with "/v1/updateContext" and the actionType attribute "DELETE"
     When a context broker "POST" petition is asked to PEP with "<format>" format
     Then the petition gets to the mock
@@ -65,9 +59,7 @@ Feature: Context broker middleware
     | json   |
 
   Scenario Outline: Read Standard operation
-    Given a domain in KEYSTONE
-    And a user in the domain
-    And a project in the user
+    Given a Keystone configuration with all roles in the same project
     And a url with "<url>"
     When a context broker "POST" petition is asked to PEP with "<format>" format
     Then the petition gets to the mock
@@ -79,9 +71,7 @@ Feature: Context broker middleware
     | json   | /v1/contextTypes |
 
   Scenario Outline: Subscribe Standard operation
-    Given a domain in KEYSTONE
-    And a user in the domain
-    And a project in the user
+    Given a Keystone configuration with all roles in the same project
     And a url with "<url>"
     When a context broker "POST" petition is asked to PEP with "<format>" format
     Then the petition gets to the mock
@@ -95,9 +85,7 @@ Feature: Context broker middleware
     | json   | /v1/unsubscribeContext        |
 
   Scenario Outline: Register Standard operation
-    Given a domain in KEYSTONE
-    And a user in the domain
-    And a project in the user
+    Given a Keystone configuration with all roles in the same project
     And a url with "/v1/registry/registerContext"
     When a context broker "POST" petition is asked to PEP with "<format>" format
     Then the petition gets to the mock
@@ -107,9 +95,7 @@ Feature: Context broker middleware
     | json   |
 
   Scenario Outline: Discover Standard operation
-    Given a domain in KEYSTONE
-    And a user in the domain
-    And a project in the user
+    Given a Keystone configuration with all roles in the same project
     And a url with "/v1/registry/discoverContextAvailability"
     When a context broker "POST" petition is asked to PEP with "<format>" format
     Then the petition gets to the mock
@@ -119,9 +105,7 @@ Feature: Context broker middleware
     | json   |
 
   Scenario Outline: subscribe-availability Standard operation
-    Given a domain in KEYSTONE
-    And a user in the domain
-    And a project in the user
+    Given a Keystone configuration with all roles in the same project
     And a url with "<url>"
     When a context broker "POST" petition is asked to PEP with "<format>" format
     Then the petition gets to the mock
@@ -136,9 +120,7 @@ Feature: Context broker middleware
 
   #Convenience operations
   Scenario Outline: Read Convenience operation
-    Given a domain in KEYSTONE
-    And a user in the domain
-    And a project in the user
+    Given a Keystone configuration with all roles in the same project
     And a url with "<url>"
     When a context broker "<action>" petition is asked to PEP with "<format>" format
     Then the petition gets to the mock
@@ -170,9 +152,7 @@ Feature: Context broker middleware
     | json   | /v1/contextTypes/typeName                                            | GET    |
 
   Scenario Outline: Update Convenience operation
-    Given a domain in KEYSTONE
-    And a user in the domain
-    And a project in the user
+    Given a Keystone configuration with all roles in the same project
     And a url with "<url>"
     When a context broker "<action>" petition is asked to PEP with "<format>" format
     Then the petition gets to the mock
@@ -186,9 +166,7 @@ Feature: Context broker middleware
     | json   | /v1/contextEntities/EntityID/attributes/attributeName/valueID | PUT    |
 
   Scenario Outline: Create Convenience operation
-    Given a domain in KEYSTONE
-    And a user in the domain
-    And a project in the user
+    Given a Keystone configuration with all roles in the same project
     And a url with "<url>"
     When a context broker "<action>" petition is asked to PEP with "<format>" format
     Then the petition gets to the mock
@@ -202,9 +180,7 @@ Feature: Context broker middleware
     | json   | /v1/contextEntities                                   | POST   |
 
   Scenario Outline: Subscribe Convenience operation
-    Given a domain in KEYSTONE
-    And a user in the domain
-    And a project in the user
+    Given a Keystone configuration with all roles in the same project
     And a url with "<url>"
     When a context broker "<action>" petition is asked to PEP with "<format>" format
     Then the petition gets to the mock
@@ -218,9 +194,7 @@ Feature: Context broker middleware
     | json   | /v1/contextSubscriptions/subscriptionID | DELETE |
 
   Scenario Outline: Discover Convenience operation
-    Given a domain in KEYSTONE
-    And a user in the domain
-    And a project in the user
+    Given a Keystone configuration with all roles in the same project
     And a url with "<url>"
     When a context broker "<action>" petition is asked to PEP with "<format>" format
     Then the petition gets to the mock
@@ -241,9 +215,7 @@ Feature: Context broker middleware
 
 
   Scenario Outline: Register Convenience operation
-    Given a domain in KEYSTONE
-    And a user in the domain
-    And a project in the user
+    Given a Keystone configuration with all roles in the same project
     And a url with "<url>"
     When a context broker "<action>" petition is asked to PEP with "<format>" format
     Then the petition gets to the mock
@@ -263,9 +235,7 @@ Feature: Context broker middleware
     | json   | /v1/registry/contextEntityTypes/typeName                                      | POST   |
 
   Scenario Outline: Subscribe-availability Convenience operation
-    Given a domain in KEYSTONE
-    And a user in the domain
-    And a project in the user
+   Given a Keystone configuration with all roles in the same project
     And a url with "<url>"
     When a context broker "<action>" petition is asked to PEP with "<format>" format
     Then the petition gets to the mock
@@ -279,9 +249,7 @@ Feature: Context broker middleware
     | json   | /v1/registry/contextAvailabilitySubscriptions/subscriptionId | DELETE |
 
   Scenario Outline: Parameters-Query in cb urls with operation in the payload
-    Given a domain in KEYSTONE
-    And a user in the domain
-    And a project in the user
+    Given a Keystone configuration with all roles in the same project
     And url with "/v1/updateContext?details=on&limit=15&offset=0" and the actionType attribute "<attribute>"
     When a context broker "POST" petition is asked to PEP with "<format>" format
     Then the petition gets to the mock
@@ -295,9 +263,7 @@ Feature: Context broker middleware
     | json   | DELETE    |
 
   Scenario Outline: Parameters-Query in cb urls
-    Given a domain in KEYSTONE
-    And a user in the domain
-    And a project in the user
+    Given a Keystone configuration with all roles in the same project
     And a url with "<url>"
     When a context broker "<action>" petition is asked to PEP with "<format>" format
     Then the petition gets to the mock

@@ -28,25 +28,43 @@ __author__ = 'Jon Calderin Goñi <jon.caldering@gmail.com>'
 from lettuce import step, world
 from iotqautils.idm_keystone import IdmUtils
 
-@step('headers with format "([^"]*)"$')
+@step('headers build with the information set before and with format "([^"]*)"$')
 def headers_with_format(step, format):
     """
-    Set headers with the universal user, password, project and domain, and the pyaload format given
+    Set headers with:
+        - Service (Domain) set before
+        - Servicepath (Project) set before
+        - Token get before
+        - format given
     :param step:
     :param format:
     :return:
     """
-    token = IdmUtils.get_token(world.ks['user_all'], world.ks['user_all'], world.ks['domain_ok'],
-                               world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
-    world.format = format
     headers = {
-        "Accept": "application/%s" % world.format,
-        'content-type': 'application/%s' % world.format,
-        'Fiware-Servicepath': world.ks['project_ok'],
-        'Fiware-Service': world.ks['domain_ok'],
-        'X-Auth-Token': token
+        "Accept": "application/%s" % format,
+        'content-type': 'application/%s' % format,
+        'Fiware-Servicepath': world.project,
+        'Fiware-Service': world.domain,
+        'X-Auth-Token': world.token
     }
     world.headers = headers
+
+@step('set the header "([^"]*)" with the value "([^"]*)"')
+def set_the_header_with_the_value(step, header, value):
+    """
+    Set a specific header with an specific value
+    :param step:
+    :param header:
+    :param value:
+    :return:
+    """
+    if isinstance(world.headers, dict):
+        if header in world.headers:
+            world.headers[header] = value
+        else:
+            world.headers.update({header: value})
+    else:
+        world.headers = {header: value}
 
 
 @step('headers of bad role environment with project')

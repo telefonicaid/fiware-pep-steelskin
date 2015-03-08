@@ -20,8 +20,8 @@
 # please contact with::[iot_support@tid.es]
 # __author__ = 'Jon Calderin Goñi (jon dot caldering at gmail dot com)'
 
-Feature: #Enter feature name here
+Feature:aa #Enter feature name hereaa
   # Enter feature description here
 
-  Scenario: # Enter scenario name here
+  Scenario:aa # Enter scenario name here
     # Enter steps here

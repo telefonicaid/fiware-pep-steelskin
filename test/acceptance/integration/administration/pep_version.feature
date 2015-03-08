@@ -27,6 +27,7 @@ Feature: Test the pep version consult in the administration port
     Given the Context Broker configuration
 
   Scenario: Check the pep version returned is the same of the file package.json
-    Given the url and path of pep version
-    When the request is asked
+    Given build a PEP administration url with the path "/version"
+    And a "GET" request is built with the previous data
+    When a request is sent to PEP with the request built before
     Then pep return the same version that are in package.json file

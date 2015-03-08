@@ -29,9 +29,7 @@ Feature: Context broker actions when the role is defined only in a domain
 
   #Standard operations
   Scenario Outline: Create Standard operation
-    Given a domain without projects in KEYSTONE
-    And a "user_create_domain" user in domain without projects
-    And a "create_role" role in the user and domain
+    Given a Keystone configuration with roles in the domains and the user "user_create_domain"
     And url with "/v1/updateContext" and the actionType attribute "APPEND"
     When a context broker "POST" petition is asked to PEP with "<format>" format
     Then the petition gets to the mock
@@ -42,9 +40,7 @@ Feature: Context broker actions when the role is defined only in a domain
     | json   |
 
   Scenario Outline: Update Standard operation
-    Given a domain without projects in KEYSTONE
-    And a "user_update_domain" user in domain without projects
-    And a "update_role" role in the user and domain
+    Given a Keystone configuration with roles in the domains and the user "user_update_domain"
     And url with "/v1/updateContext" and the actionType attribute "UPDATE"
     When a context broker "POST" petition is asked to PEP with "<format>" format
     Then the petition gets to the mock
@@ -54,9 +50,7 @@ Feature: Context broker actions when the role is defined only in a domain
     | json   |
 
   Scenario Outline: Delete Standard operation
-    Given a domain without projects in KEYSTONE
-    And a "user_delete_domain" user in domain without projects
-    And a "delete_role" role in the user and domain
+    Given a Keystone configuration with roles in the domains and the user "user_delete_domain"
     And url with "/v1/updateContext" and the actionType attribute "DELETE"
     When a context broker "POST" petition is asked to PEP with "<format>" format
     Then the petition gets to the mock
@@ -66,9 +60,7 @@ Feature: Context broker actions when the role is defined only in a domain
     | json   |
 
   Scenario Outline: Read Standard operation
-    Given a domain without projects in KEYSTONE
-    And a "user_read_domain" user in domain without projects
-    And a "read_role" role in the user and domain
+    Given a Keystone configuration with roles in the domains and the user "user_read_domain"
     And a url with "<url>"
     When a context broker "POST" petition is asked to PEP with "<format>" format
     Then the petition gets to the mock
@@ -80,9 +72,7 @@ Feature: Context broker actions when the role is defined only in a domain
     | json   | /v1/contextTypes |
 
   Scenario Outline: Subscribe Standard operation
-    Given a domain without projects in KEYSTONE
-    And a "user_subscribe_domain" user in domain without projects
-    And a "subscribe_role" role in the user and domain
+    Given a Keystone configuration with roles in the domains and the user "user_subscribe_domain"
     And a url with "<url>"
     When a context broker "POST" petition is asked to PEP with "<format>" format
     Then the petition gets to the mock
@@ -96,9 +86,7 @@ Feature: Context broker actions when the role is defined only in a domain
     | json   | /v1/unsubscribeContext        |
 
   Scenario Outline: Register Standard operation
-    Given a domain without projects in KEYSTONE
-    And a "user_register_domain" user in domain without projects
-    And a "register_role" role in the user and domain
+    Given a Keystone configuration with roles in the domains and the user "user_register_domain"
     And a url with "/v1/registry/registerContext"
     When a context broker "POST" petition is asked to PEP with "<format>" format
     Then the petition gets to the mock
@@ -108,9 +96,7 @@ Feature: Context broker actions when the role is defined only in a domain
     | json   |
 
   Scenario Outline: Discover Standard operation
-    Given a domain without projects in KEYSTONE
-    And a "user_discover_domain" user in domain without projects
-    And a "discover_role" role in the user and domain
+    Given a Keystone configuration with roles in the domains and the user "user_discover_domain"
     And a url with "/v1/registry/discoverContextAvailability"
     When a context broker "POST" petition is asked to PEP with "<format>" format
     Then the petition gets to the mock
@@ -120,9 +106,7 @@ Feature: Context broker actions when the role is defined only in a domain
     | json   |
 
   Scenario Outline: subscribe-availability Standard operation
-    Given a domain without projects in KEYSTONE
-    And a "user_subscribe-availability_domain" user in domain without projects
-    And a "subscribe-availability_role" role in the user and domain
+    Given a Keystone configuration with roles in the domains and the user "user_subscribe-availability_domain"
     And a url with "<url>"
     When a context broker "POST" petition is asked to PEP with "<format>" format
     Then the petition gets to the mock
@@ -137,9 +121,7 @@ Feature: Context broker actions when the role is defined only in a domain
 
   #Convenience operations
   Scenario Outline: Read Convenience operation
-    Given a domain without projects in KEYSTONE
-    And a "user_read_domain" user in domain without projects
-    And a "read_role" role in the user and domain
+    Given a Keystone configuration with roles in the domains and the user "user_read_domain"
     And a url with "<url>"
     When a context broker "<action>" petition is asked to PEP with "<format>" format
     Then the petition gets to the mock
@@ -161,9 +143,7 @@ Feature: Context broker actions when the role is defined only in a domain
     | json   | /v1/contextEntityTypes/typeName                                      | GET    |
 
   Scenario Outline: Update Convenience operation
-    Given a domain without projects in KEYSTONE
-    And a "user_update_domain" user in domain without projects
-    And a "update_role" role in the user and domain
+    Given a Keystone configuration with roles in the domains and the user "user_update_domain"
     And a url with "<url>"
     When a context broker "<action>" petition is asked to PEP with "<format>" format
     Then the petition gets to the mock
@@ -177,9 +157,7 @@ Feature: Context broker actions when the role is defined only in a domain
     | json   | /v1/contextEntities/EntityID/attributes/attributeName/valueID | PUT    |
 
   Scenario Outline: Create Convenience operation
-    Given a domain without projects in KEYSTONE
-    And a "user_create_domain" user in domain without projects
-    And a "create_role" role in the user and domain
+    Given a Keystone configuration with roles in the domains and the user "user_create_domain"
     And a url with "<url>"
     When a context broker "<action>" petition is asked to PEP with "<format>" format
     Then the petition gets to the mock
@@ -191,9 +169,7 @@ Feature: Context broker actions when the role is defined only in a domain
     | json   | /v1/contextEntities/EntityID/attributes/attributeName | POST   |
 
   Scenario Outline: Subscribe Convenience operation
-    Given a domain without projects in KEYSTONE
-    And a "user_subscribe_domain" user in domain without projects
-    And a "subscribe_role" role in the user and domain
+    Given a Keystone configuration with roles in the domains and the user "user_subscribe_domain"
     And a url with "<url>"
     When a context broker "<action>" petition is asked to PEP with "<format>" format
     Then the petition gets to the mock
@@ -207,9 +183,7 @@ Feature: Context broker actions when the role is defined only in a domain
     | json   | /v1/contextSubscriptions/subscriptionID | DELETE |
 
   Scenario Outline: Discover Convenience operation
-    Given a domain without projects in KEYSTONE
-    And a "user_discover_domain" user in domain without projects
-    And a "discover_role" role in the user and domain
+    Given a Keystone configuration with roles in the domains and the user "user_discover_domain"
     And a url with "<url>"
     When a context broker "<action>" petition is asked to PEP with "<format>" format
     Then the petition gets to the mock
@@ -229,9 +203,7 @@ Feature: Context broker actions when the role is defined only in a domain
     | json   | /v1/registry/contextEntityTypes/typeName                                      | GET    |
 
   Scenario Outline: Register Convenience operation
-    Given a domain without projects in KEYSTONE
-    And a "user_register_domain" user in domain without projects
-    And a "register_role" role in the user and domain
+    Given a Keystone configuration with roles in the domains and the user "user_register_domain"
     And a url with "<url>"
     When a context broker "<action>" petition is asked to PEP with "<format>" format
     Then the petition gets to the mock
@@ -251,9 +223,7 @@ Feature: Context broker actions when the role is defined only in a domain
     | json   | /v1/registry/contextEntityTypes/typeName                                      | POST   |
 
   Scenario Outline: Subscribe-availability Convenience operation
-    Given a domain without projects in KEYSTONE
-    And a "user_subscribe-availability_domain" user in domain without projects
-    And a "subscribe-availability_role" role in the user and domain
+    Given a Keystone configuration with roles in the domains and the user "user_subscribe-availability_domain"
     And a url with "<url>"
     When a context broker "<action>" petition is asked to PEP with "<format>" format
     Then the petition gets to the mock

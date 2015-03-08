@@ -25,7 +25,7 @@ Feature: Test request headers
   The environment is set, with one user, with role in the domain and in a project inside the domain
 
   Background:
-    Given the Headers Context Broker configuration without cache
+    Given the Context Broker configuration without cache
 
   @missing_headers @unexpected_content_type
   Scenario Outline: Test incomplete headers CB KO append Action

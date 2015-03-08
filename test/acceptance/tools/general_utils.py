@@ -38,6 +38,51 @@ from deploy_pep import *
 import psutil
 
 
+def pretty(json_pret):
+    """
+    Return a json in pretty format
+    :param json_pret:
+    :return:
+    """
+    return json.dumps(json_pret, sort_keys=True, indent=4, separators=(',', ': '))
+
+
+def pretty_request(**request_parms):
+    """
+    Print in a pretty way all request information
+    :param request_parms:
+    :return:
+    """
+    pretty_request = '\n'
+    if 'url' in request_parms:
+        pretty_request += '\tURL: {url}\n'.format(url=request_parms['url'])
+    if 'headers' in request_parms:
+        pretty_request += '\tHeaders: {headers}\n'.format(headers=pretty(request_parms['headers']))
+    if 'method' in request_parms:
+        pretty_request += '\tMethod: {method}\n'.format(method=request_parms['method'])
+    if 'data' in request_parms:
+        try:
+            pretty_request += '\tData: \n{data}\n'.format(data=pretty(request_parms['data']))
+        except:
+            pretty_request += '\tData: \n{data}\n'.format(data=request_parms['data'])
+    return pretty_request
+
+def pretty_response(response):
+    """
+    Build a string with a pretty format the response
+    :param response:
+    :return:
+    """
+    pretty_response = '\n'
+    pretty_response += '\tHeaders: {headers}\n'.format(headers=pretty(dict(response.headers)))
+    try:
+        pretty_response += '\tData: \n{data}\n'.format(data=pretty(response.json()))
+    except:
+        pretty_response += '\tData: \n{data}\n'.format(data=response.text)
+    pretty_response += '\tStatus code: {status_code}\n'.format(status_code=response.status_code)
+    return pretty_response
+
+
 def convert(data):
     """
     Delete all unicode content in structures
@@ -55,6 +100,11 @@ def convert(data):
 
 
 def ordered_elements(obj):
+    """
+    Order elements inside the iterable objects
+    :param obj:
+    :return:
+    """
     if isinstance(obj, dict):
         return {k: ordered_elements(v) for k, v in obj.items()}
     if isinstance(obj, list):
@@ -64,10 +114,22 @@ def ordered_elements(obj):
 
 
 def lower_dict_keys(dictionary):
+    """
+    Lower all keys in a dictionary
+    :param dictionary:
+    :return:
+    """
     return dict((k.lower(), v) for k, v in dictionary.iteritems())
 
 
 def check_equals(dict1, dict2, keys):
+    """
+    Check if the given keys are in two dicts and are equals
+    :param dict1:
+    :param dict2:
+    :param keys:
+    :return:
+    """
     dict1_lower = lower_dict_keys(dict1)
     dict2_lower = lower_dict_keys(dict2)
     for key in keys:
@@ -284,9 +346,9 @@ def set_config_cb():
                          'DEBUG', world.cb_plug_in, world.cb_extract_action, administration_port=world.administration_port)
 
 
-def set_config_keypass():
+def set_config_access_control():
     """
-    Set the Keypass configuration in the config file
+    Set the Access Control configuration in the config file
     :return:
     """
     set_variables_config(world.mock['ip'], world.mock['port'], world.pep_port, world.ac_proxy_port, world.ac_proxy_ip,

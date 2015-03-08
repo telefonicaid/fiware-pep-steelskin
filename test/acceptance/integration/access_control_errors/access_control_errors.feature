@@ -28,16 +28,23 @@ Feature: Errors raised by PEP because of errors from/to Keystone
 
   @access_denied
   Scenario: Access denied because role in project
-    Given headers of bad role environment with project
-    And a url with "/v1/queryContext"
-    When the petition action "POST" is asked without data
+    Given a Keystone configuration with roles not in Access Control
+    And a token request is sent with the previous Keystone configuration
+    And headers build with the information set before and with format "json"
+    And build a PEP url with the path "/v1/queryContext"
+    And a "POST" request is built with the previous data
+    When a request is sent to PEP with the request built before
     Then the access control proxy receive the last petition "pdp/v3" from PEP
     And the PEP returns an error with code "403" and name "ACCESS_DENIED"
 
   @access_denied
   Scenario: Access denied because role in domain
-    Given headers of bad role environment without project
-    And a url with "/v1/queryContext"
-    When the petition action "POST" is asked
+    Given a Keystone configuration with roles not in Access Control
+    And a token request is sent with the previous Keystone configuration
+    And headers build with the information set before and with format "json"
+    And set the header "Fiware-Servicepath" with the value "/"
+    And build a PEP url with the path "/v1/queryContext"
+    And a "POST" request is built with the previous data
+    When a request is sent to PEP with the request built before
     Then the access control proxy receive the last petition "pdp/v3" from PEP
     And the PEP returns an error with code "403" and name "ACCESS_DENIED"

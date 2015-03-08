@@ -28,17 +28,13 @@ Feature: CEP middleware
     Given the Perseo configuration
 
   Scenario: Notifications urls
-    Given a domain in KEYSTONE
-    And a user in the domain
-    And a project in the user
+    Given a Keystone configuration with all roles in the same project
     And a url with "/notices"
     When a CEP "POST" petition is asked to PEP
     Then the petition gets to the mock
 
   Scenario Outline: Rules urls
-    Given a domain in KEYSTONE
-    And a user in the domain
-    And a project in the user
+    Given a Keystone configuration with all roles in the same project
     And a url with "<url>"
     When a CEP "<action>" petition is asked to PEP
     Then the petition gets to the mock
@@ -50,9 +46,7 @@ Feature: CEP middleware
     | /rules/id | DELETE |
 
   Scenario Outline: Visual Rules urls
-    Given a domain in KEYSTONE
-    And a user in the domain
-    And a project in the user
+    Given a Keystone configuration with all roles in the same project
     And a url with "<url>"
     When a CEP "<action>" petition is asked to PEP
     Then the petition gets to the mock
@@ -65,9 +59,7 @@ Feature: CEP middleware
     | /m2m/vrules/id | PUT    |
 
   Scenario Outline: Parameters-Query in cep urls
-    Given a domain in KEYSTONE
-    And a user in the domain
-    And a project in the user
+    Given a Keystone configuration with all roles in the same project
     And a url with "<url>"
     When a CEP "<action>" petition is asked to PEP
     Then the petition gets to the mock

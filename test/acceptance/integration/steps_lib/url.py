@@ -26,21 +26,29 @@ __author__ = 'Jon Calderin Goñi <jon.caldering@gmail.com>'
 
 from lettuce import step, world
 
-@step('a url with "([^"]*)"')
-def a_url_with_url(step, url):
+# Refactor *************************************
+@step('build a PEP url with the path "([^"]*)"')
+def build_a_pep_url_with_the_path(step, path):
     """
-    Set the url
+    Set the url of pep with the path given
     :param step:
-    :param url:
+    :param path:
     :return:
     """
-    world.url = url
+    world.url = 'http://{pep_ip}:{pep_port}{path}'.format(pep_ip=world.pep_host_ip, pep_port=world.pep_port, path=path)
 
-@step('the url and path of pep version')
-def the_url_and_path_of_pep_version(step):
-    world.url = 'http://{pep_ip}:{pep_port}'.format(pep_ip=world.pep_host_ip,
-                                                    pep_port=world.administration_port) + '/version'
 
+@step('build a PEP administration url with the path "([^"]*)"')
+def build_a_pep_administration_url_with_the_path(step, path):
+    """
+    Set the url of pep administration with the path given
+    :param step:
+    :param path:
+    :return:
+    """
+    world.url = 'http://{pep_ip}:{pep_administration_port}'.format(pep_ip=world.pep_host_ip,
+                                                                   pep_administration_port=world.administration_port) + '/version'
+# *******************
 
 @step('url with "([^"]*)" and the actionType attribute "([^"]*)"')
 def a_url_with_group1_and_the_actiontype_attribute_group2(step, url, action_type):

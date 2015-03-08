@@ -23,6 +23,8 @@ please contact with::[iot_support@tid.es]
 """
 import json
 from iotqautils.idm_keystone import IdmUtils
+import logging
+from tools.general_utils import pretty_request, pretty_response
 
 __author__ = 'Jon Calderin Goñi <jon.caldering@gmail.com>'
 
@@ -75,7 +77,11 @@ def a_keypass_petition_is_asked_to_pep(step, action):
     world.data = json.dumps(data)
     world.headers = headers
     world.method = action.lower()
-    requests.request(action.lower(), 'http://{pep_ip}:{pep_port}'.format(pep_ip=world.pep_host_ip, pep_port=world.pep_port) +  world.url, headers=headers, data=json.dumps(data))
+    url_to_send = 'http://{pep_ip}:{pep_port}'.format(pep_ip=world.pep_host_ip, pep_port=world.pep_port) +  world.url
+    try:
+        requests.request(action.lower(), url_to_send, headers=headers, data=json.dumps(data))
+    except ConnectionError as e:
+        print "Url: {url}".format(url=url_to_send)
 
 
 @step('the request is asked')
@@ -148,6 +154,52 @@ def a_cep_petition_is_asked_to_pep(step, action):
     world.data = json.dumps(data)
     world.headers = headers
     requests.request(action.lower(), 'http://{pep_ip}:{pep_port}'.format(pep_ip=world.pep_host_ip, pep_port=world.pep_port) + world.url, headers=headers, data=json.dumps(data))
+
+@step('a "([^"]*)" request is built with the previous data')
+def a_request_is_built_with_the_previous_data(step, method):
+    """
+    Build a request to pep with the previous data defined
+    :param step:
+    :param method:
+    :return:
+    """
+    assert hasattr(world, 'url'), 'The world instance has no URL defined'
+    # Add url to the request
+    world.request_parms = dict({'url': world.url})
+    # Add headers to the request
+    if hasattr(world, 'headers'):
+        if isinstance(world.headers, dict):
+            if world.headers != {}:
+                world.request_parms.update({'headers': world.headers})
+    # Add payload to the request
+    if hasattr(world, 'data'):
+        if isinstance(world.data, dict):
+            if world.data != {}:
+                world.request_parms.update({'data': world.data})
+        else:
+            if world.data != '':
+                world.request_parms.update({'data': world.data})
+    # Add method to the request
+    world.request_parms.update({'method': method.lower()})
+
+@step('a request is sent to PEP with the request built before')
+def a_request_is_sent_to_pep_with_the_request_built_before(step):
+    """
+    Send a request to PEP with the request built before
+    :param step:
+    :return:
+    """
+    world.log.info("Senting the request to PEP")
+    if hasattr(world, 'request_parms') and all(x in world.request_parms for x in ['url', 'method']):
+        try:
+            world.log.debug('Parameters to send: {parameters}'.format(parameters=pretty_request(**world.request_parms)))
+            world.response = requests.request(**world.request_parms)
+            world.log.debug('The response of the PEP is: {pep_response}'.format(pep_response=pretty_response(world.response)))
+        except ConnectionError:
+            raise ConnectionError('There where a problem connecting with PEP, the request is {request}'.format(request=pretty_request(**world.request_parms)))
+    else:
+        raise ValueError('The request_parms is not built correct. The request is {request}'.format(request=pretty_request(**world.request_parms)))
+
 
 
 

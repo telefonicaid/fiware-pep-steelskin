@@ -70,6 +70,11 @@ def the_pep_returns_an_error_with_code_and_name(step, error_code, error_name):
 
 @step('pep return the same version that are in package.json file')
 def pep_return_the_same_version_that_are_in_package_json_file(step):
+    """
+    Check if the PEP version returned is the same of the PEP version in the file package.json
+    :param step:
+    :return:
+    """
     package_json_version = get_package_json()['version']
     version_returned = world.response.json()['version']
     assert package_json_version == version_returned, 'The version indicated in the file is "{package_json_version}" and\

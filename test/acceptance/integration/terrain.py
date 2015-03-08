@@ -21,18 +21,18 @@ If not, see http://www.gnu.org/licenses/.
 For those usages not covered by the GNU Affero General Public License
 please contact with::[iot_support@tid.es]
 """
-
+from iotqautils.accessControl import AC
+import sys
 
 __author__ = 'Jon Calderin Goñi <jon.caldering@gmail.com>'
-import sys
+import time
+from lettuce import world, before, after
 from iotqautils.idm_keystone import IdmUtils
-from lettuce import *
 from iotqautils.iotqaLogger import get_logger
+from tools.general_utils import start_environment, initialize_keystone, initialize_ac, stop_process, start_proxy, \
+    stop_environment, show_times, start_mock
+log = get_logger('terrain', file=True, filename='logs/lettuce.log')
 
-from tools.general_utils import *
-from properties import *
-
-log = get_logger('terrain')
 
 
 @before.all
@@ -41,6 +41,7 @@ def before_all_scenarios():
     Actions before all scenarios
     Get the initial time at start the tests
     """
+    world.log = log
     world.test_time_init = time.strftime("%c")
     log.debug('Starting environment')
     # Start proxys and mocks
@@ -50,41 +51,41 @@ def before_all_scenarios():
     world.config_set = ''
 
     log.debug('Initialize environment')
-    initialize_keystone(world.ks['platform'], world.ks['environment_general'])
-    initialize_keystone(world.ks['platform'], world.ks['environment_general_ko'])
-    initialize_keystone(world.ks['platform'], world.ks['environment_general_no_roles'])
-    initialize_keystone(world.ks['platform'], world.ks['environment_domain'])
-    initialize_keystone(world.ks['platform'], world.ks['environment_project'])
-    initialize_keystone(world.ks['platform'], world.ks['environment_bypass'])
+    # initialize_keystone(world.ks['platform'], world.ks['environment_general'])
+    # initialize_keystone(world.ks['platform'], world.ks['environment_general_ko'])
+    # initialize_keystone(world.ks['platform'], world.ks['environment_general_no_roles'])
+    # initialize_keystone(world.ks['platform'], world.ks['environment_domain'])
+    # initialize_keystone(world.ks['platform'], world.ks['environment_project'])
+    # initialize_keystone(world.ks['platform'], world.ks['environment_bypass'])
     world.structure = IdmUtils.get_structure(world.ks['platform'])
 
     # General
-    user_roles_general = [(world.ks['user_all'], x['name']) for x in
-                          world.ks['environment_general']['domains'][0]['users'][0]['projects'][0]['roles']]
-    initialize_ac(user_roles_general,
-                  world.ac['ip'], world.ac['port'],
-                  world.structure,
-                  world.ks['domain_ok'],
-                  world.ks['project_ok'],
-                  'general')
-    # #Domain
-    user_roles_domain = [(x['name'], x['roles'][0]['name']) for x in
-                         world.ks['environment_domain']['domains'][0]['users']]
-    initialize_ac(user_roles_domain,
-                  world.ac['ip'], world.ac['port'],
-                  world.structure,
-                  world.ks['domain_domain_only'],
-                  world.ks['project_domain_only'],
-                  'domain')
-    # Project
-    user_roles_project = [(x['name'], x['projects'][0]['roles'][0]['name']) for x in
-                          world.ks['environment_project']['domains'][0]['users']]
-    initialize_ac(user_roles_project,
-                  world.ac['ip'], world.ac['port'],
-                  world.structure,
-                  world.ks['domain_project_only'],
-                  world.ks['project_project_only'],
-                  'project')
+    # user_roles_general = [(world.ks['user_all'], x['name']) for x in
+    #                       world.ks['environment_general']['domains'][0]['users'][0]['projects'][0]['roles']]
+    # initialize_ac(user_roles_general,
+    #               world.ac['ip'], world.ac['port'],
+    #               world.structure,
+    #               world.ks['domain_ok'],
+    #               world.ks['project_ok'],
+    #               'general')
+    # # #Domain
+    # user_roles_domain = [(x['name'], x['roles'][0]['name']) for x in
+    #                      world.ks['environment_domain']['domains'][0]['users']]
+    # initialize_ac(user_roles_domain,
+    #               world.ac['ip'], world.ac['port'],
+    #               world.structure,
+    #               world.ks['domain_domain_only'],
+    #               world.ks['project_domain_only'],
+    #               'domain')
+    # # Project
+    # user_roles_project = [(x['name'], x['projects'][0]['roles'][0]['name']) for x in
+    #                       world.ks['environment_project']['domains'][0]['users']]
+    # initialize_ac(user_roles_project,
+    #               world.ac['ip'], world.ac['port'],
+    #               world.structure,
+    #               world.ks['domain_project_only'],
+    #               world.ks['project_project_only'],
+    #               'project')
     log.debug('Environment ready')
 
 @after.each_scenario
@@ -92,7 +93,7 @@ def after_each_scenario(scenario):
     world.data = ''
     world.url = ''
     world.action_type = ''
-    world.headers = ''
+    world.headers = {}
     world.method = ''
     world.domain = ''
     world.project = ''
@@ -102,6 +103,7 @@ def after_each_scenario(scenario):
     world.response = ''
     world.new_petition = ''
     world.format = ''
+    world.request_parms = {}
     """ If the mocks/proxys are changed, restore ir after each test """
     if hasattr(world, 'ks_faked') and world.ks_faked:
         stop_process(world.ks_proxy)
@@ -129,15 +131,15 @@ def after_all_scenarios(scenario):
     Show the initial and final time of the tests completed
     :param scenario:
     """
-    IdmUtils.clean_service(world.ks['platform'], world.ks['domain_ok'])
-    IdmUtils.clean_service(world.ks['platform'], world.ks['domain_ko'])
-    IdmUtils.clean_service(world.ks['platform'], world.ks['domain_no_roles'])
-    IdmUtils.clean_service(world.ks['platform'], world.ks['domain_project_only'])
-    IdmUtils.clean_service(world.ks['platform'], world.ks['domain_domain_only'])
-    IdmUtils.clean_service(world.ks['platform'], world.ks['domain_bypass'])
-    ac_utils = AC(world.ac['ip'], port=world.ac['port'])
-    ac_utils.delete_tenant_policies(world.ks['domain_ok'])
-    ac_utils.delete_tenant_policies(world.ks['domain_project_only'])
-    ac_utils.delete_tenant_policies(world.ks['domain_domain_only'])
+    # IdmUtils.clean_service(world.ks['platform'], world.ks['domain_ok'])
+    # IdmUtils.clean_service(world.ks['platform'], world.ks['domain_ko'])
+    # IdmUtils.clean_service(world.ks['platform'], world.ks['domain_no_roles'])
+    # IdmUtils.clean_service(world.ks['platform'], world.ks['domain_project_only'])
+    # IdmUtils.clean_service(world.ks['platform'], world.ks['domain_domain_only'])
+    # IdmUtils.clean_service(world.ks['platform'], world.ks['domain_bypass'])
+    # ac_utils = AC(world.ac['ip'], port=world.ac['port'])
+    # ac_utils.delete_tenant_policies(world.ks['domain_ok'])
+    # ac_utils.delete_tenant_policies(world.ks['domain_project_only'])
+    # ac_utils.delete_tenant_policies(world.ks['domain_domain_only'])
     stop_environment()
     show_times(world.test_time_init)

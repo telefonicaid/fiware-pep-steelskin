@@ -24,7 +24,7 @@
 Feature: Urls that not exist in Access Control plugin
 
   Background:
-    Given the Keypass configuration
+    Given the Access Control configuration
 
   @action_not_found
   Scenario: Test bad URL AC KO

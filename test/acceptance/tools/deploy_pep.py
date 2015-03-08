@@ -27,6 +27,7 @@ __author__ = 'Jon Calderin Goñi <jon.caldering@gmail.com>'
 from fabric.api import run, env, cd, put, sudo, local, output
 import os
 import platform
+from lettuce import world
 
 
 def set_variables_config(host_proxied_ip, host_proxied_port, port_listening,
@@ -57,8 +58,10 @@ def set_variables_config(host_proxied_ip, host_proxied_port, port_listening,
     :param cache_users:
     :param cache_projects:
     :param cache_roles:
+    :param administration_port:
     :return:
     """
+    world.log.info('Setting the pep config')
     replaces = {
         'host_proxied_ip': host_proxied_ip,
         'host_proxied_port': host_proxied_port,
@@ -108,6 +111,7 @@ def get_ssh_port(container_name):
     :param container_name:
     :return:
     """
+    world.log.info('Getting ssh port of the container')
     ret = run('docker port {container_name} 22'.format(container_name=container_name))
     return ret.split(':')[1]
 
@@ -125,6 +129,7 @@ def start_docker_pep(ip_host, user_host, password_host, container_user, containe
     :param pep_path:
     :return:
     """
+    world.log.info('Starting pep in docker')
     env.host_string = ip_host
     env.user = user_host
     env.password = password_host
@@ -146,6 +151,7 @@ def stop_docker_pep(ip_host, user_host, password_host, container_user, container
     :param container_name:
     :return:
     """
+    world.log.info('Stoping pep in docker')
     env.host_string = ip_host
     env.user = user_host
     env.password = password_host
@@ -167,6 +173,7 @@ def start_pep(ip, user, password, port='22', pep_path='/fiware-orion-pep'):
     :param pep_path:
     :return:
     """
+    world.log.info('Starting pep in remote')
     env.host_string = ip + ':' + port
     env.user = user
     env.password = password
@@ -195,11 +202,13 @@ def start_pep(ip, user, password, port='22', pep_path='/fiware-orion-pep'):
         put(config, '{path}/config.js'.format(path=pep_path))
         sudo('mkdir -p /tmp/pep')
         if so == 'CentOS':
-            sudo('dtach -n `mktemp -u /tmp/pep/dtach.XXXX` /bin/bash -c \' node bin/pepProxy >> /tmp/pep.log\'')
+            resp = sudo('dtach -n `mktemp -u /tmp/pep/dtach.XXXX` /bin/bash -c \' node bin/pepProxy >> /tmp/pep.log\'')
         elif so == 'Ubuntu':
-            sudo('dtach -n `mktemp -u /tmp/pep/dtach.XXXX` /bin/bash -c \' nodejs bin/pepProxy >> /tmp/pep.log\'')
+            resp =sudo('dtach -n `mktemp -u /tmp/pep/dtach.XXXX` /bin/bash -c \' nodejs bin/pepProxy >> /tmp/pep.log\'')
         else:
             raise NameError('Pep only can be started in Ubuntu and CentOS systems')
+        world.log.debug('The response initializing pep in remote is: {resp}'.format(resp=resp))
+
 
 
 def stop_pep(ip, user, password, port='22'):
@@ -211,6 +220,7 @@ def stop_pep(ip, user, password, port='22'):
     :param port:
     :return:
     """
+    world.log.info('Stoping pep in local')
     env.host_string = ip + ':' + port
     env.user = user
     env.password = password
@@ -238,6 +248,7 @@ def start_pep_local(pep_path='/fiware-orion-pep'):
     :param pep_path:
     :return:
     """
+    world.log.info('Starting pep in local')
     output['stdout'] = False
     output['running'] = False
     output['warnings'] = False
@@ -261,11 +272,12 @@ def start_pep_local(pep_path='/fiware-orion-pep'):
     local('cp {config} {path}/config.js'.format(config=config, path=pep_path), capture=True)
     local('mkdir -p /tmp/pep')
     if so == 'CentOS':
-        local('dtach -n `mktemp -u /tmp/pep/dtach.XXXX` /bin/bash -c \' cd {path} && node bin/pepProxy >> /tmp/pep.log\''.format(path=pep_path), capture=True)
+        resp = local('dtach -n `mktemp -u /tmp/pep/dtach.XXXX` /bin/bash -c \' cd {path} && node bin/pepProxy >> /tmp/pep.log\''.format(path=pep_path), capture=True)
     elif so == 'Ubuntu':
-        local('dtach -n `mktemp -u /tmp/pep/dtach.XXXX` /bin/bash -c \' cd {path} && nodejs bin/pepProxy >> /tmp/pep.log\''.format(path=pep_path), capture=True)
+        resp = local('dtach -n `mktemp -u /tmp/pep/dtach.XXXX` /bin/bash -c \' cd {path} && nodejs bin/pepProxy >> /tmp/pep.log\''.format(path=pep_path), capture=True)
     else:
         raise NameError('Pep only can be started in Ubuntu and CentOS systems')
+    world.log.debug('The response initializing pep in local is: {resp}'.format(resp=resp))
 
 
 def stop_local_pep():
@@ -273,6 +285,7 @@ def stop_local_pep():
     Stop pep process
     :return:
     """
+    world.info('Stoping pep in local')
     output['stdout'] = False
     output['running'] = False
     output['warnings'] = False

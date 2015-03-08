@@ -24,7 +24,7 @@
 Feature: Check the errors connecting with KS
 
   Background:
-    Given the Headers Context Broker configuration without cache
+    Given the Context Broker configuration without cache
 
   @keystone_authentication_error
   Scenario: Error with the connection with KS

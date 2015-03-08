@@ -25,52 +25,64 @@ Feature: AC actions when the role is defined only in the domain
   check if all urls of AC, with the correct permissions in AC, get for its destination
 
   Background:
-    Given the Keypass configuration
+    Given the Access Control configuration
 
   Scenario: Read policy
-    Given a domain without projects in KEYSTONE
-    And a "user_readPolicy_domain" user in domain without projects
-    And a "readPolicy_role" role in the user and domain
-    And a url with "/pap/v1/subject/subjectName/policy/policyName"
-    When a KeyPass "GET" petition is asked to PEP
+    Given a Keystone configuration with roles in the domains and the user "user_readPolicy_domain"
+    And a token request is sent with the previous Keystone configuration
+    And headers build with the information set before and with format "json"
+    And set the payload as "{'test_payload': 'test_value'}"
+    And build a PEP url with the path "/pap/v1/subject/subjectName/policy/policyName"
+    And a "GET" request is built with the previous data
+    When a request is sent to PEP with the request built before
     Then the petition gets to the mock
 
   Scenario: Remove policy
-    Given a domain without projects in KEYSTONE
-    And a "user_removePolicy_domain" user in domain without projects
-    And a "removePolicy_role" role in the user and domain
-    And a url with "/pap/v1/subject/subjectName/policy/policyName"
-    When a KeyPass "DELETE" petition is asked to PEP
+    Given a Keystone configuration with roles in the domains and the user "user_removePolicy_domain"
+    And a token request is sent with the previous Keystone configuration
+    And headers build with the information set before and with format "json"
+    And set the payload as "{'test_payload': 'test_value'}"
+    And build a PEP url with the path "/pap/v1/subject/subjectName/policy/policyName"
+    And a "DELETE" request is built with the previous data
+    When a request is sent to PEP with the request built before
     Then the petition gets to the mock
 
   Scenario: Create policy
-    Given a domain without projects in KEYSTONE
-    And a "user_createPolicy_domain" user in domain without projects
-    And a "createPolicy_role" role in the user and domain
-    And a url with "/pap/v1/subject/subjectName"
-    When a KeyPass "POST" petition is asked to PEP
+    Given a Keystone configuration with roles in the domains and the user "user_createPolicy_domain"
+    And a token request is sent with the previous Keystone configuration
+    And headers build with the information set before and with format "json"
+    And set the payload as "{'test_payload': 'test_value'}"
+    And build a PEP url with the path "/pap/v1/subject/subjectName"
+    And a "POST" request is built with the previous data
+    When a request is sent to PEP with the request built before
     Then the petition gets to the mock
 
   Scenario: List policies
-    Given a domain without projects in KEYSTONE
-    And a "user_listPolicies_domain" user in domain without projects
-    And a "listPolicies_role" role in the user and domain
-    And a url with "/pap/v1/subject/subjectName"
-    When a KeyPass "GET" petition is asked to PEP
+    Given a Keystone configuration with roles in the domains and the user "user_listPolicies_domain"
+    And a token request is sent with the previous Keystone configuration
+    And headers build with the information set before and with format "json"
+    And set the payload as "{'test_payload': 'test_value'}"
+    And build a PEP url with the path "/pap/v1/subject/subjectName"
+    And a "GET" request is built with the previous data
+    When a request is sent to PEP with the request built before
     Then the petition gets to the mock
 
   Scenario: Delete subject policies
-    Given a domain without projects in KEYSTONE
-    And a "user_deleteSubjectPolicies_domain" user in domain without projects
-    And a "deleteSubjectPolicies_role" role in the user and domain
-    And a url with "/pap/v1/subject/subjectName"
-    When a KeyPass "DELETE" petition is asked to PEP
+    Given a Keystone configuration with roles in the domains and the user "user_deleteSubjectPolicies_domain"
+    And a token request is sent with the previous Keystone configuration
+    And headers build with the information set before and with format "json"
+    And set the payload as "{'test_payload': 'test_value'}"
+    And build a PEP url with the path "/pap/v1/subject/subjectName"
+    And a "DELETE" request is built with the previous data
+    When a request is sent to PEP with the request built before
     Then the petition gets to the mock
 
   Scenario: Delete tenant policies
-    Given a domain without projects in KEYSTONE
-    And a "user_deleteTenantPolicies_domain" user in domain without projects
-    And a "deleteTenantPolicies_role" role in the user and domain
-    And a url with "/pap/v1"
-    When a KeyPass "DELETE" petition is asked to PEP
+    Given a Keystone configuration with roles in the domains and the user "user_deleteTenantPolicies_domain"
+    And a token request is sent with the previous Keystone configuration
+    And headers build with the information set before and with format "json"
+    And set the payload as "{'test_payload': 'test_value'}"
+    And build a PEP url with the path "/pap/v1"
+    And a "DELETE" request is built with the previous data
+    When a request is sent to PEP with the request built before
     Then the petition gets to the mock

@@ -29,17 +29,13 @@ Feature: CEP actions when the role is defined only in a project
     Given the Perseo configuration
 
   Scenario: Notify action
-    Given a domain for project_only in KEYSTONE
-    And a without role in domain and with "user_notify_project" user in project
-    And a "notify_role" role in the user project
+    Given a Keystone configuration with roles in projects and the user "user_notify_project"
     And a url with "/notices"
     When a CEP "POST" petition is asked to PEP
     Then the petition gets to the mock
 
   Scenario Outline: Read Rule action
-    Given a domain for project_only in KEYSTONE
-    And a without role in domain and with "user_readRule_project" user in project
-    And a "readRule_role" role in the user project
+    Given a Keystone configuration with roles in projects and the user "user_readRule_project"
     And a url with "<url>"
     When a CEP "<action>" petition is asked to PEP
     Then the petition gets to the mock
@@ -51,9 +47,7 @@ Feature: CEP actions when the role is defined only in a project
     | /m2m/vrules/id | GET    |
 
   Scenario Outline: Write Rule action
-    Given a domain for project_only in KEYSTONE
-    And a without role in domain and with "user_writeRule_project" user in project
-    And a "writeRule_role" role in the user project
+    Given a Keystone configuration with roles in projects and the user "user_writeRule_project"
     And a url with "<url>"
     When a CEP "<action>" petition is asked to PEP
     Then the petition gets to the mock
