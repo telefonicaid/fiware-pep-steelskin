@@ -285,7 +285,7 @@ def stop_local_pep():
     Stop pep process
     :return:
     """
-    world.info('Stoping pep in local')
+    world.log.info('Stoping pep in local')
     output['stdout'] = False
     output['running'] = False
     output['warnings'] = False
