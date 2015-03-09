@@ -33,7 +33,7 @@ var serverMocks = require('../tools/serverMocks'),
     should = require('should'),
     request = require('request');
 
-describe('Reuse authentication tokens', function() {
+describe.skip('Reuse authentication tokens', function() {
     var proxy,
         mockTarget,
         mockTargetApp,

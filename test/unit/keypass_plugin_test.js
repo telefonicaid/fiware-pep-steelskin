@@ -26,6 +26,7 @@
 var serverMocks = require('../tools/serverMocks'),
     proxyLib = require('../../lib/fiware-orion-pep'),
     keypassPlugin = require('../../lib/plugins/keypassPlugin'),
+    keystonePlugin = require('../../lib/services/keystoneAuth'),
     config = require('../../config'),
     utils = require('../tools/utils'),
     should = require('should'),
@@ -83,6 +84,8 @@ describe('Keypass Plugin tests', function() {
                 config.middlewares.function = [
                     'extractAction'
                 ];
+
+                keystonePlugin.cleanCache();
 
                 proxyLib.start(function(error, proxyObj) {
                     proxy = proxyObj;
@@ -185,6 +188,8 @@ describe('Keypass Plugin tests', function() {
         }
 
         beforeEach(function(done) {
+            keystonePlugin.cleanCache();
+
             initializeUseCase(authenticationMechanism, function() {
                 async.series([
                     async.apply(serverMocks.mockPath, authenticationMechanism.path, mockOAuthApp),

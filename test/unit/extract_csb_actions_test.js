@@ -28,6 +28,7 @@ var serverMocks = require('../tools/serverMocks'),
     orionPlugin = require('../../lib/plugins/orionPlugin'),
     config = require('../../config'),
     utils = require('../tools/utils'),
+    keystonePlugin = require('../../lib/services/keystoneAuth'),
     async = require('async'),
     should = require('should'),
     request = require('request');
@@ -84,6 +85,7 @@ describe('Extract Context Broker action from request', function() {
                         mockOAuthApp = appAuth;
 
                         mockOAuthApp.handler = serverMocks.mockKeystone;
+                        keystonePlugin.cleanCache();
 
                         async.series([
                             async.apply(serverMocks.mockPath, '/validate', mockAccessApp)
