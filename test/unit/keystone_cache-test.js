@@ -75,6 +75,8 @@ describe('Keystone authentication cache', function() {
 
                         mockOAuthApp.handler = currentAuthentication.authMock;
 
+                        keystoneAuth.cleanCache();
+
                         mockAccessApp.handler = function(req, res) {
                             res.set('Content-Type', 'application/xml');
                             res.send(utils.readExampleFile('./test/accessControlResponses/permitResponse.xml', true));
@@ -245,5 +247,4 @@ describe('Keystone authentication cache', function() {
             });
         });
     });
-
 });

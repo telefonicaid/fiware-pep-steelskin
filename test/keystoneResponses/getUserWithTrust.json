@@ -1,0 +1,43 @@
+{
+  "token": {
+    "OS-TRUST:trust": {
+      "impersonation": false,
+      "trustee_user": {
+        "id": "d6809594b8794f23a8ec51f0c6b2c5d6"
+      },
+      "id": "903f9850ae8b471ba6065a3ee4edaea1",
+      "trustor_user": {
+        "id": "5e817c5e0d624ee68dfb7a72d0d31ce4"
+      }
+    },
+    "methods": [
+      "password"
+    ],
+    "roles": [
+      {
+        "id": "d44ee9276cb64eefb98bec7e03776014",
+        "name": "0a6dc1796dfe4b1b99fff7e0564b5f57#SubServiceAdmin"
+      }
+    ],
+    "expires_at": "2015-03-09T10:46:07.193771Z",
+    "project": {
+      "domain": {
+        "id": "f7a5b8e303ec43e8a912fe26fa79dc02",
+        "name": "SmartValencia"
+      },
+      "id": "051bbf49a53a4808afa0649f3b82a76d",
+      "name": "/gardens"
+    },
+    "catalog": [],
+    "extras": {},
+    "user": {
+      "domain": {
+        "id": "default",
+        "name": "Default"
+      },
+      "id": "d6809594b8794f23a8ec51f0c6b2c5d6",
+      "name": "iotagent"
+    },
+    "issued_at": "2015-03-09T09:46:07.193796Z"
+  }
+}
