@@ -175,14 +175,14 @@ def a_request_is_built_with_the_previous_data(step, method):
     if hasattr(world, 'data'):
         if isinstance(world.data, dict):
             if world.data != {}:
-                world.request_parms.update({'data': world.data})
+                world.request_parms.update({'data': json.dumps(world.data)})
         else:
             if world.data != '':
                 world.request_parms.update({'data': world.data})
     # Add method to the request
     world.request_parms.update({'method': method.lower()})
 
-@step('a request is sent to PEP with the request built before')
+@step('the request built before is sent to PEP')
 def a_request_is_sent_to_pep_with_the_request_built_before(step):
     """
     Send a request to PEP with the request built before

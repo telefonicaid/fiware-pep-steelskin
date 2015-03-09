@@ -36,7 +36,27 @@ from iotqautils.idm_keystone import IdmUtils
 from lettuce import world
 from deploy_pep import *
 import psutil
+from requests.exceptions import ConnectionError
 
+
+def json_to_dict(json_object):
+    """
+    Returns a dict with the json text, dict or list
+    :param json_object:
+    :return:
+    """
+    if isinstance(json_object, dict) or isinstance(json_object, list):
+        return json_object
+    elif isinstance(json_object, str) or isinstance(json_object, unicode):
+        try:
+            return eval(json_object)
+        except ValueError:
+            try:
+                return json.loads(json_object)
+            except ValueError:
+                json_object = json_object.replace('\'', '"').replace('None', 'null').replace('True', 'true').replace(
+                    'False', 'false')
+                return json.loads(json_object)
 
 def pretty(json_pret):
     """
@@ -505,3 +525,24 @@ def get_package_json():
     path = separator.join(path_folders[:len(path_folders)-3])
     file = open('{path}{separator}package.json'.format(path=path, separator=separator))
     return json.load(file)
+
+
+def reset_test_variables():
+    """
+    Reste the world attributes set in the tests
+    :return:
+    """
+    world.data = ''
+    world.url = ''
+    world.action_type = ''
+    world.headers = {}
+    world.method = ''
+    world.domain = ''
+    world.project = ''
+    world.user = ''
+    world.history = ''
+    world.last_petition_added = ''
+    world.response = ''
+    world.new_petition = ''
+    world.format = ''
+    world.request_parms = {}

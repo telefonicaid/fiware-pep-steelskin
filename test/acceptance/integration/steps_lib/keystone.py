@@ -293,19 +293,3 @@ def a_keystone_configuration_with_the_bypass(step):
     world.user = world.ks['user_bypass']
     world.domain = world.ks['domain_bypass']
     world.project = world.ks['project_bypass']
-
-@step('a token request is sent with the previous Keystone configuration')
-def a_token_request_is_sent(step):
-    """
-    Send a token request with:
-        - Credentials: User defined, password the same as user
-        - Domain: Defined before
-        - Ip and Port: Get from properties.py
-    :param step:
-    :return:
-    """
-    try:
-        world.token = IdmUtils.get_token(world.user, world.user, world.domain, world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
-    except ConnectionError as e:
-        assert False, 'There was a problem with the connection with Keystone: Ip: {ip} - Port: {port}'.format(ip=world.ks['platform']['address']['ip'], port=world.ks['platform']['address']['port'])
-

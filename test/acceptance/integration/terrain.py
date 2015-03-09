@@ -30,7 +30,8 @@ from lettuce import world, before, after
 from iotqautils.idm_keystone import IdmUtils
 from iotqautils.iotqaLogger import get_logger
 from tools.general_utils import start_environment, initialize_keystone, initialize_ac, stop_process, start_proxy, \
-    stop_environment, show_times, start_mock
+    stop_environment, show_times, start_mock, reset_test_variables
+
 log = get_logger('terrain', file=True, filename='logs/lettuce.log')
 
 
@@ -86,24 +87,12 @@ def before_all_scenarios():
     #               world.ks['domain_project_only'],
     #               world.ks['project_project_only'],
     #               'project')
+    reset_test_variables()
     log.debug('Environment ready')
 
 @after.each_scenario
 def after_each_scenario(scenario):
-    world.data = ''
-    world.url = ''
-    world.action_type = ''
-    world.headers = {}
-    world.method = ''
-    world.domain = ''
-    world.project = ''
-    world.user = ''
-    world.history = ''
-    world.last_petition_added = ''
-    world.response = ''
-    world.new_petition = ''
-    world.format = ''
-    world.request_parms = {}
+    reset_test_variables()
     """ If the mocks/proxys are changed, restore ir after each test """
     if hasattr(world, 'ks_faked') and world.ks_faked:
         stop_process(world.ks_proxy)
@@ -120,8 +109,9 @@ def after_each_scenario(scenario):
         world.target_faked = False
     sys.stdout.write(("*****Se ha ejecutado el scenario: " + str(scenario.name).encode('utf-8')))
 
-
-
+@after.outline
+def reset_data(scenario, *args):
+    reset_test_variables()
 
 
 @after.all

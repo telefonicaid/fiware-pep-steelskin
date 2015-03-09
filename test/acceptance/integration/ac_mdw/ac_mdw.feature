@@ -29,72 +29,65 @@ Feature: AC middleware
 
   Scenario: Read policy
     Given a Keystone configuration with all roles in the same project
-    And a token request is sent with the previous Keystone configuration
     And headers build with the information set before and with format "json"
     And set the payload as "{'test_payload': 'test_value'}"
     And build a PEP url with the path "/pap/v1/subject/subjectName/policy/policyName"
     And a "GET" request is built with the previous data
-    When a request is sent to PEP with the request built before
+    When the request built before is sent to PEP
     Then the petition gets to the mock
 
   Scenario: Remove policy
     Given a Keystone configuration with all roles in the same project
-    And a token request is sent with the previous Keystone configuration
     And headers build with the information set before and with format "json"
     And set the payload as "{'test_payload': 'test_value'}"
     And build a PEP url with the path "/pap/v1/subject/subjectName/policy/policyName"
     And a "DELETE" request is built with the previous data
-    When a request is sent to PEP with the request built before
+    When the request built before is sent to PEP
     Then the petition gets to the mock
 
   Scenario: Create policy
     Given a Keystone configuration with all roles in the same project
-    And a token request is sent with the previous Keystone configuration
     And headers build with the information set before and with format "json"
     And set the payload as "{'test_payload': 'test_value'}"
     And build a PEP url with the path "/pap/v1/subject/subjectName"
     And a "POST" request is built with the previous data
-    When a request is sent to PEP with the request built before
+    When the request built before is sent to PEP
     Then the petition gets to the mock
 
   Scenario: List policies
     Given a Keystone configuration with all roles in the same project
-    And a token request is sent with the previous Keystone configuration
     And headers build with the information set before and with format "json"
     And set the payload as "{'test_payload': 'test_value'}"
     And build a PEP url with the path "/pap/v1/subject/subjectName"
     And a "GET" request is built with the previous data
-    When a request is sent to PEP with the request built before
+    When the request built before is sent to PEP
     Then the petition gets to the mock
 
   Scenario: Delete subject policies
     Given a Keystone configuration with all roles in the same project
-    And a token request is sent with the previous Keystone configuration
     And headers build with the information set before and with format "json"
     And set the payload as "{'test_payload': 'test_value'}"
     And build a PEP url with the path "/pap/v1/subject/subjectName"
     And a "DELETE" request is built with the previous data
-    When a request is sent to PEP with the request built before
+    When the request built before is sent to PEP
     Then the petition gets to the mock
 
   Scenario: Delete tenant policies
     Given a Keystone configuration with all roles in the same project
-    And a token request is sent with the previous Keystone configuration
     And headers build with the information set before and with format "json"
     And set the payload as "{'test_payload': 'test_value'}"
     And build a PEP url with the path "/pap/v1"
     And a "DELETE" request is built with the previous data
-    When a request is sent to PEP with the request built before
+    When the request built before is sent to PEP
     Then the petition gets to the mock
 
   Scenario Outline: Parameters-Query in ac urls
     Given a Keystone configuration with all roles in the same project
-    And a token request is sent with the previous Keystone configuration
     And headers build with the information set before and with format "json"
     And set the payload as "{'test_payload': 'test_value'}"
     And build a PEP url with the path "<url>"
     And a "<action>" request is built with the previous data
-    When a request is sent to PEP with the request built before
+    When the request built before is sent to PEP
     Then the petition gets to the mock
   Examples:
     | url                                                                        | action |

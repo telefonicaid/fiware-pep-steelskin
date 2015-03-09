@@ -29,5 +29,5 @@ Feature: Test the pep version consult in the administration port
   Scenario: Check the pep version returned is the same of the file package.json
     Given build a PEP administration url with the path "/version"
     And a "GET" request is built with the previous data
-    When a request is sent to PEP with the request built before
+    When the request built before is sent to PEP
     Then pep return the same version that are in package.json file

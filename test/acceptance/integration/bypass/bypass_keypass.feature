@@ -29,17 +29,18 @@ Feature: Test bypass functionality
     Given the Bypass configuration
 
   Scenario: Get to AC with a user with bypass role in domain
-    Given a bypass domain in KEYSTONE
-    And a user bypass in the domain
-    And a "bypass_role" role in the domain
-    And a url with "/pap/v1/subject/subjectName/policy/policyName"
-    When a KeyPass "GET" petition is asked to PEP
+    Given a Keystone configuration with the bypass
+    And headers build with the information set before and with format "json"
+    And set the header "Fiware-Servicepath" with the value "/"
+    And build a PEP url with the path "/pap/v1/subject/subjectName/policy/policyName"
+    And a "GET" request is built with the previous data
+    When the request built before is sent to PEP
     Then the petition gets to the mock
 
   Scenario: Get to AC with a user with bypass role in project
-    Given a bypass domain in KEYSTONE
-    And a user bypass in the domain
-    And a "bypass_role" role in the project "project_bypass"
-    And a url with "/pap/v1/subject/subjectName/policy/policyName"
-    When a KeyPass "GET" petition is asked to PEP
+    Given a Keystone configuration with the bypass
+    And headers build with the information set before and with format "json"
+    And build a PEP url with the path "/pap/v1/subject/subjectName/policy/policyName"
+    And a "GET" request is built with the previous data
+    When the request built before is sent to PEP
     Then the petition gets to the mock

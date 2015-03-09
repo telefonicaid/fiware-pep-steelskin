@@ -101,7 +101,7 @@ def the_history_off_petitions_adds_a_petition(step, petitions_added):
     assert len(history_list)+int(petitions_added) == len(history_new_list), 'The petitions added to the history are not the expected'
 
 
-@step('the value added to the history is ok')
+@step('the value added to the history is a request of the cache expired')
 def the_value_added_to_the_history_is_ok(step):
     """
     Check if the last petition is the same as the new petition saved

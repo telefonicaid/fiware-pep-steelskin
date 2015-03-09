@@ -27,7 +27,10 @@ __author__ = 'Jon Calderin Goñi <jon.caldering@gmail.com>'
 
 from lettuce import step, world
 from iotqautils.idm_keystone import IdmUtils
+from requests.exceptions import ConnectionError
 
+
+# Refactor ***********************
 @step('headers build with the information set before and with format "([^"]*)"$')
 def headers_with_format(step, format):
     """
@@ -40,12 +43,16 @@ def headers_with_format(step, format):
     :param format:
     :return:
     """
+    try:
+        token = IdmUtils.get_token(world.user, world.user, world.domain, world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
+    except ConnectionError as e:
+        assert False, 'There was a problem getting the token with the connection with Keystone: Ip: {ip} - Port: {port}'.format(ip=world.ks['platform']['address']['ip'], port=world.ks['platform']['address']['port'])
     headers = {
         "Accept": "application/%s" % format,
         'content-type': 'application/%s' % format,
         'Fiware-Servicepath': world.project,
         'Fiware-Service': world.domain,
-        'X-Auth-Token': world.token
+        'X-Auth-Token': token
     }
     world.headers = headers
 
@@ -66,6 +73,8 @@ def set_the_header_with_the_value(step, header, value):
     else:
         world.headers = {header: value}
 
+
+#***********************
 
 @step('headers of bad role environment with project')
 def headers_of_bad_role_environment_with_project(step):

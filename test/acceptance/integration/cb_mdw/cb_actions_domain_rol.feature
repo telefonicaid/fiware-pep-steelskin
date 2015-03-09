@@ -28,10 +28,14 @@ Feature: Context broker actions when the role is defined only in a domain
     Given the Context Broker configuration
 
   #Standard operations
+
   Scenario Outline: Create Standard operation
     Given a Keystone configuration with roles in the domains and the user "user_create_domain"
-    And url with "/v1/updateContext" and the actionType attribute "APPEND"
-    When a context broker "POST" petition is asked to PEP with "<format>" format
+    And build a PEP url with the path "/v1/updateContext"
+    And headers build with the information set before and with format "<format>"
+    And add to the payload the Context Broker action "APPEND" with format "<format>"
+    And a "POST" request is built with the previous data
+    When the request built before is sent to PEP
     Then the petition gets to the mock
 
   Examples:
@@ -41,8 +45,11 @@ Feature: Context broker actions when the role is defined only in a domain
 
   Scenario Outline: Update Standard operation
     Given a Keystone configuration with roles in the domains and the user "user_update_domain"
-    And url with "/v1/updateContext" and the actionType attribute "UPDATE"
-    When a context broker "POST" petition is asked to PEP with "<format>" format
+    And build a PEP url with the path "/v1/updateContext"
+    And headers build with the information set before and with format "<format>"
+    And add to the payload the Context Broker action "UPDATE" with format "<format>"
+    And a "POST" request is built with the previous data
+    When the request built before is sent to PEP
     Then the petition gets to the mock
   Examples:
     | format |
@@ -51,8 +58,11 @@ Feature: Context broker actions when the role is defined only in a domain
 
   Scenario Outline: Delete Standard operation
     Given a Keystone configuration with roles in the domains and the user "user_delete_domain"
-    And url with "/v1/updateContext" and the actionType attribute "DELETE"
-    When a context broker "POST" petition is asked to PEP with "<format>" format
+    And build a PEP url with the path "/v1/updateContext"
+    And headers build with the information set before and with format "<format>"
+    And add to the payload the Context Broker action "DELETE" with format "<format>"
+    And a "POST" request is built with the previous data
+    When the request built before is sent to PEP
     Then the petition gets to the mock
   Examples:
     | format |
@@ -61,11 +71,14 @@ Feature: Context broker actions when the role is defined only in a domain
 
   Scenario Outline: Read Standard operation
     Given a Keystone configuration with roles in the domains and the user "user_read_domain"
-    And a url with "<url>"
-    When a context broker "POST" petition is asked to PEP with "<format>" format
+    And build a PEP url with the path "<url>"
+    And headers build with the information set before and with format "<format>"
+    And add an example of payload with "<format>" format
+    And a "POST" request is built with the previous data
+    When the request built before is sent to PEP
     Then the petition gets to the mock
   Examples:
-    | format | url             |
+    | format | url              |
     | xml    | /v1/queryContext |
     | json   | /v1/queryContext |
     | xml    | /v1/contextTypes |
@@ -73,11 +86,14 @@ Feature: Context broker actions when the role is defined only in a domain
 
   Scenario Outline: Subscribe Standard operation
     Given a Keystone configuration with roles in the domains and the user "user_subscribe_domain"
-    And a url with "<url>"
-    When a context broker "POST" petition is asked to PEP with "<format>" format
+    And build a PEP url with the path "<url>"
+    And headers build with the information set before and with format "<format>"
+    And add an example of payload with "<format>" format
+    And a "POST" request is built with the previous data
+    When the request built before is sent to PEP
     Then the petition gets to the mock
   Examples:
-    | format | url                          |
+    | format | url                           |
     | xml    | /v1/subscribeContext          |
     | json   | /v1/subscribeContext          |
     | xml    | /v1/updateContextSubscription |
@@ -87,8 +103,11 @@ Feature: Context broker actions when the role is defined only in a domain
 
   Scenario Outline: Register Standard operation
     Given a Keystone configuration with roles in the domains and the user "user_register_domain"
-    And a url with "/v1/registry/registerContext"
-    When a context broker "POST" petition is asked to PEP with "<format>" format
+    And build a PEP url with the path "/v1/registry/registerContext"
+    And headers build with the information set before and with format "<format>"
+    And add an example of payload with "<format>" format
+    And a "POST" request is built with the previous data
+    When the request built before is sent to PEP
     Then the petition gets to the mock
   Examples:
     | format |
@@ -97,8 +116,11 @@ Feature: Context broker actions when the role is defined only in a domain
 
   Scenario Outline: Discover Standard operation
     Given a Keystone configuration with roles in the domains and the user "user_discover_domain"
-    And a url with "/v1/registry/discoverContextAvailability"
-    When a context broker "POST" petition is asked to PEP with "<format>" format
+    And build a PEP url with the path "/v1/registry/discoverContextAvailability"
+    And headers build with the information set before and with format "<format>"
+    And add an example of payload with "<format>" format
+    And a "POST" request is built with the previous data
+    When the request built before is sent to PEP
     Then the petition gets to the mock
   Examples:
     | format |
@@ -107,11 +129,14 @@ Feature: Context broker actions when the role is defined only in a domain
 
   Scenario Outline: subscribe-availability Standard operation
     Given a Keystone configuration with roles in the domains and the user "user_subscribe-availability_domain"
-    And a url with "<url>"
-    When a context broker "POST" petition is asked to PEP with "<format>" format
+    And build a PEP url with the path "<url>"
+    And headers build with the information set before and with format "<format>"
+    And add an example of payload with "<format>" format
+    And a "POST" request is built with the previous data
+    When the request built before is sent to PEP
     Then the petition gets to the mock
   Examples:
-    | format | url                                               |
+    | format | url                                                |
     | xml    | /v1/registry/subscribeContextAvailability          |
     | json   | /v1/registry/subscribeContextAvailability          |
     | xml    | /v1/registry/updateContextAvailabilitySubscription |
@@ -122,59 +147,81 @@ Feature: Context broker actions when the role is defined only in a domain
   #Convenience operations
   Scenario Outline: Read Convenience operation
     Given a Keystone configuration with roles in the domains and the user "user_read_domain"
-    And a url with "<url>"
-    When a context broker "<action>" petition is asked to PEP with "<format>" format
+    And build a PEP url with the path "<url>"
+    And headers build with the information set before and with format "<format>"
+    And add an example of payload with "<format>" format
+    And a "GET" request is built with the previous data
+    When the request built before is sent to PEP
     Then the petition gets to the mock
   Examples:
-    | format | url                                                                 | action |
-    | xml    | /v1/contextEntities/EntityID                                         | GET    |
-    | json   | /v1/contextEntities/EntityID                                         | GET    |
-    | xml    | /v1/contextEntities/EntityID/attributes/attributeName                | GET    |
-    | json   | /v1/contextEntities/EntityID/attributes/attributeName                | GET    |
-    | xml    | /v1/contextEntities/EntityID/attributes/attributeName/valueID        | GET    |
-    | json   | /v1/contextEntities/EntityID/attributes/attributeName/valueID        | GET    |
-    | xml    | /v1/contextEntities/EntityID/attributeDomains/attributeDomainName    | GET    |
-    | json   | /v1/contextEntities/EntityID/attributeDomains/attributeDomainName    | GET    |
-    | xml    | /v1/contextEntityTypes/typeName/attributes/attributeName             | GET    |
-    | json   | /v1/contextEntityTypes/typeName/attributes/attributeName             | GET    |
-    | xml    | /v1/contextEntityTypes/typeName/attributeDomains/attributeDomainName | GET    |
-    | json   | /v1/contextEntityTypes/typeName/attributeDomains/attributeDomainName | GET    |
-    | xml    | /v1/contextEntityTypes/typeName                                      | GET    |
-    | json   | /v1/contextEntityTypes/typeName                                      | GET    |
+    | format | url                                                                  |
+    | xml    | /v1/contextEntities/EntityID                                         |
+    | json   | /v1/contextEntities/EntityID                                         |
+    | xml    | /v1/contextEntities/EntityID/attributes/attributeName                |
+    | json   | /v1/contextEntities/EntityID/attributes/attributeName                |
+    | xml    | /v1/contextEntities/EntityID/attributes/attributeName/valueID        |
+    | json   | /v1/contextEntities/EntityID/attributes/attributeName/valueID        |
+    | xml    | /v1/contextEntities/EntityID/attributeDomains/attributeDomainName    |
+    | json   | /v1/contextEntities/EntityID/attributeDomains/attributeDomainName    |
+    | xml    | /v1/contextEntityTypes/typeName/attributes/attributeName             |
+    | json   | /v1/contextEntityTypes/typeName/attributes/attributeName             |
+    | xml    | /v1/contextEntityTypes/typeName/attributeDomains/attributeDomainName |
+    | json   | /v1/contextEntityTypes/typeName/attributeDomains/attributeDomainName |
+    | xml    | /v1/contextEntityTypes/typeName                                      |
+    | json   | /v1/contextEntityTypes/typeName                                      |
+    | xml    | /v1/contextEntities                                                  |
+    | json   | /v1/contextEntities                                                  |
+    | xml    | /v1/contextSubscriptions                                             |
+    | json   | /v1/contextSubscriptions                                             |
+    | xml    | /v1/contextSubscriptions/subscriptionid                              |
+    | json   | /v1/contextSubscriptions/subscriptionid                              |
+    | xml    | /v1/contextTypes                                                     |
+    | json   | /v1/contextTypes                                                     |
+    | xml    | /v1/contextTypes/typeName                                            |
+    | json   | /v1/contextTypes/typeName                                            |
 
   Scenario Outline: Update Convenience operation
     Given a Keystone configuration with roles in the domains and the user "user_update_domain"
-    And a url with "<url>"
-    When a context broker "<action>" petition is asked to PEP with "<format>" format
+    And build a PEP url with the path "<url>"
+    And headers build with the information set before and with format "<format>"
+    And add an example of payload with "<format>" format
+    And a "PUT" request is built with the previous data
+    When the request built before is sent to PEP
     Then the petition gets to the mock
   Examples:
-    | format | url                                                          | action |
-    | xml    | /v1/contextEntities/EntityID                                  | PUT    |
-    | json   | /v1/contextEntities/EntityID                                  | PUT    |
-    | xml    | /v1/contextEntities/EntityID/attributes/attributeName         | PUT    |
-    | json   | /v1/contextEntities/EntityID/attributes/attributeName         | PUT    |
-    | xml    | /v1/contextEntities/EntityID/attributes/attributeName/valueID | PUT    |
-    | json   | /v1/contextEntities/EntityID/attributes/attributeName/valueID | PUT    |
+    | format | url                                                           |
+    | xml    | /v1/contextEntities/EntityID                                  |
+    | json   | /v1/contextEntities/EntityID                                  |
+    | xml    | /v1/contextEntities/EntityID/attributes/attributeName         |
+    | json   | /v1/contextEntities/EntityID/attributes/attributeName         |
+    | xml    | /v1/contextEntities/EntityID/attributes/attributeName/valueID |
+    | json   | /v1/contextEntities/EntityID/attributes/attributeName/valueID |
 
   Scenario Outline: Create Convenience operation
     Given a Keystone configuration with roles in the domains and the user "user_create_domain"
-    And a url with "<url>"
-    When a context broker "<action>" petition is asked to PEP with "<format>" format
+    And build a PEP url with the path "<url>"
+    And headers build with the information set before and with format "<format>"
+    And add an example of payload with "<format>" format
+    And a "POST" request is built with the previous data
+    When the request built before is sent to PEP
     Then the petition gets to the mock
   Examples:
-    | format | url                                                  | action |
-    | xml    | /v1/contextEntities/EntityID                          | POST   |
-    | json   | /v1/contextEntities/EntityID                          | POST   |
-    | xml    | /v1/contextEntities/EntityID/attributes/attributeName | POST   |
-    | json   | /v1/contextEntities/EntityID/attributes/attributeName | POST   |
+    | format | url                                                   |
+    | xml    | /v1/contextEntities/EntityID                          |
+    | json   | /v1/contextEntities/EntityID                          |
+    | xml    | /v1/contextEntities/EntityID/attributes/attributeName |
+    | json   | /v1/contextEntities/EntityID/attributes/attributeName |
 
   Scenario Outline: Subscribe Convenience operation
     Given a Keystone configuration with roles in the domains and the user "user_subscribe_domain"
-    And a url with "<url>"
-    When a context broker "<action>" petition is asked to PEP with "<format>" format
+    And build a PEP url with the path "<url>"
+    And headers build with the information set before and with format "<format>"
+    And add an example of payload with "<format>" format
+    And a "<action>" request is built with the previous data
+    When the request built before is sent to PEP
     Then the petition gets to the mock
   Examples:
-    | format | url                                    | action |
+    | format | url                                     | action |
     | xml    | /v1/contextSubscriptions                | POST   |
     | json   | /v1/contextSubscriptions                | POST   |
     | xml    | /v1/contextSubscriptions/subscriptionID | PUT    |
@@ -184,51 +231,60 @@ Feature: Context broker actions when the role is defined only in a domain
 
   Scenario Outline: Discover Convenience operation
     Given a Keystone configuration with roles in the domains and the user "user_discover_domain"
-    And a url with "<url>"
-    When a context broker "<action>" petition is asked to PEP with "<format>" format
+    And build a PEP url with the path "<url>"
+    And headers build with the information set before and with format "<format>"
+    And add an example of payload with "<format>" format
+    And a "GET" request is built with the previous data
+    When the request built before is sent to PEP
     Then the petition gets to the mock
   Examples:
-    | format | url                                                                          | action |
-    | xml    | /v1/registry/contextEntities/EntityID                                         | GET    |
-    | json   | /v1/registry/contextEntities/EntityID                                         | GET    |
-    | xml    | /v1/registry/contextEntities/EntityID/attributes/attributeName                | GET    |
-    | json   | /v1/registry/contextEntities/EntityID/attributes/attributeName                | GET    |
-    | xml    | /v1/registry/contextEntities/EntityID/attributeDomains/attributeDomainName    | GET    |
-    | json   | /v1/registry/contextEntities/EntityID/attributeDomains/attributeDomainName    | GET    |
-    | xml    | /v1/registry/contextEntityTypes/typeName/attributes/attributeName             | GET    |
-    | json   | /v1/registry/contextEntityTypes/typeName/attributes/attributeName             | GET    |
-    | xml    | /v1/registry/contextEntityTypes/typeName/attributeDomains/attributeDomainName | GET    |
-    | json   | /v1/registry/contextEntityTypes/typeName/attributeDomains/attributeDomainName | GET    |
-    | xml    | /v1/registry/contextEntityTypes/typeName                                      | GET    |
-    | json   | /v1/registry/contextEntityTypes/typeName                                      | GET    |
+    | format | url                                                                           |
+    | xml    | /v1/registry/contextEntities/EntityID                                         |
+    | json   | /v1/registry/contextEntities/EntityID                                         |
+    | xml    | /v1/registry/contextEntities/EntityID/attributes/attributeName                |
+    | json   | /v1/registry/contextEntities/EntityID/attributes/attributeName                |
+    | xml    | /v1/registry/contextEntities/EntityID/attributeDomains/attributeDomainName    |
+    | json   | /v1/registry/contextEntities/EntityID/attributeDomains/attributeDomainName    |
+    | xml    | /v1/registry/contextEntityTypes/typeName/attributes/attributeName             |
+    | json   | /v1/registry/contextEntityTypes/typeName/attributes/attributeName             |
+    | xml    | /v1/registry/contextEntityTypes/typeName/attributeDomains/attributeDomainName |
+    | json   | /v1/registry/contextEntityTypes/typeName/attributeDomains/attributeDomainName |
+    | xml    | /v1/registry/contextEntityTypes/typeName                                      |
+    | json   | /v1/registry/contextEntityTypes/typeName                                      |
 
   Scenario Outline: Register Convenience operation
     Given a Keystone configuration with roles in the domains and the user "user_register_domain"
-    And a url with "<url>"
-    When a context broker "<action>" petition is asked to PEP with "<format>" format
+    And build a PEP url with the path "<url>"
+    And headers build with the information set before and with format "<format>"
+    And add an example of payload with "<format>" format
+    And a "POST" request is built with the previous data
+    When the request built before is sent to PEP
     Then the petition gets to the mock
   Examples:
-    | format | url                                                                          | action |
-    | xml    | /v1/registry/contextEntities/EntityID                                         | POST   |
-    | json   | /v1/registry/contextEntities/EntityID                                         | POST   |
-    | xml    | /v1/registry/contextEntities/EntityID/attributes/attributeName                | POST   |
-    | json   | /v1/registry/contextEntities/EntityID/attributes/attributeName                | POST   |
-    | xml    | /v1/registry/contextEntities/EntityID/attributeDomains/attributeDomainName    | POST   |
-    | json   | /v1/registry/contextEntities/EntityID/attributeDomains/attributeDomainName    | POST   |
-    | xml    | /v1/registry/contextEntityTypes/typeName/attributes/attributeName             | POST   |
-    | json   | /v1/registry/contextEntityTypes/typeName/attributes/attributeName             | POST   |
-    | xml    | /v1/registry/contextEntityTypes/typeName/attributeDomains/attributeDomainName | POST   |
-    | json   | /v1/registry/contextEntityTypes/typeName/attributeDomains/attributeDomainName | POST   |
-    | xml    | /v1/registry/contextEntityTypes/typeName                                      | POST   |
-    | json   | /v1/registry/contextEntityTypes/typeName                                      | POST   |
+    | format | url                                                                           |
+    | xml    | /v1/registry/contextEntities/EntityID                                         |
+    | json   | /v1/registry/contextEntities/EntityID                                         |
+    | xml    | /v1/registry/contextEntities/EntityID/attributes/attributeName                |
+    | json   | /v1/registry/contextEntities/EntityID/attributes/attributeName                |
+    | xml    | /v1/registry/contextEntities/EntityID/attributeDomains/attributeDomainName    |
+    | json   | /v1/registry/contextEntities/EntityID/attributeDomains/attributeDomainName    |
+    | xml    | /v1/registry/contextEntityTypes/typeName/attributes/attributeName             |
+    | json   | /v1/registry/contextEntityTypes/typeName/attributes/attributeName             |
+    | xml    | /v1/registry/contextEntityTypes/typeName/attributeDomains/attributeDomainName |
+    | json   | /v1/registry/contextEntityTypes/typeName/attributeDomains/attributeDomainName |
+    | xml    | /v1/registry/contextEntityTypes/typeName                                      |
+    | json   | /v1/registry/contextEntityTypes/typeName                                      |
 
   Scenario Outline: Subscribe-availability Convenience operation
     Given a Keystone configuration with roles in the domains and the user "user_subscribe-availability_domain"
-    And a url with "<url>"
-    When a context broker "<action>" petition is asked to PEP with "<format>" format
+    And build a PEP url with the path "<url>"
+    And headers build with the information set before and with format "<format>"
+    And add an example of payload with "<format>" format
+    And a "<action>" request is built with the previous data
+    When the request built before is sent to PEP
     Then the petition gets to the mock
   Examples:
-    | format | url                                                         | action |
+    | format | url                                                          | action |
     | xml    | /v1/registry/contextAvailabilitySubscriptions                | POST   |
     | json   | /v1/registry/contextAvailabilitySubscriptions                | POST   |
     | xml    | /v1/registry/contextAvailabilitySubscriptions/subscriptionId | PUT    |

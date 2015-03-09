@@ -28,85 +28,100 @@ Feature: PeP cache in user, project and roles
 
   Scenario: Test cache with the same token
     Given the cache gradual configuration
-    And headers general
-    And a url with "/v1/queryContext"
-    When the petition action "POST" is asked without data
+    And a Keystone configuration with all roles in the same project
+    And headers build with the information set before and with format "json"
+    And build a PEP url with the path "/v1/queryContext"
+    And a "POST" request is built with the previous data
+    When the request built before is sent to PEP
     And the history is saved
-    When the petition action "POST" is asked without data
+    And the request built before is sent to PEP
     Then the PEP returns an ok
     And the history is the same as saved
     And waits "35" seconds to "all" cache expire
 
   Scenario: Test cache with different tokens
     Given the cache gradual configuration
-    And headers general
-    And a url with "/v1/queryContext"
-    When the petition action "POST" is asked without data
+    And a Keystone configuration with all roles in the same project
+    And headers build with the information set before and with format "json"
+    And build a PEP url with the path "/v1/queryContext"
+    And a "POST" request is built with the previous data
+    When the request built before is sent to PEP
     And the history is saved
-    And headers general
-    When the petition action "POST" is asked without data
+    And headers build with the information set before and with format "json"
+    And build a PEP url with the path "/v1/queryContext"
+    And a "POST" request is built with the previous data
+    And the request built before is sent to PEP
     Then the PEP returns an ok
     And the history of petitions adds "1" petition
     And waits "35" seconds to "all" cache expire
 
   Scenario: Test cache user expired
     Given the cache gradual configuration
-    And headers general
-    And a url with "/v1/queryContext"
-    When the petition action "POST" is asked without data
+    And a Keystone configuration with all roles in the same project
+    And headers build with the information set before and with format "json"
+    And build a PEP url with the path "/v1/queryContext"
+    And a "POST" request is built with the previous data
+    When the request built before is sent to PEP
     And the history is saved
     And waits "10" seconds to "all" cache expire
-    When the petition action "POST" is asked without data
+    And the request built before is sent to PEP
     Then the PEP returns an ok
     And the history of petitions adds "1" petition
     And waits "35" seconds to "all" cache expire
 
   Scenario: Test cache user and projects expired
     Given the cache gradual configuration
-    And headers general
-    And a url with "/v1/queryContext"
-    When the petition action "POST" is asked without data
+    And a Keystone configuration with all roles in the same project
+    And headers build with the information set before and with format "json"
+    And build a PEP url with the path "/v1/queryContext"
+    And a "POST" request is built with the previous data
+    When the request built before is sent to PEP
     And the history is saved
     And waits "20" seconds to "all" cache expire
-    When the petition action "POST" is asked without data
+    And the request built before is sent to PEP
     Then the PEP returns an ok
     And the history of petitions adds "2" petition
     And waits "35" seconds to "all" cache expire
 
   Scenario: Test cache expired completed
     Given the cache gradual configuration
-    And headers general
-    And a url with "/v1/queryContext"
-    When the petition action "POST" is asked without data
+    And a Keystone configuration with all roles in the same project
+    And headers build with the information set before and with format "json"
+    And build a PEP url with the path "/v1/queryContext"
+    And a "POST" request is built with the previous data
+    When the request built before is sent to PEP
     And the history is saved
     And waits "30" seconds to "all" cache expire
-    When the petition action "POST" is asked without data
+    And the request built before is sent to PEP
     Then the PEP returns an ok
     And the history of petitions adds "3" petition
     And waits "35" seconds to "all" cache expire
 
   Scenario: Test cache projects expired
     Given the cache projects configuration
-    And headers general
-    And a url with "/v1/queryContext"
-    When the petition action "POST" is asked without data
-    And the history is saved
+    And a Keystone configuration with all roles in the same project
+    And headers build with the information set before and with format "json"
+    And build a PEP url with the path "/v1/queryContext"
+    And a "POST" request is built with the previous data
+    When the request built before is sent to PEP
     And waits "10" seconds to "projects" cache expire
-    When the petition action "POST" is asked without data
+    And the request built before is sent to PEP
     Then the PEP returns an ok
     And the history of petitions adds "1" petition
-    And the value added to the history is ok
+    And the value added to the history is a request of the cache expired
     And waits "35" seconds to "all" cache expire
 
   Scenario: Test cache roles expired
     Given the cache roles configuration
-    And headers general
-    And a url with "/v1/queryContext"
-    When the petition action "POST" is asked without data
+    And a Keystone configuration with all roles in the same project
+    And headers build with the information set before and with format "json"
+    And build a PEP url with the path "/v1/queryContext"
+    And a "POST" request is built with the previous data
+    When the request built before is sent to PEP
     And the history is saved
     And waits "10" seconds to "roles" cache expire
-    When the petition action "POST" is asked without data
+    And the request built before is sent to PEP
     Then the PEP returns an ok
     And the history of petitions adds "1" petition
-    And the value added to the history is ok
+    And the value added to the history is a request of the cache expired
     And waits "35" seconds to "all" cache expire
