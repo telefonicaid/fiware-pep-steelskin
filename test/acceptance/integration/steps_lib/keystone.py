@@ -21,13 +21,15 @@ If not, see http://www.gnu.org/licenses/.
 For those usages not covered by the GNU Affero General Public License
 please contact with::[iot_support@tid.es]
 """
+import objgraph
+
 __author__ = 'Jon Calderin Goñi <jon.caldering@gmail.com>'
 
 from lettuce import step, world
 
 # Refactor*************************************************************
 
-@step('a Keystone configuration with all roles in the same project')
+@step('a KEYSTONE CONFIGURATION with all roles in the same project')
 def a_keystone_configuration_with_all_roles_in_the_same_project(step):
     """
     There is a configuration in properties with all roles in the same project
@@ -38,7 +40,7 @@ def a_keystone_configuration_with_all_roles_in_the_same_project(step):
     world.domain = world.ks['domain_ok']
     world.project = world.ks['project_ok']
 
-@step('a Keystone configuration with no roles')
+@step('a KEYSTONE CONFIGURATION with no roles')
 def a_keystone_configuration_with_no_roles(step):
     """
     There is a configuration in properties with user in a domain in a project with no roles
@@ -49,7 +51,7 @@ def a_keystone_configuration_with_no_roles(step):
     world.domain = world.ks['domain_no_roles']
     world.project = world.ks['project_no_roles']
 
-@step('a Keystone configuration with roles not in Access Control')
+@step('a KEYSTONE CONFIGURATION with roles not in Access Control')
 def a_keystone_configuration_with_roles_not_in_access_control(step):
     """
     There is a configuration in properties with user in a domain in a project with roles
@@ -61,7 +63,7 @@ def a_keystone_configuration_with_roles_not_in_access_control(step):
     world.domain = world.ks['domain_ko']
     world.project = world.ks['project_ko']
 
-@step('a Keystone configuration with roles in the domains and the user "([^"]*)"')
+@step('a KEYSTONE CONFIGURATION with roles in the domains and the user "([^"]*)"')
 def a_keystone_configuration_with_role_in_the_domain(step, user):
     """
     There is a configuration in properties with user in a domain with roles
@@ -73,7 +75,7 @@ def a_keystone_configuration_with_role_in_the_domain(step, user):
     world.domain = world.ks['domain_domain_only']
     world.project = world.ks['project_domain_only']
 
-@step('a Keystone configuration with roles in projects and the user "([^"]*)"')
+@step('a KEYSTONE CONFIGURATION with roles in projects and the user "([^"]*)"')
 def a_keystone_configuration_with_role_in_the_project(step, user):
     """
     There is a configuration in properties with user in a project with roles
@@ -85,7 +87,7 @@ def a_keystone_configuration_with_role_in_the_project(step, user):
     world.domain = world.ks['domain_project_only']
     world.project = world.ks['project_project_only']
 
-@step('a Keystone configuration with the bypass')
+@step('a KEYSTONE CONFIGURATION with the bypass')
 def a_keystone_configuration_with_the_bypass(step):
     """
     There is a configuration in properties with bypass configuration

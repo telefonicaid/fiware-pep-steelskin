@@ -100,7 +100,7 @@ world.mock = {
 
 
 world.ks = {}
-# Real Keystone configuration
+# Real KEYSTONE CONFIGURATION
 world.ks['platform'] = {
     'GlobalServiceAdmin': {
         'user': 'admin',
@@ -158,7 +158,7 @@ world.ac['listPolicies_role'] = 'listPolicies'
 world.ac['deleteSubjectPolicies_role'] = 'deleteSubjectPolicies'
 world.ac['deleteTenantPolicies_role'] = 'deleteTenantPolicies'
 
-# Keystone configuration
+# KEYSTONE CONFIGURATION
 # General configuration
 world.ks['user_all'] = 'octopus'
 world.ks['domain_ok'] = 'atlantic'
@@ -321,7 +321,7 @@ world.ks['environment_general_no_roles'] = {
 }
 
 
-# Project Only Keystone configuration
+# Project Only KEYSTONE CONFIGURATION
 world.ks['domain_project_only'] = 'atlantic_only_project'
 world.ks['project_project_only'] = '/cave'
 # Users

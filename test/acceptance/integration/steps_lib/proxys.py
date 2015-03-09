@@ -95,6 +95,7 @@ def the_history_off_petitions_adds_a_petition(step, petitions_added):
     :return:
     """
     resp = requests.request('GET', 'http://{ks_proxy_ip}:{ks_proxy_port}/history'.format(ks_proxy_ip=world.ks_proxy_ip, ks_proxy_port=world.ks_proxy_port)).text
+    assert hasattr(world, 'history'), 'There is not a history saved in WORLD'
     history_list = eval(world.history)
     history_new_list = eval(resp)
     world.last_petition_added = history_new_list[len(history_new_list)-1]

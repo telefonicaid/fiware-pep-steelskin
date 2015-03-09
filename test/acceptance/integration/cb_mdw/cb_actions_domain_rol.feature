@@ -17,7 +17,7 @@
 # If not, see http://www.gnu.org/licenses/.
 #
 # For those usages not covered by the GNU Affero General Public License
-# please contact with::[iot_support@tid.es]
+# please contact with::[iot_support at tid.es]
 # __author__ = 'Jon Calderin Goñi (jon dot caldering at gmail dot com)'
 
 @cb_actions_domain
@@ -30,11 +30,11 @@ Feature: Context broker actions when the role is defined only in a domain
   #Standard operations
 
   Scenario Outline: Create Standard operation
-    Given a Keystone configuration with roles in the domains and the user "user_create_domain"
-    And build a PEP url with the path "/v1/updateContext"
-    And headers build with the information set before and with format "<format>"
+    Given a KEYSTONE CONFIGURATION with roles in the domains and the user "user_create_domain"
+    And set the request URL with the path "/v1/updateContext"
+    And set the request HEADERS with the previous KEYSTONE CONFIGURATION ant the format "<format>"
     And add to the payload the Context Broker action "APPEND" with format "<format>"
-    And a "POST" request is built with the previous data
+    And set the request METHOD as "POST"
     When the request built before is sent to PEP
     Then the petition gets to the mock
 
@@ -44,11 +44,11 @@ Feature: Context broker actions when the role is defined only in a domain
     | json   |
 
   Scenario Outline: Update Standard operation
-    Given a Keystone configuration with roles in the domains and the user "user_update_domain"
-    And build a PEP url with the path "/v1/updateContext"
-    And headers build with the information set before and with format "<format>"
+    Given a KEYSTONE CONFIGURATION with roles in the domains and the user "user_update_domain"
+    And set the request URL with the path "/v1/updateContext"
+    And set the request HEADERS with the previous KEYSTONE CONFIGURATION ant the format "<format>"
     And add to the payload the Context Broker action "UPDATE" with format "<format>"
-    And a "POST" request is built with the previous data
+    And set the request METHOD as "POST"
     When the request built before is sent to PEP
     Then the petition gets to the mock
   Examples:
@@ -57,11 +57,11 @@ Feature: Context broker actions when the role is defined only in a domain
     | json   |
 
   Scenario Outline: Delete Standard operation
-    Given a Keystone configuration with roles in the domains and the user "user_delete_domain"
-    And build a PEP url with the path "/v1/updateContext"
-    And headers build with the information set before and with format "<format>"
+    Given a KEYSTONE CONFIGURATION with roles in the domains and the user "user_delete_domain"
+    And set the request URL with the path "/v1/updateContext"
+    And set the request HEADERS with the previous KEYSTONE CONFIGURATION ant the format "<format>"
     And add to the payload the Context Broker action "DELETE" with format "<format>"
-    And a "POST" request is built with the previous data
+    And set the request METHOD as "POST"
     When the request built before is sent to PEP
     Then the petition gets to the mock
   Examples:
@@ -70,11 +70,11 @@ Feature: Context broker actions when the role is defined only in a domain
     | json   |
 
   Scenario Outline: Read Standard operation
-    Given a Keystone configuration with roles in the domains and the user "user_read_domain"
-    And build a PEP url with the path "<url>"
-    And headers build with the information set before and with format "<format>"
-    And add an example of payload with "<format>" format
-    And a "POST" request is built with the previous data
+    Given a KEYSTONE CONFIGURATION with roles in the domains and the user "user_read_domain"
+    And set the request URL with the path "<url>"
+    And set the request HEADERS with the previous KEYSTONE CONFIGURATION ant the format "<format>"
+    And add an example of PAYLOAD with "<format>" format
+    And set the request METHOD as "POST"
     When the request built before is sent to PEP
     Then the petition gets to the mock
   Examples:
@@ -85,11 +85,11 @@ Feature: Context broker actions when the role is defined only in a domain
     | json   | /v1/contextTypes |
 
   Scenario Outline: Subscribe Standard operation
-    Given a Keystone configuration with roles in the domains and the user "user_subscribe_domain"
-    And build a PEP url with the path "<url>"
-    And headers build with the information set before and with format "<format>"
-    And add an example of payload with "<format>" format
-    And a "POST" request is built with the previous data
+    Given a KEYSTONE CONFIGURATION with roles in the domains and the user "user_subscribe_domain"
+    And set the request URL with the path "<url>"
+    And set the request HEADERS with the previous KEYSTONE CONFIGURATION ant the format "<format>"
+    And add an example of PAYLOAD with "<format>" format
+    And set the request METHOD as "POST"
     When the request built before is sent to PEP
     Then the petition gets to the mock
   Examples:
@@ -102,11 +102,11 @@ Feature: Context broker actions when the role is defined only in a domain
     | json   | /v1/unsubscribeContext        |
 
   Scenario Outline: Register Standard operation
-    Given a Keystone configuration with roles in the domains and the user "user_register_domain"
-    And build a PEP url with the path "/v1/registry/registerContext"
-    And headers build with the information set before and with format "<format>"
-    And add an example of payload with "<format>" format
-    And a "POST" request is built with the previous data
+    Given a KEYSTONE CONFIGURATION with roles in the domains and the user "user_register_domain"
+    And set the request URL with the path "/v1/registry/registerContext"
+    And set the request HEADERS with the previous KEYSTONE CONFIGURATION ant the format "<format>"
+    And add an example of PAYLOAD with "<format>" format
+    And set the request METHOD as "POST"
     When the request built before is sent to PEP
     Then the petition gets to the mock
   Examples:
@@ -115,11 +115,11 @@ Feature: Context broker actions when the role is defined only in a domain
     | json   |
 
   Scenario Outline: Discover Standard operation
-    Given a Keystone configuration with roles in the domains and the user "user_discover_domain"
-    And build a PEP url with the path "/v1/registry/discoverContextAvailability"
-    And headers build with the information set before and with format "<format>"
-    And add an example of payload with "<format>" format
-    And a "POST" request is built with the previous data
+    Given a KEYSTONE CONFIGURATION with roles in the domains and the user "user_discover_domain"
+    And set the request URL with the path "/v1/registry/discoverContextAvailability"
+    And set the request HEADERS with the previous KEYSTONE CONFIGURATION ant the format "<format>"
+    And add an example of PAYLOAD with "<format>" format
+    And set the request METHOD as "POST"
     When the request built before is sent to PEP
     Then the petition gets to the mock
   Examples:
@@ -128,11 +128,11 @@ Feature: Context broker actions when the role is defined only in a domain
     | json   |
 
   Scenario Outline: subscribe-availability Standard operation
-    Given a Keystone configuration with roles in the domains and the user "user_subscribe-availability_domain"
-    And build a PEP url with the path "<url>"
-    And headers build with the information set before and with format "<format>"
-    And add an example of payload with "<format>" format
-    And a "POST" request is built with the previous data
+    Given a KEYSTONE CONFIGURATION with roles in the domains and the user "user_subscribe-availability_domain"
+    And set the request URL with the path "<url>"
+    And set the request HEADERS with the previous KEYSTONE CONFIGURATION ant the format "<format>"
+    And add an example of PAYLOAD with "<format>" format
+    And set the request METHOD as "POST"
     When the request built before is sent to PEP
     Then the petition gets to the mock
   Examples:
@@ -146,11 +146,11 @@ Feature: Context broker actions when the role is defined only in a domain
 
   #Convenience operations
   Scenario Outline: Read Convenience operation
-    Given a Keystone configuration with roles in the domains and the user "user_read_domain"
-    And build a PEP url with the path "<url>"
-    And headers build with the information set before and with format "<format>"
-    And add an example of payload with "<format>" format
-    And a "GET" request is built with the previous data
+    Given a KEYSTONE CONFIGURATION with roles in the domains and the user "user_read_domain"
+    And set the request URL with the path "<url>"
+    And set the request HEADERS with the previous KEYSTONE CONFIGURATION ant the format "<format>"
+    And add an example of PAYLOAD with "<format>" format
+    And set the request METHOD as "GET"
     When the request built before is sent to PEP
     Then the petition gets to the mock
   Examples:
@@ -181,11 +181,11 @@ Feature: Context broker actions when the role is defined only in a domain
     | json   | /v1/contextTypes/typeName                                            |
 
   Scenario Outline: Update Convenience operation
-    Given a Keystone configuration with roles in the domains and the user "user_update_domain"
-    And build a PEP url with the path "<url>"
-    And headers build with the information set before and with format "<format>"
-    And add an example of payload with "<format>" format
-    And a "PUT" request is built with the previous data
+    Given a KEYSTONE CONFIGURATION with roles in the domains and the user "user_update_domain"
+    And set the request URL with the path "<url>"
+    And set the request HEADERS with the previous KEYSTONE CONFIGURATION ant the format "<format>"
+    And add an example of PAYLOAD with "<format>" format
+    And set the request METHOD as "PUT"
     When the request built before is sent to PEP
     Then the petition gets to the mock
   Examples:
@@ -198,11 +198,11 @@ Feature: Context broker actions when the role is defined only in a domain
     | json   | /v1/contextEntities/EntityID/attributes/attributeName/valueID |
 
   Scenario Outline: Create Convenience operation
-    Given a Keystone configuration with roles in the domains and the user "user_create_domain"
-    And build a PEP url with the path "<url>"
-    And headers build with the information set before and with format "<format>"
-    And add an example of payload with "<format>" format
-    And a "POST" request is built with the previous data
+    Given a KEYSTONE CONFIGURATION with roles in the domains and the user "user_create_domain"
+    And set the request URL with the path "<url>"
+    And set the request HEADERS with the previous KEYSTONE CONFIGURATION ant the format "<format>"
+    And add an example of PAYLOAD with "<format>" format
+    And set the request METHOD as "POST"
     When the request built before is sent to PEP
     Then the petition gets to the mock
   Examples:
@@ -213,11 +213,11 @@ Feature: Context broker actions when the role is defined only in a domain
     | json   | /v1/contextEntities/EntityID/attributes/attributeName |
 
   Scenario Outline: Subscribe Convenience operation
-    Given a Keystone configuration with roles in the domains and the user "user_subscribe_domain"
-    And build a PEP url with the path "<url>"
-    And headers build with the information set before and with format "<format>"
-    And add an example of payload with "<format>" format
-    And a "<action>" request is built with the previous data
+    Given a KEYSTONE CONFIGURATION with roles in the domains and the user "user_subscribe_domain"
+    And set the request URL with the path "<url>"
+    And set the request HEADERS with the previous KEYSTONE CONFIGURATION ant the format "<format>"
+    And add an example of PAYLOAD with "<format>" format
+    And set the request METHOD as "<action>"
     When the request built before is sent to PEP
     Then the petition gets to the mock
   Examples:
@@ -230,11 +230,11 @@ Feature: Context broker actions when the role is defined only in a domain
     | json   | /v1/contextSubscriptions/subscriptionID | DELETE |
 
   Scenario Outline: Discover Convenience operation
-    Given a Keystone configuration with roles in the domains and the user "user_discover_domain"
-    And build a PEP url with the path "<url>"
-    And headers build with the information set before and with format "<format>"
-    And add an example of payload with "<format>" format
-    And a "GET" request is built with the previous data
+    Given a KEYSTONE CONFIGURATION with roles in the domains and the user "user_discover_domain"
+    And set the request URL with the path "<url>"
+    And set the request HEADERS with the previous KEYSTONE CONFIGURATION ant the format "<format>"
+    And add an example of PAYLOAD with "<format>" format
+    And set the request METHOD as "GET"
     When the request built before is sent to PEP
     Then the petition gets to the mock
   Examples:
@@ -253,11 +253,11 @@ Feature: Context broker actions when the role is defined only in a domain
     | json   | /v1/registry/contextEntityTypes/typeName                                      |
 
   Scenario Outline: Register Convenience operation
-    Given a Keystone configuration with roles in the domains and the user "user_register_domain"
-    And build a PEP url with the path "<url>"
-    And headers build with the information set before and with format "<format>"
-    And add an example of payload with "<format>" format
-    And a "POST" request is built with the previous data
+    Given a KEYSTONE CONFIGURATION with roles in the domains and the user "user_register_domain"
+    And set the request URL with the path "<url>"
+    And set the request HEADERS with the previous KEYSTONE CONFIGURATION ant the format "<format>"
+    And add an example of PAYLOAD with "<format>" format
+    And set the request METHOD as "POST"
     When the request built before is sent to PEP
     Then the petition gets to the mock
   Examples:
@@ -276,11 +276,11 @@ Feature: Context broker actions when the role is defined only in a domain
     | json   | /v1/registry/contextEntityTypes/typeName                                      |
 
   Scenario Outline: Subscribe-availability Convenience operation
-    Given a Keystone configuration with roles in the domains and the user "user_subscribe-availability_domain"
-    And build a PEP url with the path "<url>"
-    And headers build with the information set before and with format "<format>"
-    And add an example of payload with "<format>" format
-    And a "<action>" request is built with the previous data
+    Given a KEYSTONE CONFIGURATION with roles in the domains and the user "user_subscribe-availability_domain"
+    And set the request URL with the path "<url>"
+    And set the request HEADERS with the previous KEYSTONE CONFIGURATION ant the format "<format>"
+    And add an example of PAYLOAD with "<format>" format
+    And set the request METHOD as "<action>"
     When the request built before is sent to PEP
     Then the petition gets to the mock
   Examples:

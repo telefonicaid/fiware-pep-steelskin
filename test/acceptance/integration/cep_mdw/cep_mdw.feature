@@ -17,7 +17,7 @@
 # If not, see http://www.gnu.org/licenses/.
 #
 # For those usages not covered by the GNU Affero General Public License
-# please contact with::[iot_support@tid.es]
+# please contact with::[iot_support at tid.es]
 # __author__ = 'Jon Calderin Goñi (jon dot caldering at gmail dot com)'
 
 @cep_mdw
@@ -28,20 +28,20 @@ Feature: CEP middleware
     Given the Perseo configuration
 
   Scenario: Notifications urls
-    Given a Keystone configuration with all roles in the same project
-    And build a PEP url with the path "/notices"
-    And headers build with the information set before and with format "json"
-    And add an example of payload with "json" format
-    And a "POST" request is built with the previous data
+    Given a KEYSTONE CONFIGURATION with all roles in the same project
+    And set the request URL with the path "/notices"
+    And set the request HEADERS with the previous KEYSTONE CONFIGURATION ant the format "json"
+    And add an example of PAYLOAD with "json" format
+    And set the request METHOD as "POST"
     When the request built before is sent to PEP
     Then the petition gets to the mock
 
   Scenario Outline: Rules urls
-    Given a Keystone configuration with all roles in the same project
-    And build a PEP url with the path "<url>"
-    And headers build with the information set before and with format "json"
-    And add an example of payload with "json" format
-    And a "<action>" request is built with the previous data
+    Given a KEYSTONE CONFIGURATION with all roles in the same project
+    And set the request URL with the path "<url>"
+    And set the request HEADERS with the previous KEYSTONE CONFIGURATION ant the format "json"
+    And add an example of PAYLOAD with "json" format
+    And set the request METHOD as "<action>"
     When the request built before is sent to PEP
     Then the petition gets to the mock
 
@@ -53,11 +53,11 @@ Feature: CEP middleware
     | /rules/id | DELETE |
 
   Scenario Outline: Visual Rules urls
-    Given a Keystone configuration with all roles in the same project
-    And build a PEP url with the path "<url>"
-    And headers build with the information set before and with format "json"
-    And add an example of payload with "json" format
-    And a "<action>" request is built with the previous data
+    Given a KEYSTONE CONFIGURATION with all roles in the same project
+    And set the request URL with the path "<url>"
+    And set the request HEADERS with the previous KEYSTONE CONFIGURATION ant the format "json"
+    And add an example of PAYLOAD with "json" format
+    And set the request METHOD as "<action>"
     When the request built before is sent to PEP
     Then the petition gets to the mock
   Examples:
@@ -69,11 +69,11 @@ Feature: CEP middleware
     | /m2m/vrules/id | PUT    |
 
   Scenario Outline: Parameters-Query in cep urls
-    Given a Keystone configuration with all roles in the same project
-    And build a PEP url with the path "<url>"
-    And headers build with the information set before and with format "json"
-    And add an example of payload with "json" format
-    And a "<action>" request is built with the previous data
+    Given a KEYSTONE CONFIGURATION with all roles in the same project
+    And set the request URL with the path "<url>"
+    And set the request HEADERS with the previous KEYSTONE CONFIGURATION ant the format "json"
+    And add an example of PAYLOAD with "json" format
+    And set the request METHOD as "<action>"
     When the request built before is sent to PEP
     Then the petition gets to the mock
   Examples:

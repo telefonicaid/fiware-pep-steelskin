@@ -220,7 +220,7 @@ def stop_pep(ip, user, password, port='22'):
     :param port:
     :return:
     """
-    world.log.info('Stoping pep in local')
+    world.log.info('Stoping pep in remote')
     env.host_string = ip + ':' + port
     env.user = user
     env.password = password
@@ -235,7 +235,7 @@ def stop_pep(ip, user, password, port='22'):
         pid = sudo('ps -ef | grep "nodejs bin/pepProxy" | grep -v grep | awk \'{print $2}\'')
     else:
         raise NameError('Pep only can be started in Ubuntu and CentOS systems')
-    sudo('rm /tmp/pep/*')
+    sudo('rm -rf /tmp/pep')
     if pid != '':
         for proc_pid in pid.split('\n'):
             sudo('kill -9 {pid}'.format(pid=proc_pid.strip()))
@@ -296,7 +296,7 @@ def stop_local_pep():
         pid = local('ps -ef | grep "nodejs bin/pepProxy" | grep -v grep | awk \'{print $2}\'', capture=True)
     else:
         raise NameError('Pep only can be started in Ubuntu and CentOS systems')
-    local('rm /tmp/pep/*')
+    local('rm -rf /tmp/pep')
     if pid != '':
         for proc_pid in pid.split('\n'):
             local('kill -9 {pid}'.format(pid=proc_pid.strip()), capture=True)

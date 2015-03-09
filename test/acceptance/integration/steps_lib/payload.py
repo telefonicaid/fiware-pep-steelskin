@@ -28,7 +28,7 @@ from tools.general_utils import json_to_dict
 
 # Refactor
 
-@step('set the payload as "([^"]*)"')
+@step('set the request PAYLOAD as "([^"]*)"')
 def set_the_payload_as(step, payload):
     """
     Set the payload to sent
@@ -42,7 +42,7 @@ def set_the_payload_as(step, payload):
     except Exception:
         world.data = payload
 
-@step('add an example of payload with "([^"]*)" format')
+@step('add an example of PAYLOAD with "([^"]*)" format')
 def add_an_example_of_payload_with_format(step, format):
     """
     Adds a sample payload to the request in the format given

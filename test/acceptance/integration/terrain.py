@@ -31,6 +31,7 @@ from iotqautils.idm_keystone import IdmUtils
 from iotqautils.iotqaLogger import get_logger
 from tools.general_utils import start_environment, initialize_keystone, initialize_ac, stop_process, start_proxy, \
     stop_environment, show_times, start_mock, reset_test_variables
+import objgraph
 
 log = get_logger('terrain', file=True, filename='logs/lettuce.log')
 
@@ -52,46 +53,47 @@ def before_all_scenarios():
     world.config_set = ''
 
     log.debug('Initialize environment')
-    # initialize_keystone(world.ks['platform'], world.ks['environment_general'])
-    # initialize_keystone(world.ks['platform'], world.ks['environment_general_ko'])
-    # initialize_keystone(world.ks['platform'], world.ks['environment_general_no_roles'])
-    # initialize_keystone(world.ks['platform'], world.ks['environment_domain'])
-    # initialize_keystone(world.ks['platform'], world.ks['environment_project'])
-    # initialize_keystone(world.ks['platform'], world.ks['environment_bypass'])
+    initialize_keystone(world.ks['platform'], world.ks['environment_general'])
+    initialize_keystone(world.ks['platform'], world.ks['environment_general_ko'])
+    initialize_keystone(world.ks['platform'], world.ks['environment_general_no_roles'])
+    initialize_keystone(world.ks['platform'], world.ks['environment_domain'])
+    initialize_keystone(world.ks['platform'], world.ks['environment_project'])
+    initialize_keystone(world.ks['platform'], world.ks['environment_bypass'])
     world.structure = IdmUtils.get_structure(world.ks['platform'])
 
     # General
-    # user_roles_general = [(world.ks['user_all'], x['name']) for x in
-    #                       world.ks['environment_general']['domains'][0]['users'][0]['projects'][0]['roles']]
-    # initialize_ac(user_roles_general,
-    #               world.ac['ip'], world.ac['port'],
-    #               world.structure,
-    #               world.ks['domain_ok'],
-    #               world.ks['project_ok'],
-    #               'general')
-    # # #Domain
-    # user_roles_domain = [(x['name'], x['roles'][0]['name']) for x in
-    #                      world.ks['environment_domain']['domains'][0]['users']]
-    # initialize_ac(user_roles_domain,
-    #               world.ac['ip'], world.ac['port'],
-    #               world.structure,
-    #               world.ks['domain_domain_only'],
-    #               world.ks['project_domain_only'],
-    #               'domain')
-    # # Project
-    # user_roles_project = [(x['name'], x['projects'][0]['roles'][0]['name']) for x in
-    #                       world.ks['environment_project']['domains'][0]['users']]
-    # initialize_ac(user_roles_project,
-    #               world.ac['ip'], world.ac['port'],
-    #               world.structure,
-    #               world.ks['domain_project_only'],
-    #               world.ks['project_project_only'],
-    #               'project')
+    user_roles_general = [(world.ks['user_all'], x['name']) for x in
+                          world.ks['environment_general']['domains'][0]['users'][0]['projects'][0]['roles']]
+    initialize_ac(user_roles_general,
+                  world.ac['ip'], world.ac['port'],
+                  world.structure,
+                  world.ks['domain_ok'],
+                  world.ks['project_ok'],
+                  'general')
+    # #Domain
+    user_roles_domain = [(x['name'], x['roles'][0]['name']) for x in
+                         world.ks['environment_domain']['domains'][0]['users']]
+    initialize_ac(user_roles_domain,
+                  world.ac['ip'], world.ac['port'],
+                  world.structure,
+                  world.ks['domain_domain_only'],
+                  world.ks['project_domain_only'],
+                  'domain')
+    # Project
+    user_roles_project = [(x['name'], x['projects'][0]['roles'][0]['name']) for x in
+                          world.ks['environment_project']['domains'][0]['users']]
+    initialize_ac(user_roles_project,
+                  world.ac['ip'], world.ac['port'],
+                  world.structure,
+                  world.ks['domain_project_only'],
+                  world.ks['project_project_only'],
+                  'project')
     reset_test_variables()
     log.debug('Environment ready')
 
 @after.each_scenario
 def after_each_scenario(scenario):
+
     reset_test_variables()
     """ If the mocks/proxys are changed, restore ir after each test """
     if hasattr(world, 'ks_faked') and world.ks_faked:
@@ -121,15 +123,15 @@ def after_all_scenarios(scenario):
     Show the initial and final time of the tests completed
     :param scenario:
     """
-    # IdmUtils.clean_service(world.ks['platform'], world.ks['domain_ok'])
-    # IdmUtils.clean_service(world.ks['platform'], world.ks['domain_ko'])
-    # IdmUtils.clean_service(world.ks['platform'], world.ks['domain_no_roles'])
-    # IdmUtils.clean_service(world.ks['platform'], world.ks['domain_project_only'])
-    # IdmUtils.clean_service(world.ks['platform'], world.ks['domain_domain_only'])
-    # IdmUtils.clean_service(world.ks['platform'], world.ks['domain_bypass'])
-    # ac_utils = AC(world.ac['ip'], port=world.ac['port'])
-    # ac_utils.delete_tenant_policies(world.ks['domain_ok'])
-    # ac_utils.delete_tenant_policies(world.ks['domain_project_only'])
-    # ac_utils.delete_tenant_policies(world.ks['domain_domain_only'])
+    IdmUtils.clean_service(world.ks['platform'], world.ks['domain_ok'])
+    IdmUtils.clean_service(world.ks['platform'], world.ks['domain_ko'])
+    IdmUtils.clean_service(world.ks['platform'], world.ks['domain_no_roles'])
+    IdmUtils.clean_service(world.ks['platform'], world.ks['domain_project_only'])
+    IdmUtils.clean_service(world.ks['platform'], world.ks['domain_domain_only'])
+    IdmUtils.clean_service(world.ks['platform'], world.ks['domain_bypass'])
+    ac_utils = AC(world.ac['ip'], port=world.ac['port'])
+    ac_utils.delete_tenant_policies(world.ks['domain_ok'])
+    ac_utils.delete_tenant_policies(world.ks['domain_project_only'])
+    ac_utils.delete_tenant_policies(world.ks['domain_domain_only'])
     stop_environment()
     show_times(world.test_time_init)

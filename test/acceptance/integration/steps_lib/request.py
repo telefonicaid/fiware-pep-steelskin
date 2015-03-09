@@ -30,32 +30,16 @@ from tools.general_utils import pretty_request, pretty_response
 from lettuce import step, world
 
 
-@step('a "([^"]*)" request is built with the previous data')
-def a_request_is_built_with_the_previous_data(step, method):
+
+@step('set the request METHOD as "([^"]*)"')
+def set_the_request_method_as(step, method):
     """
-    Build a request to pep with the previous data defined
+    Set the request method in lower case
     :param step:
     :param method:
     :return:
     """
-    assert hasattr(world, 'url'), 'The world instance has no URL defined'
-    # Add url to the request
-    world.request_parms = dict({'url': world.url})
-    # Add headers to the request
-    if hasattr(world, 'headers'):
-        if isinstance(world.headers, dict):
-            if world.headers != {}:
-                world.request_parms.update({'headers': world.headers})
-    # Add payload to the request
-    if hasattr(world, 'data'):
-        if isinstance(world.data, dict):
-            if world.data != {}:
-                world.request_parms.update({'data': json.dumps(world.data)})
-        else:
-            if world.data != '':
-                world.request_parms.update({'data': world.data})
-    # Add method to the request
-    world.request_parms.update({'method': method.lower()})
+    world.method = method.lower()
 
 @step('the request built before is sent to PEP')
 def a_request_is_sent_to_pep_with_the_request_built_before(step):
@@ -64,7 +48,28 @@ def a_request_is_sent_to_pep_with_the_request_built_before(step):
     :param step:
     :return:
     """
+
     world.log.info("Senting the request to PEP")
+    assert hasattr(world, 'url'), 'The world instance has no URL defined'
+    # Add url to the request
+    world.request_parms = dict({'url': world.url})
+    # Add headers to the request
+    if hasattr(world, 'headers'):
+        if isinstance(world.headers, dict):
+            if world.headers != {}:
+                world.request_parms.update({'headers': world.headers})
+    # Add payload to the request , if its empty is not sent
+    if hasattr(world, 'data'):
+        if isinstance(world.data, dict):
+            if world.data != {}:
+                world.request_parms.update({'data': json.dumps(world.data)})
+        else:
+            if world.data != '':
+                world.request_parms.update({'data': world.data})
+    # Add method to the request
+    assert hasattr(world, 'method'), 'The world instance has no METHOD defined'
+    world.request_parms.update({'method': world.method})
+    # *******
     if hasattr(world, 'request_parms') and all(x in world.request_parms for x in ['url', 'method']):
         try:
             world.log.debug('Parameters to send: {parameters}'.format(parameters=pretty_request(**world.request_parms)))

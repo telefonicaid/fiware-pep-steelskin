@@ -29,7 +29,7 @@ from requests.exceptions import ConnectionError
 
 
 # Refactor ***********************
-@step('headers build with the information set before and with format "([^"]*)"$')
+@step('set the request HEADERS with the previous KEYSTONE CONFIGURATION ant the format "([^"]*)"$')
 def headers_with_format(step, format):
     """
     Set headers with:

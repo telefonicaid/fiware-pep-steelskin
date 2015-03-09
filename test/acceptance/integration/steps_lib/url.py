@@ -27,7 +27,7 @@ __author__ = 'Jon Calderin Goñi <jon.caldering@gmail.com>'
 from lettuce import step, world
 
 # Refactor *************************************
-@step('build a PEP url with the path "([^"]*)"')
+@step('set the request URL with the path "([^"]*)"')
 def build_a_pep_url_with_the_path(step, path):
     """
     Set the url of pep with the path given
