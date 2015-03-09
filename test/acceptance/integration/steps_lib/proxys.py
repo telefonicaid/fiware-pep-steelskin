@@ -21,11 +21,11 @@ If not, see http://www.gnu.org/licenses/.
 For those usages not covered by the GNU Affero General Public License
 please contact with::[iot_support@tid.es]
 """
-
 __author__ = 'Jon Calderin Goñi <jon.caldering@gmail.com>'
 
-from lettuce import step, world
 import requests
+from lettuce import step, world
+
 
 @step('the keystone proxy history reset')
 def the_keystone_proxy_history_reset(step):

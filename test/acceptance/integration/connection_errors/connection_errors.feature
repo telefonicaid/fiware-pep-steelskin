@@ -28,33 +28,41 @@ Feature: Check the errors connecting with KS
 
   @keystone_authentication_error
   Scenario: Error with the connection with KS
-    Given headers general
-    And a url with "/v1/queryContext"
+    Given a Keystone configuration with all roles in the same project
+    And headers build with the information set before and with format "json"
+    And build a PEP url with the path "/v1/queryContext"
+    And a "POST" request is built with the previous data
     And restart pep with bad ks configuration
-    When the petition action "POST" is asked without data
+    When the request built before is sent to PEP
     Then the PEP returns an error with code "500" and name "KEYSTONE_AUTHENTICATION_ERROR"
 
   @access_control_validation_error
   Scenario: Error with the connection with AC
-    Given headers general
-    And a url with "/v1/queryContext"
+    Given a Keystone configuration with all roles in the same project
+    And headers build with the information set before and with format "json"
+    And build a PEP url with the path "/v1/queryContext"
+    And a "POST" request is built with the previous data
     And restart "ac" process with bad final component port
-    When the petition action "POST" is asked without data
+    When the request built before is sent to PEP
     Then the PEP returns an error with code "500" and name "ACCESS_CONTROL_VALIDATION_ERROR"
     And restore the process "ac"
 
   @access_control_connection_error
   Scenario: Error with the connection with AC
-    Given headers general
-    And a url with "/v1/queryContext"
+    Given a Keystone configuration with all roles in the same project
+    And headers build with the information set before and with format "json"
+    And build a PEP url with the path "/v1/queryContext"
+    And a "POST" request is built with the previous data
     And restart pep with bad ac configuration
-    When the petition action "POST" is asked without data
+    When the request built before is sent to PEP
     Then the PEP returns an error with code "500" and name "ACCESS_CONTROL_CONNECTION_ERROR"
 
   @target_server_error
   Scenario: Error with the connection with target
-    Given headers general
-    And a url with "/v1/queryContext"
+   Given a Keystone configuration with all roles in the same project
+    And headers build with the information set before and with format "json"
+    And build a PEP url with the path "/v1/queryContext"
+    And a "POST" request is built with the previous data
     And restart pep with bad target configuration
-    When the petition action "POST" is asked without data
+    When the request built before is sent to PEP
     Then the PEP returns an error with code "501" and name "TARGET_SERVER_ERROR"

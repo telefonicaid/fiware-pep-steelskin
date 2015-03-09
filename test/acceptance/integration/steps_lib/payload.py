@@ -21,26 +21,10 @@ If not, see http://www.gnu.org/licenses/.
 For those usages not covered by the GNU Affero General Public License
 please contact with::[iot_support@tid.es]
 """
-import json
-from tools.general_utils import json_to_dict
-
 __author__ = 'Jon Calderin Goñi <jon.caldering@gmail.com>'
 
 from lettuce import step, world
-
-@step('the payload with the value "([^"]*)"')
-def the_payload_with_the_value_group1(step, payload):
-    """
-    Set the payload given.
-    :param step:
-    :param payload:
-    :return:
-    """
-    try:
-        world.data = json.dumps(json.loads(payload.replace('\'', '"')))
-    except:
-        world.data = payload
-
+from tools.general_utils import json_to_dict
 
 # Refactor
 
@@ -55,7 +39,7 @@ def set_the_payload_as(step, payload):
     world.log.info('Setting the payload')
     try:
         world.data = json_to_dict(payload)
-    except ValueError:
+    except Exception:
         world.data = payload
 
 @step('add an example of payload with "([^"]*)" format')

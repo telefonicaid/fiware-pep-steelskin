@@ -29,15 +29,22 @@ Feature: CEP middleware
 
   Scenario: Notifications urls
     Given a Keystone configuration with all roles in the same project
-    And a url with "/notices"
-    When a CEP "POST" petition is asked to PEP
+    And build a PEP url with the path "/notices"
+    And headers build with the information set before and with format "json"
+    And add an example of payload with "json" format
+    And a "POST" request is built with the previous data
+    When the request built before is sent to PEP
     Then the petition gets to the mock
 
   Scenario Outline: Rules urls
     Given a Keystone configuration with all roles in the same project
-    And a url with "<url>"
-    When a CEP "<action>" petition is asked to PEP
+    And build a PEP url with the path "<url>"
+    And headers build with the information set before and with format "json"
+    And add an example of payload with "json" format
+    And a "<action>" request is built with the previous data
+    When the request built before is sent to PEP
     Then the petition gets to the mock
+
   Examples:
     | url       | action |
     | /rules    | GET    |
@@ -47,8 +54,11 @@ Feature: CEP middleware
 
   Scenario Outline: Visual Rules urls
     Given a Keystone configuration with all roles in the same project
-    And a url with "<url>"
-    When a CEP "<action>" petition is asked to PEP
+    And build a PEP url with the path "<url>"
+    And headers build with the information set before and with format "json"
+    And add an example of payload with "json" format
+    And a "<action>" request is built with the previous data
+    When the request built before is sent to PEP
     Then the petition gets to the mock
   Examples:
     | url            | action |
@@ -60,8 +70,11 @@ Feature: CEP middleware
 
   Scenario Outline: Parameters-Query in cep urls
     Given a Keystone configuration with all roles in the same project
-    And a url with "<url>"
-    When a CEP "<action>" petition is asked to PEP
+    And build a PEP url with the path "<url>"
+    And headers build with the information set before and with format "json"
+    And add an example of payload with "json" format
+    And a "<action>" request is built with the previous data
+    When the request built before is sent to PEP
     Then the petition gets to the mock
   Examples:
     | url                                         | action |

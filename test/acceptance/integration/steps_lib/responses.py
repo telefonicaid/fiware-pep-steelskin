@@ -21,35 +21,11 @@ If not, see http://www.gnu.org/licenses/.
 For those usages not covered by the GNU Affero General Public License
 please contact with::[iot_support@tid.es]
 """
-from tools.general_utils import get_package_json
-
 __author__ = 'Jon Calderin Goñi <jon.caldering@gmail.com>'
 
 from lettuce import step, world
+from tools.general_utils import get_package_json
 
-
-@step('the PEP returns an error$')
-def the_pep_returns_an_error(step):
-    """
-    Check if PEP returns any http error
-    :param step:
-    :return:
-    """
-    assert str(
-        world.response.status_code) != '200', 'PEP do not return the error expected (403), returned: {error_returnet}'.format(
-        error_returnet=str(world.response.status_code))
-
-@step('the PEP returns an error with code "([^"]*)"$')
-def the_pep_returns_an_error_with_code(step, error_code):
-    """
-    Check if PEP returns an specific http error given
-    :param step:
-    :param error_code:
-    :return:
-    """
-    assert str(
-        world.response.status_code) == error_code, 'PEP do not return the error expected ({error_code}), returned: {error_returnet}'.format(
-        error_returnet=str(world.response.status_code), error_code=error_code)
 
 @step('the PEP returns an error with code "([^"]*)" and name "([^"]*)"')
 def the_pep_returns_an_error_with_code_and_name(step, error_code, error_name):

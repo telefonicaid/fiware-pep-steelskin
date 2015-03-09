@@ -21,15 +21,14 @@ If not, see http://www.gnu.org/licenses/.
 For those usages not covered by the GNU Affero General Public License
 please contact with::[iot_support@tid.es]
 """
+__author__ = 'Jon Calderin Goñi <jon.caldering@gmail.com>'
+
+from lettuce import world, step
 import time
 from tools.general_utils import set_config_cb, start_pep_app, set_cb_config_withour_cache, set_cb_config_with_bad_ks_ip, \
     set_cb_config_with_bad_ac_ip, set_cb_config_with_bad_target_ip, set_cb_config_with_bad_pep_user, \
     set_config_cache_gradual, set_config_cache_projects, set_config_cache_roles, set_config_access_control, set_config_perseo, \
     set_config_bypass, stop_process, start_proxy, start_mock
-
-__author__ = 'Jon Calderin Goñi <jon.caldering@gmail.com>'
-
-from lettuce import world, step
 
 @step("the Context Broker configuration")
 def the_context_broker_configuration(step):

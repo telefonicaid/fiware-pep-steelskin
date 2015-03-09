@@ -50,10 +50,10 @@ def json_to_dict(json_object):
     elif isinstance(json_object, str) or isinstance(json_object, unicode):
         try:
             return eval(json_object)
-        except ValueError:
+        except Exception:
             try:
                 return json.loads(json_object)
-            except ValueError:
+            except Exception:
                 json_object = json_object.replace('\'', '"').replace('None', 'null').replace('True', 'true').replace(
                     'False', 'false')
                 return json.loads(json_object)

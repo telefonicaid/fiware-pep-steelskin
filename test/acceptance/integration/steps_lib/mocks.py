@@ -21,15 +21,16 @@ If not, see http://www.gnu.org/licenses/.
 For those usages not covered by the GNU Affero General Public License
 please contact with::[iot_support@tid.es]
 """
+__author__ = 'Jon Calderin Goñi <jon.caldering@gmail.com>'
+
+
 import json
 import urlparse
 import requests
 from requests.exceptions import ConnectionError
+from lettuce import step, world
 from tools.general_utils import check_equals, urlparseargs_to_nodejsargs, equals_objects
 
-__author__ = 'Jon Calderin Goñi <jon.caldering@gmail.com>'
-
-from lettuce import step, world
 
 @step('the petition gets to the mock')
 def the_petition_gets_to_the_mock(step):

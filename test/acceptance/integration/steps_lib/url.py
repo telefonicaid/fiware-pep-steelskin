@@ -49,15 +49,3 @@ def build_a_pep_administration_url_with_the_path(step, path):
     world.url = 'http://{pep_ip}:{pep_administration_port}'.format(pep_ip=world.pep_host_ip,
                                                                    pep_administration_port=world.administration_port) + '/version'
 # *******************
-
-@step('url with "([^"]*)" and the actionType attribute "([^"]*)"')
-def a_url_with_group1_and_the_actiontype_attribute_group2(step, url, action_type):
-    """
-    Define the url and the action type sent in the payload
-    :param step:
-    :param url:
-    :param action_type:
-    :return:
-    """
-    world.url = url
-    world.action_type = action_type

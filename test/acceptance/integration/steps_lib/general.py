@@ -21,12 +21,10 @@ If not, see http://www.gnu.org/licenses/.
 For those usages not covered by the GNU Affero General Public License
 please contact with::[iot_support@tid.es]
 """
-import time
-
 __author__ = 'Jon Calderin Goñi <jon.caldering@gmail.com>'
 
+import time
 from lettuce import world, step
-
 
 @step('waits "([^"]*)" seconds to "([^"]*)" cache expire')
 def waits_group1_seconds_to_group2_cache_expire(step, time_to_sleep, cache_group):
@@ -40,7 +38,9 @@ def waits_group1_seconds_to_group2_cache_expire(step, time_to_sleep, cache_group
     time.sleep(int(time_to_sleep) + 1)
     if cache_group == 'users':
         world.new_petition = 'v3/auth/tokens'
-    if cache_group == 'projects':
+    elif cache_group == 'projects':
         world.new_petition = 'v3/projects'
-    if cache_group == 'roles':
+    elif cache_group == 'roles':
         world.new_petition = 'v3/role_assignments'
+    else:
+        world.new_petition = ''
