@@ -31,7 +31,6 @@ from iotqautils.idm_keystone import IdmUtils
 from iotqautils.iotqaLogger import get_logger
 from tools.general_utils import start_environment, initialize_keystone, initialize_ac, stop_process, start_proxy, \
     stop_environment, show_times, start_mock, reset_test_variables
-import objgraph
 
 log = get_logger('terrain', file=True, filename='logs/lettuce.log')
 
