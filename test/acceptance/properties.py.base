@@ -41,6 +41,7 @@ world.keystone_host_port = '5000'
 # Values to the pep config file
 world.pep_log_level = 'DEBUG'
 world.pep_port = '1026'
+world.pep_log_path = '/tmp/pep'
 world.administration_port = '11211'
 # ******************************
 
