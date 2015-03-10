@@ -26,7 +26,7 @@ Feature: Errors raised by PEP because of errors from/to Keystone
   Background:
     Given the Context Broker configuration
 
-  @keystone_authentication_rejected @issue-174
+  @keystone_authentication_rejected @BUG__ISSUE_174
   Scenario: Bad token
     Given a KEYSTONE CONFIGURATION with all roles in the same project
     And set the request HEADERS with the previous KEYSTONE CONFIGURATION ant the format "json"
@@ -82,7 +82,7 @@ Feature: Errors raised by PEP because of errors from/to Keystone
     Then the Keystone proxy receive the last petition "v3/role_assignments" from PEP
     And the PEP returns an error with code "401" and name "ROLES_NOT_FOUND"
 
-  @pep_proxy_authentication_rejected @issue-182
+  @pep_proxy_authentication_rejected @BUG__ISSUE_182
   Scenario: Pep with bad pep_user in configuration
     Given a KEYSTONE CONFIGURATION with no roles
     And restart pep with bad pep user

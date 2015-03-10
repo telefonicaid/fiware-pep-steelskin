@@ -96,7 +96,7 @@ Feature: PeP cache in user, project and roles
     Then the PEP returns an ok
     And the history of petitions adds "3" petition
     And waits "35" seconds to "all" cache expire
-  @act
+
   Scenario: Test cache projects expired
     Given the cache projects configuration
     And a KEYSTONE CONFIGURATION with all roles in the same project
