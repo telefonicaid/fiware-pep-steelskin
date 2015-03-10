@@ -19,26 +19,17 @@ License along with fiware-orion-pep.
 If not, see http://www.gnu.org/licenses/.
 
 For those usages not covered by the GNU Affero General Public License
-please contact with::[iot_support@tid.es]
+please contact with::[iot_support at tid.es]
 """
 __author__ = 'Jon Calderin Goñi <jon.caldering@gmail.com>'
-
-from lettuce import step, world
-from iotqautils.idm_keystone import IdmUtils
-
-@step('headers$')
-def headers(step):
-    """
-    Universal headers with roles in domain
-    :param step:
-    :return:
-    """
-    token = IdmUtils.get_token(world.ks['user_all'], world.ks['user_all'], world.ks['domain_ok'], world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
-    headers = {
-        "Accept": "application/json",
-        'content-type': 'application/json',
-        'Fiware-Servicepath': '/',
-        'Fiware-Service': world.ks['domain_ok'],
-        'X-Auth-Token': token
-    }
-    world.headers = headers
+from integration.steps_lib.mocks import *
+from integration.steps_lib.proxys import *
+from integration.steps_lib.access_control import *
+from integration.steps_lib.background import *
+from integration.steps_lib.general import *
+from integration.steps_lib.headers import *
+from integration.steps_lib.keystone import *
+from integration.steps_lib.payload import *
+from integration.steps_lib.request import *
+from integration.steps_lib.responses import *
+from integration.steps_lib.url import *

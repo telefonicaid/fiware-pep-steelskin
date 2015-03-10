@@ -19,123 +19,17 @@ License along with fiware-orion-pep.
 If not, see http://www.gnu.org/licenses/.
 
 For those usages not covered by the GNU Affero General Public License
-please contact with::[iot_support@tid.es]
+please contact with::[iot_support at tid.es]
 """
-
-
 __author__ = 'Jon Calderin Goñi <jon.caldering@gmail.com>'
-
-from lettuce import step, world
-from iotqautils.idm_keystone import IdmUtils
-
-
-@step('headers with bad token')
-def headers_with_bad_token(step):
-    """
-    Headers with universal domain, empty project and bad token
-    :param step:
-    :return:
-    """
-    headers = {
-        "Accept": "application/json",
-        'content-type': 'application/json',
-        'Fiware-Servicepath': '/',
-        'Fiware-Service': world.ks['domain_ok'],
-        'X-Auth-Token': 'badToken'
-    }
-    world.headers = headers
-
-
-@step('headers with bad domain')
-def headers_with_bad_domain(step):
-    """
-    Headers with universal user, empty project and bad domain (not existent)
-    :param step:
-    :return:
-    """
-    token = IdmUtils.get_token(world.ks['user_all'], world.ks['user_all'], world.ks['domain_ok'],
-                               world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
-    headers = {
-        "Accept": "application/json",
-        'content-type': 'application/json',
-        'Fiware-Servicepath': '/',
-        'Fiware-Service': 'bad_domain',
-        'X-Auth-Token': token
-    }
-    world.headers = headers
-
-
-@step('headers with bad project')
-def headers_with_bad_project(step):
-    """
-    Headers with universal user and domain, but bad project( not exitent)
-    :param step:
-    :return:
-    """
-    token = IdmUtils.get_token(world.ks['user_all'], world.ks['user_all'], world.ks['domain_ok'],
-                               world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
-    headers = {
-        "Accept": "application/json",
-        'content-type': 'application/json',
-        'Fiware-Servicepath': 'bad_project',
-        'Fiware-Service': world.ks['domain_ok'],
-        'X-Auth-Token': token
-    }
-    world.headers = headers
-
-
-@step('headers with empty project')
-def headers_with_empty_project(step):
-    """
-    Headers with universal user and domain but empty project
-    :param step:
-    :return:
-    """
-    token = IdmUtils.get_token(world.ks['user_all'], world.ks['user_all'], world.ks['domain_ok'],
-                               world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
-    headers = {
-        "Accept": "application/json",
-        'content-type': 'application/json',
-        'Fiware-Servicepath': '',
-        'Fiware-Service': world.ks['domain_ok'],
-        'X-Auth-Token': token
-    }
-    world.headers = headers
-
-
-@step('headers with domain without roles')
-def headers_with_domain_without_roles(step):
-    """
-    Headers with a user and domain configured without roles
-    :param step:
-    :return:
-    """
-    token = IdmUtils.get_token(world.ks['user_no_roles'], world.ks['user_no_roles'], world.ks['domain_no_roles'],
-                               world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
-    headers = {
-        "Accept": "application/json",
-        'content-type': 'application/json',
-        'Fiware-Servicepath': '/',
-        'Fiware-Service': world.ks['domain_no_roles'],
-        'X-Auth-Token': token
-    }
-    world.headers = headers
-
-
-@step('headers with project without roles')
-def headers_with_project_without_roles(step):
-    """
-    headers with a user, domain and project without roles configured
-    :param step:
-    :return:
-    """
-    token = IdmUtils.get_token(world.ks['user_no_roles'], world.ks['user_no_roles'], world.ks['domain_no_roles'],
-                               world.ks['platform']['address']['ip'], world.ks['platform']['address']['port'])
-    headers = {
-        "Accept": "application/json",
-        'content-type': 'application/json',
-        'Fiware-Servicepath': world.ks['project_no_roles'],
-        'Fiware-Service': world.ks['domain_no_roles'],
-        'X-Auth-Token': token
-    }
-    world.headers = headers
+from integration.steps_lib.mocks import *
+from integration.steps_lib.proxys import *
+from integration.steps_lib.access_control import *
+from integration.steps_lib.background import *
+from integration.steps_lib.general import *
+from integration.steps_lib.headers import *
+from integration.steps_lib.keystone import *
+from integration.steps_lib.payload import *
+from integration.steps_lib.request import *
+from integration.steps_lib.responses import *
+from integration.steps_lib.url import *

@@ -17,14 +17,14 @@
 # If not, see http://www.gnu.org/licenses/.
 #
 # For those usages not covered by the GNU Affero General Public License
-# please contact with::[iot_support@tid.es]
+# please contact with::[iot_support at tid.es]
 # __author__ = 'Jon Calderin Goñi (jon dot caldering at gmail dot com)'
 
 @urls_ac_ko
 Feature: Urls that not exist in Access Control plugin
 
   Background:
-    Given the Keypass configuration
+    Given the Access Control configuration
 
   @action_not_found
   Scenario: Test bad URL AC KO

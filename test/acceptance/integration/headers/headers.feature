@@ -17,7 +17,7 @@
 # If not, see http://www.gnu.org/licenses/.
 #
 # For those usages not covered by the GNU Affero General Public License
-# please contact with::[iot_support@tid.es]
+# please contact with::[iot_support at tid.es]
 # __author__ = 'Jon Calderin Goñi (jon dot caldering at gmail dot com)'
 
 @headers
@@ -25,15 +25,18 @@ Feature: Test request headers
   The environment is set, with one user, with role in the domain and in a project inside the domain
 
   Background:
-    Given the Headers Context Broker configuration without cache
+    Given the Context Broker configuration without cache
 
   @missing_headers @unexpected_content_type
   Scenario Outline: Test incomplete headers CB KO append Action
-    Given headers with format "<format>" and "APPEND" action
-    And headers without the header "<header>"
-    And a url with "/v1/updateContext"
-    When the petition action "GET" is asked
-    Then the Keystone proxy receive the last petition "<last_petition>" from pep
+    Given a KEYSTONE CONFIGURATION with all roles in the same project
+    And set the request HEADERS with the previous KEYSTONE CONFIGURATION ant the format "<format>"
+    And remove the header "<header>" from headers
+    And set the request URL with the path "/v1/updateContext"
+    And add to the payload the Context Broker action "APPEND" with format "<format>"
+    And set the request METHOD as "GET"
+    When the request built before is sent to PEP
+    Then the Keystone proxy receive the last petition "<last_petition>" from PEP
     And the PEP returns an error with code "<error_code>" and name "<error_name>"
 
   Examples:
@@ -49,11 +52,14 @@ Feature: Test request headers
 
   @missing_headers @unexpected_content_type
   Scenario Outline: Test incomplete headers CB KO update Action
-    Given headers with format "<format>" and "UPDATE" action
-    And headers without the header "<header>"
-    And a url with "/v1/updateContext"
-    When the petition action "GET" is asked
-    Then the Keystone proxy receive the last petition "<last_petition>" from pep
+    Given a KEYSTONE CONFIGURATION with all roles in the same project
+    And set the request HEADERS with the previous KEYSTONE CONFIGURATION ant the format "<format>"
+    And remove the header "<header>" from headers
+    And set the request URL with the path "/v1/updateContext"
+    And add to the payload the Context Broker action "UPDATE" with format "<format>"
+    And set the request METHOD as "GET"
+    When the request built before is sent to PEP
+    Then the Keystone proxy receive the last petition "<last_petition>" from PEP
     And the PEP returns an error with code "<error_code>" and name "<error_name>"
 
   Examples:
@@ -69,11 +75,14 @@ Feature: Test request headers
 
   @missing_headers @unexpected_content_type
   Scenario Outline: Test incomplete headers CB KO delete Action
-    Given headers with format "<format>" and "DELETE" action
-    And headers without the header "<header>"
-    And a url with "/v1/updateContext"
-    When the petition action "GET" is asked
-    Then the Keystone proxy receive the last petition "<last_petition>" from pep
+    Given a KEYSTONE CONFIGURATION with all roles in the same project
+    And set the request HEADERS with the previous KEYSTONE CONFIGURATION ant the format "<format>"
+    And remove the header "<header>" from headers
+    And set the request URL with the path "/v1/updateContext"
+    And add to the payload the Context Broker action "DELETE" with format "<format>"
+    And set the request METHOD as "GET"
+    When the request built before is sent to PEP
+    Then the Keystone proxy receive the last petition "<last_petition>" from PEP
     And the PEP returns an error with code "<error_code>" and name "<error_name>"
 
   Examples:
@@ -90,11 +99,13 @@ Feature: Test request headers
 
   @missing_headers
   Scenario Outline: Test incomplete headers CB KO read Action
-    Given headers with format "<format>"
-    And headers without the header "<header>"
-    And a url with "/v1/queryContext"
-    When the petition action "POST" is asked without data
-    Then the Keystone proxy receive the last petition "<last_petition>" from pep
+    Given a KEYSTONE CONFIGURATION with all roles in the same project
+    And set the request HEADERS with the previous KEYSTONE CONFIGURATION ant the format "<format>"
+    And remove the header "<header>" from headers
+    And set the request URL with the path "/v1/queryContext"
+    And set the request METHOD as "POST"
+    When the request built before is sent to PEP
+    Then the Keystone proxy receive the last petition "<last_petition>" from PEP
     And the PEP returns an error with code "<error_code>" and name "<error_name>"
 
   Examples:
@@ -109,10 +120,12 @@ Feature: Test request headers
 
   @token_does_not_match_service @keystone_subservice_not_found
   Scenario Outline: Test bad header CB
-    Given headers with format "<format>"
-    And header "<header>" inexistent in KEYSTONE
-    And a url with "/v1/queryContext"
-    When the petition action "POST" is asked without data
+    Given a KEYSTONE CONFIGURATION with all roles in the same project
+    And set the request HEADERS with the previous KEYSTONE CONFIGURATION ant the format "<format>"
+    And set the header "<header>" with the value "inexistant"
+    And set the request URL with the path "/v1/queryContext"
+    And set the request METHOD as "POST"
+    When the request built before is sent to PEP
     Then the Keystone proxy receive the last petition "<last_petition>" from PEP
     And the PEP returns an error with code "<error_code>" and name "<error_name>"
 
@@ -125,11 +138,13 @@ Feature: Test request headers
 
 
   Scenario Outline: Tests content-type header
-    Given headers with format "<format>"
-    And the content-type header with the value "<content-type-value>"
-    And the payload with the value "<payload>"
-    And a url with "/v1/queryContext"
-    When the petition action "POST" is asked
+    Given a KEYSTONE CONFIGURATION with all roles in the same project
+    And set the request HEADERS with the previous KEYSTONE CONFIGURATION ant the format "<format>"
+    And set the header "content-type" with the value "<content-type-value>"
+    And set the request PAYLOAD as "<payload>"
+    And set the request URL with the path "/v1/queryContext"
+    And set the request METHOD as "POST"
+    When the request built before is sent to PEP
     Then the petition gets to the mock
 
   Examples:
@@ -142,11 +157,13 @@ Feature: Test request headers
 
   @wrong_json_payload @wrong_xml_payload
   Scenario Outline: Tests content-type header errors in cb
-    Given headers with format "<format>"
-    And the content-type header with the value "<content-type-value>"
-    And the payload with the value "<payload>"
-    And a url with "/v1/updateContext"
-    When the petition action "POST" is asked
+    Given a KEYSTONE CONFIGURATION with all roles in the same project
+    And set the request HEADERS with the previous KEYSTONE CONFIGURATION ant the format "<format>"
+    And set the header "content-type" with the value "<content-type-value>"
+    And set the request PAYLOAD as "<payload>"
+    And set the request URL with the path "/v1/updateContext"
+    And set the request METHOD as "POST"
+    When the request built before is sent to PEP
     Then the PEP returns an error with code "<error_code>" and name "<error_name>"
 
   Examples:
@@ -155,6 +172,6 @@ Feature: Test request headers
     | xml    | application/xml                | <xml>     >      | 400        | WRONG_XML_PAYLOAD  |
     | xml    | application/xml                | any text         | 400        | WRONG_XML_PAYLOAD  |
     | json   | application/json;charset utf-8 | {'payload':    } | 400        | WRONG_JSON_PAYLOAD |
-    | json   | application/json;charset utf-8  | <xml>   >        | 400        | WRONG_JSON_PAYLOAD |
+    | json   | application/json;charset utf-8 | <xml>   >        | 400        | WRONG_JSON_PAYLOAD |
 
 

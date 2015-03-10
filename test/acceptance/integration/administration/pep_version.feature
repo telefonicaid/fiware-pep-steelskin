@@ -17,7 +17,7 @@
 # If not, see http://www.gnu.org/licenses/.
 #
 # For those usages not covered by the GNU Affero General Public License
-# please contact with::[iot_support@tid.es]
+# please contact with::[iot_support at tid.es]
 # __author__ = 'Jon Calderin Goñi (jon dot caldering at gmail dot com)'
 
 @version
@@ -27,6 +27,7 @@ Feature: Test the pep version consult in the administration port
     Given the Context Broker configuration
 
   Scenario: Check the pep version returned is the same of the file package.json
-    Given the url and path of pep version
-    When the request is asked
+    Given build a PEP administration url with the path "/version"
+    And set the request METHOD as "GET"
+    When the request built before is sent to PEP
     Then pep return the same version that are in package.json file

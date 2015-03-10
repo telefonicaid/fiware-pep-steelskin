@@ -36,6 +36,71 @@ from iotqautils.idm_keystone import IdmUtils
 from lettuce import world
 from deploy_pep import *
 import psutil
+from requests.exceptions import ConnectionError
+
+
+def json_to_dict(json_object):
+    """
+    Returns a dict with the json text, dict or list
+    :param json_object:
+    :return:
+    """
+    if isinstance(json_object, dict) or isinstance(json_object, list):
+        return json_object
+    elif isinstance(json_object, str) or isinstance(json_object, unicode):
+        try:
+            return eval(json_object)
+        except Exception:
+            try:
+                return json.loads(json_object)
+            except Exception:
+                json_object = json_object.replace('\'', '"').replace('None', 'null').replace('True', 'true').replace(
+                    'False', 'false')
+                return json.loads(json_object)
+
+def pretty(json_pret):
+    """
+    Return a json in pretty format
+    :param json_pret:
+    :return:
+    """
+    return json.dumps(json_pret, sort_keys=True, indent=4, separators=(',', ': '))
+
+
+def pretty_request(**request_parms):
+    """
+    Print in a pretty way all request information
+    :param request_parms:
+    :return:
+    """
+    pretty_request = '\n'
+    if 'url' in request_parms:
+        pretty_request += '\tURL: {url}\n'.format(url=request_parms['url'])
+    if 'headers' in request_parms:
+        pretty_request += '\tHeaders: {headers}\n'.format(headers=pretty(request_parms['headers']))
+    if 'method' in request_parms:
+        pretty_request += '\tMethod: {method}\n'.format(method=request_parms['method'])
+    if 'data' in request_parms:
+        try:
+            pretty_request += '\tData: \n{data}\n'.format(data=pretty(request_parms['data']))
+        except:
+            pretty_request += '\tData: \n{data}\n'.format(data=request_parms['data'])
+    return pretty_request
+
+def pretty_response(response):
+    """
+    Build a string with a pretty format the response
+    :param response:
+    :return:
+    """
+    pretty_response = '\n'
+    pretty_response += '\tHeaders: {headers}\n'.format(headers=pretty(dict(response.headers)))
+    try:
+        pretty_response += '\tData: \n{data}\n'.format(data=pretty(response.json()))
+    except:
+        pretty_response += '\tData: \n{data}\n'.format(data=response.text)
+    pretty_response += '\tStatus code: {status_code}\n'.format(status_code=response.status_code)
+    return pretty_response
 
 
 def convert(data):
@@ -55,6 +120,11 @@ def convert(data):
 
 
 def ordered_elements(obj):
+    """
+    Order elements inside the iterable objects
+    :param obj:
+    :return:
+    """
     if isinstance(obj, dict):
         return {k: ordered_elements(v) for k, v in obj.items()}
     if isinstance(obj, list):
@@ -64,10 +134,22 @@ def ordered_elements(obj):
 
 
 def lower_dict_keys(dictionary):
+    """
+    Lower all keys in a dictionary
+    :param dictionary:
+    :return:
+    """
     return dict((k.lower(), v) for k, v in dictionary.iteritems())
 
 
 def check_equals(dict1, dict2, keys):
+    """
+    Check if the given keys are in two dicts and are equals
+    :param dict1:
+    :param dict2:
+    :param keys:
+    :return:
+    """
     dict1_lower = lower_dict_keys(dict1)
     dict2_lower = lower_dict_keys(dict2)
     for key in keys:
@@ -284,9 +366,9 @@ def set_config_cb():
                          'DEBUG', world.cb_plug_in, world.cb_extract_action, administration_port=world.administration_port)
 
 
-def set_config_keypass():
+def set_config_access_control():
     """
-    Set the Keypass configuration in the config file
+    Set the Access Control configuration in the config file
     :return:
     """
     set_variables_config(world.mock['ip'], world.mock['port'], world.pep_port, world.ac_proxy_port, world.ac_proxy_ip,
@@ -414,6 +496,17 @@ def set_cb_config_with_bad_pep_user():
                          'DEBUG', world.cb_plug_in, world.cb_extract_action,
                          cache_users='-1', cache_projects='-1', cache_roles='-1', administration_port=world.administration_port)
 
+def set_cb_config_with_ac_and_headers_deactivated():
+    """
+    Set the configuration to bad pep credentials
+    :return:
+    """
+    set_variables_config('1', world.mock['port'], world.pep_port, world.ac_proxy_port, world.ac_proxy_ip,
+                         'bad_pep_user', world.ks['platform']['pep']['password'],
+                         world.ks['platform']['cloud_domain']['name'], world.ks_proxy_ip, world.ks_proxy_port,
+                         'DEBUG', world.cb_plug_in, world.cb_extract_action,
+                         cache_users='-1', cache_projects='-1', cache_roles='-1', administration_port=world.administration_port)
+
 
 def get_package_json():
     """
@@ -432,3 +525,24 @@ def get_package_json():
     path = separator.join(path_folders[:len(path_folders)-3])
     file = open('{path}{separator}package.json'.format(path=path, separator=separator))
     return json.load(file)
+
+
+def reset_test_variables():
+    """
+    Reste the world attributes set in the tests
+    :return:
+    """
+    world.data = ''
+    world.url = ''
+    world.action_type = ''
+    world.headers = {}
+    world.method = ''
+    world.domain = ''
+    world.project = ''
+    world.user = ''
+    world.history = ''
+    world.last_petition_added = ''
+    world.response = ''
+    world.new_petition = ''
+    world.format = ''
+    world.request_parms = {}

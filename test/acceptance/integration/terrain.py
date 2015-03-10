@@ -21,18 +21,19 @@ If not, see http://www.gnu.org/licenses/.
 For those usages not covered by the GNU Affero General Public License
 please contact with::[iot_support@tid.es]
 """
-
+from iotqautils.accessControl import AC
+import sys
 
 __author__ = 'Jon Calderin Goñi <jon.caldering@gmail.com>'
-import sys
+import time
+from lettuce import world, before, after
 from iotqautils.idm_keystone import IdmUtils
-from lettuce import *
 from iotqautils.iotqaLogger import get_logger
+from tools.general_utils import start_environment, initialize_keystone, initialize_ac, stop_process, start_proxy, \
+    stop_environment, show_times, start_mock, reset_test_variables
 
-from tools.general_utils import *
-from properties import *
+log = get_logger('terrain', file=True, filename='logs/lettuce.log')
 
-log = get_logger('terrain')
 
 
 @before.all
@@ -41,6 +42,7 @@ def before_all_scenarios():
     Actions before all scenarios
     Get the initial time at start the tests
     """
+    world.log = log
     world.test_time_init = time.strftime("%c")
     log.debug('Starting environment')
     # Start proxys and mocks
@@ -85,23 +87,13 @@ def before_all_scenarios():
                   world.ks['domain_project_only'],
                   world.ks['project_project_only'],
                   'project')
+    reset_test_variables()
     log.debug('Environment ready')
 
 @after.each_scenario
 def after_each_scenario(scenario):
-    world.data = ''
-    world.url = ''
-    world.action_type = ''
-    world.headers = ''
-    world.method = ''
-    world.domain = ''
-    world.project = ''
-    world.user = ''
-    world.history = ''
-    world.last_petition_added = ''
-    world.response = ''
-    world.new_petition = ''
-    world.format = ''
+
+    reset_test_variables()
     """ If the mocks/proxys are changed, restore ir after each test """
     if hasattr(world, 'ks_faked') and world.ks_faked:
         stop_process(world.ks_proxy)
@@ -118,8 +110,9 @@ def after_each_scenario(scenario):
         world.target_faked = False
     sys.stdout.write(("*****Se ha ejecutado el scenario: " + str(scenario.name).encode('utf-8')))
 
-
-
+@after.outline
+def reset_data(scenario, *args):
+    reset_test_variables()
 
 
 @after.all

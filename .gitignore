@@ -14,3 +14,6 @@
 npm-debug.log
 .DS_Store
 *.pyc
+test/acceptance/properties.py
+test/acceptance/testreport/
+test/acceptance/tools/resources/config.js

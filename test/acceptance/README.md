@@ -78,6 +78,8 @@ used to deploy the environment, needs it.
 There is a tag for each feature file
 
 ```
+BUG__ISSUE_174
+BUG__ISSUE_182
 ac_actions_domain
 ac_actions_project
 ac_mdw
@@ -96,8 +98,6 @@ cep_actions_project
 cep_mdw
 connection_errors
 headers
-issue-174
-issue-182
 keystone_authentication_error
 keystone_authentication_rejected
 keystone_errors

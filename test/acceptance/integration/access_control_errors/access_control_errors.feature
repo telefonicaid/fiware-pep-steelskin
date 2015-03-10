@@ -17,7 +17,7 @@
 # If not, see http://www.gnu.org/licenses/.
 #
 # For those usages not covered by the GNU Affero General Public License
-# please contact with::[iot_support@tid.es]
+# please contact with::[iot_support at tid.es]
 # __author__ = 'Jon Calderin Goñi (jon dot caldering at gmail dot com)'
 
 @access_control_errors
@@ -28,16 +28,21 @@ Feature: Errors raised by PEP because of errors from/to Keystone
 
   @access_denied
   Scenario: Access denied because role in project
-    Given headers of bad role environment with project
-    And a url with "/v1/queryContext"
-    When the petition action "POST" is asked without data
+    Given a KEYSTONE CONFIGURATION with roles not in Access Control
+    And set the request HEADERS with the previous KEYSTONE CONFIGURATION ant the format "json"
+    And set the request URL with the path "/v1/queryContext"
+    And set the request METHOD as "POST"
+    When the request built before is sent to PEP
     Then the access control proxy receive the last petition "pdp/v3" from PEP
     And the PEP returns an error with code "403" and name "ACCESS_DENIED"
 
   @access_denied
   Scenario: Access denied because role in domain
-    Given headers of bad role environment without project
-    And a url with "/v1/queryContext"
-    When the petition action "POST" is asked
+    Given a KEYSTONE CONFIGURATION with roles not in Access Control
+    And set the request HEADERS with the previous KEYSTONE CONFIGURATION ant the format "json"
+    And set the header "Fiware-Servicepath" with the value "/"
+    And set the request URL with the path "/v1/queryContext"
+    And set the request METHOD as "POST"
+    When the request built before is sent to PEP
     Then the access control proxy receive the last petition "pdp/v3" from PEP
     And the PEP returns an error with code "403" and name "ACCESS_DENIED"
