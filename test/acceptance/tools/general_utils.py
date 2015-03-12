@@ -144,7 +144,7 @@ def lower_dict_keys(dictionary):
 
 def check_equals(dict1, dict2, keys):
     """
-    Check if the given keys are in two dicts and are equals
+    Check if the given keys are in two dicts and are equals if the key is in the dict1
     :param dict1:
     :param dict2:
     :param keys:
@@ -153,12 +153,13 @@ def check_equals(dict1, dict2, keys):
     dict1_lower = lower_dict_keys(dict1)
     dict2_lower = lower_dict_keys(dict2)
     for key in keys:
-        if key not in dict1_lower or key not in dict2_lower:
-            raise KeyError(
-                'One of the dicts has not the key "{key}": \n {dict1} \n\n {dict2}'.format(key=key, dict1=dict1_lower,
-                                                                                           dict2=dict2_lower))
-        assert dict1_lower[key] == dict2_lower[key], 'The key "{key}" is different in: \n{dict1}\n\n{dict2}'.format(
-            key=key, dict1=dict1_lower, dict2=dict2_lower)
+        if key in dict1_lower:
+            if key not in dict2_lower:
+                raise KeyError(
+                    'One of the dicts has not the key "{key}": \n {dict1} \n\n {dict2}'.format(key=key, dict1=dict1_lower,
+                                                                                               dict2=dict2_lower))
+            assert dict1_lower[key] == dict2_lower[key], 'The key "{key}" is different in: \n{dict1}\n\n{dict2}'.format(
+                key=key, dict1=dict1_lower, dict2=dict2_lower)
 
 
 def urlparseargs_to_nodejsargs(url):
@@ -501,11 +502,22 @@ def set_cb_config_with_ac_and_headers_deactivated():
     Set the configuration to bad pep credentials
     :return:
     """
-    set_variables_config('1', world.mock['port'], world.pep_port, world.ac_proxy_port, world.ac_proxy_ip,
-                         'bad_pep_user', world.ks['platform']['pep']['password'],
+    set_variables_config(world.mock['ip'], world.mock['port'], world.pep_port, world.ac_proxy_port, world.ac_proxy_ip,
+                         world.ks['platform']['pep']['user'], world.ks['platform']['pep']['password'],
                          world.ks['platform']['cloud_domain']['name'], world.ks_proxy_ip, world.ks_proxy_port,
-                         'DEBUG', world.cb_plug_in, world.cb_extract_action,
-                         cache_users='-1', cache_projects='-1', cache_roles='-1', administration_port=world.administration_port)
+                         'DEBUG', world.cb_plug_in, world.cb_extract_action, administration_port=world.administration_port,
+                         ac_disable='true', ks_check_headers='false')
+
+def set_cb_config_with_ac():
+    """
+    Set the configuration to bad pep credentials
+    :return:
+    """
+    set_variables_config(world.mock['ip'], world.mock['port'], world.pep_port, world.ac_proxy_port, world.ac_proxy_ip,
+                         world.ks['platform']['pep']['user'], world.ks['platform']['pep']['password'],
+                         world.ks['platform']['cloud_domain']['name'], world.ks_proxy_ip, world.ks_proxy_port,
+                         'DEBUG', world.cb_plug_in, world.cb_extract_action, administration_port=world.administration_port,
+                         ac_disable='true')
 
 
 def get_package_json():
