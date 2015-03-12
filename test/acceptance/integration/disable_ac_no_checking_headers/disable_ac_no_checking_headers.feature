@@ -69,7 +69,7 @@ Feature: Disable ac without checking headers
     Then the petition gets to the mock
     And the access control proxy receive the last petition "" from PEP
     And the PEP returns an ok
-
+  @BUG__ISSUE_197
   Scenario: A user with roles in Keystone but not in AC and without headers and without token response ok without get AC
     Given a KEYSTONE CONFIGURATION with roles not in Access Control
     And set the request HEADERS with the previous KEYSTONE CONFIGURATION ant the format "json"
