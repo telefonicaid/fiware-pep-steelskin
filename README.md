@@ -566,8 +566,8 @@ An up-to-date list of the convenience operations can be found [here](https://doc
 #### NGS10 (context information availability)
 | Method | Path                                                                                     | Action |
 | ------ |:--------------------------------------------------------------------------------------- | ---:|
-| GET    | /v1/contextentities                                                                  | R |
-| POST   | /v1/contextentities                                                                  | C |
+| GET    | /v1/contextEntities                                                                  | R |
+| POST   | /v1/contextEntities                                                                  | C |
 | GET    | /v1/contextEntities/{EntityID}                                                     	| R |
 | PUT    | /v1/contextEntities/{EntityID}                                                     	| U |
 | POST   | /v1/contextEntities/{EntityID}                                                     	| C |
@@ -589,8 +589,8 @@ An up-to-date list of the convenience operations can be found [here](https://doc
 | GET    | /v1/contextEntityTypes/{typeName}/attributes/{attributeName}                       	| R |
 | GET    | /v1/contextEntityTypes/{typeName}/attributeDomains/{attributeDomainName}           	| R |
 | POST   | /v1/contextSubscriptions                                                           	| S |
-| GET    | /v1/contextsubscriptions                                                             | R |
-| GET    | /v1/contextsubscriptions/{subscriptionID}                                            | R |
+| GET    | /v1/contextSubscriptions                                                             | R |
+| GET    | /v1/contextSubscriptions/{subscriptionID}                                            | R |
 | PUT    | /v1/contextSubscriptions/{subscriptionID}                                          	| S |
 | DELETE | /v1/contextSubscriptions/{subscriptionID}                                          	| S |
 | GET    | /v1/contextTypes                                                                     | R |
