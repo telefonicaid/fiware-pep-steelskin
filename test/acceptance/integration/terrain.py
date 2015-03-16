@@ -42,6 +42,10 @@ def before_all_scenarios():
     Actions before all scenarios
     Get the initial time at start the tests
     """
+    # Remove lettuce log file
+    file = open('logs/lettuce.log', 'w')
+    file.write('')
+    file.close()
     world.log = log
     world.test_time_init = time.strftime("%c")
     log.debug('Starting environment')

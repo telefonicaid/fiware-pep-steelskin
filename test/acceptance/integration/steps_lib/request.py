@@ -56,8 +56,7 @@ def a_request_is_sent_to_pep_with_the_request_built_before(step):
     # Add headers to the request
     if hasattr(world, 'headers'):
         if isinstance(world.headers, dict):
-            if world.headers != {}:
-                world.request_parms.update({'headers': world.headers})
+            world.request_parms.update({'headers': world.headers})
     # Add payload to the request , if its empty is not sent
     if hasattr(world, 'data'):
         if isinstance(world.data, dict):

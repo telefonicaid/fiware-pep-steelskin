@@ -28,9 +28,11 @@ import time
 from tools.general_utils import set_config_cb, start_pep_app, set_cb_config_withour_cache, set_cb_config_with_bad_ks_ip, \
     set_cb_config_with_bad_ac_ip, set_cb_config_with_bad_target_ip, set_cb_config_with_bad_pep_user, \
     set_config_cache_gradual, set_config_cache_projects, set_config_cache_roles, set_config_access_control, set_config_perseo, \
-    set_config_bypass, stop_process, start_proxy, start_mock
+    set_config_bypass, stop_process, start_proxy, start_mock, set_cb_config_with_ac_and_headers_deactivated, \
+    set_cb_config_with_ac
 
-@step("the Context Broker configuration")
+
+@step("the Context Broker configuration$")
 def the_context_broker_configuration(step):
     """
     Set the context broker plugin (if it is not set) and restart pep
@@ -176,6 +178,32 @@ def the_bypass_configuration(step):
     if world.config_set != 'bypass':
         world.config_set = 'bypass'
         set_config_bypass()
+        start_pep_app()
+        time.sleep(5)
+
+@step("the Context Broker configuration with Access Control and check headers functionality disabled")
+def the_context_broker_configuration_with_Access_control_adn_check_headers_functionality_disabled(step):
+    """
+    Set the context broker configuration and disable the checks with AC and the checks of the headers
+    :param step:
+    :return:
+    """
+    if world.config_set != 'cb_without_ac_and_headers':
+        world.config_set = 'cb_without_ac_and_headers'
+        set_cb_config_with_ac_and_headers_deactivated()
+        start_pep_app()
+        time.sleep(5)
+
+@step("the Context Broker configuration with Access Control disabled$")
+def the_context_broker_configuration_with_Access_control_adn_check_headers_functionality_disabled(step):
+    """
+    Set the context broker configuration and disable the checks with AC and the checks of the headers
+    :param step:
+    :return:
+    """
+    if world.config_set != 'cb_without_ac':
+        world.config_set = 'cb_without_ac'
+        set_cb_config_with_ac()
         start_pep_app()
         time.sleep(5)
 

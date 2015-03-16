@@ -37,7 +37,7 @@ def set_variables_config(host_proxied_ip, host_proxied_port, port_listening,
                          log_level,
                          plug_in, plug_in_extract_action,
                          bypass_activation='false', bypass_id='',
-                         cache_users='1000', cache_projects='1000', cache_roles='60', administration_port='11211'):
+                         cache_users='1000', cache_projects='1000', cache_roles='60', administration_port='11211', ac_disable='false', ks_check_headers='true'):
     """
     Modify the variables in the PEP config_template file and write the final values in a PEP config file.
     :param host_proxied_ip:
@@ -68,9 +68,11 @@ def set_variables_config(host_proxied_ip, host_proxied_port, port_listening,
         'port_listening': port_listening,
         'ac_ip': ac_ip,
         'ac_port': ac_port,
+        'ac_disable': ac_disable,
         'pep_user': pep_user,
         'pep_password': pep_password,
         'pep_domain': pep_domain,
+        'ks_check_headers': ks_check_headers,
         'ks_ip': ks_ip,
         'ks_port': ks_port,
         'log_level': log_level,

@@ -39,7 +39,7 @@ config.access = {
     /**
      * Indicates whether the access control validation should be enabled. Defaults to false.
      */
-    disable: false,
+    disable: {{ac_disable}},
 
     /**
      * Protocol to use to access the Access Control.
@@ -65,7 +65,7 @@ config.access = {
  * Information about the Identity Manager server from where the information about a user will be drawn.
  */
 config.authentication = {
-    checkHeaders: true,
+    checkHeaders: {{ks_check_headers}},
     module: 'keystone',
     user: '{{pep_user}}',
     password: '{{pep_password}}',

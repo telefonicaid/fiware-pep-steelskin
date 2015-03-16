@@ -51,7 +51,7 @@ def the_petition_gets_to_the_mock(step):
         headers = eval(headers)
     except:
         raise TypeError('The headers are not a dict type, the headers are: {headers}'.format(headers=headers))
-    check_equals(headers, world.headers, ['accept', 'content-type', 'fiware-servicepath', 'fiware-service'])
+    check_equals(world.headers, headers, ['accept', 'content-type', 'fiware-servicepath', 'fiware-service'])
     assert "x-auth-token" not in headers, "The x-auth-token don't have to go to the endpoint"
     # Check parms
     parms_received = resp.json()['parms']
