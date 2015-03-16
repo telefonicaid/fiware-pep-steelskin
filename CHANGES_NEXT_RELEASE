@@ -3,3 +3,4 @@
 - FIX Wrong JSON payload generates wrong type of error (#194)
 - ADD Tests for the IOTAgent plugin (using the generic REST plugin).
 - ADD Remove slow operations in debug logs (#48).
+- ADD Tracing debug mode (#64).
