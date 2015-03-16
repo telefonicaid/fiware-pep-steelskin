@@ -327,6 +327,54 @@ describe('Control header behavior', function() {
         });
     });
 
+    describe('When a request to the CB arrives to the proxy with a json content header but wrong body', function() {
+        var options = {
+            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Fiware-Service': 'frn:contextbroker:admin_domain:::',
+                'Fiware-ServicePath': 'admin_domain',
+                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q',
+                'X-Forwarded-For': '192.168.2.1'
+            },
+            body: '<xml>   >'
+        };
+        beforeEach(function(done) {
+            serverMocks.mockPath('/pdp/v3', mockAccessApp, done);
+            serverMocks.mockPath('/NGSI10/updateContext', mockTargetApp, done);
+        });
+
+        it('should return a 400 WRONG_JSON_PAYLOAD error', function(done) {
+            var mockExecuted = false,
+                expectedBody,
+                expectedLength;
+
+            options.headers['Content-Type'] = 'application/json';
+
+            mockAccessApp.handler = function(req, res) {
+                res.set('Content-Type', 'application/xml');
+                res.send(utils.readExampleFile('./test/accessControlResponses/permitResponse.xml', true));
+            };
+
+            mockTargetApp.handler = function(req, res) {
+                mockExecuted = true;
+                expectedBody = req.body;
+                expectedLength = req.headers['content-length'];
+
+                res.json(200, {});
+            };
+
+            request(options, function(error, response, body) {
+                var parsedBody = JSON.parse(body);
+                response.statusCode.should.equal(400);
+                should.exist(parsedBody.name);
+                parsedBody.name.should.equal('WRONG_JSON_PAYLOAD');
+                done();
+            });
+        });
+    });
+
     describe('When the PEP Proxy sends a request to the access control', function() {
         var options = {
             uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
