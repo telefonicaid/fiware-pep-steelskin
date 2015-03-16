@@ -462,7 +462,7 @@ Some of the configuration values for the attributes above mentioned can be overr
 | COMPONENT_PLUGIN       | config.middlewares      |
 
 ### Component configuration
-A special environment variable, called `COMPONENT_PLUGIN` can be set with one of this values: `orion`, `perseo`, `keypass`. This variable can be used to select what component plugin to load in order to determine the action of the incoming requests.
+A special environment variable, called `COMPONENT_PLUGIN` can be set with one of this values: `orion`, `perseo`, `keypass` and `rest`. This variable can be used to select what component plugin to load in order to determine the action of the incoming requests.
 
 ### SSL Configuration
 If SSL Termination is not available, the PEP Proxy can be configured to listen HTTPS instead of plain HTTP. To activate the SSL:
