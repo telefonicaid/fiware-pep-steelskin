@@ -1,2 +1,3 @@
 - FIX Service not found for tokens coming from a trust.
 - FIX XAuth Token not checked if validation is off (#197)
+- ADD Tests for the IOTAgent plugin (using the generic REST plugin).
