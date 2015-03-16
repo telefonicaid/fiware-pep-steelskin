@@ -51,6 +51,8 @@ Some examples:
 - Context broker actions when the role is defined only in a domain
 - Context broker actions when the role is defined only in a project
 - Context broker middleware
+- Disable ac
+- Disable ac without checking headers
 - Errors raised by PEP because of errors from/to Keystone
 - Errors raised by PEP because of errors from/to Keystone
 - PeP cache in user, project and roles
@@ -80,6 +82,7 @@ There is a tag for each feature file
 ```
 BUG__ISSUE_174
 BUG__ISSUE_182
+BUG__ISSUE_197
 ac_actions_domain
 ac_actions_project
 ac_mdw
@@ -97,6 +100,8 @@ cep_actions_domain
 cep_actions_project
 cep_mdw
 connection_errors
+disable_ac
+disable_ac_and_headers
 headers
 keystone_authentication_error
 keystone_authentication_rejected
