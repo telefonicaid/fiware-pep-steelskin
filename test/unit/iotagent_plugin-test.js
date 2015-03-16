@@ -35,8 +35,6 @@ var serverMocks = require('../tools/serverMocks'),
 
 describe('IOT Agent Plugin tests', function() {
     var proxy,
-        mockTarget,
-        mockTargetApp,
         mockServer,
         mockApp,
         mockAccess,
@@ -54,17 +52,7 @@ describe('IOT Agent Plugin tests', function() {
             ['GET', '/iot/agents/defaultIoTAgent/services', 'read'],
             ['PUT', '/iot/agents/defaultIoTAgent/services', 'update'],
             ['DELETE', '/iot/agents/defaultIoTAgent/services', 'delete']
-        ],
-        authenticationMechanism = {
-            module: 'keystone',
-            path: '/v3/role_assignments',
-            authPath: '/v3/auth/tokens',
-            rolesFile: './test/keystoneResponses/rolesOfUser.json',
-            authenticationResponse: './test/keystoneResponses/authorize.json',
-            headers: [
-            ],
-            authMock: serverMocks.mockKeystone
-        };
+        ];
 
     function apiCase(particularCase) {
         var options = {
