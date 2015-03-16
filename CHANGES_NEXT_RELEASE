@@ -4,3 +4,4 @@
 - ADD Tests for the IOTAgent plugin (using the generic REST plugin).
 - ADD Remove slow operations in debug logs (#48).
 - ADD Tracing debug mode (#64).
+- ADD Rest component plugin to the executable and environment variables.
