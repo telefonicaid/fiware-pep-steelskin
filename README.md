@@ -675,6 +675,18 @@ config.middlewares = {
    ]
 };
 ```
+In order to add more expression power to the authorization rules created in the Access Control component, the Generic REST Plugin adds a new element to the FRN: the URL of the resource is appended to the existing elements in the FRN.
+
+### URL Table Generic middleware
+For applications that require a mapping between URLs and Method to actions when the REST Middleware is not enough, a plugin generator based on tables is provided. In order to use this plugin, create a new plugin file and import the `./urlTablePlugin` module. This module contains just one function, `extractAction`, that takes a mapping table and generates a middleware function that extract the action of a request based on it. 
+
+The mapping table has to have one row for each action to check indicating:
+* Request **Method**
+* **URL** pattern (using regular expressions)
+* **Action** name
+Whenever a request arrives to the plugin with the selected method and a URL that matches the URL expression, the action will be assigned to the request.
+
+An example of use of the `urlTablePlugin` can be found in the Perseo plugin.
 
 ## <a name="licence"/> License
 
