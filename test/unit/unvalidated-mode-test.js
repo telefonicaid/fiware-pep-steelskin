@@ -30,16 +30,7 @@ var serverMocks = require('../tools/serverMocks'),
     async = require('async'),
     config = require('../../config'),
     utils = require('../tools/utils'),
-    should = require('should'),
     request = require('request');
-
-function mockIdm(req, res) {
-    if (req.path === '/user') {
-        res.json(200, utils.readExampleFile('./test/authorizationResponses/rolesOfUser.json'));
-    } else {
-        res.json(200, utils.readExampleFile('./test/authorizationResponses/authorize.json'));
-    }
-}
 
 describe('Unvalidated mode', function() {
     /* jshint loopfunc: true */
