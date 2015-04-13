@@ -838,6 +838,19 @@ lines to your `package.json`
 }
 ``` 
 
+### Releasing
+The project contains a script to aid in the releasing process. This script is located in the `scripts/build` folder. In
+order to create a new release, just invoke the script, from the project root folder, with the following line:
+```
+scripts/build/release.sh <NEW_VERSION> <RELEASE_TYPE>
+```
+Usually, `RELEASE_TYPE` will be `sprint`. This release procedure will do the following steps:
+* Change the version in package.json to the selected version.
+* Merge `develop` with `master`.
+* Create a branch `release/0.6.0` and a tag `0.6.0` from `master`.
+* Add the `-next` suffix to the version in develop and clean the `CHANGES_NEXT_RELEASE` file.
+
+For other release types, check the command help.
 
 ### Site generation
 
