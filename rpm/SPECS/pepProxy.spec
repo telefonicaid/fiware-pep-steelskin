@@ -155,6 +155,15 @@ rm -rf $RPM_BUILD_ROOT
 %{_install_dir}
 
 %changelog
+* Mon Apr 13 2015 Daniel Moran <daniel.moranjimenez@telefonica.com> 0.6.0
+- FIX Service not found for tokens coming from a trust.
+- FIX XAuth Token not checked if validation is off (#197)
+- FIX Wrong JSON payload generates wrong type of error (#194)
+- ADD Tests for the IOTAgent plugin (using the generic REST plugin).
+- ADD Remove slow operations in debug logs (#48).
+- ADD Tracing debug mode (#64).
+- ADD Rest component plugin to the executable and environment variables.
+
 * Fri Feb 27 2015 Daniel Moran <daniel.moranjimenez@telefonica.com> 0.5.0
 - Added /v1/contextTypes to the URL Mappings of Orion.
 - Fix right plugins directory in pepProxy binary.
