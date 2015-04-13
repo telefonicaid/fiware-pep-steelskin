@@ -23,7 +23,14 @@ var proxy = require('../lib/fiware-orion-pep'),
             functions: [
                'extractAction'
             ]
-        }
+        },
+         rest: {
+             require: 'lib/plugins/restPlugin',
+
+             functions: [
+                'extractAction'
+             ]
+         }
     };
 
 

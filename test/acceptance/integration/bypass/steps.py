@@ -16,35 +16,20 @@ See the GNU Affero General Public License for more details.
 
 You should have received a copy of the GNU Affero General Public
 License along with fiware-orion-pep.
-If not, seehttp://www.gnu.org/licenses/.
+If not, see http://www.gnu.org/licenses/.
 
 For those usages not covered by the GNU Affero General Public License
-please contact with::[iot_support@tid.es]
+please contact with::[iot_support at tid.es]
 """
-__author__ = 'Jon'
-
-import requests
-import json
-
-from iotqautils.idm_keystone import IdmUtils
-
-from integration.commons import *
-
-
-@step('a bypass domain in KEYSTONE')
-def a_bypass_domain_in_keystone(step):
-    world.domain = world.ks['domain_bypass']
-
-
-@step('a "([^"]*)" rol in the domain$')
-def a_rol_in_the_domain(step, role):
-    world.project = '/'
-
-@step('a user bypass in the domain')
-def a_user_bypass_in_the_domain(step):
-    world.user = world.ks['user_bypass']
-
-
-@step('a "([^"]*)" rol in the project "([^"]*)"')
-def a_group1_rol_in_the_project_group2(step, role, project):
-    world.project = world.ks[project]
+__author__ = 'Jon Calderin Goñi <jon.caldering@gmail.com>'
+from integration.steps_lib.mocks import *
+from integration.steps_lib.proxys import *
+from integration.steps_lib.access_control import *
+from integration.steps_lib.background import *
+from integration.steps_lib.general import *
+from integration.steps_lib.headers import *
+from integration.steps_lib.keystone import *
+from integration.steps_lib.payload import *
+from integration.steps_lib.request import *
+from integration.steps_lib.responses import *
+from integration.steps_lib.url import *

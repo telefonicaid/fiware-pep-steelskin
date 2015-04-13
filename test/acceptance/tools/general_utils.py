@@ -16,14 +16,15 @@ See the GNU Affero General Public License for more details.
 
 You should have received a copy of the GNU Affero General Public
 License along with fiware-orion-pep.
-If not, seehttp://www.gnu.org/licenses/.
+If not, see http://www.gnu.org/licenses/.
 
 For those usages not covered by the GNU Affero General Public License
 please contact with::[iot_support@tid.es]
 """
+import json
 import urlparse
 
-__author__ = 'Jon'
+__author__ = 'Jon Calderin Goñi <jon.caldering@gmail.com>'
 
 import time
 import subprocess
@@ -35,6 +36,72 @@ from iotqautils.idm_keystone import IdmUtils
 from lettuce import world
 from deploy_pep import *
 import psutil
+from requests.exceptions import ConnectionError
+
+
+def json_to_dict(json_object):
+    """
+    Returns a dict with the json text, dict or list
+    :param json_object:
+    :return:
+    """
+    if isinstance(json_object, dict) or isinstance(json_object, list):
+        return json_object
+    elif isinstance(json_object, str) or isinstance(json_object, unicode):
+        try:
+            return eval(json_object)
+        except Exception:
+            try:
+                return json.loads(json_object)
+            except Exception:
+                json_object = json_object.replace('\'', '"').replace('None', 'null').replace('True', 'true').replace(
+                    'False', 'false')
+                return json.loads(json_object)
+
+def pretty(json_pret):
+    """
+    Return a json in pretty format
+    :param json_pret:
+    :return:
+    """
+    return json.dumps(json_pret, sort_keys=True, indent=4, separators=(',', ': '))
+
+
+def pretty_request(**request_parms):
+    """
+    Print in a pretty way all request information
+    :param request_parms:
+    :return:
+    """
+    pretty_request = '\n'
+    if 'url' in request_parms:
+        pretty_request += '\tURL: {url}\n'.format(url=request_parms['url'])
+    if 'headers' in request_parms:
+        pretty_request += '\tHeaders: {headers}\n'.format(headers=pretty(request_parms['headers']))
+    if 'method' in request_parms:
+        pretty_request += '\tMethod: {method}\n'.format(method=request_parms['method'])
+    if 'data' in request_parms:
+        try:
+            pretty_request += '\tData: \n{data}\n'.format(data=pretty(request_parms['data']))
+        except:
+            pretty_request += '\tData: \n{data}\n'.format(data=request_parms['data'])
+    return pretty_request
+
+def pretty_response(response):
+    """
+    Build a string with a pretty format the response
+    :param response:
+    :return:
+    """
+    pretty_response = '\n'
+    pretty_response += '\tHeaders: {headers}\n'.format(headers=pretty(dict(response.headers)))
+    try:
+        pretty_response += '\tData: \n{data}\n'.format(data=pretty(response.json()))
+    except:
+        pretty_response += '\tData: \n{data}\n'.format(data=response.text)
+    pretty_response += '\tStatus code: {status_code}\n'.format(status_code=response.status_code)
+    return pretty_response
+
 
 def convert(data):
     """
@@ -51,7 +118,13 @@ def convert(data):
     else:
         return data
 
+
 def ordered_elements(obj):
+    """
+    Order elements inside the iterable objects
+    :param obj:
+    :return:
+    """
     if isinstance(obj, dict):
         return {k: ordered_elements(v) for k, v in obj.items()}
     if isinstance(obj, list):
@@ -61,16 +134,33 @@ def ordered_elements(obj):
 
 
 def lower_dict_keys(dictionary):
+    """
+    Lower all keys in a dictionary
+    :param dictionary:
+    :return:
+    """
     return dict((k.lower(), v) for k, v in dictionary.iteritems())
 
 
 def check_equals(dict1, dict2, keys):
+    """
+    Check if the given keys are in two dicts and are equals if the key is in the dict1
+    :param dict1:
+    :param dict2:
+    :param keys:
+    :return:
+    """
     dict1_lower = lower_dict_keys(dict1)
     dict2_lower = lower_dict_keys(dict2)
     for key in keys:
-        if key not in dict1_lower or key not in dict2_lower:
-            raise KeyError('One of the dicts has not the key "{key}": \n {dict1} \n\n {dict2}'.format(key=key, dict1=dict1_lower, dict2=dict2_lower))
-        assert dict1_lower[key] == dict2_lower[key], 'The key "{key}" is different in: \n{dict1}\n\n{dict2}'.format(key=key, dict1=dict1_lower, dict2=dict2_lower)
+        if key in dict1_lower:
+            if key not in dict2_lower:
+                raise KeyError(
+                    'One of the dicts has not the key "{key}": \n {dict1} \n\n {dict2}'.format(key=key, dict1=dict1_lower,
+                                                                                               dict2=dict2_lower))
+            assert dict1_lower[key] == dict2_lower[key], 'The key "{key}" is different in: \n{dict1}\n\n{dict2}'.format(
+                key=key, dict1=dict1_lower, dict2=dict2_lower)
+
 
 def urlparseargs_to_nodejsargs(url):
     args_to_parse = urlparse.urlsplit(url).query
@@ -85,7 +175,8 @@ def urlparseargs_to_nodejsargs(url):
 
 def equals_objects(object1, object2, msg=''):
     if msg == '':
-        msg_not_assert = 'The elements are not equals: \n {object1} \n\n {obejct2}'.format(object1=object1, object2=object2)
+        msg_not_assert = 'The elements are not equals: \n {object1} \n\n {obejct2}'.format(object1=object1,
+                                                                                           object2=object2)
     else:
         msg_not_assert = msg
     if type(object1) is dict:
@@ -123,6 +214,7 @@ def start_pep_app():
         start_pep(world.pep_host_ip, world.pep_host_user, world.pep_host_password, pep_path=world.pep_path)
     if world.environment == 'local':
         start_pep_local(world.pep_path)
+
 
 def start_mock(filename, ip, port):
     """
@@ -188,7 +280,8 @@ def start_proxy(ip_proxy, port_proxy, ip_destination, port_destination):
     else:
         raise NameError('The SO is not recognize, start the proxys manually')
     DEVNULL = open(os.devnull, 'wb')
-    command = ('python %sproxy.py %s %s %s %s' % (path, ip_proxy, port_proxy, ip_destination, port_destination)).split(' ')
+    command = ('python %sproxy.py %s %s %s %s' % (path, ip_proxy, port_proxy, ip_destination, port_destination)).split(
+        ' ')
     proxy_proc = subprocess.Popen(command, stdout=DEVNULL, stderr=DEVNULL)
     return proxy_proc
 
@@ -222,18 +315,15 @@ def initialize_ac(user_roles, ac_ip, ac_port, structure, domain, project, policy
     ac = AC(ac_ip, port=ac_port)
     ac.delete_tenant_policies(domain)
     if project == '/':
-        for user_rol in user_roles:
-            customer_role_id = structure[domain]['users'][user_rol[0]]['roles'][user_rol[1]]['id']
-            ac.create_policy(domain, customer_role_id, policy_name + '_' + user_rol[1],
-                             'fiware:orion:%s:%s::' % (domain, project), user_rol[1])
+        for user_role in user_roles:
+            customer_role_id = structure[domain]['users'][user_role[0]]['roles'][user_role[1]]['id']
+            ac.create_policy(domain, customer_role_id, policy_name + '_' + user_role[1],
+                             'fiware:orion:%s:%s::' % (domain, project), user_role[1])
     else:
-        for user_rol in user_roles:
-            customer_role_id = structure[domain]['projects'][project]['users'][user_rol[0]]['roles'][user_rol[1]]['id']
-            ac.create_policy(domain, customer_role_id, policy_name + '_' + user_rol[1],
-                             'fiware:orion:%s:%s::' % (domain, project), user_rol[1])
-
-
-
+        for user_role in user_roles:
+            customer_role_id = structure[domain]['projects'][project]['users'][user_role[0]]['roles'][user_role[1]]['id']
+            ac.create_policy(domain, customer_role_id, policy_name + '_' + user_role[1],
+                             'fiware:orion:%s:%s::' % (domain, project), user_role[1])
 
 
 def start_environment():
@@ -258,8 +348,8 @@ def stop_environment():
     stop_process(world.mock_dest)
     if world.environment == 'docker':
         stop_docker_pep(world.docker_ip, world.docker_user, world.docker_password,
-                         world.docker_pep_user, world.docker_pep_password,
-                         world.docker_pep_container)
+                        world.docker_pep_user, world.docker_pep_password,
+                        world.docker_pep_container)
     if world.environment == 'remote':
         stop_pep(world.pep_host_ip, world.pep_host_user, world.pep_host_password)
     if world.environment == 'local':
@@ -274,18 +364,18 @@ def set_config_cb():
     set_variables_config(world.mock['ip'], world.mock['port'], world.pep_port, world.ac_proxy_port, world.ac_proxy_ip,
                          world.ks['platform']['pep']['user'], world.ks['platform']['pep']['password'],
                          world.ks['platform']['cloud_domain']['name'], world.ks_proxy_ip, world.ks_proxy_port,
-                         'DEBUG', world.cb_plug_in, world.cb_extract_action)
+                         'DEBUG', world.cb_plug_in, world.cb_extract_action, administration_port=world.administration_port)
 
 
-def set_config_keypass():
+def set_config_access_control():
     """
-    Set the Keypass configuration in the config file
+    Set the Access Control configuration in the config file
     :return:
     """
     set_variables_config(world.mock['ip'], world.mock['port'], world.pep_port, world.ac_proxy_port, world.ac_proxy_ip,
                          world.ks['platform']['pep']['user'], world.ks['platform']['pep']['password'],
                          world.ks['platform']['cloud_domain']['name'], world.ks_proxy_ip, world.ks_proxy_port,
-                         'DEBUG', world.keypass_plug_in, world.keypass_extract_action)
+                         'DEBUG', world.keypass_plug_in, world.keypass_extract_action, administration_port=world.administration_port)
 
 
 def set_config_perseo():
@@ -296,7 +386,7 @@ def set_config_perseo():
     set_variables_config(world.mock['ip'], world.mock['port'], world.pep_port, world.ac_proxy_port, world.ac_proxy_ip,
                          world.ks['platform']['pep']['user'], world.ks['platform']['pep']['password'],
                          world.ks['platform']['cloud_domain']['name'], world.ks_proxy_ip, world.ks_proxy_port,
-                         'DEBUG', world.perseo_plug_in, world.perseo_extract_action)
+                         'DEBUG', world.perseo_plug_in, world.perseo_extract_action, administration_port=world.administration_port)
 
 
 def set_config_bypass():
@@ -309,7 +399,7 @@ def set_config_bypass():
                          world.ks['platform']['cloud_domain']['name'], world.ks_proxy_ip, world.ks_proxy_port,
                          'DEBUG', world.keypass_plug_in, world.keypass_extract_action, 'true',
                          world.structure[world.ks['domain_bypass']]['users'][world.ks['user_bypass']]['roles'][
-                             world.ac['bypass_rol']]['id'])
+                             world.ac['bypass_role']]['id'], administration_port=world.administration_port)
 
 
 def set_config_cache_gradual():
@@ -321,7 +411,7 @@ def set_config_cache_gradual():
                          world.ks['platform']['pep']['user'], world.ks['platform']['pep']['password'],
                          world.ks['platform']['cloud_domain']['name'], world.ks_proxy_ip, world.ks_proxy_port,
                          'DEBUG', world.cb_plug_in, world.cb_extract_action,
-                         cache_users='10', cache_projects='20', cache_roles='30')
+                         cache_users='10', cache_projects='20', cache_roles='30', administration_port=world.administration_port)
 
 
 def set_config_cache_projects():
@@ -333,7 +423,7 @@ def set_config_cache_projects():
                          world.ks['platform']['pep']['user'], world.ks['platform']['pep']['password'],
                          world.ks['platform']['cloud_domain']['name'], world.ks_proxy_ip, world.ks_proxy_port,
                          'DEBUG', world.cb_plug_in, world.cb_extract_action,
-                         cache_users='30', cache_projects='10', cache_roles='30')
+                         cache_users='30', cache_projects='10', cache_roles='30', administration_port=world.administration_port)
 
 
 def set_config_cache_roles():
@@ -345,7 +435,8 @@ def set_config_cache_roles():
                          world.ks['platform']['pep']['user'], world.ks['platform']['pep']['password'],
                          world.ks['platform']['cloud_domain']['name'], world.ks_proxy_ip, world.ks_proxy_port,
                          'DEBUG', world.cb_plug_in, world.cb_extract_action,
-                         cache_users='30', cache_projects='30', cache_roles='10')
+                         cache_users='30', cache_projects='30', cache_roles='10', administration_port=world.administration_port)
+
 
 def set_cb_config_withour_cache():
     """
@@ -356,4 +447,114 @@ def set_cb_config_withour_cache():
                          world.ks['platform']['pep']['user'], world.ks['platform']['pep']['password'],
                          world.ks['platform']['cloud_domain']['name'], world.ks_proxy_ip, world.ks_proxy_port,
                          'DEBUG', world.cb_plug_in, world.cb_extract_action,
-                         cache_users='-1', cache_projects='-1', cache_roles='-1')
+                         cache_users='-1', cache_projects='-1', cache_roles='-1', administration_port=world.administration_port)
+
+
+def set_cb_config_with_bad_ks_ip():
+    """
+    Set the configuration to test error connection with the ks
+    :return:
+    """
+    set_variables_config(world.mock['ip'], world.mock['port'], world.pep_port, world.ac_proxy_port, world.ac_proxy_ip,
+                         world.ks['platform']['pep']['user'], world.ks['platform']['pep']['password'],
+                         world.ks['platform']['cloud_domain']['name'], '1', world.ks_proxy_port,
+                         'DEBUG', world.cb_plug_in, world.cb_extract_action,
+                         cache_users='-1', cache_projects='-1', cache_roles='-1', administration_port=world.administration_port)
+
+
+def set_cb_config_with_bad_ac_ip():
+    """
+    Set the configuration to test error connection with the ac
+    :return:
+    """
+    set_variables_config(world.mock['ip'], world.mock['port'], world.pep_port, world.ac_proxy_port, '1',
+                         world.ks['platform']['pep']['user'], world.ks['platform']['pep']['password'],
+                         world.ks['platform']['cloud_domain']['name'], world.ks_proxy_ip, world.ks_proxy_port,
+                         'DEBUG', world.cb_plug_in, world.cb_extract_action,
+                         cache_users='-1', cache_projects='-1', cache_roles='-1', administration_port=world.administration_port)
+
+
+def set_cb_config_with_bad_target_ip():
+    """
+    Set the configuration to test error connection with the final target
+    :return:
+    """
+    set_variables_config('1', world.mock['port'], world.pep_port, world.ac_proxy_port, world.ac_proxy_ip,
+                         world.ks['platform']['pep']['user'], world.ks['platform']['pep']['password'],
+                         world.ks['platform']['cloud_domain']['name'], world.ks_proxy_ip, world.ks_proxy_port,
+                         'DEBUG', world.cb_plug_in, world.cb_extract_action,
+                         cache_users='-1', cache_projects='-1', cache_roles='-1', administration_port=world.administration_port)
+
+
+def set_cb_config_with_bad_pep_user():
+    """
+    Set the configuration to bad pep credentials
+    :return:
+    """
+    set_variables_config('1', world.mock['port'], world.pep_port, world.ac_proxy_port, world.ac_proxy_ip,
+                         'bad_pep_user', world.ks['platform']['pep']['password'],
+                         world.ks['platform']['cloud_domain']['name'], world.ks_proxy_ip, world.ks_proxy_port,
+                         'DEBUG', world.cb_plug_in, world.cb_extract_action,
+                         cache_users='-1', cache_projects='-1', cache_roles='-1', administration_port=world.administration_port)
+
+def set_cb_config_with_ac_and_headers_deactivated():
+    """
+    Set the configuration to bad pep credentials
+    :return:
+    """
+    set_variables_config(world.mock['ip'], world.mock['port'], world.pep_port, world.ac_proxy_port, world.ac_proxy_ip,
+                         world.ks['platform']['pep']['user'], world.ks['platform']['pep']['password'],
+                         world.ks['platform']['cloud_domain']['name'], world.ks_proxy_ip, world.ks_proxy_port,
+                         'DEBUG', world.cb_plug_in, world.cb_extract_action, administration_port=world.administration_port,
+                         ac_disable='true', ks_check_headers='false')
+
+def set_cb_config_with_ac():
+    """
+    Set the configuration to bad pep credentials
+    :return:
+    """
+    set_variables_config(world.mock['ip'], world.mock['port'], world.pep_port, world.ac_proxy_port, world.ac_proxy_ip,
+                         world.ks['platform']['pep']['user'], world.ks['platform']['pep']['password'],
+                         world.ks['platform']['cloud_domain']['name'], world.ks_proxy_ip, world.ks_proxy_port,
+                         'DEBUG', world.cb_plug_in, world.cb_extract_action, administration_port=world.administration_port,
+                         ac_disable='true')
+
+
+def get_package_json():
+    """
+    Get the package json content in python dict
+    :return:
+    """
+    path, fl = os.path.split(os.path.realpath(__file__))
+    if platform.system() == 'Windows':
+        separator = '\\'
+    elif platform.system() == 'Linux':
+        separator = '/'
+    else:
+        raise ValueError('SO not recognized')
+    path_folders = path.split(separator)
+    # The file "package.json" is three levels up this file
+    path = separator.join(path_folders[:len(path_folders)-3])
+    file = open('{path}{separator}package.json'.format(path=path, separator=separator))
+    return json.load(file)
+
+
+def reset_test_variables():
+    """
+    Reste the world attributes set in the tests
+    :return:
+    """
+    world.data = ''
+    world.url = ''
+    world.action_type = ''
+    world.headers = {}
+    world.method = ''
+    world.domain = ''
+    world.project = ''
+    world.user = ''
+    world.history = ''
+    world.last_petition_added = ''
+    world.response = ''
+    world.new_petition = ''
+    world.format = ''
+    world.request_parms = {}

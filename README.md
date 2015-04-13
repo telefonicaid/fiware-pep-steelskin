@@ -420,9 +420,26 @@ In order to have the proxy running, there are several basic pieces of informatio
 * `config.authentication.username`: username of the PEP proxy in the IDM. 
 * `config.authentication.password`: password of the PEP proxy in the IDM.
 * `config.authentication.domainName`: (only meaningful for Keystone) name of the administration domain the PEP proxy user belongs to.
-* `config.authentication.retries`: as the authentication is based in the use of tokens that can expire, the operations against Keystone are meant to retry with a fresh token. This configuration value indicates how many retries the PEP should perform in case the communication against Keystone fails.
+* `config.authentication.retries`: as the authentication is based in the use of tokens that can expire, the operations against Keystone are meant to retry with a fresh token. This configuration value indicates how many retries the PEP should perform in case the communication against Keystone fails. The value `0` means the default will be used (default value is 3). The value `-1` implies that it should be retried forever.
 * `cacheTTLs`: the values in this object correspond to the Time To Live of the values of the different caches the PEP uses to cache requests for information in Keystone. The value is expressed in seconds.
 * `config.authentication.options`: address, port and other communication data needed to communicate with the Identity Manager. Apart from the host and port, default values should be used. 
+
+### Plugin configuration
+The `config.js` file contains configuration parameter that lets the deployer decide what plugin the proxy should use in order to extract the action type from the request attributes: the `middleware` parameter. This object has two attributes:
+* `require`: indicating the route from the project folder to the module that contains the middleware.
+* `functions`: an array of the middlewares to execute from the selected module.
+All the currently available plugins are in the folder `lib/plugins/`, and most of them implement a single middleware called `extractAction` (the name for Orion plugin is `extractCBAction`).
+The following example should work for any plugin following this patterns:
+```
+config.middlewares = {
+    require: 'lib/plugins/perseoPlugin',
+
+    functions: [
+        'extractAction'
+    ]
+};
+```
+The environment variables provide ways of configuring the plugin without taking care of this details.
 
 ### Configuration based on environment variables
 Some of the configuration values for the attributes above mentioned can be overriden with values in environment variables. The following table shows the environment variables and what attribute they map to.
@@ -445,7 +462,7 @@ Some of the configuration values for the attributes above mentioned can be overr
 | COMPONENT_PLUGIN       | config.middlewares      |
 
 ### Component configuration
-A special environment variable, called `COMPONENT_PLUGIN` can be set with one of this values: `orion`, `perseo`, `keypass`. This variable can be used to select what component plugin to load in order to determine the action of the incoming requests.
+A special environment variable, called `COMPONENT_PLUGIN` can be set with one of this values: `orion`, `perseo`, `keypass` and `rest`. This variable can be used to select what component plugin to load in order to determine the action of the incoming requests.
 
 ### SSL Configuration
 If SSL Termination is not available, the PEP Proxy can be configured to listen HTTPS instead of plain HTTP. To activate the SSL:
@@ -566,6 +583,8 @@ An up-to-date list of the convenience operations can be found [here](https://doc
 #### NGS10 (context information availability)
 | Method | Path                                                                                     | Action |
 | ------ |:--------------------------------------------------------------------------------------- | ---:|
+| GET    | /v1/contextEntities                                                                  | R |
+| POST   | /v1/contextEntities                                                                  | C |
 | GET    | /v1/contextEntities/{EntityID}                                                     	| R |
 | PUT    | /v1/contextEntities/{EntityID}                                                     	| U |
 | POST   | /v1/contextEntities/{EntityID}                                                     	| C |
@@ -587,8 +606,12 @@ An up-to-date list of the convenience operations can be found [here](https://doc
 | GET    | /v1/contextEntityTypes/{typeName}/attributes/{attributeName}                       	| R |
 | GET    | /v1/contextEntityTypes/{typeName}/attributeDomains/{attributeDomainName}           	| R |
 | POST   | /v1/contextSubscriptions                                                           	| S |
+| GET    | /v1/contextSubscriptions                                                             | R |
+| GET    | /v1/contextSubscriptions/{subscriptionID}                                            | R |
 | PUT    | /v1/contextSubscriptions/{subscriptionID}                                          	| S |
 | DELETE | /v1/contextSubscriptions/{subscriptionID}                                          	| S |
+| GET    | /v1/contextTypes                                                                     | R |
+| GET    | /v1/contextTypes{typename}                                                           | R ]
 
 Operations marked with a slash, "-" are now deprecated. All those operations will be tagged with the special action "N/A". If you want to allow them anyway, just add a rule to the Access Control allowing the "N/A" action for the desired roles.
 
@@ -675,6 +698,18 @@ config.middlewares = {
    ]
 };
 ```
+In order to add more expression power to the authorization rules created in the Access Control component, the Generic REST Plugin adds a new element to the FRN: the URL of the resource is appended to the existing elements in the FRN.
+
+### URL Table Generic middleware
+For applications that require a mapping between URLs and Method to actions when the REST Middleware is not enough, a plugin generator based on tables is provided. In order to use this plugin, create a new plugin file and import the `./urlTablePlugin` module. This module contains just one function, `extractAction`, that takes a mapping table and generates a middleware function that extract the action of a request based on it. 
+
+The mapping table has to have one row for each action to check indicating:
+* Request **Method**
+* **URL** pattern (using regular expressions)
+* **Action** name
+Whenever a request arrives to the plugin with the selected method and a URL that matches the URL expression, the action will be assigned to the request.
+
+An example of use of the `urlTablePlugin` can be found in the Perseo plugin.
 
 ## <a name="licence"/> License
 

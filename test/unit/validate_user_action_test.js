@@ -720,80 +720,6 @@ describe('Validate action with Access Control', function() {
     });
 
     describe('[' + authenticationMechanisms[1].module + '] ' +
-    'When a request arrives for a user and the access.disable flag is true', function() {
-        var options = {
-                uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Fiware-Service': 'SmartValencia',
-                    'fiware-servicepath': 'Electricidad',
-                    'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
-                },
-                json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
-            },
-            currentAuthentication = authenticationMechanisms[1];
-
-        beforeEach(function(done) {
-            config.access.disable = true;
-            keystonePlugin.cleanCache();
-            initializeUseCase(currentAuthentication, function() {
-                async.series([
-                    async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
-                    async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
-                    async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
-                    async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
-                    async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
-                ], done);
-            });
-        });
-
-        afterEach(function(done) {
-            config.access.disable = false;
-
-            proxyLib.stop(proxy, function(error) {
-                serverMocks.stop(mockTarget, function() {
-                    serverMocks.stop(mockAccess, function() {
-                        serverMocks.stop(mockOAuth, done);
-                    });
-                });
-            });
-        });
-
-        it('should send not call the Access Control and should not extract the roles', function(done) {
-            var accessControlCalled = false,
-                rolesExtracted = false;
-
-            mockOAuthApp.handler = function(req, res) {
-                if (req.path === currentAuthentication.authPath && req.method === 'POST') {
-                    res.setHeader('X-Subject-Token', '092016b75474ea6b492e29fb69d23029');
-                    res.json(201, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
-                } else if (req.path === currentAuthentication.authPath && req.method === 'GET') {
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/getUser.json'));
-                } else if (req.url === '/v3/projects' && req.method === 'GET') {
-                    rolesExtracted = true;
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/getProjects.json'));
-                } else {
-                    rolesExtracted = true;
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/rolesOfUserWithDomain.json'));
-                }
-            };
-
-            mockAccessApp.handler = function(req, res) {
-                accessControlCalled = true;
-                res.status(200).send(utils.readExampleFile('./test/accessControlResponses/permitResponse.xml', true));
-            };
-
-            request(options, function(error, response, body) {
-                accessControlCalled.should.equal(false);
-                rolesExtracted.should.equal(false);
-                done();
-            });
-        });
-    });
-
-    describe('[' + authenticationMechanisms[1].module + '] ' +
     'When a request arrives and the access.disable flag is true and the authentication.checkHeaders flag is false',
         function() {
         var options = {
@@ -899,6 +825,71 @@ describe('Validate action with Access Control', function() {
         it('should reject the request with a 401', function(done) {
             request(options, function(error, response, body) {
                 response.statusCode.should.equal(401);
+                body.name.should.equal('TOKEN_DOES_NOT_MATCH_SERVICE');
+                done();
+            });
+        });
+    });
+
+    describe('[' + authenticationMechanisms[1].module + '] ' +
+    'When a request is validated using a trust token in Keystone', function() {
+        var options = {
+                uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'Fiware-Service': 'SmartValencia',
+                    'fiware-servicepath': 'Electricidad',
+                    'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
+                },
+                json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
+            },
+            currentAuthentication = authenticationMechanisms[1];
+
+        beforeEach(function(done) {
+            keystonePlugin.cleanCache();
+
+            initializeUseCase(currentAuthentication, function() {
+                async.series([
+                    keystonePlugin.invalidate,
+                    async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
+                    async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
+                    async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
+                    async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
+                    async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
+                ], done);
+            });
+        });
+
+        afterEach(function(done) {
+            proxyLib.stop(proxy, function(error) {
+                serverMocks.stop(mockTarget, function() {
+                    serverMocks.stop(mockAccess, function() {
+                        serverMocks.stop(mockOAuth, done);
+                    });
+                });
+            });
+        });
+
+        it('should extract the correct domain from the user token response', function(done) {
+            mockOAuthApp.handler = function(req, res) {
+                if (req.path === currentAuthentication.authPath && req.method === 'POST') {
+                    res.setHeader('X-Subject-Token', '092016b75474ea6b492e29fb69d23029');
+                    res.json(201, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
+                } else if (req.path === currentAuthentication.authPath && req.method === 'GET') {
+                    res.json(200, utils.readExampleFile('./test/keystoneResponses/getUserWithTrust.json'));
+                } else if (req.url === '/v3/projects' && req.method === 'GET') {
+                    res.json(200, utils.readExampleFile('./test/keystoneResponses/getProjects.json'));
+                } else {
+                    req.query['user.id'].should.equal('5e817c5e0d624ee68dfb7a72d0d31ce4');
+                    req.headers['x-auth-token'].should.equal('092016b75474ea6b492e29fb69d23029');
+                    res.json(200, utils.readExampleFile('./test/keystoneResponses/rolesOfUser.json'));
+                }
+            };
+
+            request(options, function(error, response, body) {
+                response.statusCode.should.equal(200);
                 done();
             });
         });
