@@ -51,7 +51,7 @@ To generate the RPM, checkout the project to a machine with the RPM Build Tools 
 execute the following command:
 
 ```
-./create-rpm.sh
+./create-rpm.sh <release-number> <release-version>
 ```
 
 This command will generate some folders, including one called RPMS, holding the RPM created for every architecture (noarch is currently generated).
