@@ -26,10 +26,12 @@ Communication with the Access Control is based on the [XACML protocol](http://do
 
 Along this document, the term IDM (Identity Manager) will be used, as a general term to refer to the server providing user and role creation and authentication. The currently supported IDM is Keystone; a Keyrock IDM option is provided as well, but it may be deprecated in the near future.
 
-Two other documents provide further information about the PEP Proxy:
+Three other documents provide further information about the PEP Proxy:
 
-* [Operations Manual](operations.md)
-* [Architecture information](architecture.md)
+* [Operations Manual](operations.md): provides information on logs and alarms.
+* [Architecture information](architecture.md): provides further information on how the PEP works and is structured.
+* [Keystone installation](keystoneInstallation.md): provides an example of Keystone installation with services and subservices
+ that can be used to test the PEP Proxy and play with its features.
 
 ## <a name="deployment"/> Deployment
 ### Dependencies
