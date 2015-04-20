@@ -84,6 +84,11 @@ tcp        0      0 0.0.0.0:35357               0.0.0.0:*                   LIST
 tcp        0      0 0.0.0.0:5000                0.0.0.0:*                   LISTEN      11430/python
 ```
 
+### Install SCIM extensions
+
+In order to support some role functionalities, we use some extensions that add SCIM support to Keystone. Those extensions
+need to be installed for this tutorial to be completed. You can find instructions on how to do it [here](https://github.com/telefonicaid/fiware-keystone-scim).
+
 ## Basic contents
 
 In this section we will provide instructions on how to use the Keystone API to create the minimum Keystone resources
