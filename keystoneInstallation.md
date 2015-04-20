@@ -270,13 +270,6 @@ curl -X PUT http://${KEYSTONE_HOST}/v3/domains/${ID_ADMIN_DOMAIN}/users/${ID_CLO
 
 ### Configure policies
 
-Modificar la policy de Keystone para soporte de domains 
-(NOTA: Puede ser necesario haber creado antes un usuario `cloud_admin`, ver siguiente punto). 
-Para ello sobreescribimos `/etc/keystone/policy.json` con el contenido de [policy.v3cloudsample.json](https://github.com/openstack/keystone/raw/master/etc/policy.v3cloudsample.json) 
-
-y reemplazamos el id del dominio `admin_domain`:
-
-
 Modify Keystone's policy to support domains. In order to do so, we overwrite `/etc/keystone/policy.json` with the contents
 of [policy.v3cloudsample.json](https://github.com/openstack/keystone/raw/master/etc/policy.v3cloudsample.json), replacing
 the domain ID of domain `admin_domain`. 
@@ -292,6 +285,9 @@ curl -L https://github.com/openstack/keystone/raw/master/etc/policy.v3cloudsampl
    |.["identity:list_projects"]="rule:cloud_admin or rule:admin_and_matching_domain_id or rule:cloud_service"' \
 | sudo tee /etc/keystone/policy.json
 ```
+
+Some modifications are needed also for the SCIM extensions to work. Check [this section](https://github.com/telefonicaid/fiware-keystone-scim#permissions-fine-tuning)
+of the SCIM Extensions Github repository for instructions.
 
 And restart keystone:
 
