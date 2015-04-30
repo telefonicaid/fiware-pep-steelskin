@@ -499,6 +499,8 @@ describe('Validate action with Access Control', function() {
             var mockExecuted = false;
 
             mockOAuthApp.handler = function(req, res) {
+                /* jshint camelcase: false */
+
                 if (req.path === currentAuthentication.authPath && req.method === 'POST') {
                     res.setHeader('X-Subject-Token', '092016b75474ea6b492e29fb69d23029');
                     res.json(201, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
@@ -506,10 +508,10 @@ describe('Validate action with Access Control', function() {
                     res.json(200, utils.readExampleFile('./test/keystoneResponses/getUser.json'));
                 } else if (req.path === '/v3/projects' && req.method === 'GET') {
                     should.exist(req.headers['x-auth-token']);
-                    should.exist(req.query['domain_id']);
-                    should.exist(req.query['name']);
-                    req.query['domain_id'].should.equal('f7a5b8e303ec43e8a912fe26fa79dc02');
-                    req.query['name'].should.equal('Electricidad');
+                    should.exist(req.query.domain_id);
+                    should.exist(req.query.name);
+                    req.query.domain_id.should.equal('f7a5b8e303ec43e8a912fe26fa79dc02');
+                    req.query.name.should.equal('Electricidad');
                     req.headers['x-auth-token'].should.equal('092016b75474ea6b492e29fb69d23029');
                     mockExecuted = true;
                     res.json(200, utils.readExampleFile('./test/keystoneResponses/getProjects.json'));
