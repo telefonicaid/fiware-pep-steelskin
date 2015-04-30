@@ -1,0 +1,2 @@
+- Add log debug statements for role extraction
+- Fix error obtaining subservice ID from its name (208).
