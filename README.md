@@ -449,6 +449,7 @@ Some of the configuration values for the attributes above mentioned can be overr
 | Environment variable | Configuration attribute             |
 |:-------------------- |:----------------------------------- |
 | PROXY_PORT           | config.resource.proxy.port          | 
+| ADMIN_PORT           | config.resource.proxy.adminPort     | 
 | TARGET_HOST          | config.resource.original.host       |
 | TARGET_PORT          | config.resource.original.port       |
 | LOG_LEVEL            | config.logLevel                     |
