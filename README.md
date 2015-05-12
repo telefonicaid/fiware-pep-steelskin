@@ -474,11 +474,11 @@ If SSL Termination is not available, the PEP Proxy can be configured to listen H
 * In the same ssl object in the configuration, fill the path to the key and cert files.
 
 ### Multi-instance configuration
-PEP Proxy is able to start multiple instances by adding and configuring certain files in `/etc/pepProxy` and using `pepProxy` service script
+PEP Proxy is able to start multiple instances by adding and configuring certain files in `/etc/pepProxy.d` and using `pepProxy` service script
 
-To start multiple instances is needed to place in `/etc/pepProxy` one configuration file for each instance that is wanted to run. RPM cames with one preconfigured instance (config file called pepproxy_default.conf) that can be used as a template to configure another instances.
+In order to start multiple instances of the proxy, just add one configuration file per instance in the `/etc/pepProxy.d` folder. RPM comes with one preconfigured instance (config file called pepproxy_default.conf) that can be used as a template to configure another instances.
 
-The `pepProxy` service script to start looks for files in `/etc/pepProxy` that begins with `pepproxy_` prefix and has `.conf` extension and start (or stop or status or restat) one process for file found.
+In its starting sequence, the `pepProxy` service looks for files in  `/etc/pepProxy.d` that begins with `pepproxy_` prefix and has `.conf` extension and start (or stop or status or restat) one process for file found.
 
 It is important to change `PROXY_PORT` and `ADMIN_PORT` to one not used by other PEP intances/services. 
 

@@ -32,7 +32,6 @@ function usage() {
     printf "    -v VERSION            Mandatory parameter. Version for rpm product preferably in format x.y.z \n" >&2
     printf "    -r RELEASE            Mandatory parameter. Release for product. I.E. 0.ge58dffa \n" >&2
     printf "\n" >&2
-    exit 1
 }
 
 while getopts ":v:r:u:a:h" opt
@@ -47,6 +46,7 @@ do
             ;;
         h)
             usage
+            exit 0
             ;;
         *)
             echo "invalid argument: '${OPTARG}'"

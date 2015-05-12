@@ -160,7 +160,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(755,%{_project_user},%{_project_user},755)
 %config /etc/init.d/%{_service_name}
-%config /etc/%{_service_name}
+%config /etc/%{_service_name}.d
 %config /etc/sysconfig/logrotate-pepproxy-size
 %config /etc/logrotate.d/logrotate-pepproxy.conf
 %config /etc/cron.d/cron-logrotate-pepproxy-size
