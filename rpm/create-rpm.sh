@@ -19,19 +19,65 @@
 # For those usages not covered by this license please contact with
 # iot_support at tid dot es
 
-PROXY_VERSION=$2
-if [ -z "$PROXY_VERSION" ]; then
-  PROXY_VERSION=0.4.0_next
-fi
-PROXY_RELEASE=$1
-if [ -z "$PROXY_RELEASE" ]; then
-  PROXY_RELEASE=0
-fi
-RPM_TOPDIR=$PWD
-PROXY_USER=pepproxy
 
-rpmbuild -ba $RPM_TOPDIR/SPECS/pepProxy.spec \
-    --define "_topdir $RPM_TOPDIR" \
-    --define "_project_user $PROXY_USER" \
-    --define "_product_version $PROXY_VERSION" \
-    --define "_product_release $PROXY_RELEASE"
+function usage() {
+    SCRIPT=$(basename $0)
+
+    printf "\n" >&2
+    printf "usage: ${SCRIPT} [options] \n" >&2
+    printf "\n" >&2
+    printf "Options:\n" >&2
+    printf "\n" >&2
+    printf "    -h                    show usage\n" >&2
+    printf "    -v VERSION            Mandatory parameter. Version for rpm product preferably in format x.y.z \n" >&2
+    printf "    -r RELEASE            Mandatory parameter. Release for product. I.E. 0.ge58dffa \n" >&2
+    printf "\n" >&2
+    exit 1
+}
+
+while getopts ":v:r:u:a:h" opt
+
+do
+    case $opt in
+        v)
+            VERSION_ARG=${OPTARG}
+            ;;
+        r)
+            RELEASE_ARG=${OPTARG}
+            ;;
+        h)
+            usage
+            ;;
+        *)
+            echo "invalid argument: '${OPTARG}'"
+            exit 1
+            ;;
+    esac
+done
+
+BASE_DIR="$(cd ${0%/*} && pwd -P)/.."
+RPM_BASE_DIR="${BASE_DIR}/rpm"
+
+if [[ ! -z ${VERSION_ARG} ]]; then
+	PRODUCT_VERSION=${VERSION_ARG}
+else
+	echo "A product version must be specified with -v parameter."
+	usage
+	exit 2
+fi
+
+if [[ ! -z ${RELEASE_ARG} ]]; then
+	PRODUCT_RELEASE=${RELEASE_ARG}
+else
+	echo "A product reslease must be specified with -r parameter."
+	usage
+	exit 2
+fi
+
+PROXY_USER="pepproxy"
+
+rpmbuild -ba ${RPM_BASE_DIR}/SPECS/pepProxy.spec \
+    --define "_topdir ${RPM_BASE_DIR}" \
+    --define "_project_user ${PROXY_USER}" \
+    --define "_product_version ${PRODUCT_VERSION}" \
+    --define "_product_release ${PRODUCT_RELEASE}"
