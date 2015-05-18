@@ -20,7 +20,7 @@ This document shows the list of error codes that can be returned from the API, a
 |ACCESS_DENIED|403|The user does not have the appropriate permissions to access the selected action|
 |UNEXPECTED_CONTENT_TYPE|415|The MIME content type received is not supported: %s|
 |TARGET_SERVER_ERROR|501|There was an error redirecting the request to the target server: %s|
-|USER_CREDENTIALS_NOT_FOUND|400|User credentials not found|
+|USER_NOT_FOUND|400|User credentials not found|
 
 Here there is a diagram with the errors returned by PEP. Each color represent the error and is indicated when is raised in the flow of a request
 
