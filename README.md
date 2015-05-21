@@ -1,4 +1,4 @@
-# fiware-orion-pep
+# fiware-pep-steelskin
 ## Index
 
 * [Overview](#overview)
@@ -695,7 +695,7 @@ next(null, req, res);
 ### Middleware configuration
 The middlewares must be defined inside a Node.js module. They can be configured using the `config.middlewares` object of the `config.js` file. This object contains two attributes:
 
-* `require`: path to the module that contains the middlewares, from the project root. The system currently supports only modules defined inside the fiware-orion-pep project (or in accessible folders). 
+* `require`: path to the module that contains the middlewares, from the project root. The system currently supports only modules defined inside the fiware-pep-steelskin project (or in accessible folders).
 * `functions`: list of the middlewares to load. The names in this list must be exported functions of the module selected in the previous attribute.
 
 ### Generic REST Middleware

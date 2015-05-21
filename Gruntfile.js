@@ -150,7 +150,7 @@ module.exports = function(grunt) {
 
         dox: {
             options: {
-                title: 'fiware-orion-pep documentation'
+                title: 'fiware-pep-steelskin documentation'
             },
             files: {
                 src: ['<%= jshint.lib.src %>'],
