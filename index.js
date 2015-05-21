@@ -1,1 +1,1 @@
-module.exports = require('./lib/fiware-orion-pep');
+module.exports = require('./lib/fiware-pep-steelskin');

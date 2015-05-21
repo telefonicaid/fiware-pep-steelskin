@@ -40,75 +40,172 @@
 
 . /etc/rc.d/init.d/functions
 
-PARAM=$1
-NAME=pepProxy
-EXECUTABLE=bin/pepProxy
-PROXY_PATH=/opt/pepProxy
-PIDFILE=$PROXY_PATH/$NAME.pid
-LOG_PATH=/var/log/pepProxy/${NAME}.log
+PARAM=${1}
+INSTANCE=${2}
+COMPONENT_NAME="pepProxy"
+COMPONENT_PATH="/opt/${COMPONENT_NAME}"
+COMPONENT_EXE="${COMPONENT_PATH}/bin/${COMPONENT_NAME}"
+COMPONENT_CONF_PATH="/etc/${COMPONENT_NAME}.d"
+COMPONENT_PREFIX="pepproxy_"
 
-# Load the environment
-if [[ -f /etc/sysconfig/${NAME} ]]; then
-    set -a
-    . /etc/sysconfig/${NAME}
-else
-   echo "Configuration file /etc/sysconfig/${NAME} not found"
-   echo "Please read the documentation for information on setting up ${NAME}"
-   exit 1
-fi
-
-pepproxy_start()
+component_start()
 {
-    printf "%-50s" "Starting ${NAME}..."
-    cd $PROXY_PATH
-    if [[ -x ${EXECUTABLE} ]]; then
-        cd $PROXY_PATH
-        su $PROXY_USER -p -c "cd $PROXY_PATH; nohup ${EXECUTABLE} &>> $LOG_PATH & echo \$! > $PIDFILE"
-        echo "Success"
-    else
-        printf "%s\n" "Fail - missing ${EXECUTABLE} executable"
+
+    local result=0
+    local run_instance=${1}
+
+    if [[ ! -x ${COMPONENT_EXE} ]]; then
+        printf "%s\n" "Fail - missing ${COMPONENT_EXE} executable"
         exit 1
     fi
-}
 
-pepproxy_stop()
-{
-    printf "%-50s" "Stopping $NAME..."
-    if [ -f "${PIDFILE}" ]; then
-        kill -9 $(cat ${PIDFILE})
-        rm -f ${PIDFILE}
-        printf "%s\n" "$(success)"
+    if [[ -z ${run_instance} ]]; then
+        list_instances="${COMPONENT_CONF_PATH}/${COMPONENT_PREFIX}*.conf"
     else
-        printf "%s\n" "$(failure)"
+        list_instances="${COMPONENT_CONF_PATH}/${COMPONENT_PREFIX}${run_instance}.conf"
     fi
+
+    if [[ $(ls -l ${list_instances} 2> /dev/null | wc -l) -eq 0 ]]; then
+        if [[ ${run_instance} == "" ]]; then
+            printf "%s\n" "There aren't any instance of PEP Proxy configured. Refer to file ${COMPONENT_CONF_PATH}/README.md for further information."
+        else
+            printf "%s\n" "There aren't any instance of PEP Proxy configured with the name ${run_instance}. Refer to file ${COMPONENT_CONF_PATH}/README.md for further information."
+        fi
+        return 1
+    fi
+
+    for _instance in ${list_instances}
+    do
+    
+        local NAME
+        NAME=${_instance%.conf}
+        NAME=${NAME#*${COMPONENT_PREFIX}}
+
+        set -a
+        source ${_instance}
+
+        local LOG_FILE="/var/log/${COMPONENT_NAME}/${COMPONENT_PREFIX}${NAME}.log"
+        local PID_FILE="/var/run/${COMPONENT_NAME}/${COMPONENT_PREFIX}${NAME}.pid"
+
+        printf "%s" "Starting PEP Proxy ${NAME}...  "
+
+        status -p ${PID_FILE} ${COMPONENT_EXE} &> /dev/null 
+        if [[ ${?} -eq 0 ]]; then
+            printf "%s\n" " Already running, skipping $(success)"
+            continue
+        fi
+
+        su $PROXY_USER -p -c "${COMPONENT_EXE} &>> ${LOG_FILE} & echo \$! > ${PID_FILE}"
+        sleep 2 # some cortesy time to process startup or die
+        local PID=$(cat ${PID_FILE})
+        local PEP_PID=$(ps -ef | grep -v "grep" | grep "${PID:-not_found}")
+        if [[ -z ${PEP_PID} ]]; then
+            printf "%s\n" "$(failure)"
+            result=$((${result}+1))
+            rm -f ${PID_FILE} &> /dev/null 
+        else
+            chown ${COMPONENT_USER}:${COMPONENT_USER} ${PID_FILE}
+            printf "%s\n" "$(success)"
+        fi
+
+    done
+
+    return ${result}
+    
 }
 
-pepproxy_status()
+component_stop()
 {
-    status -p ${PIDFILE} ${EXECUTABLE}
+    local result=0
+    local run_instance=${1}
+
+
+    if [[ -z ${run_instance} ]]; then
+        list_run_instances="/var/run/${COMPONENT_NAME}/${COMPONENT_PREFIX}*.pid"
+    else
+        list_run_instances="/var/run/${COMPONENT_NAME}/${COMPONENT_PREFIX}${run_instance}.pid"
+    fi
+
+    if [[ $(ls -l ${list_run_instances} 2> /dev/null | wc -l) -eq 0 ]]; then
+        printf "%s\n" "There aren't any instance of PEP Proxy ${run_instance} running $(success)"
+        return 0
+    fi
+
+    for _instance in ${list_run_instances}
+    do
+
+        local NAME
+        NAME=${_instance%.pid}
+        NAME=${NAME#*${COMPONENT_PREFIX}}
+
+        printf "%s" "Stopping PEP Proxy ${NAME}..."
+
+        local RUN_PID=$(cat ${_instance})
+        kill ${RUN_PID}  &> /dev/null
+        sleep 2 # time to die properly
+        local KILLED_PID=$(ps -ef | grep ${RUN_PID} | grep -v grep | awk '{print $2}')
+        if [[ -z ${KILLED_PID} ]]; then
+            printf "%s\n" "$(success)"
+        else
+            printf "%s\n" "$(failure)"
+            result=$((${result}+1))
+        fi
+
+        rm -f ${_instance} &> /dev/null 
+
+    done
+    return ${result}
+}
+
+component_status()
+{
+    local result=0
+    local run_instance=${1}
+
+    if [[ -z ${run_instance} ]]; then
+        list_run_instances="/var/run/${COMPONENT_NAME}/${COMPONENT_PREFIX}*.pid"
+    else
+        list_run_instances="/var/run/${COMPONENT_NAME}/${COMPONENT_PREFIX}${run_instance}.pid"
+    fi
+
+    if [[ $(ls -l ${list_run_instances} 2> /dev/null | wc -l) -eq 0 ]]; then
+        printf "%s\n" "There aren't any instance of PEP Proxy ${run_instance} running."
+        return 1
+    fi
+
+    for _instance in ${list_run_instances}
+    do
+
+        local NAME
+        NAME=${_instance%.pid}
+        NAME=${NAME#*${COMPONENT_PREFIX}}
+
+        printf "%s\n" "PEP Proxy ${NAME} status..."
+        status -p ${_instance} ${NODE_EXEC}
+        result=$((${result}+${?}))
+
+    done
+
+    return ${result}
 }
 
 case ${PARAM} in
 
     'start')
-        echo "Starting..."
-        status -p ${PIDFILE} ${EXECUTABLE} && exit 0
-        pepproxy_start
+        component_start ${INSTANCE}
         ;;
 
     'stop')
-        echo "Stopping..."
-        status -p ${PIDFILE} ${EXECUTABLE} || exit 0
-        pepproxy_stop
+        component_stop ${INSTANCE}
         ;;
 
     'restart')
-        pepproxy_stop
-        pepproxy_start
+        component_stop ${INSTANCE}
+        component_start ${INSTANCE}
         ;;
 
     'status')
-        pepproxy_status
+        component_status ${INSTANCE}
         ;;
 
 esac

@@ -1,4 +1,4 @@
-# fiware-orion-pep
+# fiware-pep-steelskin
 ## Index
 
 * [Overview](#overview)
@@ -26,10 +26,12 @@ Communication with the Access Control is based on the [XACML protocol](http://do
 
 Along this document, the term IDM (Identity Manager) will be used, as a general term to refer to the server providing user and role creation and authentication. The currently supported IDM is Keystone; a Keyrock IDM option is provided as well, but it may be deprecated in the near future.
 
-Two other documents provide further information about the PEP Proxy:
+Three other documents provide further information about the PEP Proxy:
 
-* [Operations Manual](operations.md)
-* [Architecture information](architecture.md)
+* [Operations Manual](operations.md): provides information on logs and alarms.
+* [Architecture information](architecture.md): provides further information on how the PEP works and is structured.
+* [Keystone installation](keystoneInstallation.md): provides an example of Keystone installation with services and subservices
+ that can be used to test the PEP Proxy and play with its features.
 
 ## <a name="deployment"/> Deployment
 ### Dependencies
@@ -447,6 +449,7 @@ Some of the configuration values for the attributes above mentioned can be overr
 | Environment variable | Configuration attribute             |
 |:-------------------- |:----------------------------------- |
 | PROXY_PORT           | config.resource.proxy.port          | 
+| ADMIN_PORT           | config.resource.proxy.adminPort     | 
 | TARGET_HOST          | config.resource.original.host       |
 | TARGET_PORT          | config.resource.original.port       |
 | LOG_LEVEL            | config.logLevel                     |
@@ -470,6 +473,15 @@ If SSL Termination is not available, the PEP Proxy can be configured to listen H
 * Create the appropiate public keys and certificates and store them in the PEP Proxy machine.
 * In the `config.js` file, change the `config.ssl.active` flag to true.
 * In the same ssl object in the configuration, fill the path to the key and cert files.
+
+### Multi-instance configuration
+PEP Proxy is able to start multiple instances by adding and configuring certain files in `/etc/pepProxy.d` and using `pepProxy` service script
+
+In order to start multiple instances of the proxy, just add one configuration file per instance in the `/etc/pepProxy.d` folder. RPM comes with one preconfigured instance (config file called pepproxy_default.conf) that can be used as a template to configure another instances.
+
+In its starting sequence, the `pepProxy` service looks for files in  `/etc/pepProxy.d` that begins with `pepproxy_` prefix and has `.conf` extension and start (or stop or status or restat) one process for file found.
+
+It is important to change `PROXY_PORT` and `ADMIN_PORT` to one not used by other PEP intances/services. 
 
 ## <a name="apiaccesscontrol"/> API With Access Control
 The validation of each request si done connecting with the Access Control component, which, using the information provided by the PEP Proxy, decides whether the user can execute the selected action in this organization or not. The following is a summary of this interaction with some examples.
@@ -683,7 +695,7 @@ next(null, req, res);
 ### Middleware configuration
 The middlewares must be defined inside a Node.js module. They can be configured using the `config.middlewares` object of the `config.js` file. This object contains two attributes:
 
-* `require`: path to the module that contains the middlewares, from the project root. The system currently supports only modules defined inside the fiware-orion-pep project (or in accessible folders). 
+* `require`: path to the module that contains the middlewares, from the project root. The system currently supports only modules defined inside the fiware-pep-steelskin project (or in accessible folders).
 * `functions`: list of the middlewares to load. The names in this list must be exported functions of the module selected in the previous attribute.
 
 ### Generic REST Middleware
@@ -838,6 +850,19 @@ lines to your `package.json`
 }
 ``` 
 
+### Releasing
+The project contains a script to aid in the releasing process. This script is located in the `scripts/build` folder. In
+order to create a new release, just invoke the script, from the project root folder, with the following line:
+```
+scripts/build/release.sh <NEW_VERSION> <RELEASE_TYPE>
+```
+Usually, `RELEASE_TYPE` will be `sprint`. This release procedure will do the following steps:
+* Change the version in package.json to the selected version.
+* Merge `develop` with `master`.
+* Create a branch `release/0.6.0` and a tag `0.6.0` from `master`.
+* Add the `-next` suffix to the version in develop and clean the `CHANGES_NEXT_RELEASE` file.
+
+For other release types, check the command help.
 
 ### Site generation
 

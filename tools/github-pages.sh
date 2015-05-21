@@ -10,7 +10,7 @@ git add .
 git commit -am "CREATE GitHub pages for the project"
 git push origin gh-pages
 git checkout master
-git clone git://github.com/telefonicaid/fiware-orion-pep.git site
+git clone git://github.com/telefonicaid/fiware-pep-steelskin.git site
 cd site
 git checkout gh-pages
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-var proxy = require('../lib/fiware-orion-pep'),
+var proxy = require('../lib/fiware-pep-steelskin'),
     config = require('../config'),
     middlewareConfigs = {
         orion: {
@@ -44,6 +44,7 @@ function loadConfiguration() {
         'ACCESS_HOST',
         'ACCESS_PORT',
         'ACCESS_PROTOCOL',
+        'ADMIN_PORT',
         'AUTHENTICATION_HOST',
         'AUTHENTICATION_PORT',
         'AUTHENTICATION_PROTOCOL',
@@ -65,6 +66,9 @@ function loadConfiguration() {
     }
     if (process.env.TARGET_PORT) {
         config.resource.original.port = process.env.TARGET_PORT;
+    }
+    if (process.env.ADMIN_PORT) {
+        config.resource.proxy.adminPort = process.env.ADMIN_PORT;
     }
     if (process.env.LOG_LEVEL) {
         config.logLevel = process.env.LOG_LEVEL;

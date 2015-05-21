@@ -28,6 +28,10 @@ A request has been received without a user Token, so it couldn't be identified. 
 #### PROXY-GEN-003: Error initializing proxy: %s or Error initializing administration server: %s
 There was an error creating the HTTP server socket for the process. The specific nature of the error will be stated in the message. This error is critical, and makes the service unavailable.
 The most likely occurrence of this error will be when the IP address and port are already in use by other process (or an old instance of this service). Check the port is available using the netstat command.
+#### PROXY-GEN-004: Error initializing administration server: %s
+There was an error initializing the administration server for the PEP Proxy. This will usually mean there is some other software
+running in the same port (maybe another instance of the PEP Proxy). Check there are no other PEP Proxy instances running in the
+machine or, if there are, that those instances use different administration ports (check configuration manuals for details).
 
 ### Validation Errors
 #### VALIDATION-GEN-001: Error connecting to Access Control: %d
@@ -75,7 +79,7 @@ Every error has a code composed of a prefix and an ID, codified with the followi
 
 | Prefix | Module | Type of operation |
 |:---------------- |:--------------|:----------------------|
-| PROXY-GEN | fiware-orion-pep | Internal proxy error |
+| PROXY-GEN | fiware-pep-steelskin | Internal proxy error |
 | VALIDATION-GEN | services/accessValidation | Access validation errors |
 | VALIDATION-FATAL | services/accessValidation | Critical access validation module errors |
 | ORION-PLUGIN | services/orionPlugin | Orion plugin errors |

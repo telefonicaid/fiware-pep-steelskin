@@ -24,6 +24,7 @@ policies stored in the Access Control component of the Fiware Platform.
 %define _service_name pepProxy
 %define _install_dir /opt/pepProxy
 %define _pepProxy_log_dir /var/log/pepProxy
+%define _pepProxy_pid_dir /var/run/pepProxy
 
 # RPM Building folder
 %define _build_root_project %{buildroot}%{_install_dir}
@@ -82,13 +83,20 @@ echo "[INFO] Configuring application"
 
     echo "[INFO] Creating the home pepproxy directory"
     mkdir -p _install_dir
-    echo "[INFO] Creating log directory"
+    echo "[INFO] Creating log & run directory"
     mkdir -p %{_pepProxy_log_dir}
     chown -R %{_project_user}:%{_project_user} %{_pepProxy_log_dir}
     chown -R %{_project_user}:%{_project_user} _install_dir
     chmod g+s %{_pepProxy_log_dir}
     setfacl -d -m g::rwx %{_pepProxy_log_dir}
     setfacl -d -m o::rx %{_pepProxy_log_dir}
+
+    mkdir -p %{_pepProxy_pid_dir}
+    chown -R %{_project_user}:%{_project_user} %{_pepProxy_pid_dir}
+    chown -R %{_project_user}:%{_project_user} _install_dir
+    chmod g+s %{_pepProxy_pid_dir}
+    setfacl -d -m g::rwx %{_pepProxy_pid_dir}
+    setfacl -d -m o::rx %{_pepProxy_pid_dir}
 
     echo "[INFO] Configuring application service"
     cd /etc/init.d
@@ -121,6 +129,10 @@ if [ $1 == 0 ]; then
   # Log
   [ -d %{_pepProxy_log_dir} ] && rm -rfv %{_pepProxy_log_dir}
 
+  echo "[INFO] Removing application run files"
+  # Log
+  [ -d %{_pepProxy_pid_dir} ] && rm -rfv %{_pepProxy_pid_dir}
+
   echo "[INFO] Removing application files"
   # Installed files
   [ -d %{_install_dir} ] && rm -rfv %{_install_dir}
@@ -148,13 +160,20 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(755,%{_project_user},%{_project_user},755)
 %config /etc/init.d/%{_service_name}
-%config /etc/sysconfig/%{_service_name}
+%config /etc/%{_service_name}.d
 %config /etc/sysconfig/logrotate-pepproxy-size
 %config /etc/logrotate.d/logrotate-pepproxy.conf
 %config /etc/cron.d/cron-logrotate-pepproxy-size
 %{_install_dir}
 
 %changelog
+=======
+* Thu May 21 2015 Daniel Moran <daniel.moranjimenez@telefonica.com> 0.7.0
+- Add capacity to start several instances of PEP Proxy using init.d script (#211)
+- Add log debug statements for role extraction
+- Fix error obtaining subservice ID from its name (208).
+- Add integration with Travis CI.
+
 * Mon Apr 13 2015 Daniel Moran <daniel.moranjimenez@telefonica.com> 0.6.0
 - FIX Service not found for tokens coming from a trust.
 - FIX XAuth Token not checked if validation is off (#197)
