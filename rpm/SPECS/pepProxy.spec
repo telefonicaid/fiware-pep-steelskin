@@ -167,6 +167,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_install_dir}
 
 %changelog
+* Thu May 21 2015 Daniel Moran <daniel.moranjimenez@telefonica.com> 0.7.0
+- Add capacity to start several instances of PEP Proxy using init.d script (#211)
+- Add log debug statements for role extraction
+- Fix error obtaining subservice ID from its name (208).
+- Add integration with Travis CI.
 * Mon Apr 13 2015 Daniel Moran <daniel.moranjimenez@telefonica.com> 0.6.0
 - FIX Service not found for tokens coming from a trust.
 - FIX XAuth Token not checked if validation is off (#197)

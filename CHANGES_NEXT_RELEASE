@@ -1,4 +1,0 @@
-- Add capacity to start several instances of PEP Proxy using init.d script (#211)
-- Add log debug statements for role extraction
-- Fix error obtaining subservice ID from its name (208).
-- Add integration with Travis CI.
