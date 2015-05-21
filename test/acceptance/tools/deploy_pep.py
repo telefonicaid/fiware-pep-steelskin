@@ -2,20 +2,20 @@
 """
 Copyright 2014 Telefonica Investigación y Desarrollo, S.A.U
 
-This file is part of fiware-orion-pep
+This file is part of fiware-pep-steelskin
 
-fiware-orion-pep is free software: you can redistribute it and/or
+fiware-pep-steelskin is free software: you can redistribute it and/or
 modify it under the terms of the GNU Affero General Public License as
 published by the Free Software Foundation, either version 3 of the License,
 or (at your option) any later version.
 
-fiware-orion-pep is distributed in the hope that it will be useful,
+fiware-pep-steelskin is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 See the GNU Affero General Public License for more details.
 
 You should have received a copy of the GNU Affero General Public
-License along with fiware-orion-pep.
+License along with fiware-pep-steelskin.
 If not, see http://www.gnu.org/licenses/.
 
 For those usages not covered by the GNU Affero General Public License
@@ -119,7 +119,7 @@ def get_ssh_port(container_name):
 
 
 def start_docker_pep(ip_host, user_host, password_host, container_user, container_pass, container_name,
-                     pep_path='/fiware-orion-pep'):
+                     pep_path='/fiware-pep-steelskin'):
     """
     Given the docker host, get the PEP container and start it with the config defined
     :param ip_host:
@@ -164,7 +164,7 @@ def stop_docker_pep(ip_host, user_host, password_host, container_user, container
     stop_pep(ip_host, container_user, container_pass, container_port)
 
 
-def start_pep(ip, user, password, port='22', pep_path='/fiware-orion-pep'):
+def start_pep(ip, user, password, port='22', pep_path='/fiware-pep-steelskin'):
     """
     Given a ssh connection data, stop PEP if its running, put the new configuration, and start is.
     The machina have to has the "dtach" package
@@ -242,7 +242,7 @@ def stop_pep(ip, user, password, port='22'):
             sudo('kill -9 {pid}'.format(pid=proc_pid.strip()))
 
 
-def start_pep_local(pep_path='/fiware-orion-pep'):
+def start_pep_local(pep_path='/fiware-pep-steelskin'):
     """
     Given a ssh connection data, stop PEP if its running, put the new configuration, and start is.
     The machine has to have the "dtach" package

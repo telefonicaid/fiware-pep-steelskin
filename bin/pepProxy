@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-var proxy = require('../lib/fiware-orion-pep'),
+var proxy = require('../lib/fiware-pep-steelskin'),
     config = require('../config'),
     middlewareConfigs = {
         orion: {

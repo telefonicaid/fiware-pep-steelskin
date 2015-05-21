@@ -79,7 +79,7 @@ Every error has a code composed of a prefix and an ID, codified with the followi
 
 | Prefix | Module | Type of operation |
 |:---------------- |:--------------|:----------------------|
-| PROXY-GEN | fiware-orion-pep | Internal proxy error |
+| PROXY-GEN | fiware-pep-steelskin | Internal proxy error |
 | VALIDATION-GEN | services/accessValidation | Access validation errors |
 | VALIDATION-FATAL | services/accessValidation | Critical access validation module errors |
 | ORION-PLUGIN | services/orionPlugin | Orion plugin errors |

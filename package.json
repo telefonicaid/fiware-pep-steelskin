@@ -1,20 +1,20 @@
 {
-  "name": "fiware-orion-pep",
+  "name": "fiware-pep-steelskin",
   "description": "FiWare Policy Enforcement Point",
   "version": "0.6.0-next",
-  "homepage": "https://github.com/telefonicaid/fiware-orion-pep",
+  "homepage": "https://github.com/telefonicaid/fiware-pep-steelskin",
   "author": {
     "name": "Daniel Moran",
     "email": "daniel.moranjimenez@telefonica.com"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/telefonicaid/fiware-orion-pep.git"
+    "url": "git://github.com/telefonicaid/fiware-pep-steelskin.git"
   },
   "bugs": {
-    "url": "https://github.com/telefonicaid/fiware-orion-pep/issues"
+    "url": "https://github.com/telefonicaid/fiware-pep-steelskin/issues"
   },
-  "main": "lib/fiware-orion-pep",
+  "main": "lib/fiware-pep-steelskin",
   "engines": {
     "node": ">=0.10.8"
   },

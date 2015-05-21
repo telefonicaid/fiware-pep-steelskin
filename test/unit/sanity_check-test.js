@@ -1,20 +1,20 @@
 /*
  * Copyright 2014 Telefonica Investigación y Desarrollo, S.A.U
  *
- * This file is part of fiware-orion-pep
+ * This file is part of fiware-pep-steelskin
  *
- * fiware-orion-pep is free software: you can redistribute it and/or
+ * fiware-pep-steelskin is free software: you can redistribute it and/or
  * modify it under the terms of the GNU Affero General Public License as
  * published by the Free Software Foundation, either version 3 of the License,
  * or (at your option) any later version.
  *
- * fiware-orion-pep is distributed in the hope that it will be useful,
+ * fiware-pep-steelskin is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public
- * License along with fiware-orion-pep.
+ * License along with fiware-pep-steelskin.
  * If not, seehttp://www.gnu.org/licenses/.
  *
  * For those usages not covered by the GNU Affero General Public License
@@ -24,7 +24,7 @@
 'use strict';
 
 var should = require('should'),
-    proxyLib = require('../../lib/fiware-orion-pep'),
+    proxyLib = require('../../lib/fiware-pep-steelskin'),
     config = require('../../config'),
     request = require('request');
 
