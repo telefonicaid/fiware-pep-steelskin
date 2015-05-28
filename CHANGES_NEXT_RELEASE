@@ -1,0 +1,1 @@
+- Make the PEP Proxy die when an error is received in a request resend (#225)
