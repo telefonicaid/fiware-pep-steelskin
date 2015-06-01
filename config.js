@@ -134,6 +134,12 @@ config.middlewares = {
 };
 
 /**
+ * If this flag is activated, whenever the pepProxy is not able to redirect a request, instead of returning a 501 error
+ * (that is the default functionality) the PEP Proxy process will exit with a -2 code.
+ */
+config.dieOnRedirectError = false;
+
+/**
  * Name of the component. It will be used in the generation of the FRN.
  */
 config.componentName = 'orion';
