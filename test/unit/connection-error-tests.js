@@ -128,7 +128,7 @@ describe('Connection error tests', function() {
             });
         });
 
-        it('should return a 501 with a TARGET_SERVER_ERROR message', function(done) {
+        it('should return a 500 with a TARGET_SERVER_ERROR message', function(done) {
             var accessControlExecuted = false;
 
             mockTargetApp.handler = function(req, res) {
@@ -142,7 +142,7 @@ describe('Connection error tests', function() {
 
             request(options, function(error, response, body) {
                 should.not.exist(error);
-                response.statusCode.should.equal(501);
+                response.statusCode.should.equal(500);
                 done();
             });
         });
