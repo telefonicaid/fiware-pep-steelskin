@@ -1,5 +1,5 @@
 Summary: Orion Policy Enforcement Point
-Name: pep-proxy
+Name: fiware-pep-steelskin
 Version: %{_product_version}
 Release: %{_product_release}
 License: AGPLv3
