@@ -1,2 +1,3 @@
 - Bugfix: init.d service script start PEP Proxy correctly (#236)
 - Make the PEP Proxy die when an error is received in a request resend (#225)
+- Added environment variable to customize component name (#240)
