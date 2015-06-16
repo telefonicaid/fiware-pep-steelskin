@@ -50,7 +50,8 @@ function loadConfiguration() {
         'AUTHENTICATION_PROTOCOL',
         'PROXY_USERNAME',
         'PROXY_PASSWORD',
-        'COMPONENT_PLUGIN'
+        'COMPONENT_PLUGIN',
+        'COMPONENT_NAME'
     ];
 
     for (var i = 0; i < environmentValues.length; i++) {
@@ -98,9 +99,15 @@ function loadConfiguration() {
     if (process.env.PROXY_PASSWORD) {
         config.authentication.password = process.env.PROXY_PASSWORD;
     }
+    if (process.env.COMPONENT_NAME) {
+        config.componentName = process.env.COMPONENT_NAME;
+    }
     if (process.env.COMPONENT_PLUGIN) {
         if (middlewareConfigs[process.env.COMPONENT_PLUGIN]) {
-            config.componentName = process.env.COMPONENT_PLUGIN;
+            if (!process.env.COMPONENT_NAME) {
+                config.componentName = process.env.COMPONENT_PLUGIN;
+            }
+
             config.middlewares = middlewareConfigs[process.env.COMPONENT_PLUGIN];
         } else {
             console.log('FATAL ERROR: Component plugin not found');
