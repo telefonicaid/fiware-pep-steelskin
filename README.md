@@ -415,6 +415,7 @@ In order to have the proxy running, there are several basic pieces of informatio
 * `config.resourceNamePrefix`: string prefix that will be used to compose the FRN that will identify the resource to be accessed. E.g.: `fiware:`.
 * `config.bypass`: used to activate the administration bypass in the proxy. Valid values are `true` or `false`.
 * `config.bypassRoleId`: ID of the role that will be considered to have administrative rights over the proxy (so being transparently proxied without validation). Valid values are Role UUIDs. E.g.: `db50362d5f264c8292bebdb5c5783741`.
+* `config.dieOnRedirectError`: this flags changes the behavior of the PEP Proxy when an error is received when redirecting a request. If the flag is true, the PEP Proxy process is shut down immediately; if it is false, the behavior is the usual: generate a 501 Code error.
 
 ### Authentication configuration
 * `config.authentication.checkHeaders`: when the proxy is working with the access control disabled (just user authentication), indicates whether the `fiware-service` and `fiware-servicepath` headers should be checked for existance and validity (checking: the headers exist, thy are not empty and the user is really part of the service and subservice mentioned in the header). This option is ignored when authorization is enabled, and considered to be `true` (as the headers constitute a mandatory part of the authorization process). Default value is `true`.
@@ -462,10 +463,10 @@ Some of the configuration values for the attributes above mentioned can be overr
 | PROXY_USERNAME       | config.authentication.user          |
 | PROXY_PASSWORD       | config.authentication.password      |
 | PROXY_PASSWORD       | config.authentication.password      |
-| COMPONENT_PLUGIN       | config.middlewares      |
+| COMPONENT_PLUGIN       | config.middlewares and config.componentName     |
 
 ### Component configuration
-A special environment variable, called `COMPONENT_PLUGIN` can be set with one of this values: `orion`, `perseo`, `keypass` and `rest`. This variable can be used to select what component plugin to load in order to determine the action of the incoming requests.
+A special environment variable, called `COMPONENT_PLUGIN` can be set with one of this values: `orion`, `perseo`, `keypass` and `rest`. This variable can be used to select what component plugin to load in order to determine the action of the incoming requests. This variable also rewrites `config.componentName` configuration paramenter.
 
 ### SSL Configuration
 If SSL Termination is not available, the PEP Proxy can be configured to listen HTTPS instead of plain HTTP. To activate the SSL:

@@ -1,5 +1,5 @@
 Summary: Orion Policy Enforcement Point
-Name: pep-proxy
+Name: fiware-pep-steelskin
 Version: %{_product_version}
 Release: %{_product_release}
 License: AGPLv3
@@ -167,7 +167,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_install_dir}
 
 %changelog
-=======
 * Thu May 21 2015 Daniel Moran <daniel.moranjimenez@telefonica.com> 0.7.0
 - Add capacity to start several instances of PEP Proxy using init.d script (#211)
 - Add log debug statements for role extraction
