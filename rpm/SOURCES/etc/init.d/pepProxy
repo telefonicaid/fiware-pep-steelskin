@@ -42,10 +42,10 @@
 
 PARAM=${1}
 INSTANCE=${2}
-COMPONENT_NAME="pepProxy"
-COMPONENT_PATH="/opt/${COMPONENT_NAME}"
-COMPONENT_EXE="${COMPONENT_PATH}/bin/${COMPONENT_NAME}"
-COMPONENT_CONF_PATH="/etc/${COMPONENT_NAME}.d"
+PEP_COMPONENT_NAME="pepProxy"
+COMPONENT_PATH="/opt/${PEP_COMPONENT_NAME}"
+COMPONENT_EXE="${COMPONENT_PATH}/bin/${PEP_COMPONENT_NAME}"
+COMPONENT_CONF_PATH="/etc/${PEP_COMPONENT_NAME}.d"
 COMPONENT_PREFIX="pepproxy_"
 
 component_start()
@@ -84,8 +84,8 @@ component_start()
         set -a
         source ${_instance}
 
-        local LOG_FILE="/var/log/${COMPONENT_NAME}/${COMPONENT_PREFIX}${NAME}.log"
-        local PID_FILE="/var/run/${COMPONENT_NAME}/${COMPONENT_PREFIX}${NAME}.pid"
+        local LOG_FILE="/var/log/${PEP_COMPONENT_NAME}/${COMPONENT_PREFIX}${NAME}.log"
+        local PID_FILE="/var/run/${PEP_COMPONENT_NAME}/${COMPONENT_PREFIX}${NAME}.pid"
 
         printf "%s" "Starting PEP Proxy ${NAME}...  "
 
@@ -121,9 +121,9 @@ component_stop()
 
 
     if [[ -z ${run_instance} ]]; then
-        list_run_instances="/var/run/${COMPONENT_NAME}/${COMPONENT_PREFIX}*.pid"
+        list_run_instances="/var/run/${PEP_COMPONENT_NAME}/${COMPONENT_PREFIX}*.pid"
     else
-        list_run_instances="/var/run/${COMPONENT_NAME}/${COMPONENT_PREFIX}${run_instance}.pid"
+        list_run_instances="/var/run/${PEP_COMPONENT_NAME}/${COMPONENT_PREFIX}${run_instance}.pid"
     fi
 
     if [[ $(ls -l ${list_run_instances} 2> /dev/null | wc -l) -eq 0 ]]; then
@@ -163,9 +163,9 @@ component_status()
     local run_instance=${1}
 
     if [[ -z ${run_instance} ]]; then
-        list_run_instances="/var/run/${COMPONENT_NAME}/${COMPONENT_PREFIX}*.pid"
+        list_run_instances="/var/run/${PEP_COMPONENT_NAME}/${COMPONENT_PREFIX}*.pid"
     else
-        list_run_instances="/var/run/${COMPONENT_NAME}/${COMPONENT_PREFIX}${run_instance}.pid"
+        list_run_instances="/var/run/${PEP_COMPONENT_NAME}/${COMPONENT_PREFIX}${run_instance}.pid"
     fi
 
     if [[ $(ls -l ${list_run_instances} 2> /dev/null | wc -l) -eq 0 ]]; then
