@@ -923,5 +923,39 @@ describe('Validate action with Access Control', function() {
                 done();
             });
         });
+
+        it('should extract the roles from the trust, not calling Keystone again', function(done) {
+            var getRolesCall = false,
+                xacmlRequest;
+
+            mockOAuthApp.handler = function(req, res) {
+                if (req.path === currentAuthentication.authPath && req.method === 'POST') {
+                    res.setHeader('X-Subject-Token', '092016b75474ea6b492e29fb69d23029');
+                    res.json(201, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
+                } else if (req.path === currentAuthentication.authPath && req.method === 'GET') {
+                    res.json(200, utils.readExampleFile('./test/keystoneResponses/getUserWithTrust.json'));
+                } else if (req.path === '/v3/projects' && req.method === 'GET') {
+                    res.json(200, utils.readExampleFile('./test/keystoneResponses/getProjects.json'));
+                } else {
+                    req.query['user.id'].should.equal('d6809594b8794f23a8ec51f0c6b2c5d6');
+                    req.headers['x-auth-token'].should.equal('092016b75474ea6b492e29fb69d23029');
+                    getRolesCall = true;
+                    res.json(200, utils.readExampleFile('./test/keystoneResponses/rolesOfUser.json'));
+                }
+            };
+
+            mockAccessApp.handler = function(req, res) {
+                xacmlRequest = req.rawBody;
+                res.set('Content-Type', 'application/xml');
+                res.send(utils.readExampleFile('./test/accessControlResponses/permitResponse.xml', true));
+            };
+
+            request(options, function(error, response, body) {
+                response.statusCode.should.equal(200);
+                xacmlRequest.should.match(/d44ee9276cb64eefb98bec7e03776014/);
+                getRolesCall.should.equal(false);
+                done();
+            });
+        });
     });
 });
