@@ -90,10 +90,7 @@ describe('REST Plugin tests', function() {
                                 mockOAuth = serverAuth;
                                 mockOAuthApp = appAuth;
 
-                                mockOAuthApp.handler = function(req, res) {
-                                    res.json(200,
-                                        utils.readExampleFile('./test/authorizationResponses/rolesOfUser.json'));
-                                };
+                                mockOAuthApp.handler = serverMocks.mockKeystone;
 
                                 async.series([
                                     async.apply(serverMocks.mockPath, '/user', mockOAuthApp),

@@ -86,9 +86,11 @@ describe('Extract Context Broker action from request', function() {
 
                         mockOAuthApp.handler = serverMocks.mockKeystone;
                         keystonePlugin.cleanCache();
+                        keystonePlugin.invalidate();
 
                         async.series([
-                            async.apply(serverMocks.mockPath, '/validate', mockAccessApp)
+                            async.apply(serverMocks.mockPath, '/validate', mockAccessApp),
+                            async.apply(serverMocks.mockPath, '/v3/auth/tokens', mockOAuthApp)
                         ], done);
                     });
                 });
