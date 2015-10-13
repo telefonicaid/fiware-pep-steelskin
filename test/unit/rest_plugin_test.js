@@ -47,6 +47,60 @@ describe('REST Plugin tests', function() {
         ['GET', 'read']
     ];
 
+    beforeEach(function(done) {
+        config.middlewares.require = 'lib/services/restPlugin';
+        config.middlewares.function = [
+            'extractAction'
+        ];
+
+        proxyLib.start(function(error, proxyObj) {
+            proxy = proxyObj;
+
+            proxy.middlewares.push(restPlugin.extractAction);
+
+            serverMocks.start(config.resource.original.port, function(error, server, app) {
+                mockServer = server;
+                mockApp = app;
+
+                serverMocks.start(config.access.port, function(error, serverAccess, appAccess) {
+                    mockAccess = serverAccess;
+                    mockAccessApp = appAccess;
+                    mockAccessApp.handler = function(req, res) {
+                        res.set('Content-Type', 'application/xml');
+                        res.send(utils.readExampleFile('./test/accessControlResponses/permitResponse.xml',
+                            true));
+                    };
+
+                    serverMocks.start(config.authentication.options.port, function(error, serverAuth, appAuth) {
+                        mockOAuth = serverAuth;
+                        mockOAuthApp = appAuth;
+
+                        mockOAuthApp.handler = function(req, res) {
+                            res.json(200,
+                                utils.readExampleFile('./test/authorizationResponses/rolesOfUser.json'));
+                        };
+
+                        async.series([
+                            async.apply(serverMocks.mockPath, '/user', mockOAuthApp),
+                            async.apply(serverMocks.mockPath, '/validate', mockAccessApp),
+                            async.apply(serverMocks.mockPath, '/generalResource', mockAccessApp)
+                        ], done);
+                    });
+                });
+            });
+        });
+    });
+
+    afterEach(function(done) {
+        proxyLib.stop(proxy, function(error) {
+            serverMocks.stop(mockServer, function() {
+                serverMocks.stop(mockAccess, function() {
+                    serverMocks.stop(mockOAuth, done);
+                });
+            });
+        });
+    });
+
     function apiCase(particularCase) {
         var options = {
             uri: 'http://localhost:' + config.resource.proxy.port + '/generalResource',
@@ -62,47 +116,6 @@ describe('REST Plugin tests', function() {
         };
 
         describe('When  a ' + particularCase[0] + ' request arrives to the PEP Proxy', function() {
-            beforeEach(function(done) {
-                config.middlewares.require = 'lib/services/restPlugin';
-                config.middlewares.function = [
-                    'extractAction'
-                ];
-
-                proxyLib.start(function(error, proxyObj) {
-                    proxy = proxyObj;
-
-                    proxy.middlewares.push(restPlugin.extractAction);
-
-                    serverMocks.start(config.resource.original.port, function(error, server, app) {
-                        mockServer = server;
-                        mockApp = app;
-
-                        serverMocks.start(config.access.port, function(error, serverAccess, appAccess) {
-                            mockAccess = serverAccess;
-                            mockAccessApp = appAccess;
-                            mockAccessApp.handler = function(req, res) {
-                                res.set('Content-Type', 'application/xml');
-                                res.send(utils.readExampleFile('./test/accessControlResponses/permitResponse.xml',
-                                    true));
-                            };
-
-                            serverMocks.start(config.authentication.options.port, function(error, serverAuth, appAuth) {
-                                mockOAuth = serverAuth;
-                                mockOAuthApp = appAuth;
-
-                                mockOAuthApp.handler = serverMocks.mockKeystone;
-
-                                async.series([
-                                    async.apply(serverMocks.mockPath, '/user', mockOAuthApp),
-                                    async.apply(serverMocks.mockPath, '/validate', mockAccessApp),
-                                    async.apply(serverMocks.mockPath, '/generalResource', mockAccessApp)
-                                ], done);
-                            });
-                        });
-                    });
-                });
-            });
-
             it('should mark the action as "' + particularCase[1] + '"', function(done) {
                 var extractionExecuted = false;
 
@@ -120,18 +133,44 @@ describe('REST Plugin tests', function() {
                     done();
                 });
             });
-
-            afterEach(function(done) {
-                proxyLib.stop(proxy, function(error) {
-                    serverMocks.stop(mockServer, function() {
-                        serverMocks.stop(mockAccess, function() {
-                            serverMocks.stop(mockOAuth, done);
-                        });
-                    });
-                });
-            });
         });
     }
 
     apiCases.forEach(apiCase);
+
+    describe('When a request with query parameters arrive', function() {
+        var options = {
+            uri: 'http://localhost:' + config.resource.proxy.port + '/generalResource',
+            qs: {
+                param1: 'value1',
+                param2: 'value2'
+            },
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Fiware-Service': 'frn:contextbroker:admin_domain:::',
+                'fiware-servicepath': '833',
+                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
+            },
+            json: {}
+        };
+
+        it('should not add the query parameters to the FRN', function(done) {
+            var extractedUrl;
+
+            var testExtraction = function(req, res, callback) {
+                extractedUrl = req.resourceUrl;
+                callback(null, req, res);
+            };
+
+            proxy.middlewares.push(testExtraction);
+
+            request(options, function(error, response, body) {
+                should.exist(extractedUrl);
+                extractedUrl.should.not.match(/param1/);
+                done();
+            });
+        });
+    });
 });
