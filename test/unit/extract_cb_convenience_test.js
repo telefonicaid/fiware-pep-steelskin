@@ -150,7 +150,7 @@ convenienceOperations = [
     ['GET', '/v2/entities?q=temperature<24;humidity==75..90;status=running', 'read'],
     ['POST', '/v2/entities', 'create'],
     ['GET', '/v2/entities/idOfTheEntity?attrs=theAttribute', 'read'],
-    //['PATCH', '/v2/entities/idOfTheEntity', 'update'],
+    ['PATCH', '/v2/entities/idOfTheEntity', 'update'],
     //['POST', '/v2/entities/idOfTheEntity', 'update'],
     ['DELETE', '/v2/entities/idOfTheEntity', 'delete'],
     ['PUT', '/v2/entities/idOfTheEntity', 'update'],
