@@ -6,3 +6,4 @@
 - Add Dockerfile for the PEP.
 - PEP Crashes when unable to authenticate (#256)
 - ADD First NGSIv2 operations to the convenience list (#259)
+- Distinguish POST actions in NGSIv2 using query parameters (#262)
