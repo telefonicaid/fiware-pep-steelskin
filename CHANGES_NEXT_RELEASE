@@ -5,3 +5,4 @@
 - Init script fixed due to a COMPONENT_NAME was used in PEP proxy configuration (#246)
 - Add Dockerfile for the PEP.
 - PEP Crashes when unable to authenticate (#256)
+- ADD First NGSIv2 operations to the convenience list (#259)
