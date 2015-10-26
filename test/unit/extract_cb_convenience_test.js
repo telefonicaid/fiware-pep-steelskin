@@ -117,12 +117,14 @@ convenienceOperations = [
     ['POST', '/ngsi10/contextSubscriptions', 'subscribe'],
     ['PUT', '/ngsi10/contextSubscriptions/TestedSubscriptionID001', 'subscribe'],
     ['DELETE', '/ngsi10/contextSubscriptions/TestedSubscriptionID001', 'subscribe'],
+
     /* Testing a subset of "classic" operations in v1/ prefix (we don't need to be exahustive) */
     ['PUT', '/v1/contextSubscriptions/TestedSubscriptionID001', 'subscribe'],
     ['DELETE', '/v1/contextSubscriptions/TestedSubscriptionID001', 'subscribe'],
     ['PUT', '/v1/contextSubscriptions/TestedSubscriptionID001', 'subscribe'],
     ['GET', '/v1/registry/contextEntityTypes/TestedTypeName001', 'discover'],
     ['POST', '/v1/registry/contextEntityTypes/TestedTypeName001', 'register'],
+
     /* New operations in v1/ */
     ['GET', '/v1/contextEntities', 'read'],
     ['POST', '/v1/contextEntities', 'create'],
@@ -151,7 +153,7 @@ convenienceOperations = [
     ['POST', '/v2/entities', 'create'],
     ['GET', '/v2/entities/idOfTheEntity?attrs=theAttribute', 'read'],
     ['PATCH', '/v2/entities/idOfTheEntity', 'update'],
-    //['POST', '/v2/entities/idOfTheEntity', 'update'],
+    ['POST', '/v2/entities/idOfTheEntity', 'update'],
     ['DELETE', '/v2/entities/idOfTheEntity', 'delete'],
     ['PUT', '/v2/entities/idOfTheEntity', 'update'],
     ['GET', '/v2/entities/idOfTheEntity/attrs/theAttribute', 'read'],
@@ -163,7 +165,7 @@ convenienceOperations = [
     ['GET', '/v2/types/theType', 'read']
 ];
 
-describe.only('Extract Context Broker action from convenience operation requests', function() {
+describe('Extract Context Broker action from convenience operation requests', function() {
     var proxy,
         mockServer,
         mockApp,
