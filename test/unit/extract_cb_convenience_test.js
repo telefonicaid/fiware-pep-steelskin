@@ -137,10 +137,33 @@ convenienceOperations = [
     ['GET', '/v1/contextSubscriptions?details=on&limit=15&offset=0', 'read'],
     ['POST', '/v1/registry/subscribeContextAvailability?details=on&limit=15&offset=0', 'subscribe-availability'],
     ['POST', '/v1/registry/updateContextAvailabilitySubscription?details=on&limit=15&offset=0',
-        'subscribe-availability']
+        'subscribe-availability'],
+
+    /* V2 Operations */
+    ['GET', '/v2', 'read'],
+    ['GET', '/v2/entities', 'read'],
+    ['GET', '/v2/entities?limit=15&offset=0', 'read'],
+    ['GET', '/v2/entities/idOfTheEntity', 'read'],
+    ['GET', '/v2/entities?type=TheType', 'read'],
+    ['GET', '/v2/entities?id=idOfTheEntity', 'read'],
+    ['GET', '/v2/entities?idPattern=idOf*', 'read'],
+    ['GET', '/v2/entities?q=temperature<24;humidity==75..90;status=running', 'read'],
+    ['POST', '/v2/entities', 'create'],
+    ['GET', '/v2/entities/idOfTheEntity?attrs=theAttribute', 'read'],
+    //['PATCH', '/v2/entities/idOfTheEntity', 'update'],
+    //['POST', '/v2/entities/idOfTheEntity', 'update'],
+    ['DELETE', '/v2/entities/idOfTheEntity', 'delete'],
+    ['PUT', '/v2/entities/idOfTheEntity', 'update'],
+    ['GET', '/v2/entities/idOfTheEntity/attrs/theAttribute', 'read'],
+    ['PUT', '/v2/entities/idOfTheEntity/attrs/theAttribute', 'update'],
+    ['DELETE', '/v2/entities/idOfTheEntity/attrs/theAttribute', 'delete'],
+    ['GET', '/v2/entities/idOfTheEntity/attrs/theAttribute/value', 'read'],
+    ['PUT', '/v2/entities/idOfTheEntity/attrs/theAttribute/value', 'update'],
+    ['GET', '/v2/types', 'read'],
+    ['GET', '/v2/types/theType', 'read']
 ];
 
-describe('Extract Context Broker action from convenience operation requests', function() {
+describe.only('Extract Context Broker action from convenience operation requests', function() {
     var proxy,
         mockServer,
         mockApp,
