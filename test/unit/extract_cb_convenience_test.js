@@ -166,7 +166,7 @@ convenienceOperations = [
     ['GET', '/v2/types', 'read'],
     ['GET', '/v2/types/theType', 'read'],
     ['GET', '/v2/subscriptions', 'read'],
-    ['POST', '/v2/subscriptions', 'create']
+    ['GET', '/v2/subscriptions/theSubId', 'read']
 ];
 
 describe('Extract Context Broker action from convenience operation requests', function() {
