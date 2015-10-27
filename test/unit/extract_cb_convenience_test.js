@@ -164,7 +164,9 @@ convenienceOperations = [
     ['GET', '/v2/entities/idOfTheEntity/attrs/theAttribute/value', 'read'],
     ['PUT', '/v2/entities/idOfTheEntity/attrs/theAttribute/value', 'update'],
     ['GET', '/v2/types', 'read'],
-    ['GET', '/v2/types/theType', 'read']
+    ['GET', '/v2/types/theType', 'read'],
+    ['GET', '/v2/subscriptions', 'read'],
+    ['POST', '/v2/subscriptions', 'create']
 ];
 
 describe('Extract Context Broker action from convenience operation requests', function() {
