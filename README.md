@@ -635,6 +635,7 @@ An up-to-date list of the convenience operations can be found [here](https://doc
 | POST   | /v2/entities                                                                           | C |
 | PATCH  | /v2/entities/{entityId}                                                                | U |
 | POST   | /v2/entities/{entityId}                                                                | U |
+| POST   | /v2/entities/{entityId}?options=append                                                 | C |
 | DELETE | /v2/entities/{entityId}                                                                | D |
 | PUT    | /v2/entities/{entityId}                                                                | U |
 | GET    | /v2/entities/{entityId}/attrs/{attrId}                                                 | R |
