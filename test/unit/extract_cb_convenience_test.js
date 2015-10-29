@@ -117,12 +117,14 @@ convenienceOperations = [
     ['POST', '/ngsi10/contextSubscriptions', 'subscribe'],
     ['PUT', '/ngsi10/contextSubscriptions/TestedSubscriptionID001', 'subscribe'],
     ['DELETE', '/ngsi10/contextSubscriptions/TestedSubscriptionID001', 'subscribe'],
+
     /* Testing a subset of "classic" operations in v1/ prefix (we don't need to be exahustive) */
     ['PUT', '/v1/contextSubscriptions/TestedSubscriptionID001', 'subscribe'],
     ['DELETE', '/v1/contextSubscriptions/TestedSubscriptionID001', 'subscribe'],
     ['PUT', '/v1/contextSubscriptions/TestedSubscriptionID001', 'subscribe'],
     ['GET', '/v1/registry/contextEntityTypes/TestedTypeName001', 'discover'],
     ['POST', '/v1/registry/contextEntityTypes/TestedTypeName001', 'register'],
+
     /* New operations in v1/ */
     ['GET', '/v1/contextEntities', 'read'],
     ['POST', '/v1/contextEntities', 'create'],
@@ -137,7 +139,37 @@ convenienceOperations = [
     ['GET', '/v1/contextSubscriptions?details=on&limit=15&offset=0', 'read'],
     ['POST', '/v1/registry/subscribeContextAvailability?details=on&limit=15&offset=0', 'subscribe-availability'],
     ['POST', '/v1/registry/updateContextAvailabilitySubscription?details=on&limit=15&offset=0',
-        'subscribe-availability']
+        'subscribe-availability'],
+
+    /* V2 Operations */
+    ['GET', '/v2', 'read'],
+    ['GET', '/v2/entities', 'read'],
+    ['GET', '/v2/entities?limit=15&offset=0', 'read'],
+    ['GET', '/v2/entities/idOfTheEntity', 'read'],
+    ['GET', '/v2/entities?type=TheType', 'read'],
+    ['GET', '/v2/entities?id=idOfTheEntity', 'read'],
+    ['GET', '/v2/entities?idPattern=idOf*', 'read'],
+    ['GET', '/v2/entities?q=temperature<24;humidity==75..90;status=running', 'read'],
+    ['POST', '/v2/entities', 'update'],
+    ['POST', '/v2/entities?options=append', 'create'],
+    ['POST', '/v2/entities?options=x,append,y', 'create'],
+    ['GET', '/v2/entities/idOfTheEntity?attrs=theAttribute', 'read'],
+    ['PATCH', '/v2/entities/idOfTheEntity', 'update'],
+    ['POST', '/v2/entities/idOfTheEntity', 'update'],
+    ['DELETE', '/v2/entities/idOfTheEntity', 'delete'],
+    ['PUT', '/v2/entities/idOfTheEntity', 'update'],
+    ['GET', '/v2/entities/idOfTheEntity/attrs/theAttribute', 'read'],
+    ['PUT', '/v2/entities/idOfTheEntity/attrs/theAttribute', 'update'],
+    ['DELETE', '/v2/entities/idOfTheEntity/attrs/theAttribute', 'delete'],
+    ['GET', '/v2/entities/idOfTheEntity/attrs/theAttribute/value', 'read'],
+    ['PUT', '/v2/entities/idOfTheEntity/attrs/theAttribute/value', 'update'],
+    ['GET', '/v2/types', 'read'],
+    ['GET', '/v2/types/theType', 'read'],
+    ['GET', '/v2/subscriptions', 'read'],
+    ['POST', '/v2/subscriptions', 'create'],
+    ['GET', '/v2/subscriptions/theSubId', 'read'],
+    ['PATCH', '/v2/subscriptions/theSubId', 'update'],
+    ['DELETE', '/v2/subscriptions/theSubId', 'delete']
 ];
 
 describe('Extract Context Broker action from convenience operation requests', function() {
@@ -219,6 +251,7 @@ describe('Extract Context Broker action from convenience operation requests', fu
                         };
 
                         async.series([
+                            async.apply(serverMocks.mockPath, '/v3/auth/tokens', mockOAuthApp),
                             async.apply(serverMocks.mockPath, '/user', mockOAuthApp),
                             async.apply(serverMocks.mockPath, '/validate', mockAccessApp)
                         ], done);

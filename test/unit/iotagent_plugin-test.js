@@ -78,6 +78,7 @@ describe('IOT Agent Plugin tests', function() {
                 ];
 
                 keystonePlugin.cleanCache();
+                keystonePlugin.invalidate();
 
                 proxyLib.start(function(error, proxyObj) {
                     proxy = proxyObj;
@@ -108,6 +109,7 @@ describe('IOT Agent Plugin tests', function() {
 
                                 async.series([
                                     async.apply(serverMocks.mockPath, '/user', mockOAuthApp),
+                                    async.apply(serverMocks.mockPath, '/v3/auth/tokens', mockOAuthApp),
                                     async.apply(serverMocks.mockPath, '/validate', mockAccessApp),
                                     async.apply(serverMocks.mockPath, '/generalResource', mockAccessApp)
                                 ], done);
