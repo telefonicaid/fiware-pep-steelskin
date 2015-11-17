@@ -1,0 +1,1 @@
+-- FIX Makes loading of xacml templates relative to source code (not working directory).
