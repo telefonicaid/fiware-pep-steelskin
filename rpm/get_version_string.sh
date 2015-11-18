@@ -1,12 +1,12 @@
 #!/bin/bash
 
-# Copyright 2014 Telefonica Investigacion y Desarrollo, S.A.U
+# Copyright 2015 Telefonica Investigacion y Desarrollo, S.A.U
 #
 #
 # Bash lib to know the RPM version and revision from a Github repository
 # Call method get_rpm_version_string to obtain them for rpmbuild
 # The result appear on the vars ver and rel
-# The requisites are tags similar to 0.1.0/KO. This tag must be created by 'git tag -a 0.1.0'
+# The requisites are tags similar to 0.1.0-KO. This tag must be created by 'git tag -a 0.1.0-KO'
 # The main purpose to use this script is to deploy CI on develop branch.
 #
 # Steps to get version and release:
@@ -134,6 +134,3 @@ is_pdi_compliant()
     *)  echo 1 ;;
    esac
 }
-
-#cd $1
-#get_version_string| cut -d "-" -f $2
