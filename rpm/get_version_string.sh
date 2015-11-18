@@ -2,26 +2,17 @@
 
 # Copyright 2014 Telefonica Investigacion y Desarrollo, S.A.U
 #
-# This file is part of perseo-fe.
 #
-# perseo-fe is free software: you can redistribute it and/or
-# modify it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-#
-# perseo-fe is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero
-# General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public License
-# along with perseo-fe. If not, see http://www.gnu.org/licenses/.
-#
-# For those usages not covered by this license please contact with
-# iot_support at tid dot es
-
 # Bash lib to know the RPM version and revision from a Github repository
 # Call method get_rpm_version_string to obtain them for rpmbuild
+# The result appear on the vars ver and rel
+# The requisites are tags similar to 0.1.0/KO. This tag must be created by 'git tag -a 0.1.0'
+# The main purpose to use this script is to deploy CI on develop branch.
+#
+# Steps to get version and release:
+# 1 - source get_version_string.sh
+# 2 - Execute any of the functions on the script
+#   - It will be use the command 'read ver rel < <(get_rpm_version_string)' in order to get version and release on different vars
 
 shopt -s extglob
 
