@@ -1,8 +1,28 @@
 #!/bin/bash
+
+# Copyright 2014 Telefonica Investigacion y Desarrollo, S.A.U
 #
-# Bash lib to know the RPM version and revision from a GitHub repository
+# This file is part of perseo-fe.
+#
+# perseo-fe is free software: you can redistribute it and/or
+# modify it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# perseo-fe is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero
+# General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with perseo-fe. If not, see http://www.gnu.org/licenses/.
+#
+# For those usages not covered by this license please contact with
+# iot_support at tid dot es
+
+# Bash lib to know the RPM version and revision from a Github repository
 # Call method get_rpm_version_string to obtain them for rpmbuild
-#
+
 shopt -s extglob
 
 get_branch()
@@ -43,7 +63,7 @@ get_version_string()
         develop)
            ## if we are in develop use the total count of commits
            version=$(git describe --tags --long --match *-KO)
-           echo "${version%/*}-${version#*KO-}"
+           echo "${version%-KO*}-${version#*KO-}"
         ;;
         release)
            version=$(get_branch)
@@ -53,7 +73,7 @@ get_version_string()
         other)
             ## We are in detached mode, use the last KO tag
             version=$(git describe --tags --long --match *-KO)
-            echo "${version%/*}-${version#*KO-}"
+            echo "${version%-KO*}-${version#*KO-}"
         ;;
         *)
            # RMs don't stablish any standard here, we use branch name as version
@@ -123,3 +143,6 @@ is_pdi_compliant()
     *)  echo 1 ;;
    esac
 }
+
+#cd $1
+#get_version_string| cut -d "-" -f $2
