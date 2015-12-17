@@ -1,2 +1,3 @@
 - FIX Makes loading of xacml templates relative to source code (not working directory).
+- FIX Race condition causes requests that will never be responsed (#269).
 - FIX Nginx error when transfer-encoding: chunked is specified (#268)
