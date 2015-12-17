@@ -1,4 +1,0 @@
-- FIX Makes loading of xacml templates relative to source code (not working directory).
-- FIX Race condition causes requests that will never be responsed (#269).
-- FIX Nginx error when transfer-encoding: chunked is specified (#268).
-- FIX Race condition causes "The token doesn't belong to the provided service" (#272).
