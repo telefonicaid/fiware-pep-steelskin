@@ -1,8 +1,19 @@
 #!/bin/bash
+
+# Copyright 2015 Telefonica Investigacion y Desarrollo, S.A.U
 #
-# Bash lib to know the RPM version and revision from a GitHub repository
+#
+# Bash lib to know the RPM version and revision from a Github repository
 # Call method get_rpm_version_string to obtain them for rpmbuild
+# The result appear on the vars ver and rel
+# The requisites are tags similar to 0.1.0-KO. This tag must be created by 'git tag -a 0.1.0-KO'
+# The main purpose to use this script is to deploy CI on develop branch.
 #
+# Steps to get version and release:
+# 1 - source get_version_string.sh
+# 2 - Execute any of the functions on the script
+#   - It will be use the command 'read ver rel < <(get_rpm_version_string)' in order to get version and release on different vars
+
 shopt -s extglob
 
 get_branch()
@@ -42,8 +53,8 @@ get_version_string()
         ;;
         develop)
            ## if we are in develop use the total count of commits
-           version=$(git describe --tags --long --match */KO)
-           echo "${version%/*}-${version#*KO-}"
+           version=$(git describe --tags --long --match *-KO)
+           echo "${version%-KO*}-${version#*KO-}"
         ;;
         release)
            version=$(get_branch)
@@ -52,8 +63,8 @@ get_version_string()
         ;;
         other)
             ## We are in detached mode, use the last KO tag
-            version=$(git describe --tags --long --match */KO)
-            echo "${version%/*}-${version#*KO-}"
+            version=$(git describe --tags --long --match *-KO)
+            echo "${version%-KO*}-${version#*KO-}"
         ;;
         *)
            # RMs don't stablish any standard here, we use branch name as version

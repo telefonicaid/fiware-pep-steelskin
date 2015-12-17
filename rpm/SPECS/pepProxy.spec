@@ -167,6 +167,12 @@ rm -rf $RPM_BUILD_ROOT
 %{_install_dir}
 
 %changelog
+* Thu Dec 17 2015 Daniel Moran <daniel.moranjimenez@telefonica.com> 0.7.2
+- FIX Makes loading of xacml templates relative to source code (not working directory).
+- FIX Race condition causes requests that will never be responsed (#269).
+- FIX Nginx error when transfer-encoding: chunked is specified (#268).
+- FIX Race condition causes "The token doesn't belong to the provided service" (#272).
+
 * Thu Oct 29 2015 Daniel Moran <daniel.moranjimenez@telefonica.com> 0.7.1
 - Bugfix: init.d service script start PEP Proxy correctly (#236)
 - Make the PEP Proxy die when an error is received in a request resend (#225)
