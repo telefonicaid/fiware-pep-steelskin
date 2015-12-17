@@ -1,1 +1,2 @@
--- FIX Makes loading of xacml templates relative to source code (not working directory).
+- FIX Makes loading of xacml templates relative to source code (not working directory).
+- FIX Nginx error when transfer-encoding: chunked is specified (#268)
