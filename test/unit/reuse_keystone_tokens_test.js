@@ -32,7 +32,7 @@ var serverMocks = require('../tools/serverMocks'),
     utils = require('../tools/utils'),
     should = require('should'),
     request = require('request'),
-    EventEmitter = require('events');
+    EventEmitter = require('events').EventEmitter;
 
 describe('Reuse authentication tokens', function() {
     var proxy,
