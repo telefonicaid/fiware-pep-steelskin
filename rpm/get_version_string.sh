@@ -63,13 +63,8 @@ get_version_string()
         ;;
         other)
             ## We are in detached mode, use the last KO tag
-<<<<<<< HEAD
             version=$(git describe --tags --long --match *-KO)
             echo "${version%-KO*}-${version#*KO-}"
-=======
-            version=$(git describe --tags --long --match */KO)
-            echo "${version%/*}-${version#*KO-}"
->>>>>>> f704b64732a2a62c76fc1a02083ceac5be91b9b3
         ;;
         *)
            # RMs don't stablish any standard here, we use branch name as version
