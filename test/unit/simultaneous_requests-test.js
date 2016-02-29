@@ -38,7 +38,7 @@ var domain = require('domain'),
     correlatorIdsPost = [],
     sendRequestBackup;
 
-describe('Request correlators', function() {
+describe('Simultaneous requests', function() {
     var proxy,
         mockTarget,
         mockTargetApp,
@@ -57,7 +57,7 @@ describe('Request correlators', function() {
             authMock: serverMocks.mockKeystone
         };
 
-    function initializeUseCase(currentAuthentication, done) {
+    function initializeUseCase(currentAuthentication, authMock, done) {
         config.authentication.module = currentAuthentication.module;
         config.authentication.path = currentAuthentication.path;
         config.authentication.authPath = currentAuthentication.authPath;
@@ -83,7 +83,7 @@ describe('Request correlators', function() {
                         mockOAuth = serverAuth;
                         mockOAuthApp = appAuth;
 
-                        mockOAuthApp.handler = currentAuthentication.authMock;
+                        mockOAuthApp.handler = authMock;
 
                         mockAccessApp.handler = function(req, res) {
                             res.set('Content-Type', 'application/xml');
@@ -110,45 +110,45 @@ describe('Request correlators', function() {
         json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
     };
 
-    beforeEach(function(done) {
-        keystoneAuth.cleanCache();
+    describe('When two requests arrive simultaneusly with successful tokens', function() {
+        beforeEach(function(done) {
+            keystoneAuth.cleanCache();
 
-        correlatorIds = [];
-        correlatorIdsPost = [];
+            correlatorIds = [];
+            correlatorIdsPost = [];
 
-        sendRequestBackup = proxyPlugin.sendRequest;
-        proxyPlugin.sendRequest = function(req, res, next) {
-            correlatorIdsPost.push(domain.active.corr);
-            sendRequestBackup(req, res, next);
-        };
+            sendRequestBackup = proxyPlugin.sendRequest;
+            proxyPlugin.sendRequest = function(req, res, next) {
+                correlatorIdsPost.push(domain.active.corr);
+                sendRequestBackup(req, res, next);
+            };
 
-        initializeUseCase(currentAuthentication, function() {
-            async.series([
-                async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
-                async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
-                async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
-                async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
-                async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
-            ], function() {
-                keystoneAuth.cleanCache();
-                done();
-            });
-        });
-    });
-
-    afterEach(function(done) {
-        proxyPlugin.sendRequest = sendRequestBackup;
-
-        proxyLib.stop(proxy, function(error) {
-            serverMocks.stop(mockTarget, function() {
-                serverMocks.stop(mockAccess, function() {
-                    serverMocks.stop(mockOAuth, done);
+            initializeUseCase(currentAuthentication, currentAuthentication.authMock, function() {
+                async.series([
+                    async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
+                    async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
+                    async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
+                    async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
+                    async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
+                ], function() {
+                    keystoneAuth.cleanCache();
+                    done();
                 });
             });
         });
-    });
 
-    describe('When two requests arrive simultaneusly', function() {
+        afterEach(function(done) {
+            proxyPlugin.sendRequest = sendRequestBackup;
+
+            proxyLib.stop(proxy, function(error) {
+                serverMocks.stop(mockTarget, function() {
+                    serverMocks.stop(mockAccess, function() {
+                        serverMocks.stop(mockOAuth, done);
+                    });
+                });
+            });
+        });
+
         it('should end up correctly', function(done) {
             async.parallel([
                 request.bind(null, options),
@@ -177,6 +177,71 @@ describe('Request correlators', function() {
             ], function(error, results) {
                 should.not.exist(error);
                 correlatorIdsPost[0].should.not.equal(correlatorIdsPost[1]);
+                done();
+            });
+        });
+    });
+
+    describe('When two requests arrive simultaneusly with wrong tokens', function() {
+        beforeEach(function(done) {
+            keystoneAuth.cleanCache();
+
+            correlatorIds = [];
+            correlatorIdsPost = [];
+
+            sendRequestBackup = proxyPlugin.sendRequest;
+            proxyPlugin.sendRequest = function(req, res, next) {
+                correlatorIdsPost.push(domain.active.corr);
+                sendRequestBackup(req, res, next);
+            };
+
+            function failAuthMock(req, res) {
+                if (req.path === '/v3/auth/tokens' && req.method === 'POST') {
+                    res.setHeader('X-Subject-Token', '092016b75474ea6b492e29fb69d23029');
+                    res.json(201, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
+                } else if (req.path === '/v3/auth/tokens' && req.method === 'GET') {
+                    res.json(404, utils.readExampleFile('./test/keystoneResponses/getUser.json'));
+                } else if (req.path === '/v3/projects' && req.method === 'GET') {
+                    res.json(200, utils.readExampleFile('./test/keystoneResponses/getProjects.json'));
+                } else {
+                    res.json(200, utils.readExampleFile('./test/keystoneResponses/rolesOfUser.json'));
+                }
+            }
+
+            initializeUseCase(currentAuthentication, failAuthMock, function() {
+                async.series([
+                    async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
+                    async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
+                    async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
+                    async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
+                    async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
+                ], function() {
+                    keystoneAuth.cleanCache();
+                    done();
+                });
+            });
+        });
+
+        afterEach(function(done) {
+            proxyPlugin.sendRequest = sendRequestBackup;
+
+            proxyLib.stop(proxy, function(error) {
+                serverMocks.stop(mockTarget, function() {
+                    serverMocks.stop(mockAccess, function() {
+                        serverMocks.stop(mockOAuth, done);
+                    });
+                });
+            });
+        });
+
+        it('should end up correctly', function(done) {
+            async.parallel([
+                request.bind(null, options),
+                request.bind(null, options)
+            ], function(error, results) {
+                should.not.exist(error);
+                results[0][0].statusCode.should.equal(401);
+                results[1][0].statusCode.should.equal(401);
                 done();
             });
         });
