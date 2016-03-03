@@ -1,2 +1,0 @@
-- FIX Mixed correlator IDs when cache events are fired (#279).
-- Failures on multiple simultaneous non-authenticated requests (#277).
