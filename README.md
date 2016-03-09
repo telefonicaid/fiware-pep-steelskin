@@ -626,6 +626,31 @@ An up-to-date list of the convenience operations can be found [here](https://doc
 | GET    | /v1/contextTypes                                                                     | R |
 | GET    | /v1/contextTypes{typename}                                                           | R ]
 
+#### NGSIv2 
+| Method | Path                                                                                    | Action |
+| ------ |:--------------------------------------------------------------------------------------- | ---:|
+| GET    | /v2                                                                                     | R |
+| GET    | /v2/entities                                                                            | R |
+| GET    | /v2/entities/{entityId}                                                                | R |
+| POST   | /v2/entities                                                                           | C |
+| PATCH  | /v2/entities/{entityId}                                                                | U |
+| POST   | /v2/entities/{entityId}                                                                | U |
+| POST   | /v2/entities/{entityId}?options=append                                                 | C |
+| DELETE | /v2/entities/{entityId}                                                                | D |
+| PUT    | /v2/entities/{entityId}                                                                | U |
+| GET    | /v2/entities/{entityId}/attrs/{attrId}                                                 | R |
+| PUT    | /v2/entities/{entityId}/attrs/{attrId}                                                 | U |
+| DELETE | /v2/entities/{entityId}/attrs/{attrId}                                                 | D |
+| GET    | /v2/entities/{entityId}/attrs/{attrId}/value                                           | R |
+| PUT    | /v2/entities/{entityId}/attrs/{attrId}/value                                           | U |
+| GET    | /v2/types                                                                              | R |
+| GET    | /v2/types/{typeId}                                                                     | R |
+| GET    | /v2/subscriptions                                                                      | R |
+| POST   | /v2/subscriptions                                                                      | C |
+| GET    | /v2/subscriptions/{subscriptionId}                                                     | R |
+| PATCH  | /v2/subscriptions/{subscriptionId}                                                     | U |
+| DELETE | /v2/subscriptions/{subscriptionId}                                                     | D |
+
 Operations marked with a slash, "-" are now deprecated. All those operations will be tagged with the special action "N/A". If you want to allow them anyway, just add a rule to the Access Control allowing the "N/A" action for the desired roles.
 
 ## <a name="rulesPerseo"/> Rules to determine the Perseo CEP action from the request

@@ -167,6 +167,8 @@ describe('Keypass Plugin tests', function() {
                 proxy = proxyObj;
 
                 proxy.middlewares.push(keypassPlugin.extractAction);
+                keystonePlugin.cleanCache();
+                keystonePlugin.invalidate();
 
                 serverMocks.start(config.resource.original.port, function(error, server, app) {
                     mockTarget = server;
