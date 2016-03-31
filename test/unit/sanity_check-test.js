@@ -30,7 +30,6 @@ var should = require('should'),
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
-
 describe('Sanity check', function() {
     var proxy;
 
