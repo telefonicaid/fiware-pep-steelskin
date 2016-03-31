@@ -86,7 +86,7 @@ describe('Log Level API', function() {
             }
         };
 
-        it('should return a 400 error indacating the log level is not valid', function(done) {
+        it('should return a 400 error indicating the log level is not valid', function(done) {
             request(options, function(error, response, body) {
                 var parsedBody;
 
