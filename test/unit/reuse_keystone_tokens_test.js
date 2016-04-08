@@ -53,7 +53,6 @@ describe('Reuse authentication tokens', function() {
             authMock: serverMocks.mockKeystone
         };
 
-
     function initializeUseCase(currentAuthentication, done) {
         config.authentication.module = currentAuthentication.module;
         config.authentication.path = currentAuthentication.path;
