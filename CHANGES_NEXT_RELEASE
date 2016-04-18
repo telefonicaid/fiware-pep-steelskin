@@ -1,2 +1,3 @@
 - Change log level using the administration API (#286)
 - FIX Max listeners reached when waiting for Keystone to authenticate (#290)
+- FIX Unica-correlator header is deprecated (#296)
