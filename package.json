@@ -28,7 +28,7 @@
     "sax": "0.6.0",
     "mustache": "0.8.2",
     "node-uuid": "1.4.1",
-    "logops": "*",
+    "logops": "1.0.0-alpha.7",
     "node-cache": "1.0.3",
     "underscore": "1.7.0"
   },
