@@ -624,7 +624,7 @@ An up-to-date list of the convenience operations can be found [here](https://doc
 | PUT    | /v1/contextSubscriptions/{subscriptionID}                                          	| S |
 | DELETE | /v1/contextSubscriptions/{subscriptionID}                                          	| S |
 | GET    | /v1/contextTypes                                                                     | R |
-| GET    | /v1/contextTypes{typename}                                                           | R ]
+| GET    | /v1/contextTypes{typename}                                                           | R |
 
 #### NGSIv2 
 | Method | Path                                                                                    | Action |
@@ -632,12 +632,13 @@ An up-to-date list of the convenience operations can be found [here](https://doc
 | GET    | /v2                                                                                     | R |
 | GET    | /v2/entities                                                                            | R |
 | GET    | /v2/entities/{entityId}                                                                | R |
+| GET    | /v2/entities/{entityId}/attrs                                                          | R |
 | POST   | /v2/entities                                                                           | C |
-| PATCH  | /v2/entities/{entityId}                                                                | U |
-| POST   | /v2/entities/{entityId}                                                                | U |
-| POST   | /v2/entities/{entityId}?options=append                                                 | C |
+| PATCH  | /v2/entities/{entityId}/attrs                                                          | U |
+| POST   | /v2/entities/{entityId}/attrs                                                          | U |
+| POST   | /v2/entities/{entityId}/attrs?options=append                                           | C |
 | DELETE | /v2/entities/{entityId}                                                                | D |
-| PUT    | /v2/entities/{entityId}                                                                | U |
+| PUT    | /v2/entities/{entityId}/attrs                                                          | U |
 | GET    | /v2/entities/{entityId}/attrs/{attrId}                                                 | R |
 | PUT    | /v2/entities/{entityId}/attrs/{attrId}                                                 | U |
 | DELETE | /v2/entities/{entityId}/attrs/{attrId}                                                 | D |

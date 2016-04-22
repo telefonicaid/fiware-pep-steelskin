@@ -2,3 +2,6 @@
 - FIX Max listeners reached when waiting for Keystone to authenticate (#290)
 - FIX Unica-correlator header is deprecated (#296)
 - Include service and subservice in log traces (#287)
+- FIX Mixed correlator IDs when cache events are fired (#279).
+- Failures on multiple simultaneous non-authenticated requests (#277).
+- Refactor on NGSIv2 operations in Orion plugin in order to align to latest changes in NGSIv2 spec (#301)
