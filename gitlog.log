@@ -1,0 +1,1238 @@
+*   9f68ec7 : Merge pull request #293 from telefonicaid/bug/port73bugsto72
+|\  
+| *   afd3546 : Merge branch 'release/0.7.2' of https://github.com/telefonicaid/fiware-pep-steelskin into bug/port73bugsto72
+| |\  
+| |/  
+|/|   
+* |   6f871e3 : Merge pull request #291 from telefonicaid/bug/maxListeners
+|\ \  
+| * | 7838595 : FIX Problem with max listeners
+|/ /  
+| * 3f7ef9b : MERGE With commits in 0.7.3
+| * 6309c8f : FIX Mixed correlator IDs when cache events are used
+|/  
+*   8baec93 : Merge pull request #274 from telefonicaid/task/prepareRelease
+|\  
+| * 1aaa84c : Prepare next release
+|/  
+*   bb46188 : Merge pull request #273 from telefonicaid/bug/raceCondition
+|\  
+| * ad173ab : ADD Changes to the change list
+| * 9920485 : FIX Duplicated check of transfer encoding
+| * 40e2ffe : FIX Race condition in cache update!
+|/  
+*   f63ca50 : Merge pull request #271 from telefonicaid/bug/requestsNeverResponded
+|\  
+| * f201287 : FIX Event emitter class for Node 0.12
+| *   f9a30a4 : MERGE develop
+| |\  
+| |/  
+|/|   
+* |   290de91 : Merge pull request #270 from telefonicaid/bug/chunkedTransfer
+|\ \  
+| * | b0143fc : FIX Duplicated header in transfer-encoding: chunked
+|/ /  
+| * 9401f66 : FIX Second authenticating request hangs proxy
+|/  
+*   d1e422d : Merge pull request #267 from telefonicaid/fix/release_tasks
+|\  
+| * d3ca188 : bugs comments on get_version script
+| * ecbe743 : Update comments on script
+| * ce71de1 : Fix get version and release on develop branch
+|/  
+*   3b2df99 : Merge pull request #266 from nitroduna/hardening/loading-xacml-change-log
+|\  
+| * 0f3aa3f : Documentation of changes in Pull Request #265
+|/  
+*   09db5a6 : Merge pull request #265 from nitroduna/hardening/fix-loading-xacml-templates
+|\  
+| * c93cd8b : Makes loading of xacml templates relative to source code.
+|/  
+*   13cb754 : Merge pull request #264 from telefonicaid/task/prepareForNextRelease
+|\  
+| * a3dbcdf : Prepare for next release
+|/  
+* 2971058 : Flush CNR to SPEC
+* 7cd7d7b : Prepare for next release
+*   1ad1a56 : Merge pull request #261 from telefonicaid/task/v2Paths
+|\  
+| * 67d6c71 : ADD POST with options=append to the documentation
+| * 46a0849 : ADD Unimplemented operations for completion
+| * 66ad216 : FIX Single subscription read instead of POST
+| * 3223f92 : ADD Subscription routes
+| * ba69d42 : FIX Allow multiple values for options
+| * fb43134 : ADD Distinction based on query parameters for NGSI v2
+| * 5db4310 : ADD Changes to the README.md
+| * 0fb6dad : ADD Termination mark in URL expressions
+| * 4e96aee : ADD Patch example
+| * b1446a5 : ADD First V2 paths
+|/  
+*   7961cef : Merge pull request #258 from telefonicaid/bug/pepCrashWhileAuthenticatingDevelop
+|\  
+| * d75ac9e : ADD Changes to change file
+| * e03b85d : Cherry Pick bug
+|/  
+*   981a441 : Merge pull request #252 from telefonicaid/task/addDockerFiles
+|\  
+| * 276b746 : FIX Condense multiple RUN instances into a single line
+| * 45d1d40 : ADD Changes to the change list
+| * 6574dbc : ADD Dockerfile
+|/  
+*   d703ad1 : Merge pull request #248 from telefonicaid/bug/init_script_issue_246_for_develop
+|\  
+| * a6e0ce7 : cherry pick to solve issue 246 into develop
+|/  
+*   e3ed1c2 : Merge pull request #245 from telefonicaid/bug/removeQueryParamsFromFrn
+|\  
+| * 83dcf7e : FIX Remove query params from FRN
+|/  
+*   5de136c : Merge pull request #242 from telefonicaid/bug/processComponentNameVariable
+|\  
+| * bd398da : FIX Add component variable declaration in default config files
+| * 6d6ca0c : ADD Component name variable to the executable
+|/  
+*   97784e4 : Merge pull request #238 from telefonicaid/bug/init_script_issue236_for_develop
+|\  
+| * e9a58fe : Added line to CHANGES_NEXT_RELEASE
+| * 48169fb : Change to base dir of the PEP proxy before execute it
+|/  
+*   d837459 : Merge pull request #235 from telefonicaid/feature/change_rpm_name_for_develop
+|\  
+| * 7ceb263 : added exection permissions to rpm/create-rpm.sh
+| * 27f42ef : RPM name changed from pep-proxy to fiware-pep-steelskin
+|/  
+*   b6b1632 : Merge pull request #232 from telefonicaid/task/changeRedirectionErrorTo500
+|\  
+| * 608c4cb : FIX Broken tests
+| * aa776e4 : FIX Error code for target serer redirection
+* |   ba5fbeb : Merge pull request #230 from telefonicaid/task/documentDieOnErrorLog
+|\ \  
+| |/  
+|/|   
+| * 027529c : ADD Documentation about the DieOnError log error
+|/  
+*   5b59549 : Merge pull request #229 from telefonicaid/bug/config.componentName_not_overwritten
+|\  
+| * 4473372 : README.md updated
+| * e23d067 : config.componentName is overwritten by COMPONENT_PLUGIN environment variable if it is defined
+| *   a41c3f1 : Merge pull request #220 from telefonicaid/bug/spec_syntax_error
+| |\  
+| * \   c859b7f : Merge pull request #219 from telefonicaid/feature/improve_rpm
+| |\ \  
+* | \ \   c42e646 : Merge pull request #225 from telefonicaid/task/dieOnRedirectError
+|\ \ \ \  
+| * | | | ab7541c : FIX Som PR concerns
+| * | | | cd7506a : Remove error description from proxy
+| * | | | a124ea0 : ADD Flag to die on redirect error
+* | | | |   401a311 : Merge pull request #224 from telefonicaid/bug/spec_syntax_error
+|\ \ \ \ \  
+| |/ / / /  
+|/| | | /   
+| | |_|/    
+| |/| |     
+| * | | 8873702 : There were a syntax error in spec file
+| |/ /  
+* | |   8001c70 : Merge pull request #221 from telefonicaid/feature/improve_rpm
+|\ \ \  
+| | |/  
+| |/|   
+| * | 3bd40e4 : bugfix
+| * | c2f55bc : bugfix
+| |/  
+* | 642bd03 : FIX Failed merge
+* | 326927b : ADD New version number
+|/  
+* c86719e : FIX Package.json
+*   fe7a464 : FIX Merge with develop
+|\  
+| * a501ebb : ADD Step: 0.6.0-next -> 0.7.0
+| *   d090e87 : Merge pull request #216 from telefonicaid/hardening/new_repo_name_preparation
+| |\  
+| | * b882a42 : FIX replacement strings issue
+| | * dd1d2fa : FIX some replacement strings issues
+| | * 1a54047 : RENAME fiware-orion-pep -> fiware-pep-steelskin
+| |/  
+| *   3623d2a : Merge pull request #215 from telefonicaid/task/addTravisIntegration
+| |\  
+| | * 9956ed7 : FIX Test command
+| | * a69d87d : ADD Integration with Travis CI
+| |/  
+| *   4916d29 : Merge pull request #214 from telefonicaid/task/updateDocumentation
+| |\  
+| | * 15c57ab : FIX Typos
+| | * 9918406 : FIX Some details in the documentation
+| |/  
+| *   87f10e3 : Merge pull request #213 from telefonicaid/feature/multiinstance
+| |\  
+| | * aaafe28 : Added .d suffix to a configuration directory in init.d script
+| | * 11d9718 : Added new config variable: ADMIN_PORT to default configuration file
+| | *   269ecd9 : Merge branch 'develop' into feature/multiinstance
+| | |\  
+| | |/  
+| |/|   
+| * |   c4a7429 : Merge pull request #212 from telefonicaid/task/addEnvironmentVariableForAdminPort
+| |\ \  
+| | * | 32a66c5 : ADD Environment variable for admin port
+| |/ /  
+| | * cafc86f : Fix some strange english sentences and typos. Added .d extension to configuration directory. Fix 'help' function in rpm/create-rpm.sh script
+| | * 79f448a : Added changes to CHANGES_NEXT_RELEASE file. And added some documentation to README.md
+| | * cfd5084 : Modified PEP proxy to launch multiple instances in simple way
+| |/  
+| *   cbd83c0 : Merge pull request #209 from telefonicaid/task/improveLoggingInRoleExtraction
+| |\  
+| | * 7514048 : ADD CHanges to change list
+| | * e58804c : FIX Linter errors
+| | * d2eedad : FIX Subservice ID not found
+| |/  
+| *   a1ef9c7 : Merge pull request #207 from telefonicaid/task/KeystoneInstallation
+| |\  
+| | * 8ca55f3 : ADD More links about SCIM policies in plicy configuration
+| | * 66a88bd : ADD Information about the SCIM extensions
+| | * 6554ebb : ADD Link to the Keystone installation in the PEP documentation
+| | * 7dff508 : ADD Keystone installation instructions
+| |/  
+| * 81c0665 : FIX Typo in the documentation
+| * 4a54280 : FIX The SPEC Broken in the release process
+| * 10bd7bf : ADD release information to the documentation
+| * e739264 : Prepare next release
+* | 2b7b20a : FIX Typo in the documentation
+* | 218ad05 : FIX Remove changes from CHANGES_NEXT_RELEASE
+* | 7032b2d : FIX The SPEC Broken in the release process
+* | 89a83e8 : FIX Version in master
+* |   8b0571d : Merge branch 'develop'
+|\ \  
+| |/  
+| * 237c082 : ADD Step:  -> 0.6.0
+| *   ff29e02 : Merge pull request #205 from telefonicaid/task/addGenericRestComponentToBin
+| |\  
+| | * a549fa6 : ADD Changes to changelog
+| | * 06f5c18 : ADD generic component to executable and documentation
+| |/  
+| *   409498b : Merge pull request #204 from telefonicaid/task/printIncomingRequestHeaders
+| |\  
+| | * 04b1c8f : ADD JSDoc to the trace middleware
+| | * c27cfcb : ADD Changes to changelog
+| | * e2122c5 : ADD Debugging trace mode
+| |/  
+| *   9c2ceac : Merge pull request #203 from telefonicaid/task/removeStructuredLogs
+| |\  
+| | * 5d55a12 : ADD Changes to changelog
+| | *   5f1083a : Merge branch 'develop' of https://github.com/telefonicaid/fiware-orion-pep into task/removeStructuredLogs
+| | |\  
+| | |/  
+| |/|   
+| * |   c435efc : Merge pull request #202 from telefonicaid/task/improveDocumentation
+| |\ \  
+| | * | a0afa59 : Update README.md
+| | * |   8307e35 : Merge branch 'develop' of https://github.com/telefonicaid/fiware-orion-pep into task/improveDocumentation
+| | |\ \  
+| | |/ /  
+| |/| |   
+| * | |   7d91414 : Merge pull request #201 from telefonicaid/bug/missingOperationsInDoc
+| |\ \ \  
+| | * | | f7ee70e : Update README.md
+| | * | | 02bac84 : ADD Missing operations to doc
+| |/ / /  
+| | * | 715ccd8 : FIX Absence of documentation about plugin configuration
+| |/ /  
+| | * d777244 : FIX Remove stringification for performance reasons
+| |/  
+| *   90529d9 : Merge pull request #200 from telefonicaid/bug/wrongJsonPayloadWhenJsonSpecifiedInHeaders
+| |\  
+| | *   c763cf8 : MERGE with develop
+| | |\  
+| | |/  
+| |/|   
+| * |   4e5f924 : Merge pull request #199 from telefonicaid/task/iotagentsPlugin
+| |\ \  
+| | * | f6bb498 : Update README.md
+| | * | 32d4cd2 : ADD Resource URL to the FRN in the rest generic plugin
+| | * | bb56e5f : ADD Changes to the changelog
+| | * | 304e252 : FIX Linter errors
+| | * | f49e10d : ADD IOTAgent plugin tests
+| | * | 18445da : ADD Refactor to extract common url table plugin functionality
+| | | * 5ac9368 : ADD Changes to changelog
+| | | *   fb32d06 : Merge branch 'develop' of https://github.com/telefonicaid/fiware-orion-pep into bug/wrongJsonPayloadWhenJsonSpecifiedInHeaders
+| | | |\  
+| | |_|/  
+| |/| |   
+| * | |   b9352a5 : Merge pull request #198 from telefonicaid/bug/xauthtokenErrorWhenNotValidated
+| |\ \ \  
+| | |/ /  
+| | * | c758df8 : ADD Changes to changelog
+| | * | 1c772bb : FIX Linter errors
+| | * | 400e1c8 : FIX XAuthToken not checked when validation flags are off
+| * | |   8540de3 : Merge pull request #196 from telefonicaid/feature/disable_ac
+| |\ \ \  
+| | |/ /  
+| |/| |   
+| | * | 8510f93 : Update readme file and tags
+| | * | 179a48d : Add tests for "disable_ac" feature
+| |/ /  
+| | * 2bfe8fb : FIX Bug with wrong JSON payload
+| |/  
+| *   d5c02af : Merge pull request #193 from telefonicaid/feature/refactor_and_ac_disabled
+| |\  
+| | * c20ed8f : Refactor some tags with the expresion defined by QAs
+| | * 2b19844 : Reorganized the structure to try to avoid the lettuce memory leak when lot of scenarios oulines are defined
+| | * f16ec1c : Add a variable in properties to set the pep_path
+| | * 182abe7 : Fix minor log bug
+| | * 167a649 : Add init file to the root acceptance tests folder
+| | * 79f1bb3 : Add headers to the new files
+| | * 9e57100 : Delete librarys of the memory leak check
+| | * 0b8dff9 : Finished the refactor
+| | * 318ed73 : Almos finish the refactor
+| | * 9e09c18 : More refactor
+| | *   ebb185a : Merge branch 'develop' of https://github.com/telefonicaid/fiware-orion-pep into feature/refactor_and_ac_disabled
+| | |\  
+| | * | 1db5c06 : Add some refactor to tests
+| | * | 6b025d8 : Structure better all steps implementations Added two new features empties(still in progress)
+| * | |   87b7f63 : Merge pull request #192 from telefonicaid/bug/trustTokenUserFailsIfNotInSameDomain
+| |\ \ \  
+| | |_|/  
+| |/| |   
+| | * | 081c709 : FIX Domain not found on tokens comming froma  trust
+| |/ /  
+| * | 781ae68 : Update architecture.md
+| |/  
+| *   ecb3cf3 : Merge pull request #191 from telefonicaid/feature/pep_errors_diagram
+| |\  
+| | * 5cc04ba : Changed diagram title
+| | * af86abf : Add imagen and description
+| |/  
+| *   12bca91 : Merge pull request #189 from telefonicaid/feature/test_pep_version
+| |\  
+| | * 5ed82f4 : Little refactor of get_package_json
+| | * 2b5b781 : Added header to the init file
+| | * dcc2e3f : Add pydoc to the new get_package_json function Add linux SO functionality
+| | * 1583cee : Add changes to readme file
+| * |   2e7d5a1 : Merge pull request #190 from telefonicaid/task/changeDefaultDomainName
+| |\ \  
+| | |/  
+| |/|   
+| | * b080a93 : FIX Change default domain name
+| * |   3e9d5fe : Merge pull request #188 from telefonicaid/feature/fix_acceptancetest_dtach
+| |\ \  
+| | * | 00f7e49 : Fix create files by dtach
+| |/ /  
+| * |   2acffd5 : Merge pull request #186 from telefonicaid/feature/test_pep_errors
+| |\ \  
+| | |/  
+| |/|   
+| | * 158f2b7 : Copy the new configuration attributes to the template
+| | * cf77df6 : Add pydoc to the mock and proxy
+| | * 724c92c : Added pydoc to all steps
+| | * 140cf83 : Changed "and" by "when" where is needed. Fix of "copy-paste" mistake
+| | * d900f72 : Changed the definition of the feature of AC tests
+| | * a42d8e3 : Fix the space error in the licenses
+| | * b31869e : Substituted all occurrences of "rol" by "role"
+| | *   3604068 : Merge branch 'develop' of https://github.com/telefonicaid/fiware-orion-pep into feature/test_pep_errors
+| | |\  
+| | |/  
+| |/|   
+| * | 8c03e1d : ADD Prepare new version numbers for develop
+| | * 294de3f : Delete files created by dtach
+| | * 02079e0 : Added tests for all new pep errors Add functionality for bad configuration of PEP Add functionality for bad configuration of mocks and proxyes Fix the author mail address Added license to all python/feature files Fix minor errors in some asserts Fixed names of the functions of some steps
+* | | e60eba0 : Update architecture.md
+|/ /  
+* | 90a36ed : ADD Step: 0.4.1-next -> 0.5.0
+* |   c2b7846 : Merge pull request #184 from telefonicaid/bug/wrongErrorInPepAuthentication
+|\ \  
+| * | 81af5d9 : FIX Documentation and typing errors
+| * |   cb14ce0 : MERGE With develop
+| |\ \  
+| |/ /  
+|/| |   
+* | |   1a6cb49 : Merge pull request #185 from telefonicaid/task/checkGitStatusBeforeReleasing
+|\ \ \  
+| * \ \   ff70f0d : Merge branch 'develop' of github.com:telefonicaid/fiware-orion-pep into task/checkGitStatusBeforeReleasing
+| |\ \ \  
+| |/ / /  
+|/| | |   
+* | | |   9feae95 : Merge pull request #183 from telefonicaid/bug/fix_release_script_version_stepping
+|\ \ \ \  
+| |_|_|/  
+|/| | |   
+| * | | 6eff07a : REMOVE blank lien
+| * | | 8ccb519 : FIX release.sh version changing
+|/ / /  
+| * | d4527c5 : ADD Guard against unstagged changes in git for the release script
+| * | 34dfde8 : FIX Remove empty package.json
+|/ /  
+| * af05fc0 : FIX Some errors in the documentation are never raised
+| * 05668c4 : FIX Wrong type of error in PEP authentication
+|/  
+*   dafa13a : Merge pull request #179 from telefonicaid/bug/authenticationErrorWithKeystone
+|\  
+| * 7156de6 : ADD Changes to change log
+| * b63a7d5 : FIX Authentication error identified as connection one
+|/  
+*   a090973 : Merge pull request #178 from telefonicaid/bug/checkEmptyHeaders
+|\  
+| * a1ba708 : ADD Changes to change log
+| * 1ac33e7 : FIX Linter errors
+| * bf07c2f : ADD Check for header content to be non-empty
+|/  
+*   1a5a4d9 : Merge pull request #175 from telefonicaid/task/disableAuthorization
+|\  
+| * 41b4f9d : Update README.md
+| * a6d0b8f : Update README.md
+| * 14dba92 : Update CHANGES_NEXT_RELEASE
+| * 5921e1a : Update README.md
+| * cf23856 : Update README.md
+| *   ff9257e : Merge branch 'task/disableAuthorization' of github.com:telefonicaid/fiware-orion-pep into task/disableAuthorization
+| |\  
+| | * 4db7e6a : Update README.md
+| * | 07e11dc : FIX Add a default value for the access.disable configuration attribute
+| |/  
+| * c7733f9 : FIX Linter errors
+| * 42c7ff5 : ADD Changes to the changelog
+| * ac14709 : ADD Flag to avoid header checking
+| * 2959ceb : ADD Do not ask for roles if the validation is disabled
+| * d20f662 : ADD Refactor the code to extract the authentication header validation
+| *   2ab5562 : Merge branch 'develop' of github.com:telefonicaid/fiware-orion-pep into task/disableAuthorization
+| |\  
+| |/  
+|/|   
+* |   3cac16c : Merge pull request #172 from telefonicaid/task/fixErrorCodes
+|\ \  
+| * | 3a2119f : FIX Remove code overwritting in transform system errors
+| * | 27ebc6f : FIX Name of Access Control error codes
+| * | b77e37d : FIX Raise RolesNotFound instead of AccessDenied on roles not found error
+| * |   f72bbd1 : Merge branch 'task/fixErrorCodes' of github.com:telefonicaid/fiware-orion-pep into task/fixErrorCodes
+| |\ \  
+| | * | 2667ecd : Update README.md
+| * | | 5b17ff1 : FIX Code 415 for unsupported media types
+| |/ /  
+| * | b893cd2 : ADD Documentation of the API Errors
+| * | e21186c : ADD Change log line
+| * | e5a2641 : FIX Error codes
+| * | f14c352 : ADD Middleware to wrap external object errors to our own
+| * | 9db9420 : ADD Associate the error object with its code
+| | * 0b42bf1 : ADD Disable validation flag
+| |/  
+|/|   
+* |   ab86b34 : Merge pull request #171 from telefonicaid/feature/check_http_headers_test_cases
+|\ \  
+| |/  
+|/|   
+| * 2c8ad0d : Deleted debug-prints
+| * 9095ae0 : Adapted the http headers to the new treatment of it
+|/  
+*   77f8310 : Merge pull request #169 from telefonicaid/task/sanityCheck
+|\  
+| * a182244 : FIX Operations documentation
+| *   1efa926 : MERGE With develop
+| |\  
+| |/  
+|/|   
+* |   3665158 : Merge pull request #167 from telefonicaid/bug/servicePathHeaderCheck
+|\ \  
+| * | ecd3b16 : Update package.json
+| * | 27fda80 : Update CHANGES_NEXT_RELEASE
+| * | 1e6f564 : ADD Documentation for the issue
+| * | 79c9783 : FIX Check the mandatory headers before processing the request
+|/ /  
+| * df141cb : ADD Documentation
+| * 62d2755 : FIX Linter errors
+| * eef1fc9 : ADD Administration port with version resource
+|/  
+*   88aac61 : Merge pull request #161 from telefonicaid/hardening/cnr_pr157
+|\  
+| *   1678ad8 : Merge branch 'develop' into hardening/cnr_pr157
+| |\  
+| |/  
+|/|   
+* |   c1340a2 : Merge pull request #160 from telefonicaid/task/removeCBSpecificInstallationSteps
+|\ \  
+| * | f89655c : FIX Documentation
+| * | 5d33923 : FIX Remove Context Broker specific setup in RPM
+|/ /  
+| * a95a33a : ADD missing entry corresponding to PR #157
+|/  
+*   3f076cd : Merge pull request #157 from telefonicaid/bug/updateContextWithoutPath
+|\  
+| * d40f64c : FIX Problem with updateContext path
+|/  
+*   c2577d6 : Merge pull request #156 from telefonicaid/feature/test_content_type_and_parms
+|\  
+| * 50a2f30 : Deleted a dynamic file create in execution time
+| * 495c6fe : Uncomment the setup of the environment, changed to run the tests in local
+| * ec6a489 : Deleted useless comments in the mock
+| * 59e79b8 : - Refactorized mock functionality - Refactorized part of the common steps - Added tests for changes in the code (Checking header content-type and URI parm)
+|/  
+*   a11ce5d : Merge pull request #153 from telefonicaid/task/changeReqUrlForOtherPlugins
+|\  
+| * 99552ff : ADD Preventive change from req.url to req.path
+* |   6a99d62 : Merge pull request #151 from telefonicaid/bug/problemsWithEnvironmentVariables
+|\ \  
+| * | 73546a4 : ADD Documentation about the variable
+| * | 3a83a43 : FIX Variable name was not the appropriate one
+| * | bf3d462 : ADD COMPONENT Variable to the sysconfig script
+| |/  
+* |   caa9b8d : Merge pull request #150 from telefonicaid/bug/addEffectiveFlag
+|\ \  
+| |/  
+|/|   
+| * c27148f : ADD Changes in changelog
+| *   4e40eff : Merge branch 'develop' of github.com:telefonicaid/fiware-orion-pep into bug/addEffectiveFlag
+| |\  
+| |/  
+|/|   
+* |   7374993 : Merge pull request #149 from telefonicaid/bug/urlsWithParamsNotPermitted
+|\ \  
+| * | 3317e4e : Update CHANGES_NEXT_RELEASE
+| * | 16c126b : ADD Changes next release
+| * | 8c8f9c4 : ADD Restore webstorm poltergeist
+| * | 82c1f3e : FIX Problem with query params
+|/ /  
+| * 4f89a55 : FIX effective flag missing in Keystone queries
+|/  
+*   2e9d765 : Merge pull request #143 from telefonicaid/bug/query_params_pass_through
+|\  
+| * 002248c : Update CHANGES_NEXT_RELEASE
+| * f50e17b : remove console.log
+| * a6b5313 : fix proxy query params
+* |   490cb87 : Merge pull request #142 from telefonicaid/bug/manage_content-type_header
+|\ \  
+| |/  
+|/|   
+| * 2349398 : add content-type tests
+| * 8877ea5 : fix error managing content-type
+|/  
+*   64a1653 : Merge pull request #141 from telefonicaid/hardening/sonar_iot
+|\  
+| * ffcf0b5 : CHANGE sonar key
+|/  
+*   193382f : Merge pull request #140 from telefonicaid/feature/new_test_from_bug_fixes_and_some_fixes
+|\  
+| * b93ec24 : Added tests based in the changes of the commit 780e952
+* |   c2098b3 : Merge pull request #139 from telefonicaid/bug/wrongModuleInPlugins
+|\ \  
+| |/  
+|/|   
+| * baa389b : ADD entry in CHANGES_NEXT_RELEASE
+| *   1a5a47a : Merge branch 'develop' into bug/wrongModuleInPlugins
+| |\  
+| |/  
+|/|   
+* |   f17a387 : Merge pull request #137 from telefonicaid/task/configurableProtocol
+|\ \  
+| * \   d0208a8 : Merge branch 'develop' into task/configurableProtocol
+| |\ \  
+| |/ /  
+|/| |   
+* | |   cc5984e : Merge pull request #130 from telefonicaid/task/newRoutesForCb
+|\ \ \  
+| * | | c85af51 : ADD Entry in the documentation
+| * | | 4f8f53b : ADD Change in changelog
+| * | | 6aef1a7 : FIX ContetType should not accept NGSI10
+| * | | 68fa4bc : ADD Context Types route
+* | | |   e222174 : Merge pull request #129 from telefonicaid/feature/acceptance-test-fixes
+|\ \ \ \  
+| * | | | 70180e0 : [FIX] - English mistake
+| * | | | 4ac211b : Added a library to format the test result
+| * | | | 593ece7 : Added subunit dependence to generate tests reports
+| * | | | aae5113 : Modify the way to stop local instances of PEP
+| * | | | 62a4b1b : [FIX] - Remove a non used variable in proxys
+| * | | | d0ecffc : [FIX] - Add Keystone port to ask the token
+| * | | | bca8660 : Fix port not passed to the AC library
+| * | | | 611208d : Modified the properties to a config more standard
+| * | | | ed23661 : Force the change of the directory with bash
+| * | | | ed0b4bf : Changed the capture flag to True
+| * | | | 72889a0 : Fix the output not printed
+| * | | | b7adac8 : Change the way to use the "local" format in fabric to not use ssh
+* | | | |   8286778 : Merge pull request #128 from telefonicaid/task/logRotationInRPM
+|\ \ \ \ \  
+| |_|/ / /  
+|/| | | |   
+| * | | | a696778 : FIX logrotate requires
+| * | | |   f956c11 : Merge branch 'develop' of github.com:telefonicaid/fiware-orion-pep into task/logRotationInRPM
+| |\ \ \ \  
+| * | | | | bea95ed : ADD Log rotation in the RPM
+* | | | | |   ce72304 : Merge pull request #127 from telefonicaid/feature/acceptance-test-fixes
+|\ \ \ \ \ \  
+| |_|/ / / /  
+|/| | / / /   
+| | |/ / /    
+| |/| | |     
+| * | | | 3b2e092 : Added comments to the asserts
+| * | | | 5d5cdc6 : Fixed start pep in CentOS and clean the environment
+| * | | | f2c3765 : Fixed start proxys/mocks in Centos/Redhat
+* | | | |   89d5a1b : Merge pull request #124 from telefonicaid/bug/fix_wrong_0.4.1_stepping
+|\ \ \ \ \  
+| * | | | | 59c97f7 : FIX issue raised in code review
+| * | | | | b5bb952 : FIX some issues in the release.sh script
+| * | | | | 2bc44f7 : FIX version numbers
+|/ / / / /  
+* | | | | c56e801 : ADD Prepare new version numbers for develop
+| | | | * 5e5251c : FIX Plugin path in modules
+| | | | *   4423dda : Merge pull request #135 from telefonicaid/task/configurableProtocol
+| | | | |\  
+| | | | |/  
+| | | |/|   
+| | | * | f921565 : FIX Update doc with the new environment variables
+| | | * |   e7c4c79 : Merge branch 'release/0.4.1' of github.com:telefonicaid/fiware-orion-pep into task/configurableProtocol
+| | | |\ \  
+| | | | |/  
+| | | | *   ec518b1 : Merge pull request #134 from telefonicaid/bug/environmentVariablesNotExported
+| | | | |\  
+| | | * | | 60e4e96 : ADD Environment variables for protocol configuration
+| | | | |/  
+| | | |/|   
+| | | * | 780e952 : FIX Linter errors
+| | | * | 1ec1973 : FIX Add set -a to export all variables
+| | | |/  
+| | | *   523320c : Merge pull request #131 from telefonicaid/task/addNewUrlsToCbRelease
+| | | |\  
+| | | | * 6beed9b : FIX sync with PR #130
+| | | | * 68a1e2e : FIX sync with PR #130
+| | | | * 437aa6c : ADD New urls to CB
+| | | |/  
+| | | *   32f24ec : Merge pull request #123 from telefonicaid/bug/fix_wrong_0.4.1_relesing
+| | | |\  
+| |_|/ /  
+|/| | |   
+| | | * 98924b8 : FIX versions numbers
+| |_|/  
+|/| |   
+* | | 600644c : ADD Step: 0.4.0-next -> 0.6.1
+* | |   9a8bbcc : Merge pull request #122 from telefonicaid/bug/ReleaseDevs
+|\ \ \  
+| * | | bb14a90 : Release by default for devs's rpm creation
+|/ / /  
+* | |   d72794f : Merge pull request #121 from telefonicaid/bug/OldVersion
+|\ \ \  
+| * | | 0fdcdab : Old versioning compability
+|/ / /  
+* | |   48c7362 : Merge pull request #120 from telefonicaid/task/updateDocumentation
+|\ \ \  
+| |/ /  
+|/| |   
+| * | 9690453 : RENAME lowercase for .md files
+| |/  
+| *   234d61c : Merge branch 'task/updateDocumentation' of github.com:telefonicaid/fiware-orion-pep into task/updateDocumentation
+| |\  
+| | * 42f2f5c : Update ARCHITECTURE.md
+| * | 21e8aba : FIX File names in lowercase
+| |/  
+| * 4d6a6ad : ADD Update information in the Logs section
+| *   470051e : Merge branch 'develop' of github.com:telefonicaid/fiware-orion-pep into task/updateDocumentation
+| |\  
+| |/  
+|/|   
+* |   5b4870a : Merge pull request #119 from telefonicaid/task/styleCheckingInAcceptanceTests
+|\ \  
+| * | 48a8518 : FIX Restrict style checking to the JS part of the tests
+|/ /  
+| * 778c43e : DEL Remove link to the architecture section in main README
+| * d32843c : ADD Architecture diagram
+| * 133542a : ADD First version of the operations manual
+|/  
+*   5986259 : Merge pull request #118 from telefonicaid/bug/spec_changelog_fix
+|\  
+| * 8993773 : REMOVE extra unneded suffix in version number
+| * bcff6a4 : REMOVE extra unneded suffix in version number
+|/  
+*   1d33b52 : Merge pull request #117 from telefonicaid/feature/IOTCORE-220_QA_FIX
+|\  
+| * d7d0259 : Modified the head of all .py files to change the license to a public one
+| * c39a1ea : Fixed the way to stop the PEP Removed explicit prints Remove the output log from fabric
+| * 7ad46a4 : Added acceptance tests directly to develop version, to fix automate subtitions
+|/  
+*   e51ad4f : Merge pull request #115 from telefonicaid/task/updateConvenienceOperationURLS
+|\  
+| * bd8aef3 : ADD Change the URL Prefix in convenience operations
+* |   9f6ffd1 : Merge pull request #112 from telefonicaid/task/addKeypassDocumentation
+|\ \  
+| * | 6743372 : Update README.md
+* | |   b1bff7b : Merge pull request #109 from telefonicaid/task/versioning
+|\ \ \  
+| |_|/  
+|/| |   
+| * | 85b9506 : Version from repo info (branches and tags)
+|/ /  
+* |   2c50397 : Merge pull request #108 from telefonicaid/bug/unexistentJsonBody
+|\ \  
+| * | f8fd3ee : ADD Changes in Next-release
+| * | cc7ad17 : FIX JSON Body not sent when proxying
+|/ /  
+* |   4d238ad : Merge pull request #107 from telefonicaid/task/removeFiwareNodeLogger
+|\ \  
+| * | e979fe4 : ADD Fix versions
+| * | c2feac4 : FIX Replace fiwareNodeLogger with logops
+|/ /  
+* |   86d4540 : Merge pull request #106 from telefonicaid/bug/wrongClassifierInLog
+|\ \  
+| * | 1c9c218 : FIX Wrong code in log
+|/ /  
+* |   d7edc28 : Merge pull request #104 from telefonicaid/bug/jsonBodySentInXMLForward
+|\ \  
+| * | 775bbdd : FIX Blank JSON body sent in XML Forwarding
+|/ /  
+* | 1efaf9d : FIX Create-rpm version didn't have next prefix
+* | 6886b20 : ADD Prepare new version numbers for develop
+* | f3196bb : ADD Step: 0.3.0-next -> 0.4.0
+* | a9a55c6 : FIX Aborted release process
+* | 7944404 : ADD Prepare new version numbers for develop
+* | 34df175 : ADD Step: 0.3.0-NEXT -> 0.4.0
+* | aea49d2 : ADD Step:  -> 0.4.0
+* |   d4b7def : Merge pull request #100 from telefonicaid/task/improveReleaseScript
+|\ \  
+| * | f7cdefb : FIX Concerns in the PR
+| * | 50acd74 : FIX Single equal sign in test
+| * | d8610bf : ADD Improvements to the release script
+* | | d06da2f : Update README.md
+* | |   cfb83a8 : Merge pull request #98 from telefonicaid/task/addKeypassDocumentation
+|\ \ \  
+| |/ /  
+|/| /   
+| |/    
+| * 3ee6270 : FIX Name for keypass action
+| * f9ccd5c : ADD Keypass section to the index
+| * 0dbbc77 : ADD KeypassDocumentation
+|/  
+*   e0504cd : Merge pull request #96 from telefonicaid/bug/unupdatedChangeRelease
+|\  
+| * e0472f0 : FIX typo
+| * 03ee16b : ADD Bug fixed to CHANGES_NEXT_RELEASE
+|/  
+*   c60041d : Merge pull request #95 from telefonicaid/bug/missingBinActionDefinition
+|\  
+| * 083f9bb : FIX Missing b in subscribe actions
+|/  
+*   66af8f8 : Merge pull request #77 from telefonicaid/task/reviewDocumentation
+|\  
+| * 44274be : Update README.md
+| * c81816a : Update README.md
+| * 1ebc899 : Fix some errors in markdown
+| * 0438446 : ADD Foot note about the N/A actions.
+| * 2b9eb39 : Update configuration information
+| * b25d843 : Update general sections of the Documentation
+* |   3e4fd35 : Merge pull request #93 from telefonicaid/bug/retriesInFailureAuthentication
+|\ \  
+| * | edf1d3a : FIX Default number of retries
+| * | a2b0f3b : FIX Error code for authentication rejected
+| * | e01f9b9 : ADD Entry on the changelog
+| * | 3edba5b : FIX Redo the retries to make them dependant on the Error Type
+| * | 1ceb79c : FIX Remove references to Keystone Proxy
+|/ /  
+* |   18d4ea2 : Merge pull request #92 from telefonicaid/bug/missingContextBrokerUrls
+|\ \  
+| * | fb5b234 : FIX Add missing Context Broker urls
+| * | ac8f6bb : FIX Orion plugin in init file
+| * | dba978a : FIX Orion plugin in configuration
+| * | eb36a63 : FIX Linter errors
+| * | bedd583 : ADD Refactor standard operation tests
+* | |   d8b5cde : Merge pull request #91 from telefonicaid/bug/errorInConvenienceOperationsTestText
+|\ \ \  
+| |/ /  
+|/| |   
+| * | 3f14946 : FIX Texts in convenienve operations
+|/ /  
+* |   61bee62 : Merge pull request #90 from telefonicaid/hardening/refactorKeystoneAuth
+|\ \  
+| * | 87d448d : ADD Change the directory structure for a better organization
+| * | 3eb063b : ADD Minor linter error
+| * | 0d36f51 : ADD Mix all the url-matching operation identification in a single funciotn and file
+| * | b2d56f5 : ADD Refactor the main file to make it more mainteinable
+| * | 18c4648 : ADD Missing JSDoc
+| * | 323419a : ADD Refactor cache-related behavior to a different file
+|/ /  
+* |   e7e5d33 : Merge pull request #87 from telefonicaid/bug/v1-prefix-not-supported-for-querycontext
+|\ \  
+| * | 1408c1b : FIX missing registry literal in NGSI9 urls
+| * | bb2cfa7 : FIX Missing v1 prefix for some standard operations
+|/ /  
+* |   e8b51de : Merge pull request #85 from telefonicaid/bug/cachedRolesInWrongAttribute
+|\ \  
+| * | 722c530 : FIX Change Roles TTL back to 60
+| * | fbccd15 : FIX Issue in change release
+| * |   2a37a9f : Merge branch 'develop' of github.com:telefonicaid/fiware-orion-pep into bug/cachedRolesInWrongAttribute
+| |\ \  
+| |/ /  
+|/| |   
+* | |   2288fd7 : Merge pull request #83 from telefonicaid/bug/IOTCORE-232-capture-redirection-errors
+|\ \ \  
+| * | | f0b563a : FIX Issues in the changelog
+| * | | a7c5fa1 : ADD Release changes in changelog
+| * | | 3d61386 : ADD Debugging info to the request forwarding
+| * | | 6bd3464 : FIX Catch errors in forwarding process
+|/ / /  
+| * | e2558b0 : FIX Wrong roles attribute in cached value
+|/ /  
+* |   20642d0 : Merge pull request #81 from telefonicaid/hardening/versioning
+|\ \  
+| * | c75ce10 : It's not a PDI repo
+| * | 37951b3 : Versioning with commits' count
+|/ /  
+* |   72a9517 : Merge pull request #75 from telefonicaid/task/environmentVariables
+|\ \  
+| |/  
+|/|   
+| * 0b19c9e : ADD Update the changelog
+| *   0d0a2f5 : Merge branch 'develop' of github.com:telefonicaid/fiware-orion-pep into task/environmentVariables
+| |\  
+| |/  
+|/|   
+* |   66bbdb1 : Merge pull request #74 from telefonicaid/bug/scapedSlashInAccessControl
+|\ \  
+| * | 9027a7b : FIX Scaped slash in mustache templates
+|/ /  
+| * 42d1753 : ADD Exits if the component plugin was not found
+| * 219c4d3 : ADD New Configuration variable to select component plugin
+|/  
+*   de91b88 : Merge pull request #72 from telefonicaid/bug/cacheDependencyInDevDependencies
+|\  
+| * 623482a : FIX Dependency wrongly placed in devDependencies
+* |   33feae3 : Merge pull request #71 from telefonicaid/task/topLevelServiceBehavior
+|\ \  
+| |/  
+|/|   
+| * 67dbd7a : ADD Tol Level Service behavior
+|/  
+*   43ec5e1 : Merge pull request #69 from telefonicaid/bug/malformedJSONNotControlled
+|\  
+| * 46aafb3 : FIX No log trace was written when the JSON syntax was wrong
+|/  
+*   98c6940 : Merge pull request #68 from telefonicaid/bug/roleResponseWithDomainRole
+|\  
+| * 1aafcf8 : FIX Accept roles response with domain roles
+|/  
+*   ae6c048 : Merge pull request #66 from telefonicaid/bug/v1PrefixInCreation
+|\  
+| * bb02a62 : FIX v1 prefix in updateContext action for Context Broker
+|/  
+*   1ae7cb2 : Merge pull request #65 from telefonicaid/task/IOTCORE-233_Keystone_Authentication_Cache
+|\  
+| * c630b4b : ADD Refactor all the Keystone calls to introduce the cache mechanism
+| * f491930 : ADD Extract the chache and hold mechanism to an external function
+| * d8a89b3 : ADD Extract the chache and hold mechanism to an external function
+| * 1d44304 : ADD Refactor retrieve roles to hold incoming requests
+| * 2dcc475 : ADD Refactor retrieve roles for clarification
+| * e138445 : ADD Refactor retrieve user function to clarify it
+| * b8df8be : ADD Refactor extract roles to clarify function
+| * e681822 : FIX Default TTL for cache items
+| * b252f73 : FIX Remove unused config property
+| * a13bf48 : ADD Configurable TTLs
+| * 20aaf84 : ADD Role retrieval cache
+| * ab6366d : ADD Project cache
+| *   657a78a : Merge branch 'develop' of github.com:telefonicaid/fiware-orion-pep into task/IOTCORE-233_Keystone_Authentication_Cache
+| |\  
+| * | 276ba0d : ADD User cache
+* | |   1b0d86a : Merge pull request #61 from telefonicaid/task/startNewRelease
+|\ \ \  
+| |_|/  
+|/| |   
+| * | 198ce7f : ADD New version
+| * | e803a48 : FIX Releasing script
+| * |   6b80dfa : Merge branch 'master' of github.com:telefonicaid/fiware-orion-pep into develop
+| |\ \  
+| | * \   86de1a5 : Merge pull request #40 from telefonicaid/release/0.1.0
+| | |\ \  
+| * | | | 7fba55a : FIX Release script
+|/ / / /  
+* | | | d46581a : ADD Step: 0.2.0-NEXT -> 0.3.0
+* | | |   95242e2 : Merge pull request #60 from telefonicaid/task/extractTestMocksToUtilsFile
+|\ \ \ \  
+| | |_|/  
+| |/| |   
+| * | | d24a435 : ADD Extract the Keystone Mock to a utility module
+* | | |   1fb0f89 : Merge pull request #59 from telefonicaid/task/IOTCORE-201_Release_scripts
+|\ \ \ \  
+| |/ / /  
+|/| | |   
+| * | | 0318cb0 : FIX Peer review suggestions
+| * | | 12e6888 : FIX Unimportant type
+| * | | 819bf23 : FIX Remove make rpm from the releasing script
+| * | | 15bc44a : ADD Project releasing script
+|/ / /  
+* | |   a7556b4 : Merge pull request #57 from telefonicaid/task/reuseTokens
+|\ \ \  
+| * | | 184bad6 : FIX Code 500 on unexpected errors instead of the original
+| * | | 1ef7d43 : FIX Current token not defined in requests
+| * | | ec070e1 : ADD Event guard to synchronize requests on authentication token request
+| * | | 5d4d4dc : FIX Linter errors
+| * | | 62fff28 : ADD Reuse tokens
+|/ / /  
+* | |   2d7f143 : Merge pull request #56 from telefonicaid/task/accessControlPlugin
+|\ \ \  
+| * | | 0119203 : FIX Headers of the files: contact email and year
+| * | | d8c900e : ADD Keypass bypass for PDP requests
+| * | |   ea8e467 : Merge branch 'develop' of github.com:telefonicaid/fiware-orion-pep into task/accessControlPlugin
+| |\ \ \  
+| |/ / /  
+|/| | |   
+* | | |   28819b2 : Merge pull request #55 from telefonicaid/task/adminBypass
+|\ \ \ \  
+| * | | | cfd0892 : FIX Name of the role id in the configuration
+| * | | | dbfee8d : ADD JSDoc for the config
+| * | | | 053b6c1 : ADD Validation bypass for admin users
+|/ / / /  
+| * | | cc475db : ADD Keypass PAP plugin
+|/ / /  
+* | |   1be77a9 : Merge pull request #52 from telefonicaid/bug/authenticationIntegration
+|\ \ \  
+| * | | 72658a7 : FIX Default component name
+| * | | 2596165 : FIX Default prefix 'fiware'
+| * | | 1b2d279 : FIX Configurable prefix and linter errors
+| * | | 1208320 : FIX Multile Combined decision attributes and multiple projects found
+* | | |   17c1abb : Merge pull request #51 from telefonicaid/bug/authenticationIntegration
+|\ \ \ \  
+| |/ / /  
+| * | | 81558dc : FIX Logging of a user token not found
+| * | | 16b8e57 : FIX Domain check made in the wrong call
+|/ / /  
+* | |   ce1be04 : Merge pull request #50 from telefonicaid/task/newChangesInPEPAuthentication
+|\ \ \  
+| * | | 14ade62 : ADD Tests for the domain name configuration
+| * | | 953d3d9 : ADD New keystone authentication request
+|/ / /  
+* | |   661403e : Merge pull request #47 from telefonicaid/task/newDebugLogs
+|\ \ \  
+| * | | 134f6be : ADD %s in debug logs
+| * | | b49f392 : ADD Debug logs for Keystone responses
+|/ / /  
+* | |   a33d550 : Merge pull request #45 from telefonicaid/task/IOTCORE-180-Use_names_instead_of_UUIDS
+|\ \ \  
+| * | | 546c983 : ADD Project name query extracting roles
+| * | |   891aa75 : Merge branch 'develop' of github.com:telefonicaid/fiware-orion-pep into task/IOTCORE-180-Use_names_instead_of_UUIDS
+| |\ \ \  
+| |/ / /  
+|/| | |   
+* | | |   171a774 : Merge pull request #44 from telefonicaid/task/newPerseoActions
+|\ \ \ \  
+| * | | | c9a18a9 : Update README.md
+| * | | | a0957e2 : ADD New Perseo actions
+|/ / / /  
+| * | | 906f44a : ADD Check the retrieved role list has length greater than zero
+| * | | 7790b4b : ADD Change UUIDs in service header to name
+|/ / /  
+* | |   7869d82 : Merge pull request #41 from telefonicaid/task/newRelease
+|\ \ \  
+| |_|/  
+|/| |   
+| * | f054113 : ADD Change the release number
+|/ /  
+* |   a051b2d : Merge pull request #39 from telefonicaid/hardening/adjust_v1_ops
+|\ \  
+| * | 331c82b : FIX removing ngsi10 alternative for "pure" v1 operations
+|/ /  
+* |   76cc8c7 : Merge pull request #38 from telefonicaid/hardening/orion_0.16.0_ops
+|\ \  
+| * | 3d39b0e : FIX issues raised in code review
+| * | 68976df : ADD table entries for conv ops added in Orion 0.16.0 and beyond for v1 API
+|/ /  
+* |   bd68de5 : Merge pull request #37 from telefonicaid/bug/mergeProblemsWithLastCommit
+|\ \  
+| * | 2c4ac0f : FIX Missing constants file
+|/ /  
+* |   dc2de4c : Merge pull request #36 from telefonicaid/task/IOTCORE-123-check-auth-token-belongs-to-tenant
+|\ \  
+| * \   9947544 : Merge branch 'develop' of github.com:telefonicaid/fiware-orion-pep into task/IOTCORE-123-check-auth-token-belongs-to-tenant
+| |\ \  
+| |/ /  
+|/| |   
+* | |   b9079d1 : Merge pull request #34 from telefonicaid/task/keystonePlugin
+|\ \ \  
+| * | | 184a90b : Update README.md
+| * | |   1e93f29 : Merge branch 'develop' of github.com:telefonicaid/fiware-orion-pep into task/keystonePlugin
+| |\ \ \  
+| |/ / /  
+|/| | |   
+| | * |   33eff9f : Merge branch 'develop' of github.com:telefonicaid/fiware-orion-pep into task/IOTCORE-123-check-auth-token-belongs-to-tenant
+| | |\ \  
+| |_|/ /  
+|/| | |   
+* | | |   34a3e86 : Merge pull request #31 from telefonicaid/bug/sendServiceHeaderToAccessControl
+|\ \ \ \  
+| * | | | cfb3ae8 : FIX Integration problems with headers and templates
+| * | | | 886da23 : FIX Send service headers
+| | | * | 9641db4 : ADD Check tenant header matches token tenant
+| | |/ /  
+| | * | 456b11f : FIX Problems in the template
+| | * | 54bc9fa : FIX Add fiware service header
+| | * | 029b75a : FIX Some tests broken in the integration
+| | * | 30a5344 : FIX Service and subservice in the Keystone plugin
+| | * | 35db8d5 : FIX Integration problems
+| | * | 6a8cb4b : FIX domain and project name taken from headers
+| | * | d9bb268 : FIX Linter errors
+| | * | 056adc7 : ADD Complete Keystone interaction
+| | * | 623cdc1 : ADD Complete Keystone interaction
+| | * | c7ba22f : ADD Get roles from keystone (test)
+| | * | 9af8eb8 : ADD Get roles from keystone (test)
+| | * | d7e163c : ADD Get userId from keystone
+| | * | e9effd6 : ADD PEP Authentication against Keystone
+| | * |   3d98902 : Merge branch 'develop' of github.com:telefonicaid/fiware-orion-pep into task/keystonePlugin
+| | |\ \  
+| |_|/ /  
+|/| | |   
+* | | |   8bdae2f : Merge pull request #32 from telefonicaid/task/sonarProperties
+|\ \ \ \  
+| |/ / /  
+|/| | |   
+| * | | 0328313 : FIX Remove spaces around equal sign
+|/ / /  
+| * | 9b73eb8 : FIX Remove accidental g
+| * | 6ecd70f : ADD Keystone tests for role extraction
+| * | a7904f4 : ADD Keystone plugin test
+| * | 9e9744f : ADD Refactor for allowing multiple auth mechanisms
+| * | ead6698 : ADD Refactor for allowing multiple auth mechanisms
+| * | bd2568f : ADD Refactor the authentication module and the validation
+|/ /  
+* |   90c1df2 : Merge pull request #30 from telefonicaid/task/IOTCORE-128-new_orion_operations
+|\ \  
+| * | cf20c20 : FIX Concerns found in the PR: prefixes for the new operations
+| * | d28068e : FIX Line length in linters errors
+| * | 0649c45 : ADD Two new URLs for Orion
+| * | 8a8396d : ADD Support for new aliases for ngsi9 and 10
+|/ /  
+* |   34da006 : Merge pull request #28 from telefonicaid/task/IOTCORE-127_Documentation
+|\ \  
+| * | 1169e85 : Update README.md
+| * | eb1504e : Update README.md
+| * | 5337113 : Update README.md
+| * | 2672ef8 : Update README.md
+| * | 1572f64 : Update README.md
+| * | 5ac5bdd : Update README.md
+| * |   4f8aea2 : Merge branch 'task/IOTCORE-127_Documentation' of github.com:telefonicaid/fiware-orion-pep into task/IOTCORE-127_Documentation
+| |\ \  
+| | * | 3d07153 : Update README.md
+| * | | 468aa5c : FIX Architecture diagram
+| * | | 6d953ba : ADD New architecture diagram
+| |/ /  
+* | |   5e0773c : Merge pull request #29 from telefonicaid/task/IOTCORE-126-CEP_PEP_Implementation
+|\ \ \  
+| * | | 4854428 : FIX Align actions literals with Orion plugin
+| * | |   6f84339 : Merge branch 'task/IOTCORE-126-CEP_PEP_Implementation' of github.com:telefonicaid/fiware-orion-pep into task/IOTCORE-126-CEP_PEP_Implementation
+| |\ \ \  
+| | * | | af9a41e : Update README.md
+| * | | | 62d9085 : FIX Config in rest plugin test
+| |/ / /  
+| * | | 080b55c : ADD Plugin to guess generic REST actions
+|/ / /  
+* | |   8616acb : Merge pull request #26 from telefonicaid/task/IOTCORE-122_FRN_Composition
+|\ \ \  
+| * | | 741ab18 : FIX Remove empty test
+| * | |   9d2272d : MERGE With develop
+| |\ \ \  
+| |/ / /  
+|/| / /   
+| |/ /    
+* | |   4cc85e0 : Merge pull request #25 from telefonicaid/task/alternativeAccessControl
+|\ \ \  
+| * | | 040a4f7 : FIX Move path to a constant
+| * | | 748d595 : FIX Remove references to the Keystone Proxy
+| * | | 91a7e0f : FIX Remove references to the Keystone Proxy
+| * | | 04e171e : DEL Remove authentication to the Keystone Proxy from the PEP
+| * | | 83e3ecb : FIX Name of the servicepath header
+| | * | a018c66 : ADD FRN Composition from request data
+| |/ /  
+| * | 05a4c17 : FIX Style issues
+| * | 8f85260 : ADD XACML Standard responses
+| * | 00953c2 : ADD New Access Control format including roles
+| * | 107e2c4 : FIX Tests broken by modifications
+| * | bce43c7 : ADD Retrieve the roles from the IDM
+|/ /  
+* | e659b78 : Update README.md
+* |   d86b99d : Merge pull request #24 from telefonicaid/task/DOB-164-Log-errors-operations
+|\ \  
+| * | b9e531e : ADD Log error codes for operations
+* | |   a873022 : Merge pull request #23 from telefonicaid/feature/IOTCORE-114_Deployment_tasks
+|\ \ \  
+| |/ /  
+| * | 431ec89 : ADD Default log level in the service config file to ERROR
+| * | 4eee00d : ADD Check the existance of the contextBroker service
+| * | 6c49b6a : FIX Some minor problems in the RPM files
+| * | d3a8ee8 : ADD Integration with Context Broker
+| * | ae7ab84 : FIX Executable launch script
+| * | d92e450 : DEL Nohup.out file
+| * | 96d8484 : ADD First version of the RPM Package
+* | | f4e7bbc : Update README.md
+* | | df5da9e : Update README.md
+* | | 4562b0c : ADD Architecture img for the documentation
+* | | e2a9795 : Update README.md
+* | | df186d3 : Update README.md
+|/ /  
+* |   d4f185b : Merge pull request #21 from telefonicaid/feature/IOTCORE-112_Integration
+|\ \  
+| * | ea35bab : FIX Problem with headers redirecting requests to CB
+| * | 9787b1b : ADD Change the Keystone Proxy API
+| * | aba180c : ADD Try-catch for XML parsing
+| * | 50a1bee : ADD New template for authorization
+* | |   7a781dd : Merge pull request #20 from telefonicaid/feature/IOTCORE-112_Integration
+|\ \ \  
+| |/ /  
+| * | 1ec55d5 : ADD Debug log for the Keystone Proxy Authentication response
+| * | ab80a8f : ADD Some logs to the authentication middleware
+| * | 2d043a3 : FIX Remove .only from tests
+| * | ba8348f : ADD Test unauthenticated keystone proxy access
+| * | 0642108 : FIX Some linter errors
+| * | 7192bd4 : ADD Validation against the Keystone Proxy
+| * | b673757 : FIX Multiple callbacks on XML error
+|/ /  
+* |   225e349 : Merge pull request #19 from telefonicaid/feature/IOTCORE-113_Clean_code
+|\ \  
+| * | 844a39e : ADD Tests for wrong XML Payloads received
+| * |   5a93ec1 : Merge branch 'develop' of github.com:telefonicaid/fiware-orion-pep into feature/IOTCORE-113_Clean_code
+| |\ \  
+| |/ /  
+|/| |   
+* | |   2c19146 : Merge pull request #18 from telefonicaid/feature/IOTCORE-111_convenience_tasks
+|\ \ \  
+| * | | c9ac098 : FIX reduce the number of regexes
+| | * | b7a97d8 : ADD Test case definition
+| | * | 1b92286 : ADD Tests for Keystone Proxy errors
+| | * | d8d03c0 : ADD Tests for unknown operations
+| | * | 5a146e6 : FIX Errors detected by Sonar
+| |/ /  
+| * | 84fdcac : ADD Error object instead of string description
+| * | d524c81 : ADD Convenience operation support
+|/ /  
+* |   dda58b4 : Merge pull request #17 from telefonicaid/feature/IOTCORE-112_Integration
+|\ \  
+| * | 1a21bd7 : ADD Debug information in case of error
+| * | 5cdc7f6 : ADD Debug information in case of error
+| * |   59497e2 : Merge branch 'develop' of github.com:telefonicaid/fiware-orion-pep into feature/IOTCORE-112_Integration
+| |\ \  
+| |/ /  
+|/| |   
+* | |   7cdba1a : Merge pull request #16 from telefonicaid/feature/IOTCORE-104_Operation_logs
+|\ \ \  
+| | * | c317636 : FIX Duplicated apply in middleware
+| |/ /  
+| * | 57cbf76 : FIX Missing licence
+| * | cef8725 : FIX Fix node-uuid version
+| * | 56d9725 : FIX Linter error
+| * |   dddd597 : MERGE With develop
+| |\ \  
+| |/ /  
+|/| |   
+* | |   093fdab : Merge pull request #13 from telefonicaid/feature/IOTCORE-109_Launching_script
+|\ \ \  
+| * | | 4d949a2 : FIX Move the module definition to the top of the function
+| * | | 6b334f8 : ADD Script for launching the proxy
+* | | |   07176a2 : Merge pull request #14 from telefonicaid/feature/IOTCORE-106_Continous_integration
+|\ \ \ \  
+| * | | | 42b7559 : FIX Capital O in module name
+| * | | |   d30ddf0 : Merge branch 'develop' of github.com:telefonicaid/fiware-orion-pep into feature/IOTCORE-106_Continous_integration
+| |\ \ \ \  
+| |/ / / /  
+|/| | | |   
+| * | | | 0cca415 : ADD Sonar properties file
+| | | * |   faa66df : Merge branch 'develop' of github.com:telefonicaid/fiware-orion-pep into feature/IOTCORE-104_Operation_logs
+| | | |\ \  
+| |_|_|/ /  
+|/| | | |   
+* | | | |   21d85a1 : Merge pull request #11 from telefonicaid/feature/IOTCORE-105_Documentation
+|\ \ \ \ \  
+* \ \ \ \ \   451ca59 : Merge pull request #12 from telefonicaid/feature/IOTCORE-105_Readmefile
+|\ \ \ \ \ \  
+| * | | | | | ffb3d3c : Update README.md
+| * | | | | | 262a090 : Update README.md
+| * | | | | | da055e2 : Update README.md
+| * | | | | | 75b992d : Update README.md
+| * | | | | | 15483c3 : ADD Component customization
+| * | | | | | 161965d : Update README.md
+| * | | | | | 864e432 : Update README.md
+| * | | | | | 30c099c : Update README.md
+|/ / / / / /  
+| | | | * | 1dc629d : ADD Error level logs
+| | | | * | 27e70af : ADD Info level logs
+| | | | * | 19ccd05 : ADD Debug logs
+| | | | * | 6f81465 : ADD Debug logs
+| | | | * | a4f210d : ADD Log files and modules
+| | |_|/ /  
+| |/| | |   
+| * | | | 7a64935 : FIX Make the test linter similar to the source one
+| * | | | 89fb853 : FIX Default port numbers
+| | |/ /  
+| |/| |   
+| * | | dd2ba5f : FIX Linter error (end of line)
+| * | |   abfee12 : Merge branch 'develop' of github.com:telefonicaid/fiware-orion-pep into feature/IOTCORE-105_Documentation
+| |\ \ \  
+| |/ / /  
+|/| | |   
+* | | |   56fabfd : Merge pull request #10 from telefonicaid/feature/IOTCORE-110_Restrict_proxyFunction_scope
+|\ \ \ \  
+| * | | | 453d3c4 : FIX Linter error and licence in constants file
+| * | | | c4f6241 : ADD Constants to a constants file
+| * | | | aef1e77 : FIX Change ProxyFunciton name to clarify its scope
+| * | | | 9435e2e : FIX Make the redirected headers lower case
+* | | | |   c93d2d4 : Merge pull request #9 from telefonicaid/feature/IOTCORE-108_Add_https_options
+|\ \ \ \ \  
+* \ \ \ \ \   150484c : Merge pull request #8 from telefonicaid/feature/IOTCORE-103_Validate_request_information
+|\ \ \ \ \ \  
+| | | | * | | b227758 : ADD GJSLint to the building process
+| | | | * | | e66550f : ADD Types in JSDoc to help Doc generation
+| | | | * | | 357ee6f : ADD Documentation for the config file
+| | | |/ / /  
+| | | * | | dcc63b8 : ADD X-Forwarded-For header
+| | | * | | 9293165 : ADD Freeze version number for packages
+| | | * | | 2f14772 : FIX Scope of the ProxyFunction
+| | |/ / /  
+| | * | | 76a0f9c : FIX Some linter errors
+| | * | | 96ee8ef : ADD HTTPS for the server
+| | * | | f1e4db3 : ADD HTTPS for the server
+| |/ / /  
+| * | | b2a3d1f : FIX Clarify the objective of the loadTemplates function
+| * | | 2b920d0 : ADD Error objects instead of literals
+| * | | 6378a4b : ADD JSDoc for the validation functions
+| * | | f83947d : ADD Test the invalid requests are rejected
+| * | | 99e457f : FIX Linter errors
+| * | | d851592 : FIX Ambiguity in licence name
+| * | |   9daaec7 : Merge branch 'develop' of github.com:telefonicaid/fiware-orion-pep into feature/IOTCORE-103_Validate_request_information
+| |\ \ \  
+| |/ / /  
+|/| | |   
+* | | |   50a28f3 : Merge pull request #4 from telefonicaid/feature/IOTCORE-107_Error_conditions
+|\ \ \ \  
+| * | | | a66c98f : FIX Name in policy section
+| * | | | 3757652 : ADD Contribution policy and reference in Readme.md
+| * | | |   ca88dd6 : Merge branch 'develop' of github.com:telefonicaid/fiware-orion-pep into feature/IOTCORE-107_Error_conditions
+| |\ \ \ \  
+| |/ / / /  
+|/| | | |   
+* | | | |   23e8375 : Merge pull request #2 from telefonicaid/feature/IOTCORE-102_Check_Action_Inside_XML
+|\ \ \ \ \  
+| * \ \ \ \   cb923b4 : Merge branch 'develop' of github.com:telefonicaid/fiware-orion-pep into feature/IOTCORE-102_Check_Action_Inside_XML
+| |\ \ \ \ \  
+| |/ / / / /  
+|/| | | | |   
+| | * | | | 2c7dd6e : FIX Fix the names of the errors to resemble constructors
+| | * | | | b5e5e1b : FIX Better way to specify inheritance
+| | | * | | 9de9361 : ADD Send validation request to the Keystone proxy
+| | |/ / /  
+| | * | |   30beaea : Merge branch 'develop' of github.com:telefonicaid/fiware-orion-pep into feature/IOTCORE-107_Error_conditions
+| | |\ \ \  
+| |_|/ / /  
+|/| | | |   
+* | | | |   7c29e82 : Merge pull request #1 from telefonicaid/task/IOTCORE-101_Check_Action_Inside_JSON
+|\ \ \ \ \  
+* | | | | | 44bd0ac : Update README.md
+| |_|_|/ /  
+|/| | | |   
+| | | * | ecfab92 : ADD Guard against unknown actions
+| | | * | 4857e7d : FIX Errors should inherit from Error
+| | | * | d8ebb75 : ADD Test the absence of user token and organizaiton in the request
+| | | * | d11b846 : ADD Test the information extraction when there is no attribute for updateAction
+| | |/ /  
+| | * | c471685 : ADD Missing errors
+| | * | 341aaa2 : ADD Calculate the action based on XML body
+| |/ /  
+| * | d07c9fa : FIX Case sensitivity in action's name
+| * | 7545c34 : ADD Missing JSDoc
+| * | c9086d9 : ADD Extract action from JSON Body
+|/ /  
+* | b212ebf : ADD Missing JSDoc in functions
+* | 0ed2b43 : ADD Extract Orion-specific action discovery to a sepparate file
+* | 33b8d2b : FIX Linter errors
+* | cbd1952 : ADD Extract url-based CB Actions
+* | 1ee063b : ADD Test skeleton for CB action extraction
+* | 21dbc8c : ADD Test the request is really proxied
+* | 2013b6f : ADD Extract user ID
+* | bbe2d07 : ADD General testing framework
+* | ca8bc72 : DEL Remove unneeded files
+* | 8296046 : ADD Test cases skeleton
+|/  
+* c4eeeca : Initial commit
