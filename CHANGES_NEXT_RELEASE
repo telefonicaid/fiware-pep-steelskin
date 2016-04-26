@@ -3,3 +3,4 @@
 - FIX Unica-correlator header is deprecated (#296)
 - Include service and subservice in log traces (#287)
 - Refactor on NGSIv2 operations in Orion plugin in order to align to latest changes in NGSIv2 spec (#301)
+- New config needed for the new logops library (#304)
