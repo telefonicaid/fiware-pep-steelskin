@@ -161,4 +161,10 @@ config.bypass = false;
  */
 config.bypassRoleId = '';
 
+/**
+ * Configures the maximum number of clients that can be simultaneously queued while waiting for the PEP to
+ * authenticate itself against Keystone (due to an expired token).
+ */
+config.maxQueuedClients = 1000;
+
 module.exports = config;
