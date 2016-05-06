@@ -8,5 +8,8 @@ COPY . /opt/fiware-pep-steelskin
 WORKDIR /opt/fiware-pep-steelskin
 RUN npm install
 
+ENV LOG_LEVEL=INFO
+
 EXPOSE 1026
+EXPOSE 11211
 ENTRYPOINT bin/pepProxy
