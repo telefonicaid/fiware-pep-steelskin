@@ -70,7 +70,7 @@ It should automatically download all the dependencies provided they are availabl
 There are automatic builds of the development version of the Steelskin PEP Proxy published in Docker hub. In order to install
 using the docker version, just execute the following:
 ```
-docker run -p 11211:11211 -p 1026:1026 -e LOG_LEVEL=DEBUG -e AUTHENTICATION_HOST=<Keystone-host> -e ACCESS_HOST=<Access-control-host> -e TARGET_HOST=<Orion-host> fiwareiotplatform/fiware-pep-steelskin
+docker run -p 11211:11211 -p 1026:1026 -e LOG_LEVEL=DEBUG -e AUTHENTICATION_HOST=<Keystone-host> -e ACCESS_HOST=<Access-control-host> -e TARGET_HOST=<Orion-host> telefonicaiot/fiware-pep-steelskin
 ```
 This command will create a docker container with a PEP Steelskin running, using <Keystone-host> for token validation and
 authentication, <Access-control-host> for access control and redirecting allowed requests to <Orion-host>. Remember there
