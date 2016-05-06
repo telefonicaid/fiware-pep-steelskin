@@ -66,6 +66,19 @@ yum --nogpgcheck localinstall  pep-proxy-X.Y-Z.noarch.rpm
 
 It should automatically download all the dependencies provided they are available (Node.js and NPM may require the EPEL repositories to be added).
 
+### With Docker
+There are automatic builds of the development version of the Steelskin PEP Proxy published in Docker hub. In order to install
+using the docker version, just execute the following:
+```
+docker run -p 11211:11211 -p 1026:1026 -e LOG_LEVEL=DEBUG -e AUTHENTICATION_HOST=<Keystone-host> -e ACCESS_HOST=<Access-control-host> -e TARGET_HOST=<Orion-host> fiwareiotplatform/fiware-pep-steelskin
+```
+This command will create a docker container with a PEP Steelskin running, using <Keystone-host> for token validation and
+authentication, <Access-control-host> for access control and redirecting allowed requests to <Orion-host>. Remember there
+are more environment variables you can use to tailor Steelskin configuration to suit your needs; you can find the complete
+list in the configuration section below.
+
+Take note that this command expose two ports: the 1026 port for component requests and the administration port, 11211.
+
 ### Undeployment
 In order to undeploy the proxy:
 * If it was installed directly from the GIT repositories, just kill the process and remove the directory.
