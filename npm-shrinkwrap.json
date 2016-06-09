@@ -1,6 +1,6 @@
 {
   "name": "fiware-pep-steelskin",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "dependencies": {
     "async": {
       "version": "0.9.0",
@@ -303,36 +303,36 @@
           "resolved": "https://registry.npmjs.org/json-stringify-safe/-/json-stringify-safe-5.0.1.tgz"
         },
         "lodash.omit": {
-          "version": "4.2.1",
+          "version": "4.3.0",
           "from": "lodash.omit@>=4.1.0 <5.0.0",
-          "resolved": "https://registry.npmjs.org/lodash.omit/-/lodash.omit-4.2.1.tgz",
+          "resolved": "https://registry.npmjs.org/lodash.omit/-/lodash.omit-4.3.0.tgz",
           "dependencies": {
             "lodash._basedifference": {
-              "version": "4.4.1",
-              "from": "lodash._basedifference@>=4.4.0 <4.5.0",
-              "resolved": "https://registry.npmjs.org/lodash._basedifference/-/lodash._basedifference-4.4.1.tgz",
+              "version": "4.5.0",
+              "from": "lodash._basedifference@>=4.5.0 <4.6.0",
+              "resolved": "https://registry.npmjs.org/lodash._basedifference/-/lodash._basedifference-4.5.0.tgz",
               "dependencies": {
-                "lodash._setcache": {
-                  "version": "4.1.3",
-                  "from": "lodash._setcache@>=4.1.0 <4.2.0",
-                  "resolved": "https://registry.npmjs.org/lodash._setcache/-/lodash._setcache-4.1.3.tgz"
+                "lodash._root": {
+                  "version": "3.0.1",
+                  "from": "lodash._root@>=3.0.0 <3.1.0",
+                  "resolved": "https://registry.npmjs.org/lodash._root/-/lodash._root-3.0.1.tgz"
                 }
               }
             },
             "lodash._baseflatten": {
-              "version": "4.2.0",
+              "version": "4.2.1",
               "from": "lodash._baseflatten@>=4.2.0 <4.3.0",
-              "resolved": "https://registry.npmjs.org/lodash._baseflatten/-/lodash._baseflatten-4.2.0.tgz"
+              "resolved": "https://registry.npmjs.org/lodash._baseflatten/-/lodash._baseflatten-4.2.1.tgz"
             },
             "lodash.keysin": {
-              "version": "4.1.3",
+              "version": "4.1.4",
               "from": "lodash.keysin@>=4.0.0 <5.0.0",
-              "resolved": "https://registry.npmjs.org/lodash.keysin/-/lodash.keysin-4.1.3.tgz"
+              "resolved": "https://registry.npmjs.org/lodash.keysin/-/lodash.keysin-4.1.4.tgz"
             },
             "lodash.rest": {
-              "version": "4.0.2",
+              "version": "4.0.3",
               "from": "lodash.rest@>=4.0.0 <5.0.0",
-              "resolved": "https://registry.npmjs.org/lodash.rest/-/lodash.rest-4.0.2.tgz"
+              "resolved": "https://registry.npmjs.org/lodash.rest/-/lodash.rest-4.0.3.tgz"
             }
           }
         },
@@ -419,15 +419,15 @@
             },
             "mime": {
               "version": "1.2.11",
-              "from": "mime@>=1.2.9 <1.3.0",
+              "from": "mime@>=1.2.11 <1.3.0",
               "resolved": "https://registry.npmjs.org/mime/-/mime-1.2.11.tgz"
             }
           }
         },
         "tunnel-agent": {
-          "version": "0.4.2",
+          "version": "0.4.3",
           "from": "tunnel-agent@>=0.4.0 <0.5.0",
-          "resolved": "https://registry.npmjs.org/tunnel-agent/-/tunnel-agent-0.4.2.tgz"
+          "resolved": "https://registry.npmjs.org/tunnel-agent/-/tunnel-agent-0.4.3.tgz"
         },
         "http-signature": {
           "version": "0.10.1",

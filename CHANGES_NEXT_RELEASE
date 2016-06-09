@@ -1,6 +1,1 @@
-- Change log level using the administration API (#286)
-- FIX Max listeners reached when waiting for Keystone to authenticate (#290)
-- FIX Unica-correlator header is deprecated (#296)
-- Include service and subservice in log traces (#287)
-- Refactor on NGSIv2 operations in Orion plugin in order to align to latest changes in NGSIv2 spec (#301)
-- New config needed for the new logops library (#304)
+- Error 503 in pep when many tokens are requested simultaneously #316
