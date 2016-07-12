@@ -569,7 +569,7 @@ This is the list of actions available for the Context Broker. For every action, 
 | N/A | - |
 
 ### Standard operations
-* `create`: URL contains `/v1/updateContext` and the `actionType` attribute of the payload (either with XML or JSON) is `APPEND`.
+* `create`: URL contains `/v1/updateContext` and the `actionType` attribute of the payload (either with XML or JSON) is `APPEND` (or 'APPEND_STRICT' for v2 requests).
 * `update`: URL contains `/v1/updateContext` and the `actionType` attribute of the payload (either with XML or JSON) is `UPDATE`.
 * `delete`: URL contains `/v1/updateContext` and the `actionType` attribute of the payload (either with XML or JSON) is “DELETE”.
 * `read`: URL contains `/v1/queryContext` or `/v1/contextTypes`.
@@ -642,6 +642,7 @@ An up-to-date list of the convenience operations can be found [here](https://doc
 #### NGSIv2 
 | Method | Path                                                                                    | Action |
 | ------ |:--------------------------------------------------------------------------------------- | ---:|
+| POST   | /v2/op/query                                                                            | R |
 | GET    | /v2                                                                                     | R |
 | GET    | /v2/entities                                                                            | R |
 | GET    | /v2/entities/{entityId}                                                                | R |

@@ -1,0 +1,25 @@
+{
+  "actionType": "APPEND",
+  "entities": [
+    {
+      "type": "Room",
+      "id": "Bcn-Welt",
+      "temperature": {
+        "value": 21.7
+      },
+      "humidity": {
+        "value": 60
+      }
+    },
+    {
+      "type": "Room",
+      "id": "Mad_Aud",
+      "temperature": {
+        "value": 22.9
+      },
+      "humidity": {
+        "value": 85
+      }
+    }
+  ]
+}
