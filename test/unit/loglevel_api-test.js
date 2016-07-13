@@ -73,6 +73,37 @@ describe('Log Level API', function() {
         });
     });
 
+    describe('When a the current log level is requested through the API', function() {
+        var options = {
+            uri: 'http://localhost:' + config.resource.proxy.adminPort + '/admin/log',
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        };
+
+        it('should return a 200 OK', function(done) {
+            request(options, function(error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(200);
+
+                done();
+            });
+        });
+
+        it('should return the current log level', function(done) {
+            request(options, function(error, response, body) {
+                var parsedBody = JSON.parse(body);
+
+                should.exist(parsedBody.level);
+                parsedBody.level.should.equal('FATAL');
+
+                done();
+            });
+        });
+    });
+
     describe('When a new log level request comes to the API with an invalid level', function() {
         var options = {
             uri: 'http://localhost:' + config.resource.proxy.adminPort + '/admin/log',
