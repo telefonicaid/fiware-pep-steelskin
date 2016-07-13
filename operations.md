@@ -17,6 +17,12 @@ CURL command shows an example of how to change the logLevel to DEBUG.
 curl -X PUT "http://localhost:11211/admin/log?level=DEBUG"
 ```
 
+If the log level has been changed online, the current log level can be queried by using a GET request to the same API
+resource:
+```
+curl -X GET "http://localhost:11211/admin/log"
+```
+
 Every error message is identified with a prefix code in brackets. The code convention can be found in Apendix A.
 
 ## Fatal errors

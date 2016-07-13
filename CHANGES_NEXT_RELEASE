@@ -1,1 +1,2 @@
 - Update Context Broker plugin with v2 operations (#325).
+- Add an administrative operation to get the log level (#323).
