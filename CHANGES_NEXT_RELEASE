@@ -1,2 +1,3 @@
 - Update Context Broker plugin with v2 operations (#325).
 - Add an administrative operation to get the log level (#323).
+- Add the 'comp' field to the PEP log (#328)
