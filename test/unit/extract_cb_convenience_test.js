@@ -174,7 +174,7 @@ convenienceOperations = [
     ['DELETE', '/v2/subscriptions/theSubId', 'delete']
 ];
 
-describe.skip('Extract Context Broker action from convenience operation requests', function() {
+describe('Extract Context Broker action from convenience operation requests', function() {
     var proxy,
         mockServer,
         mockApp,
@@ -197,6 +197,7 @@ describe.skip('Extract Context Broker action from convenience operation requests
             proxy.middlewares.push(testExtraction);
 
             request(options, function(error, response, body) {
+
                 extractionExecuted.should.equal(true);
                 done();
             });
@@ -251,7 +252,7 @@ describe.skip('Extract Context Broker action from convenience operation requests
                         mockOAuthApp = appAuth;
 
                         mockOAuthApp.handler = function(req, res) {
-                            res.json(200, utils.readExampleFile('./test/authorizationResponses/rolesOfUser.json'));
+                            res.json(200, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
                         };
 
                         async.series([
