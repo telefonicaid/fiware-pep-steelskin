@@ -862,7 +862,7 @@ describe('Validate action with Access Control', function() {
         });
     });
 
-    describe.skip('[' + authenticationMechanisms[1].module + '] ' +
+    describe.only('[' + authenticationMechanisms[1].module + '] ' +
     'When a request is validated using a trust token in Keystone', function() {
         var options = {
                 uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
