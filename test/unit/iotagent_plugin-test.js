@@ -27,6 +27,7 @@ var serverMocks = require('../tools/serverMocks'),
     proxyLib = require('../../lib/fiware-pep-steelskin'),
     restPlugin = require('../../lib/plugins/restPlugin'),
     keystonePlugin = require('../../lib/services/keystoneAuth'),
+    cacheUtils = require('../../lib/services/cacheUtils'),
     config = require('../../config'),
     utils = require('../tools/utils'),
     should = require('should'),
@@ -77,7 +78,7 @@ describe('IOT Agent Plugin tests', function() {
                     'extractAction'
                 ];
 
-                keystonePlugin.cleanCache();
+                cacheUtils.clean();
                 keystonePlugin.invalidate();
 
                 proxyLib.start(function(error, proxyObj) {

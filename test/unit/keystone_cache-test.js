@@ -27,6 +27,7 @@ var serverMocks = require('../tools/serverMocks'),
     proxyLib = require('../../lib/fiware-pep-steelskin'),
     orionPlugin = require('../../lib/plugins/orionPlugin'),
     keystoneAuth = require('../../lib/services/keystoneAuth'),
+    cacheUtils = require('../../lib/services/cacheUtils'),
     async = require('async'),
     config = require('../../config'),
     utils = require('../tools/utils'),
@@ -76,7 +77,7 @@ describe('Keystone authentication cache', function() {
 
                         mockOAuthApp.handler = currentAuthentication.authMock;
 
-                        keystoneAuth.cleanCache();
+                        cacheUtils.clean();
 
                         mockAccessApp.handler = function(req, res) {
                             res.set('Content-Type', 'application/xml');
@@ -105,7 +106,7 @@ describe('Keystone authentication cache', function() {
         };
 
         beforeEach(function(done) {
-            keystoneAuth.cleanCache();
+            cacheUtils.clean();
             initializeUseCase(currentAuthentication, function() {
                 async.series([
                     async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
@@ -118,7 +119,7 @@ describe('Keystone authentication cache', function() {
         });
 
         afterEach(function(done) {
-            keystoneAuth.cleanCache();
+            cacheUtils.clean();
 
             proxyLib.stop(proxy, function(error) {
                 serverMocks.stop(mockTarget, function() {
@@ -264,7 +265,7 @@ describe('Keystone authentication cache', function() {
         };
 
         beforeEach(function(done) {
-            keystoneAuth.cleanCache();
+            cacheUtils.clean();
             initializeUseCase(currentAuthentication, function() {
                 async.series([
                     async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
@@ -277,7 +278,7 @@ describe('Keystone authentication cache', function() {
         });
 
         afterEach(function(done) {
-            keystoneAuth.cleanCache();
+            cacheUtils.clean();
 
             proxyLib.stop(proxy, function(error) {
                 serverMocks.stop(mockTarget, function() {

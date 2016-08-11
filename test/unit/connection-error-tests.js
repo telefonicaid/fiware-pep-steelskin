@@ -27,6 +27,7 @@ var serverMocks = require('../tools/serverMocks'),
     proxyLib = require('../../lib/fiware-pep-steelskin'),
     orionPlugin = require('../../lib/plugins/orionPlugin'),
     keystoneAuth = require('../../lib/services/keystoneAuth'),
+    cacheUtils = require('../../lib/services/cacheUtils'),
     async = require('async'),
     config = require('../../config'),
     utils = require('../tools/utils'),
@@ -109,7 +110,7 @@ describe('Connection error tests', function() {
                     async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
                     async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
                 ], function(error) {
-                    keystoneAuth.cleanCache();
+                    cacheUtils.clean();
                     done();
                 });
             });

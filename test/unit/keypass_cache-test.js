@@ -32,9 +32,10 @@ var serverMocks = require('../tools/serverMocks'),
     config = require('../../config'),
     utils = require('../tools/utils'),
     should = require('should'),
-    request = require('request');
+    request = require('request'),
+    EventEmitter = require('events').EventEmitter;
 
-describe('Slash in Access Control templates', function() {
+describe('Keypass authentication cache', function() {
     var proxy,
         mockTarget,
         mockTargetApp,
@@ -76,6 +77,13 @@ describe('Slash in Access Control templates', function() {
 
                         mockOAuthApp.handler = currentAuthentication.authMock;
 
+                        cacheUtils.clean();
+
+                        mockAccessApp.handler = function(req, res) {
+                            res.set('Content-Type', 'application/xml');
+                            res.send(utils.readExampleFile('./test/accessControlResponses/permitResponse.xml', true));
+                        };
+
                         done();
                     });
                 });
@@ -83,16 +91,15 @@ describe('Slash in Access Control templates', function() {
         });
     }
 
-    describe('When a request with the value "/" in the "fiware-service-path" header arrives and the user doesn\'t ' +
-    ' have domain roles', function() {
+    describe('When the keypass cache is activated and multiple requests for a user arrive', function() {
         var options = {
             uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
-                'fiware-service': 'SmartValencia',
-                'fiware-servicepath': '/Electricidad',
+                'Fiware-Service': 'SmartValencia',
+                'fiware-servicepath': 'Electricidad',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
             json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
@@ -123,29 +130,52 @@ describe('Slash in Access Control templates', function() {
             });
         });
 
-        it('should forbid the access', function(done) {
-            mockOAuthApp.handler = function(req, res) {
-                if (req.path === currentAuthentication.authPath && req.method === 'POST') {
-                    res.setHeader('X-Subject-Token', '4e92e29a90fb20701692236b4b69d547');
-                    res.json(201, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
-                } else if (req.path === '/v3/projects' && req.method === 'GET') {
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/getProjectsWithSlash.json'));
-                } else if (req.path === currentAuthentication.authPath && req.method === 'GET') {
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/getUser.json'));
-                } else {
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/rolesOfUser.json'));
-                }
-            };
+        it('should send a single request to Keypass asking for role validation', function(done) {
+            var userAccesses = 0;
 
             mockAccessApp.handler = function(req, res) {
-                req.rawBody.indexOf('/Electricidad').should.not.equal(-1);
+                userAccesses++;
                 res.set('Content-Type', 'application/xml');
                 res.send(utils.readExampleFile('./test/accessControlResponses/permitResponse.xml', true));
             };
 
-            request(options, function(error, response, body) {
+            async.series([
+                async.apply(request, options),
+                async.apply(request, options),
+                async.apply(request, options),
+                async.apply(request, options),
+                async.apply(request, options)
+            ], function(error, results) {
                 should.not.exist(error);
-                response.statusCode.should.equal(200);
+                userAccesses.should.equal(1);
+                done();
+            });
+        });
+
+        it('should forward the request to the target server with the apropriate roles', function(done) {
+            var accessControlExecuted = false,
+                requestAccesses = 0;
+
+            mockTargetApp.handler = function(req, res) {
+                requestAccesses++;
+                res.json(200, {});
+            };
+
+            mockAccessApp.handler = function(req, res) {
+                accessControlExecuted = true;
+                res.set('Content-Type', 'application/xml');
+                res.send(utils.readExampleFile('./test/accessControlResponses/permitResponse.xml', true));
+            };
+
+            async.series([
+                async.apply(request, options),
+                async.apply(request, options),
+                async.apply(request, options),
+                async.apply(request, options),
+                async.apply(request, options)
+            ], function(error, results) {
+                should.not.exist(error);
+                requestAccesses.should.equal(5);
                 done();
             });
         });
