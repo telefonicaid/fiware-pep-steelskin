@@ -26,14 +26,12 @@
 var serverMocks = require('../tools/serverMocks'),
     proxyLib = require('../../lib/fiware-pep-steelskin'),
     orionPlugin = require('../../lib/plugins/orionPlugin'),
-    keystoneAuth = require('../../lib/services/keystoneAuth'),
     cacheUtils = require('../../lib/services/cacheUtils'),
     async = require('async'),
     config = require('../../config'),
     utils = require('../tools/utils'),
     should = require('should'),
-    request = require('request'),
-    EventEmitter = require('events').EventEmitter;
+    request = require('request');
 
 describe('Keypass authentication cache', function() {
     var proxy,

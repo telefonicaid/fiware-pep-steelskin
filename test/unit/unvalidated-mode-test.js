@@ -26,7 +26,6 @@
 var serverMocks = require('../tools/serverMocks'),
     proxyLib = require('../../lib/fiware-pep-steelskin'),
     orionPlugin = require('../../lib/plugins/orionPlugin'),
-    keystonePlugin = require('../../lib/services/keystoneAuth'),
     cacheUtils = require('../../lib/services/cacheUtils'),
     async = require('async'),
     config = require('../../config'),
