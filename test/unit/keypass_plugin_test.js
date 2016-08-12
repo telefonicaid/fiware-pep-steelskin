@@ -27,6 +27,7 @@ var serverMocks = require('../tools/serverMocks'),
     proxyLib = require('../../lib/fiware-pep-steelskin'),
     keypassPlugin = require('../../lib/plugins/keypassPlugin'),
     keystonePlugin = require('../../lib/services/keystoneAuth'),
+    cacheUtils = require('../../lib/services/cacheUtils'),
     config = require('../../config'),
     utils = require('../tools/utils'),
     should = require('should'),
@@ -85,7 +86,7 @@ describe('Keypass Plugin tests', function() {
                     'extractAction'
                 ];
 
-                keystonePlugin.cleanCache();
+                cacheUtils.clean();
 
                 proxyLib.start(function(error, proxyObj) {
                     proxy = proxyObj;
@@ -167,7 +168,7 @@ describe('Keypass Plugin tests', function() {
                 proxy = proxyObj;
 
                 proxy.middlewares.push(keypassPlugin.extractAction);
-                keystonePlugin.cleanCache();
+                cacheUtils.clean();
                 keystonePlugin.invalidate();
 
                 serverMocks.start(config.resource.original.port, function(error, server, app) {
@@ -190,7 +191,7 @@ describe('Keypass Plugin tests', function() {
         }
 
         beforeEach(function(done) {
-            keystonePlugin.cleanCache();
+            cacheUtils.clean();
 
             initializeUseCase(authenticationMechanism, function() {
                 async.series([

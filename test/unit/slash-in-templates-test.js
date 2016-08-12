@@ -26,7 +26,7 @@
 var serverMocks = require('../tools/serverMocks'),
     proxyLib = require('../../lib/fiware-pep-steelskin'),
     orionPlugin = require('../../lib/plugins/orionPlugin'),
-    keystoneAuth = require('../../lib/services/keystoneAuth'),
+    cacheUtils = require('../../lib/services/cacheUtils'),
     async = require('async'),
     config = require('../../config'),
     utils = require('../tools/utils'),
@@ -98,7 +98,7 @@ describe('Slash in Access Control templates', function() {
         };
 
         beforeEach(function(done) {
-            keystoneAuth.cleanCache();
+            cacheUtils.clean();
             initializeUseCase(currentAuthentication, function() {
                 async.series([
                     async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
@@ -111,7 +111,7 @@ describe('Slash in Access Control templates', function() {
         });
 
         afterEach(function(done) {
-            keystoneAuth.cleanCache();
+            cacheUtils.clean();
 
             proxyLib.stop(proxy, function(error) {
                 serverMocks.stop(mockTarget, function() {

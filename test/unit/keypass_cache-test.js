@@ -33,9 +33,7 @@ var serverMocks = require('../tools/serverMocks'),
     should = require('should'),
     request = require('request');
 
-describe('Connection error tests', function() {
-    /* jshint loopfunc: true */
-
+describe('Keypass authentication cache', function() {
     var proxy,
         mockTarget,
         mockTargetApp,
@@ -43,7 +41,7 @@ describe('Connection error tests', function() {
         mockAccessApp,
         mockOAuth,
         mockOAuthApp,
-        authenticationMechanism = {
+        currentAuthentication = {
             module: 'keystone',
             path: '/v3/role_assignments',
             authPath: '/v3/auth/tokens',
@@ -53,6 +51,7 @@ describe('Connection error tests', function() {
             ],
             authMock: serverMocks.mockKeystone
         };
+
 
     function initializeUseCase(currentAuthentication, done) {
         config.authentication.module = currentAuthentication.module;
@@ -76,6 +75,13 @@ describe('Connection error tests', function() {
 
                         mockOAuthApp.handler = currentAuthentication.authMock;
 
+                        cacheUtils.clean();
+
+                        mockAccessApp.handler = function(req, res) {
+                            res.set('Content-Type', 'application/xml');
+                            res.send(utils.readExampleFile('./test/accessControlResponses/permitResponse.xml', true));
+                        };
+
                         done();
                     });
                 });
@@ -83,24 +89,22 @@ describe('Connection error tests', function() {
         });
     }
 
-    describe('When a request arrives to the PEP and the target app shut down the connection', function() {
+    describe('When the keypass cache is activated and multiple requests for a user arrive', function() {
         var options = {
-                uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Fiware-Service': 'SmartValencia',
-                    'fiware-servicepath': 'Electricidad',
-                    'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
-                },
-                json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
+            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Fiware-Service': 'SmartValencia',
+                'fiware-servicepath': 'Electricidad',
+                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
-            currentAuthentication = authenticationMechanism;
+            json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
+        };
 
         beforeEach(function(done) {
-            config.bypass = true;
-            config.bypassRoleId = 8907;
+            cacheUtils.clean();
             initializeUseCase(currentAuthentication, function() {
                 async.series([
                     async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
@@ -108,16 +112,12 @@ describe('Connection error tests', function() {
                     async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
                     async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
                     async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
-                ], function(error) {
-                    cacheUtils.clean();
-                    done();
-                });
+                ], done);
             });
         });
 
         afterEach(function(done) {
-            delete config.bypass;
-            delete config.bypassRoleId;
+            cacheUtils.clean();
 
             proxyLib.stop(proxy, function(error) {
                 serverMocks.stop(mockTarget, function() {
@@ -128,21 +128,52 @@ describe('Connection error tests', function() {
             });
         });
 
-        it('should return a 500 with a TARGET_SERVER_ERROR message', function(done) {
-            var accessControlExecuted = false;
+        it('should send a single request to Keypass asking for role validation', function(done) {
+            var userAccesses = 0;
+
+            mockAccessApp.handler = function(req, res) {
+                userAccesses++;
+                res.set('Content-Type', 'application/xml');
+                res.send(utils.readExampleFile('./test/accessControlResponses/permitResponse.xml', true));
+            };
+
+            async.series([
+                async.apply(request, options),
+                async.apply(request, options),
+                async.apply(request, options),
+                async.apply(request, options),
+                async.apply(request, options)
+            ], function(error, results) {
+                should.not.exist(error);
+                userAccesses.should.equal(1);
+                done();
+            });
+        });
+
+        it('should forward the request to the target server with the apropriate roles', function(done) {
+            var accessControlExecuted = false,
+                requestAccesses = 0;
 
             mockTargetApp.handler = function(req, res) {
-                req.socket.destroy();
+                requestAccesses++;
+                res.json(200, {});
             };
 
             mockAccessApp.handler = function(req, res) {
                 accessControlExecuted = true;
-                res.json(501, {});
+                res.set('Content-Type', 'application/xml');
+                res.send(utils.readExampleFile('./test/accessControlResponses/permitResponse.xml', true));
             };
 
-            request(options, function(error, response, body) {
+            async.series([
+                async.apply(request, options),
+                async.apply(request, options),
+                async.apply(request, options),
+                async.apply(request, options),
+                async.apply(request, options)
+            ], function(error, results) {
                 should.not.exist(error);
-                response.statusCode.should.equal(500);
+                requestAccesses.should.equal(5);
                 done();
             });
         });

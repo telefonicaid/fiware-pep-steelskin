@@ -26,6 +26,7 @@
 var serverMocks = require('../tools/serverMocks'),
     proxyLib = require('../../lib/fiware-pep-steelskin'),
     orionPlugin = require('../../lib/plugins/orionPlugin'),
+    cacheUtils = require('../../lib/services/cacheUtils'),
     config = require('../../config'),
     utils = require('../tools/utils'),
     should = require('should'),
@@ -196,6 +197,7 @@ describe('Extract Context Broker action from convenience operation requests', fu
             proxy.middlewares.push(testExtraction);
 
             request(options, function(error, response, body) {
+
                 extractionExecuted.should.equal(true);
                 done();
             });
@@ -227,6 +229,8 @@ describe('Extract Context Broker action from convenience operation requests', fu
     }
 
     beforeEach(function(done) {
+        cacheUtils.clean();
+
         proxyLib.start(function(error, proxyObj) {
             proxy = proxyObj;
 
@@ -248,7 +252,7 @@ describe('Extract Context Broker action from convenience operation requests', fu
                         mockOAuthApp = appAuth;
 
                         mockOAuthApp.handler = function(req, res) {
-                            res.json(200, utils.readExampleFile('./test/authorizationResponses/rolesOfUser.json'));
+                            res.json(200, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
                         };
 
                         async.series([
@@ -266,6 +270,7 @@ describe('Extract Context Broker action from convenience operation requests', fu
         proxyLib.stop(proxy, function(error) {
             serverMocks.stop(mockServer, function() {
                 serverMocks.stop(mockAccess, function() {
+                    cacheUtils.clean();
                     serverMocks.stop(mockOAuth, done);
                 });
             });

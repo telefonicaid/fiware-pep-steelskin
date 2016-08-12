@@ -29,6 +29,7 @@ var serverMocks = require('../tools/serverMocks'),
     config = require('../../config'),
     utils = require('../tools/utils'),
     keystonePlugin = require('../../lib/services/keystoneAuth'),
+    cacheUtils = require('../../lib/services/cacheUtils'),
     async = require('async'),
     should = require('should'),
     request = require('request');
@@ -85,7 +86,7 @@ describe('Extract Context Broker action from request', function() {
                         mockOAuthApp = appAuth;
 
                         mockOAuthApp.handler = serverMocks.mockKeystone;
-                        keystonePlugin.cleanCache();
+                        cacheUtils.clean();
                         keystonePlugin.invalidate();
 
                         async.series([

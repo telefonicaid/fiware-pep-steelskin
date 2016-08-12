@@ -27,6 +27,7 @@ var serverMocks = require('../tools/serverMocks'),
     proxyLib = require('../../lib/fiware-pep-steelskin'),
     orionPlugin = require('../../lib/plugins/orionPlugin'),
     keystonePlugin = require('../../lib/services/keystoneAuth'),
+    cacheUtils = require('../../lib/services/cacheUtils'),
     async = require('async'),
     config = require('../../config'),
     utils = require('../tools/utils'),
@@ -355,7 +356,7 @@ describe('Validate action with Access Control', function() {
             currentAuthentication = authenticationMechanisms[1];
 
         beforeEach(function(done) {
-            keystonePlugin.cleanCache();
+            cacheUtils.clean();
 
             initializeUseCase(currentAuthentication, function() {
                 async.series([
@@ -412,7 +413,7 @@ describe('Validate action with Access Control', function() {
             currentAuthentication = authenticationMechanisms[1];
 
         beforeEach(function(done) {
-            keystonePlugin.cleanCache();
+            cacheUtils.clean();
 
             initializeUseCase(currentAuthentication, function() {
                 async.series([
@@ -570,7 +571,7 @@ describe('Validate action with Access Control', function() {
             currentAuthentication = authenticationMechanisms[1];
 
         beforeEach(function(done) {
-            keystonePlugin.cleanCache();
+            cacheUtils.clean();
             initializeUseCase(currentAuthentication, function() {
                 async.series([
                     async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
@@ -633,7 +634,7 @@ describe('Validate action with Access Control', function() {
             currentAuthentication = authenticationMechanisms[1];
 
         beforeEach(function(done) {
-            keystonePlugin.cleanCache();
+            cacheUtils.clean();
             initializeUseCase(currentAuthentication, function() {
                 async.series([
                     async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
@@ -702,7 +703,7 @@ describe('Validate action with Access Control', function() {
             currentAuthentication = authenticationMechanisms[1];
 
         beforeEach(function(done) {
-            keystonePlugin.cleanCache();
+            cacheUtils.clean();
             initializeUseCase(currentAuthentication, function() {
                 async.series([
                     async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
@@ -767,7 +768,7 @@ describe('Validate action with Access Control', function() {
         beforeEach(function(done) {
             config.access.disable = true;
             config.authentication.checkHeaders = false;
-            keystonePlugin.cleanCache();
+            cacheUtils.clean();
             initializeUseCase(currentAuthentication, function() {
                 async.series([
                     async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
@@ -830,7 +831,7 @@ describe('Validate action with Access Control', function() {
             currentAuthentication = authenticationMechanisms[1];
 
         beforeEach(function(done) {
-            keystonePlugin.cleanCache();
+            cacheUtils.clean();
             initializeUseCase(currentAuthentication, function() {
                 async.series([
                     async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
@@ -878,7 +879,7 @@ describe('Validate action with Access Control', function() {
             currentAuthentication = authenticationMechanisms[1];
 
         beforeEach(function(done) {
-            keystonePlugin.cleanCache();
+            cacheUtils.clean();
 
             initializeUseCase(currentAuthentication, function() {
                 async.series([

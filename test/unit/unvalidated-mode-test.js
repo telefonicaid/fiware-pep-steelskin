@@ -26,7 +26,7 @@
 var serverMocks = require('../tools/serverMocks'),
     proxyLib = require('../../lib/fiware-pep-steelskin'),
     orionPlugin = require('../../lib/plugins/orionPlugin'),
-    keystonePlugin = require('../../lib/services/keystoneAuth'),
+    cacheUtils = require('../../lib/services/cacheUtils'),
     async = require('async'),
     config = require('../../config'),
     utils = require('../tools/utils'),
@@ -90,7 +90,7 @@ describe('Unvalidated mode', function() {
     beforeEach(function(done) {
         config.access.disable = true;
         config.authentication.checkHeaders = false;
-        keystonePlugin.cleanCache();
+        cacheUtils.clean();
         initializeUseCase(authenticationMechanism, function() {
             async.series([
                 async.apply(serverMocks.mockPath, authenticationMechanism.path, mockOAuthApp),
