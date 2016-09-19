@@ -6,10 +6,10 @@
 * [Error naming code](#errorcode)
 
 ## <a name="logs"/>  Logs
-There is only one log file associated with the process, in /var/log/pepProxy/pepProxy.log. This file receives the output (both error and standard) of the pepProxy service. This file is rotated with an external logrotate command.
+There is only one log file associated with each instance process, in /var/log/pepProxy/pepProxy-<instancename>.log. This file receives the output (both error and standard) of the pepProxy service. This file is rotated with an external logrotate command.
 
 The default log level is ERROR. There are two ways of changing the log level:
-* The log level can be changed by editing the LOG_LEVEL parameter in the /etc/sysconfig/pepProxy configuration file.
+* The log level can be changed by editing the LOG_LEVEL parameter in each instance process configuration file, the /etc/pepProxy/pepProxy-<instancename>.conf configuration file.
 The service must be restarted afterwards.
 * The log level can also be changed without restarting the component, by using the administration API. The following
 CURL command shows an example of how to change the logLevel to DEBUG.
