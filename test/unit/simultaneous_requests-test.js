@@ -27,7 +27,7 @@ var domain = require('domain'),
     serverMocks = require('../tools/serverMocks'),
     proxyLib = require('../../lib/fiware-pep-steelskin'),
     orionPlugin = require('../../lib/plugins/orionPlugin'),
-    keystoneAuth = require('../../lib/services/keystoneAuth'),
+    cacheUtils = require('../../lib/services/cacheUtils'),
     proxyPlugin = require('../../lib/middleware/proxy'),
     config = require('../../config'),
     utils = require('../tools/utils'),
@@ -112,7 +112,7 @@ describe('Simultaneous requests', function() {
 
     describe('When two requests arrive simultaneusly with successful tokens', function() {
         beforeEach(function(done) {
-            keystoneAuth.cleanCache();
+            cacheUtils.clean();
 
             correlatorIds = [];
             correlatorIdsPost = [];
@@ -131,7 +131,7 @@ describe('Simultaneous requests', function() {
                     async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
                     async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
                 ], function() {
-                    keystoneAuth.cleanCache();
+                    cacheUtils.clean();
                     done();
                 });
             });
@@ -184,7 +184,7 @@ describe('Simultaneous requests', function() {
 
     describe('When two requests arrive simultaneusly with wrong tokens', function() {
         beforeEach(function(done) {
-            keystoneAuth.cleanCache();
+            cacheUtils.clean();
 
             correlatorIds = [];
             correlatorIdsPost = [];
@@ -216,7 +216,7 @@ describe('Simultaneous requests', function() {
                     async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
                     async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
                 ], function() {
-                    keystoneAuth.cleanCache();
+                    cacheUtils.clean();
                     done();
                 });
             });

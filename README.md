@@ -664,6 +664,15 @@ An up-to-date list of the convenience operations can be found [here](https://doc
 | GET    | /v2/subscriptions/{subscriptionId}                                                     | R |
 | PATCH  | /v2/subscriptions/{subscriptionId}                                                     | U |
 | DELETE | /v2/subscriptions/{subscriptionId}                                                     | D |
+| POST   | /v2/op/query                                                                           | R |
+| POST   | /v2/op/update                                                                          | (*) |
+
+(*) It depends on the `actionType` (within payload):
+
+* UPDATE: U
+* APPEND: C
+* APPEND_STRICT: C
+* DELETE: D
 
 Operations marked with a slash, "-" are now deprecated. All those operations will be tagged with the special action "N/A". If you want to allow them anyway, just add a rule to the Access Control allowing the "N/A" action for the desired roles.
 
@@ -898,9 +907,8 @@ scripts/build/release.sh <NEW_VERSION> <RELEASE_TYPE>
 ```
 Usually, `RELEASE_TYPE` will be `sprint`. This release procedure will do the following steps:
 * Change the version in package.json to the selected version.
-* Merge `develop` with `master`.
 * Create a branch `release/0.6.0` and a tag `0.6.0` from `master`.
-* Add the `-next` suffix to the version in develop and clean the `CHANGES_NEXT_RELEASE` file.
+* Add the `-next` suffix to the version in master and clean the `CHANGES_NEXT_RELEASE` file.
 
 For other release types, check the command help.
 

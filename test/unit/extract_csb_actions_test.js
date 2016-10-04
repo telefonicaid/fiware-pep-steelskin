@@ -29,6 +29,7 @@ var serverMocks = require('../tools/serverMocks'),
     config = require('../../config'),
     utils = require('../tools/utils'),
     keystonePlugin = require('../../lib/services/keystoneAuth'),
+    cacheUtils = require('../../lib/services/cacheUtils'),
     async = require('async'),
     should = require('should'),
     request = require('request');
@@ -85,7 +86,7 @@ describe('Extract Context Broker action from request', function() {
                         mockOAuthApp = appAuth;
 
                         mockOAuthApp.handler = serverMocks.mockKeystone;
-                        keystonePlugin.cleanCache();
+                        cacheUtils.clean();
                         keystonePlugin.invalidate();
 
                         async.series([
@@ -118,6 +119,7 @@ describe('Extract Context Broker action from request', function() {
         ['/ngsi9/subscribeContextAvailability', 'subscribe-availability'],
         ['/ngsi9/updateContextAvailabilitySubscription', 'subscribe-availability'],
         ['/ngsi9/unsubscribeContextAvailability', 'subscribe-availability'],
+        ['/v2/op/query', 'read'],
         ['/v1/queryContext', 'read'],
         ['/v1/contextTypes', 'read'],
         ['/v1/subscribeContext', 'subscribe'],
@@ -569,7 +571,6 @@ describe('Extract Context Broker action from request', function() {
         });
     });
 
-
     describe('When a request arrives with a valid JSON payload to the proxy', function() {
         var options = {
             uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
@@ -610,4 +611,63 @@ describe('Extract Context Broker action from request', function() {
             });
         });
     });
+
+    var v2UpdateOperationMatrix = [
+        ['APPEND', 'create'],
+        ['APPEND_STRICT', 'create'],
+        ['UPDATE', 'update'],
+        ['DELETE', 'delete']
+    ];
+
+    function testV2updateAction(index) {
+        describe('When a request arrives with a valid v2 JSON /op/update "' + v2UpdateOperationMatrix[index][0] +
+            '" payload to the proxy', function() {
+
+            var options = {
+                uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    'fiware-service': 'SmartValencia',
+                    'fiware-servicepath': 'Electricidad',
+                    'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
+                },
+                json: utils.readExampleFile('./test/orionRequests/v2EntityCreation.json')
+            };
+
+            beforeEach(function(done) {
+                options.json.actionType = v2UpdateOperationMatrix[index][0];
+
+                async.series([
+                    async.apply(serverMocks.mockPath, '/v3/role_assignments', mockOAuthApp),
+                    async.apply(serverMocks.mockPath, '/v3/auth/tokens', mockOAuthApp),
+                    async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
+                    async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
+                    async.apply(serverMocks.mockPath, '/v2/op/update', mockApp)
+                ], done);
+            });
+
+            it('should proxy the request to the target URL', function(done) {
+                var mockExecuted = false;
+
+                mockApp.handler = function(req, res) {
+                    mockExecuted = true;
+                    res.json(200, {});
+                };
+
+                request(options, function(error, response, body) {
+                    mockExecuted.should.equal(true);
+                    done();
+                });
+            });
+
+            it('should add the action attribute with value "' + v2UpdateOperationMatrix[index][1] + '" to the request',
+                testAction(v2UpdateOperationMatrix[index][1], options));
+        });
+    }
+
+    for (var p = 0; p < v2UpdateOperationMatrix.length; p++) {
+        testV2updateAction(p);
+    }
 });
