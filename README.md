@@ -907,9 +907,8 @@ scripts/build/release.sh <NEW_VERSION> <RELEASE_TYPE>
 ```
 Usually, `RELEASE_TYPE` will be `sprint`. This release procedure will do the following steps:
 * Change the version in package.json to the selected version.
-* Merge `develop` with `master`.
 * Create a branch `release/0.6.0` and a tag `0.6.0` from `master`.
-* Add the `-next` suffix to the version in develop and clean the `CHANGES_NEXT_RELEASE` file.
+* Add the `-next` suffix to the version in master and clean the `CHANGES_NEXT_RELEASE` file.
 
 For other release types, check the command help.
 

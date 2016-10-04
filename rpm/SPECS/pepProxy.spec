@@ -167,6 +167,12 @@ rm -rf $RPM_BUILD_ROOT
 %{_install_dir}
 
 %changelog
+* Tue Oct 4 2016 Daniel Moran <daniel.moranjimenez@telefonica.com> 1.2.0
+- Update Context Broker plugin with v2 operations (#325).
+- Add an administrative operation to get the log level (#323).
+- Add the 'comp' field to the PEP log (#328)
+- Create a cache for Keypass requests (#324).
+
 * Thu Dec 17 2015 Daniel Moran <daniel.moranjimenez@telefonica.com> 0.7.2
 - FIX Makes loading of xacml templates relative to source code (not working directory).
 - FIX Race condition causes requests that will never be responsed (#269).
