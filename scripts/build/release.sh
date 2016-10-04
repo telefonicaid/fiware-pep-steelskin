@@ -43,8 +43,7 @@ Usage:
         generated along with the branch.
 
         - cc: code complete releases meant to be created when the product is about to go
-        into production with the rest of the platform. No tag is generated and master is not
-        updated.
+        into production with the rest of the platform. No tag is generated.
 
         - dev: intermediate releases that do not require following the same SCM specs.
 
