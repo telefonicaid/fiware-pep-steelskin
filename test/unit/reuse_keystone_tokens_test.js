@@ -88,7 +88,7 @@ describe('Reuse authentication tokens', function() {
         });
     }
 
-    describe('When a the PEP Proxy has a token and it\'s still valid', function() {
+    describe('When a PEP Proxy has a token and it\'s still valid', function() {
         var options = {
                 uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
                 method: 'POST',
@@ -151,7 +151,7 @@ describe('Reuse authentication tokens', function() {
         });
     });
 
-    describe('When a the PEP Proxy has a token and it has expired', function() {
+    describe('When a PEP Proxy has a token and it has expired', function() {
         var options = {
             uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
             method: 'POST',
@@ -227,7 +227,7 @@ describe('Reuse authentication tokens', function() {
         });
     });
 
-    describe('When a the PEP Proxy has an expired token and another request arrives to the proxy', function() {
+    describe('When a PEP Proxy has an expired token and another request arrives to the proxy', function() {
         var options = {
             uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
             method: 'POST',

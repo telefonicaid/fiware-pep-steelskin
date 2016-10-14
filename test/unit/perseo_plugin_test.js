@@ -55,7 +55,7 @@ describe('Perseo Plugin tests', function() {
         ];
 
     function apiCase(particularCase) {
-        describe('When  a ' + particularCase[0] + ' request arrives to the ' +
+        describe('When a ' + particularCase[0] + ' request arrives to the ' +
             particularCase[1] + ' url of the CEP through the PEP Proxy', function() {
 
             beforeEach(function(done) {

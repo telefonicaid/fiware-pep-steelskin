@@ -115,7 +115,7 @@ describe('REST Plugin tests', function() {
             json: {}
         };
 
-        describe('When  a ' + particularCase[0] + ' request arrives to the PEP Proxy', function() {
+        describe('When a ' + particularCase[0] + ' request arrives to the PEP Proxy', function() {
             it('should mark the action as "' + particularCase[1] + '"', function(done) {
                 var extractionExecuted = false;
 
