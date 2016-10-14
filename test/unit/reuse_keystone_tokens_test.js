@@ -276,6 +276,9 @@ describe('Reuse authentication tokens', function() {
         it('both requests should finish', function(done) {
             var bus = new EventEmitter();
 
+            var nRequests = 2;
+            var nFinishedRequests = 0;
+
             mockOAuthApp.handler = function(req, res) {
                 if (req.path === currentAuthentication.authPath && req.method === 'POST') {
                     bus.once('secondArrived', function() {
@@ -300,7 +303,10 @@ describe('Reuse authentication tokens', function() {
             bus.once('firstWaiting', function() {
                 request(options, function(error, response, body) {
                     should.not.exist(error);
-                    done();
+                    nFinishedRequests++;
+                    if (nFinishedRequests === nRequests) {
+                      done();
+                    }
                 });
 
                 setTimeout(function() {
@@ -310,6 +316,10 @@ describe('Reuse authentication tokens', function() {
 
             request(options, function(error, response, body) {
                 should.not.exist(error);
+                nFinishedRequests++;
+                if (nFinishedRequests === nRequests) {
+                  done();
+                }
             });
         });
     });
