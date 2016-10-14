@@ -52,7 +52,8 @@
     "grunt-contrib-clean": "~0.5.0",
     "grunt-githooks": "~0.3.1",
     "should": "*",
-    "nock": "*"
+    "nock": "*",
+    "closure-linter-wrapper": "*"
   },
   "keywords": []
 }
