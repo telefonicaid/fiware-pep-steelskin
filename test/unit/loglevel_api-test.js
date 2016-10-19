@@ -73,7 +73,7 @@ describe('Log Level API', function() {
         });
     });
 
-    describe('When a the current log level is requested through the API', function() {
+    describe('When the current log level is requested through the API', function() {
         var options = {
             uri: 'http://localhost:' + config.resource.proxy.adminPort + '/admin/log',
             method: 'GET',
