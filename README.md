@@ -79,6 +79,22 @@ list in the configuration section below.
 
 Take note that this command expose two ports: the 1026 port for component requests and the administration port, 11211.
 
+### Build your own Docker image
+There is also the possibility to build your own local Docker image of the PEP component.
+
+To do it, follow the next steps once you have installed Docker in your machine:
+
+1. Navigate to the path where the component repository was cloned.
+2. Launch a Docker build
+    * Using the default NodeJS version of the operating system used defined in FROM keyword of Dockerfile:
+    ```bash
+    sudo docker build -f Dockerfile .
+    ```
+    * Using an alternative NodeJS version:
+    ```bash
+    sudo docker build --build-arg NODEJS_VERSION=0.10.46 -f Dockerfile .
+    ```
+
 ### Undeployment
 In order to undeploy the proxy:
 * If it was installed directly from the GIT repositories, just kill the process and remove the directory.
