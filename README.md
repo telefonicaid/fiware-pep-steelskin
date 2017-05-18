@@ -154,7 +154,7 @@ The authentication process is based on OAuth v2 tokens. The PEP Proxy expects al
 
 PEP Proxy currently supports two possible authentication authorities: Keyrock IdM and Openstack Keystone. The following sections show how to retrieve a token with each of this authentication technologies. The module can be configured using the config.authentication.module option.
 
-#### IdM
+#### Keyrock IdM
 
 In order to get an access token to send with the request, a user can send a request to the IDM, with its user and password (here shown as a curl request):
 
