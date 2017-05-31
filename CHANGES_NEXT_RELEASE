@@ -1,1 +1,2 @@
 - FIX text/plain bodies are not forwarded (impacting on "PUT /v2/entities/E/attrs/A/value" operation for CB) [#345]
+- FIX size of validation cache according with cacheTTLS.validation instead of cacheTTLS.users [#349]
