@@ -29,7 +29,6 @@
     "node-cache": "1.0.3",
     "request": "2.39.0",
     "sax": "0.6.0",
-    "simple-node-logger": "^0.93.28",
     "underscore": "1.7.0",
     "uuid": "^3.0.0"
   },
