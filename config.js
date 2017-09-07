@@ -8,7 +8,7 @@ config.resource = {
         /**
          * Host that is being proxied.
          */
-        host: '127.0.0.1',
+        host: 'localhost',
 
         /**
          * Port where the proxied server is listening.
@@ -48,11 +48,11 @@ config.access = {
     /**
      * Host where the Access Control is located.
      */
-    host: '127.0.0.1',
+    host: 'localhost',
     /**
      * Port where the Access Control is listening.
      */
-    port: 17070,
+    port: 7070,
     /**
      * Path of the authentication action.
      */
@@ -75,8 +75,8 @@ config.access = {
 config.authentication = {
     checkHeaders: true,
     module: 'keystone',
-    user: 'pep',
-    password: '4pass1w0rd',
+    user: 'pepproxy',
+    password: 'pepproxy',
     domainName: 'admin_domain',
     retries: 3,
     cacheTTLs: {
@@ -87,7 +87,7 @@ config.authentication = {
     },
     options: {
         protocol: 'http',
-        host: '127.0.0.1',
+        host: 'localhost',
         port: 5001,
         path: '/v3/role_assignments',
         authPath: '/v3/auth/tokens'
@@ -118,7 +118,7 @@ config.ssl = {
 /**
  * Default log level. Can be one of: 'DEBUG', 'INFO', 'WARN', 'ERROR', 'FATAL'
  */
-config.logLevel = 'DEBUG';
+config.logLevel = 'FATAL';
 
 // List of component middlewares
 //-------------------------------------------------
