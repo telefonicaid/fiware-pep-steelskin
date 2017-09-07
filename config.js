@@ -8,7 +8,7 @@ config.resource = {
         /**
          * Host that is being proxied.
          */
-        host: 'localhost',
+        host: '127.0.0.1',
 
         /**
          * Port where the proxied server is listening.
@@ -48,16 +48,24 @@ config.access = {
     /**
      * Host where the Access Control is located.
      */
-    host: 'localhost',
+    host: '127.0.0.1',
     /**
      * Port where the Access Control is listening.
      */
-    port: 7070,
+    port: 17070,
     /**
      * Path of the authentication action.
      */
-    path: '/pdp/v3'
-}
+    path: '/pdp/v3',
+    /**
+     * Enable Log Account user/domain/action.
+     */
+    account: true,
+    /**
+     * Log Account file
+     */
+    accountFile: '/tmp/pepAccount.log'
+};
 
 // User identity configuration
 //--------------------------------------------------
@@ -67,8 +75,8 @@ config.access = {
 config.authentication = {
     checkHeaders: true,
     module: 'keystone',
-    user: 'pepproxy',
-    password: 'pepproxy',
+    user: 'pep',
+    password: '4pass1w0rd',
     domainName: 'admin_domain',
     retries: 3,
     cacheTTLs: {
@@ -79,8 +87,8 @@ config.authentication = {
     },
     options: {
         protocol: 'http',
-        host: 'localhost',
-        port: 5000,
+        host: '127.0.0.1',
+        port: 5001,
         path: '/v3/role_assignments',
         authPath: '/v3/auth/tokens'
     }
@@ -110,7 +118,7 @@ config.ssl = {
 /**
  * Default log level. Can be one of: 'DEBUG', 'INFO', 'WARN', 'ERROR', 'FATAL'
  */
-config.logLevel = 'FATAL';
+config.logLevel = 'DEBUG';
 
 // List of component middlewares
 //-------------------------------------------------
