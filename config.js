@@ -88,7 +88,7 @@ config.authentication = {
     options: {
         protocol: 'http',
         host: 'localhost',
-        port: 5001,
+        port: 5000,
         path: '/v3/role_assignments',
         authPath: '/v3/auth/tokens'
     }
