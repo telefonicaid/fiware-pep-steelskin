@@ -1,6 +1,8 @@
 language: node_js
 
 node_js:
+ - "0.10"
+ - "4"
  - "6"
 
 branches:
@@ -17,4 +19,3 @@ before_install:
  - npm update -q
  - npm install -g grunt-cli
 
-dist: precise
