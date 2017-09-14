@@ -16,3 +16,5 @@ install:
 before_install:
  - npm update -q
  - npm install -g grunt-cli
+
+dist: precise
