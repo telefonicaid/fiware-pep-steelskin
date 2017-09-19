@@ -122,7 +122,7 @@ module.exports = function(grunt) {
                 },
                 src: [
                     'tools/mocha-globals.js',
-                    '<%= jshint.test.src %>'
+                    //'<%= jshint.test.src %>'
                 ]
             },
             unitReport: {
