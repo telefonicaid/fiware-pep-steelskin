@@ -121,7 +121,8 @@ module.exports = function(grunt) {
                     reporter: 'spec'
                 },
                 src: [
-                    'tools/mocha-globals.js',
+                    'tools/mocha-globals.js'
+                    // Disabled by travis & nodejs 0.10:
                     //'<%= jshint.test.src %>'
                 ]
             },
