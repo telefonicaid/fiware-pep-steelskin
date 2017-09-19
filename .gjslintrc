@@ -7,3 +7,4 @@
 --time
 --disable=210,220
 --max_line_length=120
+--exclude_directories=node_modules

@@ -55,6 +55,18 @@ describe('Perseo Plugin tests', function() {
         ];
 
     function apiCase(particularCase) {
+        var options = {
+            uri: 'http://localhost:' + config.resource.proxy.port + particularCase[1],
+            method: particularCase[0],
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+                'Fiware-Service': 'frn:contextbroker:551:::',
+                'fiware-servicepath': '833',
+                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
+            },
+            json: {}
+        };
         describe('When a ' + particularCase[0] + ' request arrives to the ' +
             particularCase[1] + ' url of the CEP through the PEP Proxy', function() {
 
@@ -130,19 +142,6 @@ describe('Perseo Plugin tests', function() {
                 });
             });
         });
-
-        var options = {
-            uri: 'http://localhost:' + config.resource.proxy.port + particularCase[1],
-            method: particularCase[0],
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'Fiware-Service': 'frn:contextbroker:551:::',
-                'fiware-servicepath': '833',
-                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
-            },
-            json: {}
-        };
     }
 
     apiCases.forEach(apiCase);
