@@ -56,8 +56,16 @@ config.access = {
     /**
      * Path of the authentication action.
      */
-    path: '/pdp/v3'
-}
+    path: '/pdp/v3',
+    /**
+     * Enable Log Account user/domain/action.
+     */
+    account: true,
+    /**
+     * Log Account file
+     */
+    accountFile: '/tmp/pepAccount.log'
+};
 
 // User identity configuration
 //--------------------------------------------------
