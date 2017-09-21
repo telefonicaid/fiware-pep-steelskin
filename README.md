@@ -442,6 +442,10 @@ In order to have the proxy running, there are several basic pieces of informatio
     accountFile: '/tmp/pepAccount.log'
 }
 ```
+Example of access log:
+```
+Right Attempt | ResponseStatus=200 | Token=860864fb6d1a4c8a8cb7d59d16daaa52 | Origin=192.168.1.125 | UserId=62c63ada8694451fb67a341346172499 | ServiceId=a9b38dd2a97e4944b2daebdb74ed60ff | Service=smartgondor | SubServiceId=/ | SubService=/ | Action=read | Date=2017-09-21T12:46:57.844Z
+```
 * `config.componentName`: name of the component that will be used to compose the FRN that will identify the resource to be accessed. E.g.: `orion`.
 * `config.resourceNamePrefix`: string prefix that will be used to compose the FRN that will identify the resource to be accessed. E.g.: `fiware:`.
 * `config.bypass`: used to activate the administration bypass in the proxy. Valid values are `true` or `false`.
