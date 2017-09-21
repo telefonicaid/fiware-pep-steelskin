@@ -430,14 +430,16 @@ In order to have the proxy running, there are several basic pieces of informatio
     port: 10026
 },
 ```
-* `config.access`: connection information to the selected Access Control PDP API. Includes a `disable` flag, to allow the proxy to work in authentication-only mode. E.g.:
+* `config.access`: connection information to the selected Access Control PDP API. Includes a `disable` flag, to allow the proxy to work in authentication-only mode and a flag to activate accounting access in file. E.g.:
 ```
 {
     disable: false,
     protocol: 'http',
     host: 'localhost',
     port: 7070,
-    path: '/pdp/v3'
+    path: '/pdp/v3',
+    account: false,
+    accountFile: '/tmp/pepAccount.log'
 }
 ```
 * `config.componentName`: name of the component that will be used to compose the FRN that will identify the resource to be accessed. E.g.: `orion`.
@@ -486,6 +488,8 @@ Some of the configuration values for the attributes above mentioned can be overr
 | ACCESS_HOST          | config.access.host                  |
 | ACCESS_PORT          | config.access.port                  |
 | ACCESS_PROTOCOL      | config.access.protocol              |
+| ACCESS_ACCOUNT       | config.access.account               |
+| ACCESS_ACCOUNTFILE   | config.access.accountFile           |
 | AUTHENTICATION_HOST  | config.authentication.options.host  |
 | AUTHENTICATION_PORT  | config.authentication.options.port  |
 | AUTHENTICATION_PROTOCOL  | config.authentication.options.protocol  |
