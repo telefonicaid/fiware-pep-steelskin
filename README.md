@@ -442,6 +442,16 @@ In order to have the proxy running, there are several basic pieces of informatio
     accountFile: '/tmp/pepAccount.log'
 }
 ```
+Note that accunting log is not rotate, so you should make sure you configure your own rotation system.
+Accounting access log include daba about:
+* Attempt was right or not
+* Token
+* Origin
+* UserId
+* ServiceId
+* SubServiceId
+* Action
+* Date
 Example of access log:
 ```
 Right Attempt | ResponseStatus=200 | Token=860864fb6d1a4c8a8cb7d59d16daaa52 | Origin=192.168.1.125 | UserId=62c63ada8694451fb67a341346172499 | ServiceId=a9b38dd2a97e4944b2daebdb74ed60ff | Service=smartgondor | SubServiceId=/ | SubService=/ | Action=read | Date=2017-09-21T12:46:57.844Z
