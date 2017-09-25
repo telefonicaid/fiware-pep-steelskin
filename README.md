@@ -430,15 +430,31 @@ In order to have the proxy running, there are several basic pieces of informatio
     port: 10026
 },
 ```
-* `config.access`: connection information to the selected Access Control PDP API. Includes a `disable` flag, to allow the proxy to work in authentication-only mode. E.g.:
+* `config.access`: connection information to the selected Access Control PDP API. Includes a `disable` flag, to allow the proxy to work in authentication-only mode and a flag to activate accounting access in file. E.g.:
 ```
 {
     disable: false,
     protocol: 'http',
     host: 'localhost',
     port: 7070,
-    path: '/pdp/v3'
+    path: '/pdp/v3',
+    account: false,
+    accountFile: '/tmp/pepAccount.log'
 }
+```
+Note that accunting log is not rotate, so you should make sure you configure your own rotation system.
+Accounting access log include daba about:
+* Attempt was right or not
+* Token
+* Origin
+* UserId
+* ServiceId
+* SubServiceId
+* Action
+* Date
+Example of access log:
+```
+Right Attempt | ResponseStatus=200 | Token=860864fb6d1a4c8a8cb7d59d16daaa52 | Origin=192.168.1.125 | UserId=62c63ada8694451fb67a341346172499 | ServiceId=a9b38dd2a97e4944b2daebdb74ed60ff | Service=smartgondor | SubServiceId=/ | SubService=/ | Action=read | Date=2017-09-21T12:46:57.844Z
 ```
 * `config.componentName`: name of the component that will be used to compose the FRN that will identify the resource to be accessed. E.g.: `orion`.
 * `config.resourceNamePrefix`: string prefix that will be used to compose the FRN that will identify the resource to be accessed. E.g.: `fiware:`.
@@ -486,6 +502,8 @@ Some of the configuration values for the attributes above mentioned can be overr
 | ACCESS_HOST          | config.access.host                  |
 | ACCESS_PORT          | config.access.port                  |
 | ACCESS_PROTOCOL      | config.access.protocol              |
+| ACCESS_ACCOUNT       | config.access.account               |
+| ACCESS_ACCOUNTFILE   | config.access.accountFile           |
 | AUTHENTICATION_HOST  | config.authentication.options.host  |
 | AUTHENTICATION_PORT  | config.authentication.options.port  |
 | AUTHENTICATION_PROTOCOL  | config.authentication.options.protocol  |
