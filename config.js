@@ -60,7 +60,7 @@ config.access = {
     /**
      * Enable Log Account user/domain/action.
      */
-    account: true,
+    account: false,
     /**
      * Log Account file
      */
