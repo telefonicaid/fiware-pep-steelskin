@@ -168,6 +168,12 @@ rm -rf $RPM_BUILD_ROOT
 %{_install_dir}
 
 %changelog
+* Wed Oct 18 2017 Fermin Galan <fermin.galanmarquez@telefonica.com> 1.3.0
+- FEATURE update node version to 4.8.4
+- FEATURE access accounting in a file of each operation (including user, service/servicepath and action) [#350]
+- FIX text/plain bodies are not forwarded (impacting on "PUT /v2/entities/E/attrs/A/value" operation for CB) [#345]
+- FIX size of validation cache according with cacheTTLS.validation instead of cacheTTLS.users [#349]
+
 * Tue Oct 4 2016 Daniel Moran <daniel.moranjimenez@telefonica.com> 1.2.0
 - Update Context Broker plugin with v2 operations (#325).
 - Add an administrative operation to get the log level (#323).
