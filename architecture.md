@@ -3,7 +3,7 @@
 This document explains with greater detail the architecture where the PEP Proxy is inserted.
 
 ## <a name="architecture"/> Architecture Description
-Orion Policy Enforcement Point Proxy is part of the authorization mechanism of the FIWARE platform. This authorization mechanism is based in OAuth 2.0, and it makes use of tokens to identify the user.
+Orion Policy Enforcement Point Proxy is part of the authorization mechanism of the FIWARE platform. This authorization mechanism is based in access tokens, and it makes use of tokens to identify the user.
 ![Alt text](https://raw.githubusercontent.com/telefonicaid/fiware-pep-steelskin/develop/img/arquitecture.png "Authorization Architecture")
 Each request to a component holds some extra information (apart from the token) that can be used to identify what kind of action is requested to be executed and over what entity. This information may be explicit (using headers) or implicit (being part of the payload or the URL). The first task of the proxy is to extract this information; the way of extracting it depends on the particular component that it's being proxied (currently there are four plugins, supporing Orion Context Broker, Perseo Complex Event Processing and Keypass PAP API, as well as a generic REST one).
 
