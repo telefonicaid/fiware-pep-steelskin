@@ -63,7 +63,7 @@
               "dependencies": {
                 "uid2": {
                   "version": "0.0.3",
-                  "from": "uid2@>=0.0.2 <0.1.0",
+                  "from": "uid2@0.0.3",
                   "resolved": "https://registry.npmjs.org/uid2/-/uid2-0.0.3.tgz"
                 }
               }
@@ -90,7 +90,7 @@
                 },
                 "uid2": {
                   "version": "0.0.3",
-                  "from": "uid2@>=0.0.2 <0.1.0",
+                  "from": "uid2@0.0.3",
                   "resolved": "https://registry.npmjs.org/uid2/-/uid2-0.0.3.tgz"
                 },
                 "debug": {
@@ -307,9 +307,9 @@
       }
     },
     "mustache": {
-      "version": "0.8.2",
-      "from": "mustache@0.8.2",
-      "resolved": "https://registry.npmjs.org/mustache/-/mustache-0.8.2.tgz"
+      "version": "2.2.1",
+      "from": "mustache@2.2.1",
+      "resolved": "https://registry.npmjs.org/mustache/-/mustache-2.2.1.tgz"
     },
     "node-cache": {
       "version": "1.0.3",
