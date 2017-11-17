@@ -168,6 +168,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_install_dir}
 
 %changelog
+* Fri Nov 17 2017 Fermin Galan <fermin.galanmarquez@telefonica.com> 1.3.1
+- Fix mustache dependence version to 2.2.1 due to detected medium vulnerability
+
 * Wed Oct 18 2017 Fermin Galan <fermin.galanmarquez@telefonica.com> 1.3.0
 - FEATURE update node version to 4.8.4
 - FEATURE access accounting in a file of each operation (including user, service/servicepath and action) [#350]
