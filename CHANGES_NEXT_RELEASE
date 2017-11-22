@@ -1,1 +1,2 @@
 Fix mustache dependence version to 2.2.1 due to detected medium vulnerability
+Fix allow log level in uppercase for access logger and lowercase for tracerequest
