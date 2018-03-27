@@ -442,6 +442,7 @@ In order to have the proxy running, there are several basic pieces of informatio
     accountFile: '/tmp/pepAccount.log'
 }
 ```
+Accounting log is only activated when account flag is true and debug log is INFO or DEBUG level (note that log level can be changed through API without restart)
 Note that accunting log is not rotate, so you should make sure you configure your own rotation system.
 Accounting access log include daba about:
 * Attempt was right or not
