@@ -18,7 +18,7 @@ and what it offers. Take care of changing all the passwords used along this docu
 
 ## Installation
 
-This installation document is based on a CentOS 6.5 distribution. 
+This installation document is based on a CentOS 7 distribution. 
 
 This guide is based in [this guide](https://openstack.redhat.com/Quickstart) and
 [this one](http://docs.openstack.org/icehouse/install-guide/install/yum/content/keystone-install.html).
@@ -27,9 +27,10 @@ This guide is based in [this guide](https://openstack.redhat.com/Quickstart) and
 
 ```sh
 sudo yum update -y
+
 sudo yum install -y epel-release
 sudo yum update -y epel-release
-sudo yum install -y https://repos.fedorapeople.org/repos/openstack/openstack-icehouse/rdo-release-icehouse-4.noarch.rpm
+sudo yum install -y https://repos.fedorapeople.org/openstack/EOL/openstack-liberty/rdo-release-liberty-5.noarch.rpm
 sudo yum install -y openstack-utils openstack-keystone python-keystoneclient mysql-server
 sudo service mysqld start
 sudo chkconfig mysqld on
