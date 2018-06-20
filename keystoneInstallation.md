@@ -18,7 +18,7 @@ and what it offers. Take care of changing all the passwords used along this docu
 
 ## Installation
 
-This installation document is based on a CentOS 6.5 distribution. 
+This installation document is based on a CentOS 7 distribution. 
 
 This guide is based in [this guide](https://openstack.redhat.com/Quickstart) and
 [this one](http://docs.openstack.org/icehouse/install-guide/install/yum/content/keystone-install.html).
