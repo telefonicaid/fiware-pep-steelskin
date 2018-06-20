@@ -28,7 +28,7 @@ This guide is based in [this guide](https://openstack.redhat.com/Quickstart) and
 ```sh
 sudo yum update -y
 sudo yum install -y http://ftp.cica.es/epel/6/x86_64/epel-release-6-8.noarch.rpm
-sudo yum install -y https://repos.fedorapeople.org/repos/openstack/openstack-icehouse/rdo-release-icehouse-4.noarch.rpm
+sudo yum install -y https://repos.fedorapeople.org/openstack/EOL/openstack-liberty/rdo-release-liberty-5.noarch.rpm
 sudo yum install -y openstack-utils openstack-keystone python-keystoneclient mysql-server
 sudo service mysqld start
 sudo chkconfig mysqld on
