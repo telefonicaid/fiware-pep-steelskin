@@ -30,8 +30,8 @@
     "request": "2.39.0",
     "sax": "0.6.0",
     "underscore": "1.7.0",
-    "uuid": "^3.0.0",
-    "winston": "^2.3.1"
+    "uuid": "~3.0.0",
+    "winston": "~2.3.1"
   },
   "devDependencies": {
     "grunt-contrib-jshint": "~0.6.4",
@@ -53,8 +53,8 @@
     "grunt-contrib-clean": "~0.5.0",
     "grunt-githooks": "~0.3.1",
     "closure-linter-wrapper": "~0.2.0",
-    "should": "*",
-    "nock": "*"
+    "should": "8.4.0",
+    "nock": "9.0.14"
   },
   "keywords": []
 }
