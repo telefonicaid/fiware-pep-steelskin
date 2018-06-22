@@ -41,10 +41,11 @@ rm -Rf $RPM_BUILD_ROOT && mkdir -p $RPM_BUILD_ROOT
 cp -R %{_srcdir}/lib \
       %{_srcdir}/bin \
       %{_srcdir}/config.js \
-      %{_srcdir}/package.json \
-      %{_srcdir}/npm-shrinkwrap.json \
+      %{_srcdir}/package.json \      
       %{_srcdir}/LICENSE \
       %{_build_root_project}
+
+[ -f %{_srcdir}/npm-shrinkwrap.json ] && /bin/cp %{_srcdir}/npm-shrinkwrap.json %{_build_root_project}      
 
 cp -R %{_topdir}/SOURCES/etc %{buildroot}
 
