@@ -41,7 +41,7 @@ rm -Rf $RPM_BUILD_ROOT && mkdir -p $RPM_BUILD_ROOT
 cp -R %{_srcdir}/lib \
       %{_srcdir}/bin \
       %{_srcdir}/config.js \
-      %{_srcdir}/package.json \      
+      %{_srcdir}/package.json \
       %{_srcdir}/LICENSE \
       %{_build_root_project}
 
