@@ -1,4 +1,3 @@
-Fix paramiko version to 2.0.9
 Fix check boolean config fields against right boolean value
 Fix mustache dependence version to 2.2.1 due to detected medium vulnerability
 Fix allow log level in uppercase for access logger and lowercase for tracerequest
