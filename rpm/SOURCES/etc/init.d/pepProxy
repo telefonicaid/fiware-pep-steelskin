@@ -95,7 +95,7 @@ component_start()
             continue
         fi
 
-        su $PROXY_USER -p -c "cd ${COMPONENT_PATH}; ${COMPONENT_EXE} &>> ${LOG_FILE} & echo \$! > ${PID_FILE}"
+        su $PROXY_USER -p -c "cd ${COMPONENT_PATH}; ${COMPONENT_EXE} ${NAME} &>> ${LOG_FILE} & echo \$! > ${PID_FILE}"
         sleep 2 # some cortesy time to process startup or die
         local PID=$(cat ${PID_FILE})
         local PEP_PID=$(ps -ef | grep -v "grep" | grep "${PID:-not_found}")
