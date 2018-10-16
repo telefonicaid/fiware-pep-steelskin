@@ -47,6 +47,20 @@ COMPONENT_PATH="/opt/${PEP_COMPONENT_NAME}"
 COMPONENT_EXE="${COMPONENT_PATH}/bin/${PEP_COMPONENT_NAME}"
 COMPONENT_CONF_PATH="/etc/${PEP_COMPONENT_NAME}.d"
 COMPONENT_PREFIX="pepproxy_"
+PSINFO=""
+PSPATTERN=""
+# No path for Node
+NODEPATH="node"
+
+
+# The first parameter is optional and define the instancename
+function psinfo
+{
+  [[ "${1}" == "" ]] && PSPATTERN="${NODEPATH} ${COMPONENT_EXE}"
+  [[ "${1}" != "" ]] && PSPATTERN="${NODEPATH} ${COMPONENT_EXE} ${1}\$"
+  # TODO: For RH7 we will use pgrep -la -f "PATTERN"
+  PSINFO="$(pgrep -l -f "^${PSPATTERN}")"
+}
 
 component_start()
 {
@@ -67,9 +81,9 @@ component_start()
 
     if [[ $(ls -l ${list_instances} 2> /dev/null | wc -l) -eq 0 ]]; then
         if [[ ${run_instance} == "" ]]; then
-            printf "%s\n" "There aren't any instance of PEP Proxy configured. Refer to file ${COMPONENT_CONF_PATH}/README.md for further information."
+            printf "%s\n" "There aren't any instance of ${PEP_COMPONENT_NAME} configured. Refer to file ${COMPONENT_CONF_PATH}/README.md for further information."
         else
-            printf "%s\n" "There aren't any instance of PEP Proxy configured with the name ${run_instance}. Refer to file ${COMPONENT_CONF_PATH}/README.md for further information."
+            printf "%s\n" "There aren't any instance of ${PEP_COMPONENT_NAME} configured with the name ${run_instance}. Refer to file ${COMPONENT_CONF_PATH}/README.md for further information."
         fi
         return 1
     fi
@@ -87,7 +101,7 @@ component_start()
         local LOG_FILE="/var/log/${PEP_COMPONENT_NAME}/${COMPONENT_PREFIX}${NAME}.log"
         local PID_FILE="/var/run/${PEP_COMPONENT_NAME}/${COMPONENT_PREFIX}${NAME}.pid"
 
-        printf "%s" "Starting PEP Proxy ${NAME}...  "
+        printf "%s" "Starting instance ${NAME} of ${PEP_COMPONENT_NAME}... "
 
         status -p ${PID_FILE} ${COMPONENT_EXE} &> /dev/null 
         if [[ ${?} -eq 0 ]]; then
@@ -119,39 +133,42 @@ component_stop()
     local result=0
     local run_instance=${1}
 
-
     if [[ -z ${run_instance} ]]; then
-        list_run_instances="/var/run/${PEP_COMPONENT_NAME}/${COMPONENT_PREFIX}*.pid"
+        list_instances="${COMPONENT_CONF_PATH}/${COMPONENT_PREFIX}*.conf"
     else
-        list_run_instances="/var/run/${PEP_COMPONENT_NAME}/${COMPONENT_PREFIX}${run_instance}.pid"
+        list_instances="${COMPONENT_CONF_PATH}/${COMPONENT_PREFIX}${run_instance}.conf"
     fi
 
-    if [[ $(ls -l ${list_run_instances} 2> /dev/null | wc -l) -eq 0 ]]; then
-        printf "%s\n" "There aren't any instance of PEP Proxy ${run_instance} running $(success)"
+    if [[ $(ls -l ${list_instances} 2> /dev/null | wc -l) -eq 0 ]]; then
+        printf "%s\n" "There aren't any instance of ${PEP_COMPONENT_NAME} running $(success)"
         return 0
     fi
 
-    for _instance in ${list_run_instances}
+    for _instance in ${list_instances}
     do
 
         local NAME
-        NAME=${_instance%.pid}
+        NAME=${_instance%.conf}
         NAME=${NAME#*${COMPONENT_PREFIX}}
 
-        printf "%s" "Stopping PEP Proxy ${NAME}..."
+        printf "%s" "Stopping instance ${NAME} of ${PEP_COMPONENT_NAME}... "
 
-        local RUN_PID=$(cat ${_instance})
-        kill ${RUN_PID}  &> /dev/null
-        sleep 2 # time to die properly
-        local KILLED_PID=$(ps -ef | grep ${RUN_PID} | grep -v grep | awk '{print $2}')
-        if [[ -z ${KILLED_PID} ]]; then
-            printf "%s\n" "$(success)"
+        # Obtain process status
+        psinfo ${NAME}
+        if [ -z "${PSINFO}" ]
+        then
+          echo "INFO: Instance ${NAME} of ${PEP_COMPONENT_NAME} it is not running. Do not nothing"
         else
-            printf "%s\n" "$(failure)"
-            result=$((${result}+1))
+          echo "INFO: Stop instance ${NAME} of ${PEP_COMPONENT_NAME}... "
+          echo "${PSINFO}"
+          echo "${PSINFO}" | awk '{print $1}' | xargs -r kill
+          sleep 1
+          psinfo ${NAME}
+          echo "${PSINFO}" | awk '{print $1}' | xargs -r kill -9
         fi
 
-        rm -f ${_instance} &> /dev/null 
+        # Remove the PID file instance
+        rm -f /var/run/${PEP_COMPONENT_NAME}/${COMPONENT_PREFIX}${NAME}.pid &> /dev/null 
 
     done
     return ${result}
@@ -169,7 +186,7 @@ component_status()
     fi
 
     if [[ $(ls -l ${list_run_instances} 2> /dev/null | wc -l) -eq 0 ]]; then
-        printf "%s\n" "There aren't any instance of PEP Proxy ${run_instance} running."
+        printf "%s\n" "There aren't any instance of ${PEP_COMPONENT_NAME} running."
         return 1
     fi
 
@@ -180,7 +197,7 @@ component_status()
         NAME=${_instance%.pid}
         NAME=${NAME#*${COMPONENT_PREFIX}}
 
-        printf "%s\n" "PEP Proxy ${NAME} status..."
+        printf "%s\n" "${PEP_COMPONENT_NAME} instance ${NAME} status... "
         status -p ${_instance} ${NODE_EXEC}
         result=$((${result}+${?}))
 
@@ -209,3 +226,4 @@ case ${PARAM} in
         ;;
 
 esac
+
