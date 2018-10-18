@@ -1,3 +1,5 @@
+Add: init script in RPM is able to deal with multiple instances of PEP running on the same system (#390)
+Fix: init script in RPM fixes start stop errors in pep service (#390)
 Fix check boolean config fields against right boolean value
 Fix mustache dependence version to 2.2.1 due to detected medium vulnerability
 Fix allow log level in uppercase for access logger and lowercase for tracerequest
