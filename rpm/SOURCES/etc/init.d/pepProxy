@@ -47,13 +47,19 @@ COMPONENT_PATH="/opt/${PEP_COMPONENT_NAME}"
 COMPONENT_EXE="${COMPONENT_PATH}/bin/${PEP_COMPONENT_NAME}"
 COMPONENT_CONF_PATH="/etc/${PEP_COMPONENT_NAME}.d"
 COMPONENT_PREFIX="pepproxy_"
+# The PSINFO stores the output of psinfo function that shown the process area (ps) filtered by a PATTERN regexp
 PSINFO=""
+# The regexp used for filter in the process area (ps)
 PSPATTERN=""
 # No path for Node
 NODEPATH="node"
 
 
+# Function that show the process area (ps) filtered by a regexp (PSPATTERN)
 # The first parameter is optional and define the instancename
+# Two behavihours
+# - Find all results for all instances of one service "${NODEPATH} ${COMPONENT_EXE}"
+# - Find all results for one instance of one service "${NODEPATH} ${COMPONENT_EXE} ${1}\$"
 function psinfo
 {
   [[ "${1}" == "" ]] && PSPATTERN="${NODEPATH} ${COMPONENT_EXE}"
@@ -109,6 +115,7 @@ component_start()
             continue
         fi
 
+        # Launch one instance with first parameter  being the name of instance
         su $PROXY_USER -p -c "cd ${COMPONENT_PATH}; ${COMPONENT_EXE} ${NAME} &>> ${LOG_FILE} & echo \$! > ${PID_FILE}"
         sleep 2 # some cortesy time to process startup or die
         local PID=$(cat ${PID_FILE})
