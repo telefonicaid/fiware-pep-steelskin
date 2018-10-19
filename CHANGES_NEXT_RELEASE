@@ -4,3 +4,4 @@ Fix check boolean config fields against right boolean value
 Fix mustache dependence version to 2.2.1 due to detected medium vulnerability
 Fix allow log level in uppercase for access logger and lowercase for tracerequest
 Using precise dependencies (~=) in packages.json
+Add: upgrade Dockerfile to use node 6
