@@ -169,6 +169,14 @@ rm -rf $RPM_BUILD_ROOT
 %{_install_dir}
 
 %changelog
+* Mon Oct 22 2018 Fermin Galan <fermin.galanmarquez@telefonica.com> 1.4.0
+- Add: init script in RPM is able to deal with multiple instances of PEP running on the same system (#390)
+- Fix: init script in RPM fixes start stop errors in pep service (#390)
+- Fix: check boolean config fields against right boolean value
+- Fix: mustache dependence version to 2.2.1 due to detected medium vulnerability
+- Fix: allow log level in uppercase for access logger and lowercase for tracerequest
+- Using precise dependencies (~=) in packages.json
+
 * Wed Oct 18 2017 Fermin Galan <fermin.galanmarquez@telefonica.com> 1.3.0
 - FEATURE update node version to 4.8.4
 - FEATURE access accounting in a file of each operation (including user, service/servicepath and action) [#350]
