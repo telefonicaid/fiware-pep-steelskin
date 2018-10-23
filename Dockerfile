@@ -23,7 +23,7 @@ FROM centos:7
 
 MAINTAINER Daniel Moran Jimenez <daniel.moranjimenez@telefonica.com>
 
-ARG NODEJS_VERSION=6.10.3
+ARG NODEJS_VERSION=8.12.0
 
 COPY . /opt/fiware-pep-steelskin/
 WORKDIR /opt/fiware-pep-steelskin
