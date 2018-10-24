@@ -20,7 +20,7 @@
 # please contact with: [daniel.moranjimenez@telefonica.com]
 
 FROM node:8.12.0-slim
-MAINTAINER FIWARE PeP Team. TelefÃ³nica I+D
+MAINTAINER FIWARE PEP Team. TelefÃ³nica I+D
 
 COPY . /opt/fiware-pep-steelskin/
 WORKDIR /opt/fiware-pep-steelskin
