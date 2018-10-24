@@ -1,1 +1,2 @@
 Add: upgrade Dockerfile to use node 8
+Fix: update express dependence to 3.11.0 to fix a vulnerability
