@@ -28,7 +28,7 @@ WORKDIR /opt/fiware-pep-steelskin
 RUN \
   apt-get update && \
   apt-get install -y git && \
-  npm install -g grunt-cli && \
+  npm install pm2@3.2.2 -g && \
   echo "INFO: npm install --production..." && \
   cd /opt/fiware-pep-steelskin && npm install --production && \
   # Clean apt cache
@@ -40,4 +40,8 @@ ENV LOG_LEVEL=INFO
 
 EXPOSE 1026 11211
 
-ENTRYPOINT bin/pepProxy
+USER node
+ENV NODE_ENV=production
+
+ENTRYPOINT ["pm2-runtime", "bin/pepProxy"]
+CMD ["-- ", "config.js"]
