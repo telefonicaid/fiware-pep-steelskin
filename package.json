@@ -16,7 +16,7 @@
   },
   "main": "lib/fiware-pep-steelskin",
   "engines": {
-    "node": ">=4.8.4"
+    "node": ">=8.12.0"
   },
   "scripts": {
     "test": "grunt"
