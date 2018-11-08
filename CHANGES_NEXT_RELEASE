@@ -2,3 +2,6 @@ Set Nodejs 8.12.0 as minimum version in packages.json
 Add: upgrade Dockerfile to use node 8
 Add: use PM2 in Dockerfile
 Fix: update express dependence to 3.11.0 to fix a vulnerability
+Remove: old unused development dependencies
+  * grunt and grunt related module
+  * closure-linter-wrapper
