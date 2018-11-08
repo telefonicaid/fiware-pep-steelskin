@@ -65,7 +65,7 @@ describe('Extract information from requests', function() {
                         mockOAuthApp = appAuth;
 
                         mockOAuthApp.handler = function(req, res) {
-                            res.json(200, utils.readExampleFile('./test/authorizationResponses/rolesOfUser.json'));
+                            res.status(200).json(utils.readExampleFile('./test/authorizationResponses/rolesOfUser.json'));
                         };
 
                         async.series([
@@ -149,7 +149,7 @@ describe('Extract information from requests', function() {
 
             mockApp.handler = function(req, res) {
                 mockExecuted = true;
-                res.json(200, {});
+                res.status(200).json({});
             };
 
             request(options, function(error, response, body) {
@@ -187,7 +187,7 @@ describe('Extract information from requests', function() {
 
             mockApp.handler = function(req, res) {
                 mockExecuted = true;
-                res.json(200, {});
+                res.status(200).json({});
             };
 
             request(options, function(error, response, body) {
@@ -225,7 +225,7 @@ describe('Extract information from requests', function() {
 
             mockApp.handler = function(req, res) {
                 mockExecuted = true;
-                res.json(200, {});
+                res.status(200).json({});
             };
 
             request(options, function(error, response, body) {

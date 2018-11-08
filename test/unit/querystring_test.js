@@ -65,7 +65,7 @@ describe('Proxy querystring behavior', function() {
                         mockOAuthApp = appAuth;
 
                         mockOAuthApp.handler = function(req, res) {
-                            res.json(200, utils.readExampleFile('./test/authorizationResponses/rolesOfUser.json'));
+                            res.status(200).json(utils.readExampleFile('./test/authorizationResponses/rolesOfUser.json'));
                         };
 
                         async.series([
@@ -128,7 +128,7 @@ describe('Proxy querystring behavior', function() {
                 mockExecuted = true;
                 finalQuery = req.query;
 
-                res.json(200, {});
+                res.status(200).json({});
             };
 
             request(options, function(error, response, body) {

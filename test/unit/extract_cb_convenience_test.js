@@ -252,7 +252,7 @@ describe('Extract Context Broker action from convenience operation requests', fu
                         mockOAuthApp = appAuth;
 
                         mockOAuthApp.handler = function(req, res) {
-                            res.json(200, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
+                            res.status(200).json(utils.readExampleFile('./test/keystoneResponses/authorize.json'));
                         };
 
                         async.series([

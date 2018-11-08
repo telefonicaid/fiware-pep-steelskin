@@ -68,9 +68,9 @@ describe('HTTPS Options', function() {
 
                         mockOAuthApp.handler = function(req, res) {
                             if (req.url.match(/\/v2.0\/token.*/)) {
-                                res.json(200, utils.readExampleFile('./test/authorizationResponses/authorize.json'));
+                                res.status(200).json(utils.readExampleFile('./test/authorizationResponses/authorize.json'));
                             } else {
-                                res.json(200, utils.readExampleFile('./test/authorizationResponses/rolesOfUser.json'));
+                                res.status(200).json(utils.readExampleFile('./test/authorizationResponses/rolesOfUser.json'));
                             }
                         };
 
@@ -127,7 +127,7 @@ describe('HTTPS Options', function() {
 
             mockTargetApp.handler = function(req, res) {
                 mockExecuted = true;
-                res.json(200, {});
+                res.status(200).json({});
             };
 
             request(options, function(error, response, body) {

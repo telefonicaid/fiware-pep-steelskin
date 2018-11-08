@@ -156,7 +156,7 @@ describe('Keypass authentication cache', function() {
 
             mockTargetApp.handler = function(req, res) {
                 requestAccesses++;
-                res.json(200, {});
+                res.status(200).json({});
             };
 
             mockAccessApp.handler = function(req, res) {

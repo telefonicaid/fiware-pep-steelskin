@@ -65,7 +65,7 @@ describe('Control header behavior', function() {
                         mockOAuthApp = appAuth;
 
                         mockOAuthApp.handler = function(req, res) {
-                            res.json(200, utils.readExampleFile('./test/authorizationResponses/rolesOfUser.json'));
+                            res.status(200).json(utils.readExampleFile('./test/authorizationResponses/rolesOfUser.json'));
                         };
 
                         async.series([
@@ -125,7 +125,7 @@ describe('Control header behavior', function() {
                 should.exist(req.headers['x-forwarded-for']);
                 req.headers['x-forwarded-for'].should.equal('127.0.0.1');
 
-                res.json(200, {});
+                res.status(200).json({});
             };
 
             request(options, function(error, response, body) {
@@ -170,7 +170,7 @@ describe('Control header behavior', function() {
                 should.exist(req.headers['x-forwarded-for']);
                 req.headers['x-forwarded-for'].should.equal('192.168.2.1');
 
-                res.json(200, {});
+                res.status(200).json({});
             };
 
             request(options, function(error, response, body) {
@@ -217,7 +217,7 @@ describe('Control header behavior', function() {
                 expectedBody = req.body;
                 expectedLength = req.headers['content-length'];
 
-                res.json(200, {});
+                res.status(200).json({});
             };
 
             request(options, function(error, response, body) {
@@ -245,7 +245,7 @@ describe('Control header behavior', function() {
                 expectedBody = req.body;
                 expectedLength = req.headers['content-length'];
 
-                res.json(200, {});
+                res.status(200).json({});
             };
 
             request(options, function(error, response, body) {
@@ -295,7 +295,7 @@ describe('Control header behavior', function() {
                 expectedBody = req.body;
                 expectedLength = req.headers['content-length'];
 
-                res.json(200, {});
+                res.status(200).json({});
             };
 
             request(options, function(error, response, body) {
@@ -323,7 +323,7 @@ describe('Control header behavior', function() {
                 expectedBody = req.body;
                 expectedLength = req.headers['content-length'];
 
-                res.json(200, {});
+                res.status(200).json({});
             };
 
             request(options, function(error, response, body) {
@@ -372,7 +372,7 @@ describe('Control header behavior', function() {
                 expectedBody = req.body;
                 expectedLength = req.headers['content-length'];
 
-                res.json(200, {});
+                res.status(200).json({});
             };
 
             request(options, function(error, response, body) {
@@ -419,7 +419,7 @@ describe('Control header behavior', function() {
             };
 
             mockTargetApp.handler = function(req, res) {
-                res.json(200, {});
+                res.status(200).json({});
             };
 
             request(options, function(error, response, body) {

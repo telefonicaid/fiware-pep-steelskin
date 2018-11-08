@@ -36,9 +36,9 @@ var serverMocks = require('../tools/serverMocks'),
 
 function mockIdm(req, res) {
     if (req.path === '/user') {
-        res.json(200, utils.readExampleFile('./test/authorizationResponses/rolesOfUser.json'));
+        res.status(200).json(utils.readExampleFile('./test/authorizationResponses/rolesOfUser.json'));
     } else {
-        res.json(200, utils.readExampleFile('./test/authorizationResponses/authorize.json'));
+        res.status(200).json(utils.readExampleFile('./test/authorizationResponses/authorize.json'));
     }
 }
 
@@ -159,7 +159,7 @@ describe('Validate action with Access Control', function() {
 
                 mockTargetApp.handler = function(req, res) {
                     mockExecuted = true;
-                    res.json(200, {});
+                    res.status(200).json({});
                 };
 
                 request(options, function(error, response, body) {
@@ -218,7 +218,7 @@ describe('Validate action with Access Control', function() {
 
                 mockTargetApp.handler = function(req, res) {
                     mockExecuted = true;
-                    res.json(200, {});
+                    res.status(200).json({});
                 };
 
                 request(options, function(error, response, body) {
@@ -272,7 +272,7 @@ describe('Validate action with Access Control', function() {
 
                 mockAccessApp.handler = function(req, res) {
                     mockExecuted = true;
-                    res.json(500, {});
+                    res.status(500).json({});
                 };
 
                 request(options, function(error, response, body) {
@@ -327,7 +327,7 @@ describe('Validate action with Access Control', function() {
 
                 mockAccessApp.handler = function(req, res) {
                     mockExecuted = true;
-                    res.json(500, {});
+                    res.status(500).json({});
                 };
 
                 request(options, function(error, response, body) {
@@ -383,7 +383,7 @@ describe('Validate action with Access Control', function() {
         it('should reject the request with a 500 error', function(done) {
             mockOAuthApp.handler = function(req, res) {
                 if (req.path === currentAuthentication.authPath && req.method === 'POST') {
-                    res.json(401, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
+                    res.status(401).json(utils.readExampleFile('./test/keystoneResponses/authorize.json'));
                 }
             };
 
@@ -457,12 +457,12 @@ describe('Validate action with Access Control', function() {
                     req.body.auth.identity.password.user.password.should.equal(config.authentication.password);
 
                     res.setHeader('X-Subject-Token', '092016b75474ea6b492e29fb69d23029');
-                    res.json(201, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
+                    res.status(201).json(utils.readExampleFile('./test/keystoneResponses/authorize.json'));
                     mockExecuted = true;
                 } else if (req.path === currentAuthentication.authPath && req.method === 'GET') {
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/getUser.json'));
+                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/getUser.json'));
                 } else {
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/rolesOfUser.json'));
+                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/rolesOfUser.json'));
                 }
             };
 
@@ -478,16 +478,16 @@ describe('Validate action with Access Control', function() {
             mockOAuthApp.handler = function(req, res) {
                 if (req.path === currentAuthentication.authPath && req.method === 'POST') {
                     res.setHeader('X-Subject-Token', '092016b75474ea6b492e29fb69d23029');
-                    res.json(201, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
+                    res.status(201).json(utils.readExampleFile('./test/keystoneResponses/authorize.json'));
                 } else if (req.path === currentAuthentication.authPath && req.method === 'GET') {
                     should.exist(req.headers['x-auth-token']);
                     should.exist(req.headers['x-subject-token']);
                     req.headers['x-auth-token'].should.equal('092016b75474ea6b492e29fb69d23029');
                     req.headers['x-subject-token'].should.equal('UAidNA9uQJiIVYSCg0IQ8Q');
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/getUser.json'));
+                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/getUser.json'));
                     mockExecuted = true;
                 } else {
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/rolesOfUser.json'));
+                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/rolesOfUser.json'));
                 }
             };
 
@@ -504,9 +504,9 @@ describe('Validate action with Access Control', function() {
 
                 if (req.path === currentAuthentication.authPath && req.method === 'POST') {
                     res.setHeader('X-Subject-Token', '092016b75474ea6b492e29fb69d23029');
-                    res.json(201, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
+                    res.status(201).json(utils.readExampleFile('./test/keystoneResponses/authorize.json'));
                 } else if (req.path === currentAuthentication.authPath && req.method === 'GET') {
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/getUser.json'));
+                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/getUser.json'));
                 } else if (req.path === '/v3/projects' && req.method === 'GET') {
                     should.exist(req.headers['x-auth-token']);
                     should.exist(req.query.domain_id);
@@ -515,9 +515,9 @@ describe('Validate action with Access Control', function() {
                     req.query.name.should.equal('Electricidad');
                     req.headers['x-auth-token'].should.equal('092016b75474ea6b492e29fb69d23029');
                     mockExecuted = true;
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/getProjects.json'));
+                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/getProjects.json'));
                 } else {
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/rolesOfUser.json'));
+                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/rolesOfUser.json'));
                 }
             };
 
@@ -532,17 +532,17 @@ describe('Validate action with Access Control', function() {
             mockOAuthApp.handler = function(req, res) {
                 if (req.path === currentAuthentication.authPath && req.method === 'POST') {
                     res.setHeader('X-Subject-Token', '092016b75474ea6b492e29fb69d23029');
-                    res.json(201, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
+                    res.status(201).json(utils.readExampleFile('./test/keystoneResponses/authorize.json'));
                 } else if (req.path === currentAuthentication.authPath && req.method === 'GET') {
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/getUser.json'));
+                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/getUser.json'));
                 } else if (req.path === '/v3/projects' && req.method === 'GET') {
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/getProjects.json'));
+                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/getProjects.json'));
                 } else {
                     should.exist(req.headers['x-auth-token']);
                     should.exist(req.query['user.id']);
                     req.query['user.id'].should.equal('5e817c5e0d624ee68dfb7a72d0d31ce4');
                     req.headers['x-auth-token'].should.equal('092016b75474ea6b492e29fb69d23029');
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/rolesOfUser.json'));
+                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/rolesOfUser.json'));
                     mockExecuted = true;
                 }
             };
@@ -599,12 +599,12 @@ describe('Validate action with Access Control', function() {
             mockOAuthApp.handler = function(req, res) {
                 if (req.path === currentAuthentication.authPath && req.method === 'POST') {
                     res.setHeader('X-Subject-Token', '092016b75474ea6b492e29fb69d23029');
-                    res.json(201, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
+                    res.status(201).json(utils.readExampleFile('./test/keystoneResponses/authorize.json'));
                     mockExecuted = true;
                 } else if (req.path === currentAuthentication.authPath && req.method === 'GET') {
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/getUser.json'));
+                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/getUser.json'));
                 } else {
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/rolesOfUserBadSubservice.json'));
+                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/rolesOfUserBadSubservice.json'));
                 }
                 mockExecuted = true;
             };
@@ -662,11 +662,11 @@ describe('Validate action with Access Control', function() {
             mockOAuthApp.handler = function(req, res) {
                 if (req.path === currentAuthentication.authPath && req.method === 'POST') {
                     res.setHeader('X-Subject-Token', '092016b75474ea6b492e29fb69d23029');
-                    res.json(201, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
+                    res.status(201).json(utils.readExampleFile('./test/keystoneResponses/authorize.json'));
                 } else if (req.path === currentAuthentication.authPath && req.method === 'GET') {
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/getUser.json'));
+                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/getUser.json'));
                 } else if (req.path === '/v3/projects' && req.method === 'GET') {
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/getProjects.json'));
+                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/getProjects.json'));
                 } else {
                     should.exist(req.headers['x-auth-token']);
                     should.exist(req.query['user.id']);
@@ -674,7 +674,7 @@ describe('Validate action with Access Control', function() {
                     req.query['user.id'].should.equal('5e817c5e0d624ee68dfb7a72d0d31ce4');
                     req.query.effective.should.equal('true');
                     req.headers['x-auth-token'].should.equal('092016b75474ea6b492e29fb69d23029');
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/rolesOfUserWithDomain.json'));
+                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/rolesOfUserWithDomain.json'));
                     mockExecuted = true;
                 }
             };
@@ -731,9 +731,9 @@ describe('Validate action with Access Control', function() {
             mockOAuthApp.handler = function(req, res) {
                 if (req.path === currentAuthentication.authPath && req.method === 'POST') {
                     res.setHeader('X-Subject-Token', '092016b75474ea6b492e29fb69d23029');
-                    res.json(201, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
+                    res.status(201).json(utils.readExampleFile('./test/keystoneResponses/authorize.json'));
                 } else if (req.path === currentAuthentication.authPath && req.method === 'GET') {
-                    res.json(404, utils.readExampleFile('./test/keystoneResponses/tokenExpired.json'));
+                    res.status(404).json(utils.readExampleFile('./test/keystoneResponses/tokenExpired.json'));
                 }
             };
 
@@ -799,10 +799,10 @@ describe('Validate action with Access Control', function() {
             mockOAuthApp.handler = function(req, res) {
                 if (req.path === currentAuthentication.authPath && req.method === 'POST') {
                     res.setHeader('X-Subject-Token', '092016b75474ea6b492e29fb69d23029');
-                    res.json(201, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
+                    res.status(201).json(utils.readExampleFile('./test/keystoneResponses/authorize.json'));
                 } else if (req.path === currentAuthentication.authPath && req.method === 'GET') {
                     keystoneCalled = true;
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/getUser.json'));
+                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/getUser.json'));
                 }
             };
 
@@ -907,15 +907,15 @@ describe('Validate action with Access Control', function() {
             mockOAuthApp.handler = function(req, res) {
                 if (req.path === currentAuthentication.authPath && req.method === 'POST') {
                     res.setHeader('X-Subject-Token', '092016b75474ea6b492e29fb69d23029');
-                    res.json(201, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
+                    res.status(201).json(utils.readExampleFile('./test/keystoneResponses/authorize.json'));
                 } else if (req.path === currentAuthentication.authPath && req.method === 'GET') {
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/getUserWithTrust.json'));
+                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/getUserWithTrust.json'));
                 } else if (req.path === '/v3/projects' && req.method === 'GET') {
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/getProjects.json'));
+                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/getProjects.json'));
                 } else {
                     req.query['user.id'].should.equal('5e817c5e0d624ee68dfb7a72d0d31ce4');
                     req.headers['x-auth-token'].should.equal('092016b75474ea6b492e29fb69d23029');
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/rolesOfUser.json'));
+                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/rolesOfUser.json'));
                 }
             };
 

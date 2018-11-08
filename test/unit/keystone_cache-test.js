@@ -135,14 +135,14 @@ describe('Keystone authentication cache', function() {
             mockOAuthApp.handler = function(req, res) {
                 if (req.path === currentAuthentication.authPath && req.method === 'POST') {
                     res.setHeader('X-Subject-Token', '4e92e29a90fb20701692236b4b69d547');
-                    res.json(201, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
+                    res.status(201).json(utils.readExampleFile('./test/keystoneResponses/authorize.json'));
                 } else if (req.path === '/v3/projects' && req.method === 'GET') {
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/getProjects.json'));
+                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/getProjects.json'));
                 } else if (req.path === currentAuthentication.authPath && req.method === 'GET') {
                     userAccesses++;
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/getUser.json'));
+                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/getUser.json'));
                 } else {
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/rolesOfUser.json'));
+                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/rolesOfUser.json'));
                 }
             };
 
@@ -165,14 +165,14 @@ describe('Keystone authentication cache', function() {
             mockOAuthApp.handler = function(req, res) {
                 if (req.path === currentAuthentication.authPath && req.method === 'POST') {
                     res.setHeader('X-Subject-Token', '4e92e29a90fb20701692236b4b69d547');
-                    res.json(201, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
+                    res.status(201).json(utils.readExampleFile('./test/keystoneResponses/authorize.json'));
                 } else if (req.path === '/v3/projects' && req.method === 'GET') {
                     projectIDAccesses++;
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/getProjects.json'));
+                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/getProjects.json'));
                 } else if (req.path === currentAuthentication.authPath && req.method === 'GET') {
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/getUser.json'));
+                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/getUser.json'));
                 } else {
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/rolesOfUser.json'));
+                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/rolesOfUser.json'));
                 }
             };
 
@@ -195,14 +195,14 @@ describe('Keystone authentication cache', function() {
             mockOAuthApp.handler = function(req, res) {
                 if (req.path === currentAuthentication.authPath && req.method === 'POST') {
                     res.setHeader('X-Subject-Token', '4e92e29a90fb20701692236b4b69d547');
-                    res.json(201, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
+                    res.status(201).json(utils.readExampleFile('./test/keystoneResponses/authorize.json'));
                 } else if (req.path === '/v3/projects' && req.method === 'GET') {
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/getProjects.json'));
+                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/getProjects.json'));
                 } else if (req.path === currentAuthentication.authPath && req.method === 'GET') {
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/getUser.json'));
+                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/getUser.json'));
                 } else {
                     roleAccesses++;
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/rolesOfUser.json'));
+                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/rolesOfUser.json'));
                 }
             };
 
@@ -225,7 +225,7 @@ describe('Keystone authentication cache', function() {
 
             mockTargetApp.handler = function(req, res) {
                 requestAccesses++;
-                res.json(200, {});
+                res.status(200).json({});
             };
 
             mockAccessApp.handler = function(req, res) {
@@ -295,17 +295,17 @@ describe('Keystone authentication cache', function() {
             mockOAuthApp.handler = function(req, res) {
                 if (req.path === currentAuthentication.authPath && req.method === 'POST') {
                     res.setHeader('X-Subject-Token', '4e92e29a90fb20701692236b4b69d547');
-                    res.json(201, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
+                    res.status(201).json(utils.readExampleFile('./test/keystoneResponses/authorize.json'));
                 } else if (req.path === '/v3/projects' && req.method === 'GET') {
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/getProjects.json'));
+                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/getProjects.json'));
                 } else if (req.path === currentAuthentication.authPath && req.method === 'GET') {
                     bus.once('secondArrived', function() {
-                        res.json(200, utils.readExampleFile('./test/keystoneResponses/getUser.json'));
+                        res.status(200).json(utils.readExampleFile('./test/keystoneResponses/getUser.json'));
                     });
 
                     bus.emit('firstArrived');
                 } else {
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/rolesOfUser.json'));
+                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/rolesOfUser.json'));
                 }
             };
 
