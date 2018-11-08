@@ -62,7 +62,6 @@ function startMock(port, callback) {
     app.use(express.json());
     app.use(xmlRawBody);
     app.use(express.urlencoded());
-    app.use(app.router);
 
     var server = http.createServer(app);
 

@@ -111,8 +111,10 @@ describe('HTTPS Options', function() {
         };
 
         beforeEach(function(done) {
-            serverMocks.mockPath('/validate', mockAccessApp, done);
-            serverMocks.mockPath('/NGSI10/updateContext', mockTargetApp, done);
+            async.series([
+                async.apply(serverMocks.mockPath, '/validate', mockAccessApp),
+                async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
+            ], done);
         });
 
         it('should proxy the request to the destination', function(done) {
