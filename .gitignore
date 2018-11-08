@@ -12,6 +12,7 @@
 .project
 .metadata
 npm-debug.log
+package-lock.json
 .DS_Store
 *.pyc
 test/acceptance/properties.py
