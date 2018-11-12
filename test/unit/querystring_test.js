@@ -111,7 +111,7 @@ describe('Proxy querystring behavior', function() {
         beforeEach(function(done) {
             async.series([
                 async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
-                async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
+                async.apply(serverMocks.mockPath, '/v1/contextentities', mockTargetApp)
             ], done);
         });
 
