@@ -1,3 +1,8 @@
+// This file seems to be a template for other and doesn't have correct JavaScript syntax. So we configure jshint to
+// ignore all them
+
+/* jshint ignore:start */
+
 var config = {};
 
 // Protected Resource configuration
@@ -156,3 +161,5 @@ config.bypass = {{bypass_activation}};
 config.bypassRoleId = '{{bypass_id}}';
 
 module.exports = config;
+
+/* jshint ignore:end */
