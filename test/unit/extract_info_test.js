@@ -65,7 +65,8 @@ describe('Extract information from requests', function() {
                         mockOAuthApp = appAuth;
 
                         mockOAuthApp.handler = function(req, res) {
-                            res.status(200).json(utils.readExampleFile('./test/authorizationResponses/rolesOfUser.json'));
+                            res.status(200).json(
+                                utils.readExampleFile('./test/authorizationResponses/rolesOfUser.json'));
                         };
 
                         async.series([

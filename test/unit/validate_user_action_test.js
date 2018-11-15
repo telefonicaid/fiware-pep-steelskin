@@ -604,7 +604,8 @@ describe('Validate action with Access Control', function() {
                 } else if (req.path === currentAuthentication.authPath && req.method === 'GET') {
                     res.status(200).json(utils.readExampleFile('./test/keystoneResponses/getUser.json'));
                 } else {
-                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/rolesOfUserBadSubservice.json'));
+                    res.status(200).json(
+                        utils.readExampleFile('./test/keystoneResponses/rolesOfUserBadSubservice.json'));
                 }
                 mockExecuted = true;
             };
