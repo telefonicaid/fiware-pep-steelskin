@@ -1,5 +1,5 @@
-// This file seems to be a template for other and doesn't have correct JavaScript syntax. So we configure jshint to
-// ignore all them
+// This file seems to be a template for others and doesn't have correct JavaScript syntax. So we configure jshint to
+// ignore all it
 
 /* jshint ignore:start */
 
