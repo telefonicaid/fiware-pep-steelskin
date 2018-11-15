@@ -19,3 +19,5 @@ before_install:
 
 dist: precise
 
+before_script:
+ - npm run lint
