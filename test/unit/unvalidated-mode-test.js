@@ -137,15 +137,15 @@ describe('Unvalidated mode', function() {
             mockOAuthApp.handler = function(req, res) {
                 if (req.path === authenticationMechanism.authPath && req.method === 'POST') {
                     res.setHeader('X-Subject-Token', '092016b75474ea6b492e29fb69d23029');
-                    res.json(201, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
+                    res.status(201).json(utils.readExampleFile('./test/keystoneResponses/authorize.json'));
                 } else if (req.path === authenticationMechanism.authPath && req.method === 'GET') {
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/getUser.json'));
+                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/getUser.json'));
                 } else if (req.url === '/v3/projects' && req.method === 'GET') {
                     rolesExtracted = true;
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/getProjects.json'));
+                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/getProjects.json'));
                 } else {
                     rolesExtracted = true;
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/rolesOfUserWithDomain.json'));
+                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/rolesOfUserWithDomain.json'));
                 }
             };
 
@@ -181,15 +181,15 @@ describe('Unvalidated mode', function() {
             mockOAuthApp.handler = function(req, res) {
                 if (req.path === authenticationMechanism.authPath && req.method === 'POST') {
                     res.setHeader('X-Subject-Token', '092016b75474ea6b492e29fb69d23029');
-                    res.json(201, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
+                    res.status(201).json(utils.readExampleFile('./test/keystoneResponses/authorize.json'));
                 } else if (req.path === authenticationMechanism.authPath && req.method === 'GET') {
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/getUser.json'));
+                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/getUser.json'));
                 } else if (req.url === '/v3/projects' && req.method === 'GET') {
                     rolesExtracted = true;
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/getProjects.json'));
+                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/getProjects.json'));
                 } else {
                     rolesExtracted = true;
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/rolesOfUserWithDomain.json'));
+                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/rolesOfUserWithDomain.json'));
                 }
             };
 

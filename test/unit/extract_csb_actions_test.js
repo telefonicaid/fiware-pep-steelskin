@@ -561,7 +561,7 @@ describe('Extract Context Broker action from request', function() {
             mockApp.handler = function(req, res) {
                 req.rawBody.replace(/\n/g, '').should.match(/<updateContextRequest>.*<\/updateContextRequest>/);
                 mockExecuted = true;
-                res.json(200, {});
+                res.status(200).json({});
             };
 
             request(options, function(error, response, body) {
@@ -602,7 +602,7 @@ describe('Extract Context Broker action from request', function() {
                 should.exist(req.body.updateAction);
                 req.body.updateAction.should.equal('APPEND');
                 mockExecuted = true;
-                res.json(200, {});
+                res.status(200).json({});
             };
 
             request(options, function(error, response, body) {
@@ -653,7 +653,7 @@ describe('Extract Context Broker action from request', function() {
 
                 mockApp.handler = function(req, res) {
                     mockExecuted = true;
-                    res.json(200, {});
+                    res.status(200).json({});
                 };
 
                 request(options, function(error, response, body) {

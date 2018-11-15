@@ -65,7 +65,7 @@ describe('Control header behavior', function() {
                         mockOAuthApp = appAuth;
 
                         mockOAuthApp.handler = function(req, res) {
-                            res.json(200, utils.readExampleFile('./test/authorizationResponses/rolesOfUser.json'));
+                            res.status(200).json(utils.readExampleFile('./test/authorizationResponses/rolesOfUser.json'));
                         };
 
                         async.series([
@@ -106,8 +106,10 @@ describe('Control header behavior', function() {
         };
 
         beforeEach(function(done) {
-            serverMocks.mockPath('/pdp/v3', mockAccessApp, done);
-            serverMocks.mockPath('/NGSI10/updateContext', mockTargetApp, done);
+            async.series([
+                async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
+                async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
+            ], done);
         });
 
         it('should add the X-Forwarded-For header', function(done) {
@@ -123,7 +125,7 @@ describe('Control header behavior', function() {
                 should.exist(req.headers['x-forwarded-for']);
                 req.headers['x-forwarded-for'].should.equal('127.0.0.1');
 
-                res.json(200, {});
+                res.status(200).json({});
             };
 
             request(options, function(error, response, body) {
@@ -149,8 +151,10 @@ describe('Control header behavior', function() {
         };
 
         beforeEach(function(done) {
-            serverMocks.mockPath('/pdp/v3', mockAccessApp, done);
-            serverMocks.mockPath('/NGSI10/updateContext', mockTargetApp, done);
+            async.series([
+                async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
+                async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
+            ], done);
         });
 
         it('should reuse the X-Forwarded-For header', function(done) {
@@ -166,7 +170,7 @@ describe('Control header behavior', function() {
                 should.exist(req.headers['x-forwarded-for']);
                 req.headers['x-forwarded-for'].should.equal('192.168.2.1');
 
-                res.json(200, {});
+                res.status(200).json({});
             };
 
             request(options, function(error, response, body) {
@@ -190,8 +194,10 @@ describe('Control header behavior', function() {
             body: utils.readExampleFile('./test/orionRequests/entityCreation.xml', true)
         };
         beforeEach(function(done) {
-            serverMocks.mockPath('/pdp/v3', mockAccessApp, done);
-            serverMocks.mockPath('/NGSI10/updateContext', mockTargetApp, done);
+            async.series([
+                async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
+                async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
+            ], done);
         });
 
         it('should manage content-type: application/xml header', function(done) {
@@ -211,7 +217,7 @@ describe('Control header behavior', function() {
                 expectedBody = req.body;
                 expectedLength = req.headers['content-length'];
 
-                res.json(200, {});
+                res.status(200).json({});
             };
 
             request(options, function(error, response, body) {
@@ -239,7 +245,7 @@ describe('Control header behavior', function() {
                 expectedBody = req.body;
                 expectedLength = req.headers['content-length'];
 
-                res.json(200, {});
+                res.status(200).json({});
             };
 
             request(options, function(error, response, body) {
@@ -266,8 +272,10 @@ describe('Control header behavior', function() {
             body: JSON.stringify(utils.readExampleFile('./test/orionRequests/entityCreation.json'))
         };
         beforeEach(function(done) {
-            serverMocks.mockPath('/pdp/v3', mockAccessApp, done);
-            serverMocks.mockPath('/NGSI10/updateContext', mockTargetApp, done);
+            async.series([
+                async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
+                async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
+            ], done);
         });
 
         it('should manage content-type: application/json header', function(done) {
@@ -287,7 +295,7 @@ describe('Control header behavior', function() {
                 expectedBody = req.body;
                 expectedLength = req.headers['content-length'];
 
-                res.json(200, {});
+                res.status(200).json({});
             };
 
             request(options, function(error, response, body) {
@@ -315,7 +323,7 @@ describe('Control header behavior', function() {
                 expectedBody = req.body;
                 expectedLength = req.headers['content-length'];
 
-                res.json(200, {});
+                res.status(200).json({});
             };
 
             request(options, function(error, response, body) {
@@ -341,8 +349,10 @@ describe('Control header behavior', function() {
             body: '<xml>   >'
         };
         beforeEach(function(done) {
-            serverMocks.mockPath('/pdp/v3', mockAccessApp, done);
-            serverMocks.mockPath('/NGSI10/updateContext', mockTargetApp, done);
+            async.series([
+                async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
+                async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
+            ], done);
         });
 
         it('should return a 400 WRONG_JSON_PAYLOAD error', function(done) {
@@ -362,7 +372,7 @@ describe('Control header behavior', function() {
                 expectedBody = req.body;
                 expectedLength = req.headers['content-length'];
 
-                res.json(200, {});
+                res.status(200).json({});
             };
 
             request(options, function(error, response, body) {
@@ -390,8 +400,10 @@ describe('Control header behavior', function() {
         };
 
         beforeEach(function(done) {
-            serverMocks.mockPath('/pdp/v3', mockAccessApp, done);
-            serverMocks.mockPath('/NGSI10/updateContext', mockTargetApp, done);
+            async.series([
+                async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
+                async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
+            ], done);
         });
 
         it('should forward the fiware-service header', function(done) {
@@ -407,7 +419,7 @@ describe('Control header behavior', function() {
             };
 
             mockTargetApp.handler = function(req, res) {
-                res.json(200, {});
+                res.status(200).json({});
             };
 
             request(options, function(error, response, body) {
@@ -436,8 +448,10 @@ describe('Control header behavior', function() {
                 };
 
                 delete options.headers[headerTest];
-                serverMocks.mockPath('/pdp/v3', mockAccessApp, done);
-                serverMocks.mockPath('/NGSI10/updateContext', mockTargetApp, done);
+                async.series([
+                    async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
+                    async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
+                ], done);
             });
 
             it('should return a 400 error indicating the missing header', function(done) {
@@ -470,8 +484,10 @@ describe('Control header behavior', function() {
                 };
 
                 options.headers[headerTest] = '';
-                serverMocks.mockPath('/pdp/v3', mockAccessApp, done);
-                serverMocks.mockPath('/NGSI10/updateContext', mockTargetApp, done);
+                async.series([
+                    async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
+                    async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
+                ], done);
             });
 
             it('should return a 400 error indicating the empty header', function(done) {

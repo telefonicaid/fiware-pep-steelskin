@@ -131,13 +131,13 @@ describe('Top domain Service-path behavior', function() {
             mockOAuthApp.handler = function(req, res) {
                 if (req.path === currentAuthentication.authPath && req.method === 'POST') {
                     res.setHeader('X-Subject-Token', '4e92e29a90fb20701692236b4b69d547');
-                    res.json(201, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
+                    res.status(201).json(utils.readExampleFile('./test/keystoneResponses/authorize.json'));
                 } else if (req.path === '/v3/projects' && req.method === 'GET') {
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/getProjects.json'));
+                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/getProjects.json'));
                 } else if (req.path === currentAuthentication.authPath && req.method === 'GET') {
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/getUser.json'));
+                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/getUser.json'));
                 } else {
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/rolesOfUser.json'));
+                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/rolesOfUser.json'));
                 }
             };
 
@@ -193,13 +193,13 @@ describe('Top domain Service-path behavior', function() {
             mockOAuthApp.handler = function(req, res) {
                 if (req.path === currentAuthentication.authPath && req.method === 'POST') {
                     res.setHeader('X-Subject-Token', '4e92e29a90fb20701692236b4b69d547');
-                    res.json(201, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
+                    res.status(201).json(utils.readExampleFile('./test/keystoneResponses/authorize.json'));
                 } else if (req.path === '/v3/projects' && req.method === 'GET') {
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/getProjects.json'));
+                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/getProjects.json'));
                 } else if (req.path === currentAuthentication.authPath && req.method === 'GET') {
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/getUser.json'));
+                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/getUser.json'));
                 } else {
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/rolesOfUserWithDomain.json'));
+                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/rolesOfUserWithDomain.json'));
                 }
             };
 

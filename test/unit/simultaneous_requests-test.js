@@ -198,13 +198,13 @@ describe('Simultaneous requests', function() {
             function failAuthMock(req, res) {
                 if (req.path === '/v3/auth/tokens' && req.method === 'POST') {
                     res.setHeader('X-Subject-Token', '092016b75474ea6b492e29fb69d23029');
-                    res.json(201, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
+                    res.status(201).json(utils.readExampleFile('./test/keystoneResponses/authorize.json'));
                 } else if (req.path === '/v3/auth/tokens' && req.method === 'GET') {
-                    res.json(404, utils.readExampleFile('./test/keystoneResponses/getUser.json'));
+                    res.status(404).json(utils.readExampleFile('./test/keystoneResponses/getUser.json'));
                 } else if (req.path === '/v3/projects' && req.method === 'GET') {
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/getProjects.json'));
+                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/getProjects.json'));
                 } else {
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/rolesOfUser.json'));
+                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/rolesOfUser.json'));
                 }
             }
 

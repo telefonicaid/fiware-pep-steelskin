@@ -137,7 +137,7 @@ describe('Connection error tests', function() {
 
             mockAccessApp.handler = function(req, res) {
                 accessControlExecuted = true;
-                res.json(501, {});
+                res.status(501).json({});
             };
 
             request(options, function(error, response, body) {

@@ -76,7 +76,7 @@ describe('REST Plugin tests', function() {
                         mockOAuthApp = appAuth;
 
                         mockOAuthApp.handler = function(req, res) {
-                            res.json(200,
+                            res.status(200).json(
                                 utils.readExampleFile('./test/authorizationResponses/rolesOfUser.json'));
                         };
 

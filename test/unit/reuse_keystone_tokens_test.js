@@ -135,12 +135,12 @@ describe('Reuse authentication tokens', function() {
 
             mockOAuthApp.handler = function(req, res) {
                 if (req.path === currentAuthentication.authPath && req.method === 'POST') {
-                    res.json(201, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
+                    res.status(201).json(utils.readExampleFile('./test/keystoneResponses/authorize.json'));
                     mockExecuted = true;
                 } else if (req.path === currentAuthentication.authPath && req.method === 'GET') {
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/getUser.json'));
+                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/getUser.json'));
                 } else {
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/rolesOfUser.json'));
+                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/rolesOfUser.json'));
                 }
             };
 
@@ -201,20 +201,20 @@ describe('Reuse authentication tokens', function() {
             mockOAuthApp.handler = function(req, res) {
                 if (req.path === currentAuthentication.authPath && req.method === 'POST') {
                     res.setHeader('X-Subject-Token', '4e92e29a90fb20701692236b4b69d547');
-                    res.json(201, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
+                    res.status(201).json(utils.readExampleFile('./test/keystoneResponses/authorize.json'));
                     mockExecuted = true;
                 } else if (req.path === '/v3/projects' && req.method === 'GET') {
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/getProjects.json'));
+                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/getProjects.json'));
                 } else if (req.path === currentAuthentication.authPath && req.method === 'GET') {
                     if (req.headers['x-auth-token'] === '4e92e29a90fb20701692236b4b69d547') {
-                        res.json(200, utils.readExampleFile('./test/keystoneResponses/getUser.json'));
+                        res.status(200).json(utils.readExampleFile('./test/keystoneResponses/getUser.json'));
                     } else {
-                        res.json(401, utils.readExampleFile('./test/keystoneResponses/tokenExpired.json'));
+                        res.status(401).json(utils.readExampleFile('./test/keystoneResponses/tokenExpired.json'));
                     }
 
                     roleAccesses++;
                 } else {
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/rolesOfUser.json'));
+                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/rolesOfUser.json'));
                 }
             };
 
@@ -283,20 +283,20 @@ describe('Reuse authentication tokens', function() {
                 if (req.path === currentAuthentication.authPath && req.method === 'POST') {
                     bus.once('secondArrived', function() {
                         res.setHeader('X-Subject-Token', '4e92e29a90fb20701692236b4b69d547');
-                        res.json(201, utils.readExampleFile('./test/keystoneResponses/authorize.json'));
+                        res.status(201).json(utils.readExampleFile('./test/keystoneResponses/authorize.json'));
                     });
 
                     bus.emit('firstWaiting', true);
                 } else if (req.path === '/v3/projects' && req.method === 'GET') {
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/getProjects.json'));
+                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/getProjects.json'));
                 } else if (req.path === currentAuthentication.authPath && req.method === 'GET') {
                     if (req.headers['x-auth-token'] === '4e92e29a90fb20701692236b4b69d547') {
-                        res.json(200, utils.readExampleFile('./test/keystoneResponses/getUser.json'));
+                        res.status(200).json(utils.readExampleFile('./test/keystoneResponses/getUser.json'));
                     } else {
-                        res.json(401, utils.readExampleFile('./test/keystoneResponses/tokenExpired.json'));
+                        res.status(401).json(utils.readExampleFile('./test/keystoneResponses/tokenExpired.json'));
                     }
                 } else {
-                    res.json(200, utils.readExampleFile('./test/keystoneResponses/rolesOfUser.json'));
+                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/rolesOfUser.json'));
                 }
             };
 

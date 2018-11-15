@@ -111,7 +111,7 @@ describe('Keypass Plugin tests', function() {
                                 mockOAuthApp = appAuth;
 
                                 mockOAuthApp.handler = function(req, res) {
-                                    res.json(200,
+                                    res.status(200).json(
                                         utils.readExampleFile('./test/authorizationResponses/rolesOfUser.json'));
                                 };
 
@@ -236,12 +236,12 @@ describe('Keypass Plugin tests', function() {
 
             mockTargetApp.handler = function(req, res) {
                 requestProxyed = true;
-                res.json(200, {});
+                res.status(200).json({});
             };
 
             mockAccessApp.handler = function(req, res) {
                 accessControlExecuted = true;
-                res.json(501, {});
+                res.status(501).json({});
             };
 
             request(options, function(error, response, body) {
