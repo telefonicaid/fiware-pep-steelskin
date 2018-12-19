@@ -169,6 +169,17 @@ rm -rf $RPM_BUILD_ROOT
 %{_install_dir}
 
 %changelog
+* Wed Dec 19 2018 Fermin Galan <fermin.galanmarquez@telefonica.com> 1.5.0
+- Set Nodejs 8.12.0 as minimum version in packages.json (effectively removing Nodev4 and Nodev6 as supported versions)
+- Add: use NodeJS 8 in Dockerfile
+- Add: use PM2 in Dockerfile
+- Upgrade: update logops depedence from 1.0.0 to 2.1.0
+- Upgrade: update express dependence from 3.5.1 to 4.16.4
+- Upgrade: update request dependence from 2.39.0 to 2.88.0
+- Upgrade: update mocha development dependence from ~1.13.0 to 5.2.0
+- Upgrade: update istanbul development dependence from ~0.1.34 to 0.4.5
+- Remove: old unused development dependencies (closure-linter-wrapper, chai, sinon, sinon-chai, grunt and grunt related module)
+
 * Mon Oct 22 2018 Fermin Galan <fermin.galanmarquez@telefonica.com> 1.4.0
 - Add: init script in RPM is able to deal with multiple instances of PEP running on the same system (#390)
 - Fix: init script in RPM fixes start stop errors in pep service (#390)
