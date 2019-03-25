@@ -500,6 +500,7 @@ Some of the configuration values for the attributes above mentioned can be overr
 | TARGET_HOST          | config.resource.original.host       |
 | TARGET_PORT          | config.resource.original.port       |
 | LOG_LEVEL            | config.logLevel                     |
+| ACCESS_DISABLE       | config.access.disable               |
 | ACCESS_HOST          | config.access.host                  |
 | ACCESS_PORT          | config.access.port                  |
 | ACCESS_PROTOCOL      | config.access.protocol              |
