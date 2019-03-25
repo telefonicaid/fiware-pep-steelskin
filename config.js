@@ -37,7 +37,7 @@ config.resource = {
  */
 config.access = {
     /**
-     * Indicates whether the access control validation should be enabled. Defaults to false.
+     * Indicates whether the access control validation should be disabled. Defaults to false.
      */
     disable: false,
 
