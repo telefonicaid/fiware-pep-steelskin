@@ -41,6 +41,7 @@ function loadConfiguration() {
         'TARGET_HOST',
         'TARGET_PORT',
         'LOG_LEVEL',
+        'ACCESS_DISABLE',
         'ACCESS_HOST',
         'ACCESS_PORT',
         'ACCESS_PROTOCOL',
@@ -76,6 +77,9 @@ function loadConfiguration() {
     }
     if (process.env.LOG_LEVEL) {
         config.logLevel = process.env.LOG_LEVEL;
+    }
+    if (process.env.ACCESS_DISABLE) {
+        config.access.disable = process.env.ACCESS_DISABLE == 'true';
     }
     if (process.env.ACCESS_HOST) {
         config.access.host = process.env.ACCESS_HOST;
