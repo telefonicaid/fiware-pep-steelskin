@@ -1,3 +1,4 @@
 - ADD version to orion urls as read action [#416]
 - Upgrade from node:8.12.0-slim to node:8.16.0-slim as base image in Dockerfile
 - Add: access control disabled flag as config environment variable (for docker)
+- Support REPLACE (NGSIv1), replace (NGSIv2) and appendStrict (NGSIv2) as action type for ContextBroker requests (#422).
