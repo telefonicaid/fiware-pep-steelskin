@@ -605,9 +605,9 @@ This is the list of actions available for the Context Broker. For every action, 
 | N/A | - |
 
 ### Standard operations
-* `create`: URL contains `/v1/updateContext` and the `actionType` attribute of the payload (either with XML or JSON) is `APPEND`.
-* `update`: URL contains `/v1/updateContext` and the `actionType` attribute of the payload (either with XML or JSON) is `UPDATE`.
-* `delete`: URL contains `/v1/updateContext` and the `actionType` attribute of the payload (either with XML or JSON) is “DELETE”.
+* `create`: URL contains `/v1/updateContext` and the `actionType` attribute of the payload (either with XML or JSON) is `APPEND` or `APPEND_STRICT`.
+* `update`: URL contains `/v1/updateContext` and the `actionType` attribute of the payload (either with XML or JSON) is `UPDATE` or `REPLACE`.
+* `delete`: URL contains `/v1/updateContext` and the `actionType` attribute of the payload (either with XML or JSON) is `DELETE`.
 * `read`: URL contains `/v1/queryContext` or `/v1/contextTypes`.
 * `subscribe`: URL contains  `/v1/subscribeContext`, `/v1/updateContextSubscription` o `/v1/unsubscribeContext`.
 * `register`: URL contains `/v1/registry/registerContext`.
@@ -705,10 +705,11 @@ An up-to-date list of the convenience operations can be found [here](https://doc
 
 (*) It depends on the `actionType` (within payload):
 
-* UPDATE: U
-* APPEND: C
-* APPEND_STRICT: C
-* DELETE: D
+* update: U
+* append: C
+* appendStrict: C
+* delete: D
+* replace: U
 
 Operations marked with a slash, "-" are now deprecated. All those operations will be tagged with the special action "N/A". If you want to allow them anyway, just add a rule to the Access Control allowing the "N/A" action for the desired roles.
 
