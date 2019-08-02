@@ -169,6 +169,12 @@ rm -rf $RPM_BUILD_ROOT
 %{_install_dir}
 
 %changelog
+* Mon Jul 29 2019 Fermin Galan <fermin.galanmarquez@telefonica.com> 1.6.0
+- Add: version to orion urls as read action (#416)
+- Add: access control disabled flag as config environment variable (for docker)
+- Add: support REPLACE (NGSIv1), replace (NGSIv2) and appendStrict (NGSIv2) as action type for ContextBroker requests (#422)
+- Upgrade from node:8.12.0-slim to node:8.16.0-slim as base image in Dockerfile
+
 * Wed Dec 19 2018 Fermin Galan <fermin.galanmarquez@telefonica.com> 1.5.0
 - Set Nodejs 8.12.0 as minimum version in packages.json (effectively removing Nodev4 and Nodev6 as supported versions)
 - Add: use NodeJS 8 in Dockerfile

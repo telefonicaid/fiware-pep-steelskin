@@ -613,10 +613,11 @@ describe('Extract Context Broker action from request', function() {
     });
 
     var v2UpdateOperationMatrix = [
-        ['APPEND', 'create'],
-        ['APPEND_STRICT', 'create'],
-        ['UPDATE', 'update'],
-        ['DELETE', 'delete']
+        ['append', 'create'],
+        ['appendStrict', 'create'],
+        ['update', 'update'],
+        ['delete', 'delete'],
+        ['replace', 'update']
     ];
 
     function testV2updateAction(index) {
