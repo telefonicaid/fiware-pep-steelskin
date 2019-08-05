@@ -64,7 +64,11 @@ config.access = {
     /**
      * Log Account file
      */
-    accountFile: '/tmp/pepAccount.log'
+    accountFile: '/tmp/pepAccount.log',
+    /**
+     * Enable subservice multilevel for evaluation.
+     */
+    multiLevel: false
 };
 
 // User identity configuration
