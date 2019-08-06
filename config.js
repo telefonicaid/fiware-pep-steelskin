@@ -176,4 +176,11 @@ config.bypassRoleId = '';
  */
 config.maxQueuedClients = 1000;
 
+/**
+ * Controls the maximum request body size allowed, in bytes. Default is 1 Mb.
+ */
+config.bodyLimit = 1048576;
+
+
+
 module.exports = config;
