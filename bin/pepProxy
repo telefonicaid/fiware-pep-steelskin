@@ -54,7 +54,8 @@ function loadConfiguration() {
         'PROXY_USERNAME',
         'PROXY_PASSWORD',
         'COMPONENT_PLUGIN',
-        'COMPONENT_NAME'
+        'COMPONENT_NAME',
+        'BODY_LIMIT'
     ];
 
     for (var i = 0; i < environmentValues.length; i++) {
@@ -125,6 +126,9 @@ function loadConfiguration() {
             console.log('FATAL ERROR: Component plugin not found');
             process.exit();
         }
+    }
+    if (process.env.BODY_LIMIT) {
+        config.bodyLimit = process.env.BODY_LIMIT;
     }
 }
 

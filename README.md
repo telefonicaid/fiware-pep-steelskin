@@ -368,7 +368,7 @@ For testing purposes it might be interesting to launch the process directly with
 
 Take into account that when the process is executed manually the system configuration for the script (in /etc/sysconfig/pepProxy) is not loaded and the default configuration (in /opt/pepProxy/config.js) is used. 
 
-####	Stop service
+####    Stop service
 To stop the service, use either the service command:
 ```
 service pepProxy stop
@@ -377,7 +377,7 @@ Or just the launch script:
 ```
 /etc/init.d/pepProxy stop
 ```
-###	How to check service status
+### How to check service status
 #### Checking the process is running
 The status of the process can be retrieved using the service command:
 ```
@@ -462,6 +462,7 @@ Right Attempt | ResponseStatus=200 | Token=860864fb6d1a4c8a8cb7d59d16daaa52 | Or
 * `config.bypass`: used to activate the administration bypass in the proxy. Valid values are `true` or `false`.
 * `config.bypassRoleId`: ID of the role that will be considered to have administrative rights over the proxy (so being transparently proxied without validation). Valid values are Role UUIDs. E.g.: `db50362d5f264c8292bebdb5c5783741`.
 * `config.dieOnRedirectError`: this flags changes the behavior of the PEP Proxy when an error is received when redirecting a request. If the flag is true, the PEP Proxy process is shut down immediately; if it is false, the behavior is the usual: generate a 501 Code error.
+* `config.bodyLimit`: Controls the maximum request body size allowed, in bytes. Default is 1 Mb
 
 ### Authentication configuration
 * `config.authentication.checkHeaders`: when the proxy is working with the access control disabled (just user authentication), indicates whether the `fiware-service` and `fiware-servicepath` headers should be checked for existance and validity (checking: the headers exist, thy are not empty and the user is really part of the service and subservice mentioned in the header). This option is ignored when authorization is enabled, and considered to be `true` (as the headers constitute a mandatory part of the authorization process). Default value is `true`.
@@ -513,6 +514,7 @@ Some of the configuration values for the attributes above mentioned can be overr
 | PROXY_PASSWORD       | config.authentication.password      |
 | PROXY_PASSWORD       | config.authentication.password      |
 | COMPONENT_PLUGIN       | config.middlewares and config.componentName     |
+| BODY_LIMIT       | config.bodyLimit                        |
 
 ### Component configuration
 A special environment variable, called `COMPONENT_PLUGIN` can be set with one of this values: `orion`, `perseo`, `keypass` and `rest`. This variable can be used to select what component plugin to load in order to determine the action of the incoming requests. This variable also rewrites `config.componentName` configuration paramenter.
@@ -622,56 +624,56 @@ An up-to-date list of the convenience operations can be found [here](https://doc
 #### NGSI9 (context information availability)
 | Method | Path                                                                                     | Action |
 | ------ |:--------------------------------------------------------------------------------------- | ---:|
-| GET    | /v1/registry/contextEntities/{EntityId}                                                      	| Dis |
-| POST   | /v1/registry/contextEntities/{EntityId}                                                      	| Reg |
-| GET    | /v1/registry/contextEntities/{EntityId}/attributes                                           	| -   |
-| POST   | /v1/registry/contextEntities/{EntityId}/attributes                                           	| -   |
-| GET    | /v1/registry/contextEntities/{EntityId}/attributes/{attributeName}                           	| Dis |
-| POST   | /v1/registry/contextEntities/{EntityId}/attributes/{attributeName}                          	| Reg |
-| GET    | /v1/registry/contextEntities/{EntityId}/attributeDomains/{attributeDomainName}               	| Dis |
-| POST   | /v1/registry/contextEntities/{EntityId}/attributeDomains/{attributeDomainName}               	| Reg |
-| GET    | /v1/registry/contextEntityTypes/{typeName}                                                   	| Dis |
-| POST   | /v1/registry/contextEntityTypes/{typeName}                                                   	| Reg |
-| GET    | /v1/registry/contextEntityTypes/{typeName}/attributes                                        	| -   |
-| POST   | /v1/registry/contextEntityTypes/{typeName}/attributes                                        	| -   |
-| GET    | /v1/registry/contextEntityTypes/{typeName}/attributes/{attributeName}                        	| Dis |
-| POST   | /v1/registry/contextEntityTypes/{typeName}/attributes/{attributeName}                        	| Reg |
-| GET    | /v1/registry/contextEntityTypes/{typeName}/attributeDomains/{attributeDomainName}            	| Dis |
-| POST   | /v1/registry/contextEntityTypes/{typeName}/attributeDomains/{attributeDomainName}            	| Reg |
-| POST   | /v1/registry/contextAvailabilitySubscriptions                                                	| S-A |
-| PUT    | /v1/registry/contextAvailabilitySubscriptions/{subscriptionId}                               	| S-A |
-| DELETE | /v1/registry/contextAvailabilitySubscriptions/{subscriptionId}                               	| S-A |
+| GET    | /v1/registry/contextEntities/{EntityId}                                                          | Dis |
+| POST   | /v1/registry/contextEntities/{EntityId}                                                          | Reg |
+| GET    | /v1/registry/contextEntities/{EntityId}/attributes                                               | -   |
+| POST   | /v1/registry/contextEntities/{EntityId}/attributes                                               | -   |
+| GET    | /v1/registry/contextEntities/{EntityId}/attributes/{attributeName}                               | Dis |
+| POST   | /v1/registry/contextEntities/{EntityId}/attributes/{attributeName}                           | Reg |
+| GET    | /v1/registry/contextEntities/{EntityId}/attributeDomains/{attributeDomainName}                   | Dis |
+| POST   | /v1/registry/contextEntities/{EntityId}/attributeDomains/{attributeDomainName}                   | Reg |
+| GET    | /v1/registry/contextEntityTypes/{typeName}                                                       | Dis |
+| POST   | /v1/registry/contextEntityTypes/{typeName}                                                       | Reg |
+| GET    | /v1/registry/contextEntityTypes/{typeName}/attributes                                            | -   |
+| POST   | /v1/registry/contextEntityTypes/{typeName}/attributes                                            | -   |
+| GET    | /v1/registry/contextEntityTypes/{typeName}/attributes/{attributeName}                            | Dis |
+| POST   | /v1/registry/contextEntityTypes/{typeName}/attributes/{attributeName}                            | Reg |
+| GET    | /v1/registry/contextEntityTypes/{typeName}/attributeDomains/{attributeDomainName}                | Dis |
+| POST   | /v1/registry/contextEntityTypes/{typeName}/attributeDomains/{attributeDomainName}                | Reg |
+| POST   | /v1/registry/contextAvailabilitySubscriptions                                                    | S-A |
+| PUT    | /v1/registry/contextAvailabilitySubscriptions/{subscriptionId}                                   | S-A |
+| DELETE | /v1/registry/contextAvailabilitySubscriptions/{subscriptionId}                                   | S-A |
 
 #### NGS10 (context information availability)
 | Method | Path                                                                                     | Action |
 | ------ |:--------------------------------------------------------------------------------------- | ---:|
 | GET    | /v1/contextEntities                                                                  | R |
 | POST   | /v1/contextEntities                                                                  | C |
-| GET    | /v1/contextEntities/{EntityID}                                                     	| R |
-| PUT    | /v1/contextEntities/{EntityID}                                                     	| U |
-| POST   | /v1/contextEntities/{EntityID}                                                     	| C |
-| DELETE | /v1/contextEntities/{EntityID}                                                     	| D |
-| GET    | /v1/contextEntities/{EntityID}/attributes                                          	| - |
-| PUT    | /v1/contextEntities/{EntityID}/attributes                                          	| - |
-| POST   | /v1/contextEntities/{EntityID}/attributes                                          	| - |
-| DELETE | /v1/contextEntities/{EntityID}/attributes                                          	| - |
-| GET    | /v1/contextEntities/{EntityID}/attributes/{attributeName}                          	| R |
-| POST   | /v1/contextEntities/{EntityID}/attributes/{attributeName}                          	| C |
-| PUT    | /v1/contextEntities/{EntityID}/attributes/{attributeName}                          	| U |
-| DELETE | /v1/contextEntities/{EntityID}/attributes/{attributeName}                          	| D |
-| GET    | /v1/contextEntities/{EntityID}/attributes/{attributeName}/{valueID}                	| R |
-| PUT    | /v1/contextEntities/{EntityID}/attributes/{attributeName}/{valueID}                	| U |
-| DELETE | /v1/contextEntities/{EntityID}/attributes/{attributeName}/{valueID}                	| D |
-| GET    | /v1/contextEntities/{EntityID}/attributeDomains/{attributeDomainName}              	| R |
-| GET    | /v1/contextEntityTypes/{typeName}                                                  	| R |
-| GET    | /v1/contextEntityTypes/{typeName}/attributes                                       	| - |
-| GET    | /v1/contextEntityTypes/{typeName}/attributes/{attributeName}                       	| R |
-| GET    | /v1/contextEntityTypes/{typeName}/attributeDomains/{attributeDomainName}           	| R |
-| POST   | /v1/contextSubscriptions                                                           	| S |
+| GET    | /v1/contextEntities/{EntityID}                                                       | R |
+| PUT    | /v1/contextEntities/{EntityID}                                                       | U |
+| POST   | /v1/contextEntities/{EntityID}                                                       | C |
+| DELETE | /v1/contextEntities/{EntityID}                                                       | D |
+| GET    | /v1/contextEntities/{EntityID}/attributes                                            | - |
+| PUT    | /v1/contextEntities/{EntityID}/attributes                                            | - |
+| POST   | /v1/contextEntities/{EntityID}/attributes                                            | - |
+| DELETE | /v1/contextEntities/{EntityID}/attributes                                            | - |
+| GET    | /v1/contextEntities/{EntityID}/attributes/{attributeName}                            | R |
+| POST   | /v1/contextEntities/{EntityID}/attributes/{attributeName}                            | C |
+| PUT    | /v1/contextEntities/{EntityID}/attributes/{attributeName}                            | U |
+| DELETE | /v1/contextEntities/{EntityID}/attributes/{attributeName}                            | D |
+| GET    | /v1/contextEntities/{EntityID}/attributes/{attributeName}/{valueID}                  | R |
+| PUT    | /v1/contextEntities/{EntityID}/attributes/{attributeName}/{valueID}                  | U |
+| DELETE | /v1/contextEntities/{EntityID}/attributes/{attributeName}/{valueID}                  | D |
+| GET    | /v1/contextEntities/{EntityID}/attributeDomains/{attributeDomainName}                | R |
+| GET    | /v1/contextEntityTypes/{typeName}                                                    | R |
+| GET    | /v1/contextEntityTypes/{typeName}/attributes                                         | - |
+| GET    | /v1/contextEntityTypes/{typeName}/attributes/{attributeName}                         | R |
+| GET    | /v1/contextEntityTypes/{typeName}/attributeDomains/{attributeDomainName}             | R |
+| POST   | /v1/contextSubscriptions                                                             | S |
 | GET    | /v1/contextSubscriptions                                                             | R |
 | GET    | /v1/contextSubscriptions/{subscriptionID}                                            | R |
-| PUT    | /v1/contextSubscriptions/{subscriptionID}                                          	| S |
-| DELETE | /v1/contextSubscriptions/{subscriptionID}                                          	| S |
+| PUT    | /v1/contextSubscriptions/{subscriptionID}                                            | S |
+| DELETE | /v1/contextSubscriptions/{subscriptionID}                                            | S |
 | GET    | /v1/contextTypes                                                                     | R |
 | GET    | /v1/contextTypes{typename}                                                           | R |
 
@@ -738,10 +740,10 @@ The following tables show the map from method and path of the request to the act
 ### Visual Rules
 | Method | Path    |  Action |
 | ------ |:--------|:------------|
-| GET    | /m2m/vrules        	| readRule |
+| GET    | /m2m/vrules          | readRule |
 | GET    | /m2m/vrules/{id}       | readRule |
-| POST   | /m2m/vrules        	| writeRule |
-| DELETE | /m2m/vrules/{id}    	| writeRule |
+| POST   | /m2m/vrules          | writeRule |
+| DELETE | /m2m/vrules/{id}     | writeRule |
 | PUT    | /m2m/vrules/{id}       | writeRule |
 
 ## <a name="rulesKeypass"/> Rules to determine the Keypass Access Control action from the request

@@ -1,0 +1,1 @@
+- Set body parser limit to 1Mb explicitly
