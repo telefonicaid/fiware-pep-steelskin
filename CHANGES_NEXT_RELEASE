@@ -1,2 +1,0 @@
-- Add URL /v2/registration actions for ContextBroker
-- Set body parser limit to 1Mb explicitly

@@ -169,6 +169,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_install_dir}
 
 %changelog
+* Mon Nov 11 2019 Fermin Galan <fermin.galanmarquez@telefonica.com> 1.7.0
+- Add URL /v2/registration actions for ContextBroker
+- Set body parser limit to 1 MB explicitly
+
 * Mon Jul 29 2019 Fermin Galan <fermin.galanmarquez@telefonica.com> 1.6.0
 - Add: version to orion urls as read action (#416)
 - Add: access control disabled flag as config environment variable (for docker)
