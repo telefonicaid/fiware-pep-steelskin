@@ -95,8 +95,8 @@ USER node
 ENV NODE_ENV=production
 ENV LOG_LEVEL=INFO
 
-# Expose 1026 for SERVER PORT and 11211 for ADMIN PORT
-EXPOSE 1026 11211
+# Expose 1026 for TARGET PORT and 11211 for ADMIN PORT
+EXPOSE ${TARGET_PORT:-1026} ${ADMIN_PORT:-11211}
 
 ENTRYPOINT ["docker/entrypoint.sh"]
 CMD ["-- ", "config.js"]
