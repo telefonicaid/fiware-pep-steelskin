@@ -70,7 +70,7 @@ RUN apt-get update && \
 	wget --no-check-certificate -O source.zip https://github.com/"${GITHUB_ACCOUNT}"/"${GITHUB_REPOSITORY}"/archive/"${RELEASE}".zip && \
 	unzip source.zip && \
 	rm source.zip && \
-	mv "${GITHUB_REPOSITORY}-${RELEASE_CONCAT}" /opt/iotaManager && \
+	mv "${GITHUB_REPOSITORY}-${RELEASE_CONCAT}" /opt/fiware-pep-steelskin && \
 	# Remove unzip and clean apt cache
 	apt-get clean && \
 	apt-get remove -y unzip && \
@@ -95,8 +95,8 @@ USER node
 ENV NODE_ENV=production
 ENV LOG_LEVEL=INFO
 
-# Expose 8082 for SERVER PORT
-EXPOSE ${IOTA_SERVER_PORT:-1026} ${IOTA_HTTP_PORT:-11211}
+# Expose 1026 for SERVER PORT and 11211 for ADMIN PORT
+EXPOSE 1026, 11211
 
 ENTRYPOINT ["docker/entrypoint.sh"]
 CMD ["-- ", "config.js"]
