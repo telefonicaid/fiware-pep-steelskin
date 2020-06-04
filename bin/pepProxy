@@ -92,7 +92,7 @@ function loadConfiguration() {
         config.access.protocol = process.env.ACCESS_PROTOCOL;
     }
     if (process.env.ACCESS_ACCOUNT) {
-        config.access.account = process.env.ACCESS_ACCOUNT;
+        config.access.account = process.env.ACCESS_ACCOUNT == 'true';
     }
     if (process.env.ACCESS_ACCOUNTFILE) {
         config.access.accountFile = process.env.ACCESS_ACCOUNTFILE;
