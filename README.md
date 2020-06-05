@@ -525,7 +525,8 @@ Some of the configuration values for the attributes above mentioned can be overr
 | PROXY_USERNAME       | config.authentication.user          |
 | PROXY_PASSWORD       | config.authentication.password      |
 | PROXY_PASSWORD       | config.authentication.password      |
-| COMPONENT_PLUGIN       | config.middlewares and config.componentName     |
+| COMPONENT_NAME       | config.componentName                |
+| COMPONENT_PLUGIN       | config.middlewares and config.componentName if no COMPONENT_NAME provided     |
 | BODY_LIMIT       | config.bodyLimit                        |
 
 ### Component configuration
