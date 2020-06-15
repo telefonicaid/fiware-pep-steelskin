@@ -51,6 +51,10 @@ function loadConfiguration() {
         'AUTHENTICATION_HOST',
         'AUTHENTICATION_PORT',
         'AUTHENTICATION_PROTOCOL',
+        'AUTHENTICATION_CACHE_PROJECTIDS',
+        'AUTHENTICATION_CACHE_ROLES',
+        'AUTHENTICATION_CACHE_USERS',
+        'AUTHENTICATION_CACHE_VALIDATION',
         'PROXY_USERNAME',
         'PROXY_PASSWORD',
         'COMPONENT_PLUGIN',
@@ -105,6 +109,18 @@ function loadConfiguration() {
     }
     if (process.env.AUTHENTICATION_PROTOCOL) {
         config.authentication.options.protocol = process.env.AUTHENTICATION_PROTOCOL;
+    }
+    if (process.env.AUTHENTICATION_CACHE_PROJECTIDS) {
+        config.authentication.cacheTTLs.projectIds = process.env.AUTHENTICATION_CACHE_PROJECTIDS;
+    }
+    if (process.env.AUTHENTICATION_CACHE_ROLES) {
+        config.authentication.cacheTTLs.roles = process.env.AUTHENTICATION_CACHE_ROLES;
+    }
+    if (process.env.AUTHENTICATION_CACHE_USERS) {
+        config.authentication.cacheTTLs.users = process.env.AUTHENTICATION_CACHE_USERS;
+    }
+    if (process.env.AUTHENTICATION_CACHE_VALIDATION) {
+        config.authentication.cacheTTLs.validation = process.env.AUTHENTICATION_CACHE_VALIDATION;
     }
     if (process.env.PROXY_USERNAME) {
         config.authentication.user = process.env.PROXY_USERNAME;

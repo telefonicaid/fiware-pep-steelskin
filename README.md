@@ -483,7 +483,7 @@ Right Attempt | ResponseStatus=200 | Token=860864fb6d1a4c8a8cb7d59d16daaa52 | Or
 * `config.authentication.password`: password of the PEP proxy in the IDM.
 * `config.authentication.domainName`: (only meaningful for Keystone) name of the administration domain the PEP proxy user belongs to.
 * `config.authentication.retries`: as the authentication is based in the use of tokens that can expire, the operations against Keystone are meant to retry with a fresh token. This configuration value indicates how many retries the PEP should perform in case the communication against Keystone fails. The value `0` means the default will be used (default value is 3). The value `-1` implies that it should be retried forever.
-* `cacheTTLs`: the values in this object correspond to the Time To Live of the values of the different caches the PEP uses to cache requests for information in Keystone. The value is expressed in seconds.
+* `cacheTTLs`: the values in this object correspond to the Time To Live of the values of the different caches the PEP uses to cache requests for information in Keystone. The value is expressed in seconds and `0` value implies unlimited.
 * `config.authentication.options`: address, port and other communication data needed to communicate with the Identity Manager. Apart from the host and port, default values should be used. 
 
 ### Plugin configuration
@@ -522,6 +522,10 @@ Some of the configuration values for the attributes above mentioned can be overr
 | AUTHENTICATION_HOST  | config.authentication.options.host  |
 | AUTHENTICATION_PORT  | config.authentication.options.port  |
 | AUTHENTICATION_PROTOCOL  | config.authentication.options.protocol  |
+| AUTHENTICATION_CACHE_PROJECTIDS  | config.authentication.cacheTTLs.projectIds  |
+| AUTHENTICATION_CACHE_ROLES  | config.authentication.cacheTTLs.roles  |
+| AUTHENTICATION_CACHE_USERS  | config.authentication.cacheTTLs.users  |
+| AUTHENTICATION_CACHE_VALIDATION | config.authentication.cacheTTLs.validation  |
 | PROXY_USERNAME       | config.authentication.user          |
 | PROXY_PASSWORD       | config.authentication.password      |
 | PROXY_PASSWORD       | config.authentication.password      |
