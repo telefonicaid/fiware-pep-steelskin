@@ -169,6 +169,14 @@ rm -rf $RPM_BUILD_ROOT
 %{_install_dir}
 
 %changelog
+* Tue Jun 30 2020 Fermin Galan <fermin.galanmarquez@telefonica.com> 1.8.0
+- Add: docker env vars for tune authentication cacheTTL
+- Fix: logs about invalid PEP token to debug level (#439)
+- Fix: to info all access account logs (#376)
+- Fix: Check boolean access account config value against right boolean value
+- Upgrade NodeJS version from 8.16.0 to 10.19.0 in Dockerfile due to Node 8 End-of-Life
+- Make optional PM2 usage in docker entrypoint
+
 * Mon Nov 11 2019 Fermin Galan <fermin.galanmarquez@telefonica.com> 1.7.0
 - Add URL /v2/registration actions for ContextBroker
 - Set body parser limit to 1 MB explicitly
