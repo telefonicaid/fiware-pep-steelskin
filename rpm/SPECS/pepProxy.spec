@@ -166,6 +166,7 @@ rm -rf $RPM_BUILD_ROOT
 %config /etc/sysconfig/logrotate-pepproxy-size
 %config /etc/logrotate.d/logrotate-pepproxy.conf
 %config /etc/cron.d/cron-logrotate-pepproxy-size
+%config %attr(644,root,root) /etc/tmpfiles.d/pepProxy.conf
 %{_install_dir}
 
 %changelog
