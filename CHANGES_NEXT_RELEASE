@@ -1,1 +1,2 @@
+- Check 401 status response before body content in retrieveSubserviceId
 - Set Nodejs 10 as minimum version in packages.json (effectively removing Nodev8 from supported versions)
