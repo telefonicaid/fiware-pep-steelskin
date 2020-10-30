@@ -1,7 +1,7 @@
 {
   "name": "fiware-pep-steelskin",
   "description": "FIWARE Policy Enforcement Point",
-  "version": "1.9.0",
+  "version": "1.9.0-next",
   "homepage": "https://github.com/telefonicaid/fiware-pep-steelskin",
   "author": {
     "name": "Daniel Moran",
