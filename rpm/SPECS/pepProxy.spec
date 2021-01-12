@@ -170,6 +170,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_install_dir}
 
 %changelog
+* Tue Jan 12 2021 Alvaro Vega <alvaro.vegagarcia.com> 1.10.0
+- Add PUT action for perseo /rules plugin
+
 * Thu Oct 29 2020 Alvaro Vega <alvaro.vegagarcia.com> 1.9.0
 - Add `from` based on fowarder header in log context
 - Check 401 status response before body content in retrieveSubserviceId
