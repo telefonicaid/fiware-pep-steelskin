@@ -148,7 +148,6 @@ world.ac['read_role'] = 'read'
 world.ac['subscribe_role'] = 'subscribe'
 world.ac['register_role'] = 'register'
 world.ac['discover_role'] = 'discover'
-world.ac['subscribe-availability_role'] = 'subscribe-availability'
 world.ac['notify_role'] = 'notify'
 world.ac['readRule_role'] = 'readRule'
 world.ac['writeRule_role'] = 'writeRule'
@@ -209,9 +208,6 @@ world.ks['environment_general'] = {
                                 },
                                 {
                                     'name': world.ac['discover_role']
-                                },
-                                {
-                                    'name': world.ac['subscribe-availability_role']
                                 },
                                 {
                                     'name': world.ac['notify_role']
@@ -333,7 +329,6 @@ world.ks['user_read_project'] = 'krim_read'
 world.ks['user_subscribe_project'] = 'krim_subscribe'
 world.ks['user_register_project'] = 'krim_register'
 world.ks['user_discover_project'] = 'krim_discover'
-world.ks['user_subscribe-availability_project'] = 'krim_subscribe-availability'
 world.ks['user_notify_project'] = 'krim_notify'
 world.ks['user_readRule_project'] = 'krim_readRule'
 world.ks['user_writeRule_project'] = 'krim_writeRule'
@@ -461,22 +456,6 @@ world.ks['environment_project'] = {
                             'roles': [
                                 {
                                     'name': world.ac['discover_role']
-                                },
-                            ]
-                        }
-                    ]
-                },
-                {
-                    'name': world.ks['user_subscribe-availability_project'],
-                    'password': world.ks['user_subscribe-availability_project'],
-                    'description': 'Little animal',
-                    'projects': [
-                        {
-                            'name': world.ks['project_project_only'],
-                            'description': 'Cave in the ocean',
-                            'roles': [
-                                {
-                                    'name': world.ac['subscribe-availability_role']
                                 },
                             ]
                         }
@@ -644,7 +623,6 @@ world.ks['user_read_domain'] = 'crab_read'
 world.ks['user_subscribe_domain'] = 'crab_subscribe'
 world.ks['user_register_domain'] = 'crab_register'
 world.ks['user_discover_domain'] = 'crab_discover'
-world.ks['user_subscribe-availability_domain'] = 'crab_subscribe-availability'
 world.ks['user_notify_domain'] = 'crab_notify'
 world.ks['user_readRule_domain'] = 'crab_readRule'
 world.ks['user_writeRule_domain'] = 'crab_writeRule'
@@ -732,16 +710,6 @@ world.ks['environment_domain'] = {
                     'roles': [
                         {
                             'name': world.ac['discover_role']
-                        }
-                    ]
-                },
-                {
-                    'name': world.ks['user_subscribe-availability_domain'],
-                    'password': world.ks['user_subscribe-availability_domain'],
-                    'description': 'Claws guy',
-                    'roles': [
-                        {
-                            'name': world.ac['subscribe-availability_role']
                         }
                     ]
                 },

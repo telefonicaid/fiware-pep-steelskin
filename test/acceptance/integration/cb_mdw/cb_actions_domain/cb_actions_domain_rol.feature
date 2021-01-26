@@ -127,23 +127,6 @@ Feature: Context broker actions when the role is defined only in a domain
     | xml    |
     | json   |
 
-  Scenario Outline: subscribe-availability Standard operation
-    Given a KEYSTONE CONFIGURATION with roles in the domains and the user "user_subscribe-availability_domain"
-    And set the request URL with the path "<url>"
-    And set the request HEADERS with the previous KEYSTONE CONFIGURATION ant the format "<format>"
-    And add an example of PAYLOAD with "<format>" format
-    And set the request METHOD as "POST"
-    When the request built before is sent to PEP
-    Then the petition gets to the mock
-  Examples:
-    | format | url                                                |
-    | xml    | /v1/registry/subscribeContextAvailability          |
-    | json   | /v1/registry/subscribeContextAvailability          |
-    | xml    | /v1/registry/updateContextAvailabilitySubscription |
-    | json   | /v1/registry/updateContextAvailabilitySubscription |
-    | xml    | /v1/registry/unsubscribeContextAvailability        |
-    | json   | /v1/registry/unsubscribeContextAvailability        |
-
   #Convenience operations
   Scenario Outline: Read Convenience operation
     Given a KEYSTONE CONFIGURATION with roles in the domains and the user "user_read_domain"
@@ -274,26 +257,4 @@ Feature: Context broker actions when the role is defined only in a domain
     | json   | /v1/registry/contextEntityTypes/typeName/attributeDomains/attributeDomainName |
     | xml    | /v1/registry/contextEntityTypes/typeName                                      |
     | json   | /v1/registry/contextEntityTypes/typeName                                      |
-
-  Scenario Outline: Subscribe-availability Convenience operation
-    Given a KEYSTONE CONFIGURATION with roles in the domains and the user "user_subscribe-availability_domain"
-    And set the request URL with the path "<url>"
-    And set the request HEADERS with the previous KEYSTONE CONFIGURATION ant the format "<format>"
-    And add an example of PAYLOAD with "<format>" format
-    And set the request METHOD as "<action>"
-    When the request built before is sent to PEP
-    Then the petition gets to the mock
-  Examples:
-    | format | url                                                          | action |
-    | xml    | /v1/registry/contextAvailabilitySubscriptions                | POST   |
-    | json   | /v1/registry/contextAvailabilitySubscriptions                | POST   |
-    | xml    | /v1/registry/contextAvailabilitySubscriptions/subscriptionId | PUT    |
-    | json   | /v1/registry/contextAvailabilitySubscriptions/subscriptionId | PUT    |
-    | xml    | /v1/registry/contextAvailabilitySubscriptions/subscriptionId | DELETE |
-    | json   | /v1/registry/contextAvailabilitySubscriptions/subscriptionId | DELETE |
-
-
-
-
-
 

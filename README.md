@@ -620,7 +620,6 @@ This is the list of actions available for the Context Broker. For every action, 
 | subscribe | S            |
 | register | Reg           |
 | discover | Dis            |
-| subscribe-availability | S-A            |
 | N/A | - |
 
 ### Standard operations
@@ -631,7 +630,6 @@ This is the list of actions available for the Context Broker. For every action, 
 * `subscribe`: URL contains  `/v1/subscribeContext`, `/v1/updateContextSubscription` o `/v1/unsubscribeContext`.
 * `register`: URL contains `/v1/registry/registerContext`.
 * `discover`: URL contains `/v1/registry/discoverContextAvailability`.
-* `subscribe-availability`: URL contains `/v1/registry/subscribeContextAvailability`, `/v1/registry/updateContextAvailabilitySubscription` o `/v1/registry/unsubscribeContextAvailability`.
 
 ### Convenience operations
 The following tables show the rules for detemining the action based on Method and path of the request. 
@@ -657,9 +655,6 @@ An up-to-date list of the convenience operations can be found [here](https://doc
 | POST   | /v1/registry/contextEntityTypes/{typeName}/attributes/{attributeName}                            | Reg |
 | GET    | /v1/registry/contextEntityTypes/{typeName}/attributeDomains/{attributeDomainName}                | Dis |
 | POST   | /v1/registry/contextEntityTypes/{typeName}/attributeDomains/{attributeDomainName}                | Reg |
-| POST   | /v1/registry/contextAvailabilitySubscriptions                                                    | S-A |
-| PUT    | /v1/registry/contextAvailabilitySubscriptions/{subscriptionId}                                   | S-A |
-| DELETE | /v1/registry/contextAvailabilitySubscriptions/{subscriptionId}                                   | S-A |
 
 #### NGS10 (context information availability)
 | Method | Path                                                                                     | Action |
