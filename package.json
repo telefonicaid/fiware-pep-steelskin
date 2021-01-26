@@ -1,7 +1,7 @@
 {
   "name": "fiware-pep-steelskin",
   "description": "FIWARE Policy Enforcement Point",
-  "version": "1.8.0-next",
+  "version": "1.10.0-next",
   "homepage": "https://github.com/telefonicaid/fiware-pep-steelskin",
   "author": {
     "name": "Daniel Moran",
@@ -16,7 +16,7 @@
   },
   "main": "lib/fiware-pep-steelskin",
   "engines": {
-    "node": ">=8.12.0"
+    "node": ">=10"
   },
   "scripts": {
     "clean": "rm -rf package-lock.json && rm -rf node_modules && rm -rf coverage",

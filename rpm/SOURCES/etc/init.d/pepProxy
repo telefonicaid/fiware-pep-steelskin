@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 #
 # pepProxy         Start/Stop the PEP Proxy
 #
@@ -16,6 +16,8 @@
 # based on policies defined in the Access Control system. The PEP Proxy validates all
 # the incoming requests against the Access Control.
 ### END INIT INFO
+
+export SYSTEMCTL_SKIP_REDIRECT=true
 
 # Copyright 2013 Telefonica Investigacion y Desarrollo, S.A.U
 #
@@ -53,6 +55,10 @@ PSINFO=""
 PSPATTERN=""
 # No path for Node
 NODEPATH="node"
+
+# Assure that exist PID_DIR and LOG_DIR
+mkdir -p /var/run/${PEP_COMPONENT_NAME} /var/log/${PEP_COMPONENT_NAME}
+chown pepproxy.pepproxy /var/run/${PEP_COMPONENT_NAME} /var/log/${PEP_COMPONENT_NAME}
 
 
 # Function that show the process area (ps) filtered by a regexp (PSPATTERN)

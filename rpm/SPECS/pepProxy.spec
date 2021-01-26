@@ -166,9 +166,19 @@ rm -rf $RPM_BUILD_ROOT
 %config /etc/sysconfig/logrotate-pepproxy-size
 %config /etc/logrotate.d/logrotate-pepproxy.conf
 %config /etc/cron.d/cron-logrotate-pepproxy-size
+%config %attr(644,root,root) /etc/tmpfiles.d/pepProxy.conf
 %{_install_dir}
 
 %changelog
+* Tue Jan 12 2021 Alvaro Vega <alvaro.vegagarcia.com> 1.10.0
+- Add PUT action for perseo /rules plugin
+
+* Thu Oct 29 2020 Alvaro Vega <alvaro.vegagarcia.com> 1.9.0
+- Add `from` based on fowarder header in log context
+- Check 401 status response before body content in retrieveSubserviceId
+- Set Nodejs 10 as minimum version in packages.json (effectively removing Nodev8 from supported versions)
+- Compatibility with RedHat 7 (or Centos 7) RPM
+
 * Tue Jun 30 2020 Fermin Galan <fermin.galanmarquez@telefonica.com> 1.8.0
 - Add: docker env vars for tune authentication cacheTTL
 - Fix: logs about invalid PEP token to debug level (#439)
