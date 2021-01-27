@@ -116,9 +116,6 @@ describe('Extract Context Broker action from request', function() {
         ['/ngsi10/unsubscribeContext', 'subscribe'],
         ['/ngsi9/registerContext', 'register'],
         ['/ngsi9/discoverContextAvailability', 'discover'],
-        ['/ngsi9/subscribeContextAvailability', 'subscribe-availability'],
-        ['/ngsi9/updateContextAvailabilitySubscription', 'subscribe-availability'],
-        ['/ngsi9/unsubscribeContextAvailability', 'subscribe-availability'],
         ['/v2/op/query', 'read'],
         ['/v1/queryContext', 'read'],
         ['/v1/contextTypes', 'read'],
@@ -126,10 +123,7 @@ describe('Extract Context Broker action from request', function() {
         ['/v1/updateContextSubscription', 'subscribe'],
         ['/v1/unsubscribeContext', 'subscribe'],
         ['/v1/registry/registerContext', 'register'],
-        ['/v1/registry/discoverContextAvailability', 'discover'],
-        ['/v1/registry/subscribeContextAvailability', 'subscribe-availability'],
-        ['/v1/registry/updateContextAvailabilitySubscription', 'subscribe-availability'],
-        ['/v1/registry/unsubscribeContextAvailability', 'subscribe-availability']
+        ['/v1/registry/discoverContextAvailability', 'discover']
     ];
 
     function testStandardOperation(url, action) {

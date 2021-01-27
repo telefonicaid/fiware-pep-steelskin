@@ -125,23 +125,6 @@ Feature: Context broker middleware
     | xml    |
     | json   |
 
-  Scenario Outline: subscribe-availability Standard operation
-    Given a KEYSTONE CONFIGURATION with all roles in the same project
-    And set the request URL with the path "<url>"
-    And set the request HEADERS with the previous KEYSTONE CONFIGURATION ant the format "<format>"
-    And add an example of PAYLOAD with "<format>" format
-    And set the request METHOD as "POST"
-    When the request built before is sent to PEP
-    Then the petition gets to the mock
-  Examples:
-    | format | url                                                |
-    | xml    | /v1/registry/subscribeContextAvailability          |
-    | json   | /v1/registry/subscribeContextAvailability          |
-    | xml    | /v1/registry/updateContextAvailabilitySubscription |
-    | json   | /v1/registry/updateContextAvailabilitySubscription |
-    | xml    | /v1/registry/unsubscribeContextAvailability        |
-    | json   | /v1/registry/unsubscribeContextAvailability        |
-
   #Convenience operations
   Scenario Outline: Read Convenience operation
     Given a KEYSTONE CONFIGURATION with all roles in the same project

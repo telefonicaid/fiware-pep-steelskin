@@ -64,9 +64,6 @@ convenienceOperations = [
     ['POST', '/ngsi9/contextEntityTypes/TestedTypeName001/attributes/TestedAttributeName001', 'register'],
     ['GET', '/ngsi9/contextEntityTypes/TestedTypeName001/attributeDomains/TestedDomainName001', 'discover'],
     ['POST', '/ngsi9/contextEntityTypes/TestedTypeName001/attributeDomains/TestedDomainName001', 'register'],
-    ['POST', '/ngsi9/contextAvailabilitySubscriptions', 'subscribe-availability'],
-    ['PUT', '/ngsi9/contextAvailabilitySubscriptions/TestedSubscriptionID002', 'subscribe-availability'],
-    ['DELETE', '/ngsi9/contextAvailabilitySubscriptions/TestedSubscriptionID002', 'subscribe-availability'],
 
     /* "Classic" NGSI10 operations */
     ['GET', '/ngsi10/contextEntities/TestedEntityId002', 'read'],
@@ -135,12 +132,7 @@ convenienceOperations = [
     ['GET', '/v1/contextTypes/typeOfEntity001', 'read'],
 
     /* NGSI Operations with query params */
-    ['POST', '/v1/registry/contextAvailabilitySubscriptions?details=on&limit=15&offset=0 ',
-        'subscribe-availability'],
     ['GET', '/v1/contextSubscriptions?details=on&limit=15&offset=0', 'read'],
-    ['POST', '/v1/registry/subscribeContextAvailability?details=on&limit=15&offset=0', 'subscribe-availability'],
-    ['POST', '/v1/registry/updateContextAvailabilitySubscription?details=on&limit=15&offset=0',
-        'subscribe-availability'],
 
     /* V2 Operations */
     ['GET', '/v2', 'read'],
