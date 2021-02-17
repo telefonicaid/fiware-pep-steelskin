@@ -19,7 +19,7 @@
 # fermin at tid dot es
 
 
-/var/log/pepProxy/pepProxy.log
+/var/log/pepProxy/*.log
 {      
       size 100M
       rotate 7
