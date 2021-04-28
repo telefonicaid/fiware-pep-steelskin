@@ -170,6 +170,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_install_dir}
 
 %changelog
+* Wed Apr 28 2021 Alvaro Vega <alvaro.vegagarcia.com> 1.11.0
+- Add: print object detail in debug logs about cache
+- Fix: not logrotate logs of PEP in deploy no Docker (#457)
+- Remove: availability subscription related actions in Orion plugin
+
 * Tue Jan 12 2021 Alvaro Vega <alvaro.vegagarcia.com> 1.10.0
 - Add PUT action for perseo /rules plugin
 

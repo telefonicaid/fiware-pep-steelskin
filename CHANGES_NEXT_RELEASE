@@ -1,4 +1,2 @@
-- Add: print object detail in debug logs about cache
-- Remove: availability subscription related actions in Orion plugin
-- BUG not logrotate logs of PEP in deploy no Docker #457
+
 
