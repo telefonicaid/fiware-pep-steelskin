@@ -35,7 +35,7 @@
     "node-cache": "1.0.3",
     "request": "2.88.0",
     "sax": "0.6.0",
-    "underscore": "1.7.0",
+    "underscore": "1.12.1",
     "uuid": "~3.0.0",
     "winston": "~2.3.1"
   },
