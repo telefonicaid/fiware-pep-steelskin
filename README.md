@@ -1,4 +1,10 @@
 # fiware-pep-steelskin
+
+[![FIWARE Security](https://nexus.lab.fiware.org/static/badges/chapters/security.svg)](https://www.fiware.org/developers/catalogue/)
+[![License: APGL](https://img.shields.io/github/license/telefonicaid/fiware-pep-steelskin.svg)](https://opensource.org/licenses/AGPL-3.0)
+<br/>
+![Status](https://nexus.lab.fiware.org/static/badges/statuses/incubating.svg)
+
 ## Index
 
 * [Overview](#overview)
