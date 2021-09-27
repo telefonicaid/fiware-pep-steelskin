@@ -33,7 +33,7 @@
     "logops": "2.1.0",
     "mustache": "2.2.1",
     "node-cache": "1.0.3",
-    "request": "2.88.0",
+    "request": "2.88.2",
     "sax": "0.6.0",
     "underscore": "1.12.1",
     "uuid": "~3.0.0",
