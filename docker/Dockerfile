@@ -34,8 +34,6 @@ ENV GITHUB_ACCOUNT=${GITHUB_ACCOUNT}
 ENV GITHUB_REPOSITORY=${GITHUB_REPOSITORY}
 ENV DOWNLOAD=${DOWNLOAD}
 
-MAINTAINER FIWARE IoTAgent Team. Telefónica I+D
-
 #
 # The following RUN command retrieves the source code from GitHub.
 # 
