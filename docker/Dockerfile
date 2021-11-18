@@ -77,7 +77,7 @@ RUN apt-get update && \
 	rm -rf /var/lib/apt/lists/* 
 
 WORKDIR /opt/fiware-pep-steelskin
-# hadolint ignore=DL3008
+# hadolint ignore=DL3008,DL3009,DL3015
 RUN \
 	# Ensure that Git is installed prior to running npm install
 	apt-get update && \
