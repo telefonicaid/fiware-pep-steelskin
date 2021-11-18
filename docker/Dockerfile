@@ -49,6 +49,7 @@ ENV DOWNLOAD=${DOWNLOAD}
 #
 # COPY . /opt/fiware-pep-steelskin/
 #
+# hadolint ignore=DL3008
 RUN apt-get update && \
 	# Ensure that unzip, wget and curl are installed
 	apt-get install -y --no-install-recommends unzip ca-certificates curl wget && \
@@ -76,7 +77,7 @@ RUN apt-get update && \
 	rm -rf /var/lib/apt/lists/* 
 
 WORKDIR /opt/fiware-pep-steelskin
-
+# hadolint ignore=DL3008
 RUN \
 	# Ensure that Git is installed prior to running npm install
 	apt-get update && \
