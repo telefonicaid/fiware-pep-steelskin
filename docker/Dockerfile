@@ -49,7 +49,7 @@ ENV DOWNLOAD=${DOWNLOAD}
 #
 # COPY . /opt/fiware-pep-steelskin/
 #
-# hadolint ignore=DL3008
+# hadolint ignore=DL3008,DL4001,DL4006
 RUN apt-get update && \
 	# Ensure that unzip, wget and curl are installed
 	apt-get install -y --no-install-recommends unzip ca-certificates curl wget && \
