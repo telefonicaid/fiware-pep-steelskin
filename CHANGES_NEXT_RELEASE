@@ -2,3 +2,4 @@
 - Fix: upgrade underscore dep from 1.7.0 to 1.12.1
 - Upgrade requests dep from 2.88.0 to 2.88.2
 - Fix: propagate correlator in FWD request (#468)
+- Fix: propagate correlator in validation (Access Control) requests
