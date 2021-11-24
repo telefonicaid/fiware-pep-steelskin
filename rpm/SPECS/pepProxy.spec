@@ -170,6 +170,14 @@ rm -rf $RPM_BUILD_ROOT
 %{_install_dir}
 
 %changelog
+* Wed Nov 24 2021 Alvaro Vega <alvaro.vegagarcia.com> 1.12.0
+- ADD: support both WARN and WARNING log levels
+- Upgrade requests dep from 2.88.0 to 2.88.2
+- Fix: upgrade underscore dep from 1.7.0 to 1.12.1
+- Fix: propagate correlator in FWD request (#468)
+- Fix: propagate correlator in validation (Access Control) requests
+- Fix: request log properly, based in its content-type
+
 * Wed Apr 28 2021 Alvaro Vega <alvaro.vegagarcia.com> 1.11.0
 - Add: print object detail in debug logs about cache
 - Fix: not logrotate logs of PEP in deploy no Docker (#457)
