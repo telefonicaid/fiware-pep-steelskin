@@ -99,3 +99,7 @@ EXPOSE ${TARGET_PORT:-1026} ${ADMIN_PORT:-11211}
 
 ENTRYPOINT ["docker/entrypoint.sh"]
 CMD ["-- ", "config.js"]
+
+ENV CHECK_PORT=${ADMIN_PORT:-11211}
+HEALTHCHECK --interval=60s --start-period=10s \
+            CMD curl --fail -X GET http://localhost:${CHECK_PORT}/version
