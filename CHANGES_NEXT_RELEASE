@@ -1,3 +1,4 @@
 - Add: url to get perseo-fe version
 - Add: Docker healthcheck by asking to pep admin API
+- Fix: URL for get orion version
 - Fix: possible race condition on variable requestTemplate and roleTemplate at server startup (#477)
