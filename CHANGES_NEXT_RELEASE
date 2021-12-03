@@ -1,2 +1,3 @@
+- Fix: URL for get orion version
 - Add: Docker healthcheck by asking to pep admin API
 - Fix: possible race condition on variable requestTemplate and roleTemplate at server startup (#477)
