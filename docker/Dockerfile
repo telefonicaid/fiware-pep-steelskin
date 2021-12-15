@@ -102,4 +102,4 @@ CMD ["-- ", "config.js"]
 
 ENV CHECK_PORT=${ADMIN_PORT:-11211}
 HEALTHCHECK --interval=60s --start-period=10s \
-            CMD curl --fail -X GET http://localhost:${CHECK_PORT}/version
+            CMD curl --fail -X GET http://localhost:${CHECK_PORT}/version || exit 1
