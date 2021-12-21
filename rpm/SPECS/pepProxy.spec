@@ -170,6 +170,12 @@ rm -rf $RPM_BUILD_ROOT
 %{_install_dir}
 
 %changelog
+* Tue Dec 21 2021 Alvaro Vega <alvaro.vegagarcia.com> 1.13.0
+- Add: url to get perseo-fe version
+- Add: Docker healthcheck by asking to pep admin API
+- Fix: URL for get orion version
+- Fix: possible race condition on variable requestTemplate and roleTemplate at server startup (#477)
+
 * Wed Nov 24 2021 Alvaro Vega <alvaro.vegagarcia.com> 1.12.0
 - Add: support both WARN and WARNING log levels
 - Fix: propagate correlator in FWD request (#468)
