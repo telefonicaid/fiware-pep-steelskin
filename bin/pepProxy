@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+logger = require('logops');
 var proxy = require('../lib/fiware-pep-steelskin'),
     config = require('../config'),
     middlewareConfigs = {
@@ -33,7 +34,7 @@ var proxy = require('../lib/fiware-pep-steelskin'),
          }
     };
 
-
+var proxyLocalObj;
 
 function loadConfiguration() {
     var environmentValues = [
@@ -64,7 +65,7 @@ function loadConfiguration() {
 
     for (var i = 0; i < environmentValues.length; i++) {
         if (process.env[environmentValues[i]]) {
-            console.log('Changing %s to environment value: %s', environmentValues[i], process.env[environmentValues[i]]);
+            logger.info('Changing %s to environment value: %s', environmentValues[i], process.env[environmentValues[i]]);
         }
     }
 
@@ -139,7 +140,7 @@ function loadConfiguration() {
 
             config.middlewares = middlewareConfigs[process.env.COMPONENT_PLUGIN];
         } else {
-            console.log('FATAL ERROR: Component plugin not found');
+            logger.info('FATAL ERROR: Component plugin not found');
             process.exit();
         }
     }
@@ -152,17 +153,35 @@ loadConfiguration();
 
 proxy.start(function(error, proxyObj) {
     var module;
-
+    proxyLocalObj = proxyObj;
     if (error) {
         process.exit();
     } else {
-        console.log('Loading middlewares');
+        logger.info('Loading middlewares');
         module = require('../' + config.middlewares.require);
 
         for (var i in config.middlewares.functions) {
             proxyObj.middlewares.push(module[config.middlewares.functions[i]]);
         }
 
-        console.log('Server started');
+        logger.info('Server started');
     }
 });
+
+
+function handleShutdown(signal) {
+    logger.info('Received %s, starting shutdown processs', signal);
+    proxy.stop(proxyLocalObj,
+        (err) => {
+        if (err) {
+            logger.info(err);
+            return process.exit(1);
+        }
+        return process.exit(0);
+    });
+}
+
+process.on('SIGINT', handleShutdown);
+process.on('SIGTERM', handleShutdown);
+process.on('SIGHUP', handleShutdown);
+
