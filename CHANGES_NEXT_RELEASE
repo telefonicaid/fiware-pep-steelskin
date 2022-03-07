@@ -1,4 +1,4 @@
 - Upgrade logops dep from 2.1.0 to 2.1.2 due to colors dependency corruption
 - Add: Add graceful shutdown listening to SIGINT (#487)
 - Fix: use logops library instead of direct console.log printing in all cases (#487)
-- Upgrade NodeJS version from 10.19.0 to 14 in Dockerfile
+- Upgrade NodeJS version from 10.19.0 to 14-slim in Dockerfile
