@@ -170,6 +170,12 @@ rm -rf $RPM_BUILD_ROOT
 %{_install_dir}
 
 %changelog
+* Thu Mar 24 2021 Alvaro Vega <alvaro.vegagarcia.com> 1.14.0
+- Add: Add graceful shutdown listening to SIGINT (#487)
+- Fix: use logops library instead of direct console.log printing in all cases (#487)
+- Upgrade logops dep from 2.1.0 to 2.1.2 due to colors dependency corruption
+- Upgrade NodeJS version from 10.19.0 to 14-slim in Dockerfile
+
 * Tue Dec 21 2021 Alvaro Vega <alvaro.vegagarcia.com> 1.13.0
 - Add: url to get perseo-fe version
 - Add: Docker healthcheck by asking to pep admin API
