@@ -1,9 +1,9 @@
 lettuce==0.2.20
 fabric==1.10.0
-flask==1.0.0    # blindly changing from 0.12.3 due to a github vulnerability warning, not yet tested...
+flask==1.0.0         # blindly changing from 0.12.3 due to a github vulnerability warning, not yet tested...
 requests==2.20.0
 colorama==0.2.5
-paramiko==2.10.1
+paramiko==2.10.1     # blindly changing from 2.0.9 due to a github vulnerability warning, not yet tested...
 psutil==5.6.6
 python-subunit==1.0.0
 junitxml==0.7
