@@ -49,7 +49,7 @@ ENV DOWNLOAD=${DOWNLOAD}
 #
 # COPY . /opt/fiware-pep-steelskin/
 #
-# hadolint ignore=DL3008,DL4001,DL4006
+# hadolint ignore=DL3008,DL4001,DL4006,DL3005
 RUN apt-get update && \
 	# Install security updates
 	apt-get upgrade -y && \
