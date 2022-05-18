@@ -26,7 +26,7 @@ curl -X GET "http://localhost:11211/admin/log"
 
 Every error message is identified with a prefix code in brackets. The code convention can be found in Apendix A.
 
-## ## <a name="Cache Stats"/> Cache Stats
+## <a name="Cache Stats"/> Cache Stats
 
 PEP keeps a memory cache with some access about roles, domains, users and subservices. Related with this info is possible
 get an statistics about these caches using the following API:
