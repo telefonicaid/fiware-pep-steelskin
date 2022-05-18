@@ -1,3 +1,4 @@
+- Upgrade uuid dep from ~3.0.0 to 8.3.2 
 - Upgrade sax dep from 0.6.0 to 1.2.4
 - Upgrade body-parser dep from 1.18.3 to 1.20.0
 - Upgrade express dep from 4.16.4 to 4.18.1
