@@ -181,6 +181,9 @@ config.maxQueuedClients = 1000;
  */
 config.bodyLimit = 1048576;
 
-
+/**
+ * Disabled domain middleware for logging. Default is false.
+ */
+config.domainDisable = false;
 
 module.exports = config;
