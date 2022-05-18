@@ -40,6 +40,13 @@ Getting
 {"cacheStats":{"subservice":{"hits":0,"misses":0,"keys":0,"ksize":0,"vsize":0},"roles":{"hits":9,"misses":1,"keys":0,"ksize":0,"vsize":0},"user":{"hits":9,"misses":2,"keys":1,"ksize":183,"vsize":240},"validation":{"hits":9,"misses":1,"keys":0,"ksize":0,"vsize":0}}}
 ```
 
+And also it is possible reset stats:
+
+```
+curl -X DELETE "http://localhost:11211/admin/cacheStats"
+```
+
+
 ## Fatal errors
 The following sections list all the critical errors that may completely stop the service.
 ### Validation errors
