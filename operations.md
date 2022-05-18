@@ -1,7 +1,8 @@
-# Operations Manual: logs and alarms
+# Operations Manual: logs, alarms and stats
 ## Index
 
 * [Logs](#logs)
+* [Cache Stats](#stats)
 * [Expected problems and known solutions](#problems)
 * [Error naming code](#errorcode)
 
@@ -24,6 +25,22 @@ curl -X GET "http://localhost:11211/admin/log"
 ```
 
 Every error message is identified with a prefix code in brackets. The code convention can be found in Apendix A.
+
+## ## <a name="Cache Stats"/> Cache Stats
+
+PEP keeps a memory cache with some access about roles, domains, users and subservices. Related with this info is possible
+get an statistics about these caches using the following API:
+
+```
+curl -X GET "http://localhost:11211/admin/cacheStats"
+```
+Getting
+
+`json
+{"cacheStats":{"subservice":{"hits":0,"misses":0,"keys":0,"ksize":0,"vsize":0},"roles":{"hits":9,"misses":1,"keys":0,"ksize":0,"vsize":0},"user":{"hits":9,"misses":2,"keys":1,"ksize":183,"vsize":240},"validation":{"hits":9,"misses":1,"keys":0,"ksize":0,"vsize":0}}}
+`
+
+
 
 ## Fatal errors
 The following sections list all the critical errors that may completely stop the service.
