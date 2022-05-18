@@ -34,8 +34,8 @@
     "mustache": "2.2.1",
     "node-cache": "5.1.2",
     "request": "2.88.2",
-    "sax": "0.6.0",
-    "uuid": "~3.0.0",
+    "sax": "1.2.4",
+    "uuid": "8.3.2",
     "winston": "~2.3.1"
   },
   "devDependencies": {
