@@ -37,7 +37,14 @@ curl -X GET "http://localhost:11211/admin/cacheStats"
 Getting
 
 ```json
-{"cacheStats":{"subservice":{"hits":0,"misses":0,"keys":0,"ksize":0,"vsize":0},"roles":{"hits":9,"misses":1,"keys":0,"ksize":0,"vsize":0},"user":{"hits":9,"misses":2,"keys":1,"ksize":183,"vsize":240},"validation":{"hits":9,"misses":1,"keys":0,"ksize":0,"vsize":0}}}
+{
+  "cacheStats":{
+    "subservice":{"hits":0,"misses":0,"keys":0,"ksize":0,"vsize":0},
+    "roles":{"hits":9,"misses":1,"keys":0,"ksize":0,"vsize":0},
+    "user":{"hits":9,"misses":2,"keys":1,"ksize":183,"vsize":240},
+    "validation":{"hits":9,"misses":1,"keys":0,"ksize":0,"vsize":0}
+  }
+}
 ```
 
 And also it is possible reset cache stats:
