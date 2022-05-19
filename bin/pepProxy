@@ -61,7 +61,7 @@ function loadConfiguration() {
         'COMPONENT_PLUGIN',
         'COMPONENT_NAME',
         'BODY_LIMIT',
-        'DOMAIN_DISABLE'
+        'DISABLE_DOMAIN_MIDDLEWARE'
     ];
 
     for (var i = 0; i < environmentValues.length; i++) {
@@ -148,8 +148,8 @@ function loadConfiguration() {
     if (process.env.BODY_LIMIT) {
         config.bodyLimit = process.env.BODY_LIMIT;
     }
-    if (process.env.DOMAIN_DISABLE) {
-        config.domainDisable = process.env.DOMAIN_DISABLE == 'true';
+    if (process.env.DISABLE_DOMAIN_MIDDLEWARE) {
+        config.disableDomainMiddleware = process.env.DISABLE_DOMAIN_MIDDLEWARE == 'true';
     }
 }
 
