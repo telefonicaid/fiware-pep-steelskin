@@ -1,3 +1,4 @@
+- Add: conf and env var (DISABLE_DOMAIN_MIDDLEWARE) to disable domain middleware to reduce overhead (but loosing some info in logs) (#498)
 - Upgrade mustache dep from 2.2.1 to 2.3.2
 - Upgrade node-cache dep from 1.0.3 to 5.1.2
 - Add: new API to retrieve and reset cache stats (GET, DELETE /admin/cacheStats)

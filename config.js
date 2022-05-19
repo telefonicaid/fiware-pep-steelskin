@@ -181,6 +181,10 @@ config.maxQueuedClients = 1000;
  */
 config.bodyLimit = 1048576;
 
-
+/**
+ * Disable domain middleware used for logging. Disabled will reduce overhead, but loses info (transaction, correlator, service, 
+ * subservice, etc)  in logs. Default is false.
+ */
+config.disableDomainMiddleware = false;
 
 module.exports = config;
