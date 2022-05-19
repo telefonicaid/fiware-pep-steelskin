@@ -2,7 +2,7 @@
 ## Index
 
 * [Logs](#logs)
-* [Cache Stats](#stats)
+* [Cache management](#cache)
 * [Expected problems and known solutions](#problems)
 * [Error naming code](#errorcode)
 
