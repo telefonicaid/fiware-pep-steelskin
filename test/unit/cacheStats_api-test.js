@@ -100,4 +100,25 @@ describe('Cache Stats API', function() {
         });
     });
 
+    describe('When the current cache is reset through the API', function() {
+        var options = {
+            uri: 'http://localhost:' + config.resource.proxy.adminPort + '/admin/cache',
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        };
+
+        it('should return a 204 code', function(done) {
+            request(options, function(error, response, body) {
+                should.not.exist(error);
+                response.statusCode.should.equal(204);
+
+                done();
+            });
+        });
+    });
+
+
 });
