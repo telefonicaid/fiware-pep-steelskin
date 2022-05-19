@@ -115,6 +115,17 @@ Use of pm2 is **disabled** by default. It is unnecessary and counterproductive t
 your dockerized environment is already configured to restart Node.js processes whenever they exit (e.g. when using
 [Kubernetes](https://kubernetes.io/))
 
+
+### Using Node Inspection
+
+The PEP within the Docker image can be run with [node inspection](https://nodejs.org/en/docs/guides/debugging-getting-started/) by adding the `INSPECT_ENABLED` environment variable.
+
+```console
+docker run --name pep -e INSPECT_ENABLED=true -d fiware/fiware-pep-steelskin
+```
+
+Use of node inspection is **disabled** by default.
+
 ### Undeployment
 In order to undeploy the proxy:
 * If it was installed directly from the GIT repositories, just kill the process and remove the directory.
