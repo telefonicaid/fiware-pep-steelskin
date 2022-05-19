@@ -540,7 +540,7 @@ Some of the configuration values for the attributes above mentioned can be overr
 | COMPONENT_NAME       | config.componentName                |
 | COMPONENT_PLUGIN     | config.middlewares and config.componentName if no COMPONENT_NAME provided     |
 | BODY_LIMIT           | config.bodyLimit                        |
-| DISABLE_DOMAIN       | config.disableDomain                    |
+| DISABLE_DOMAIN_MIDDLEWARE       | config.disableDomainMiddleware                    |
 
 ### Component configuration
 A special environment variable, called `COMPONENT_PLUGIN` can be set with one of this values: `orion`, `perseo`, `keypass` and `rest`. This variable can be used to select what component plugin to load in order to determine the action of the incoming requests. This variable also rewrites `config.componentName` configuration paramenter.
