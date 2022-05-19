@@ -1,3 +1,4 @@
+- Add INSPECT_ENABLED env var to enable node inspection/debuging
 - Upgrade winston dep from ~2.3.1 to 2.4.6
 - Add: conf and env var (DISABLE_DOMAIN_MIDDLEWARE) to disable domain middleware to reduce overhead (but loosing some info in logs) (#498)
 - Upgrade mustache dep from 2.2.1 to 2.3.2
