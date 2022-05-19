@@ -1,4 +1,4 @@
-- Upgrade winston dep from 2.3.1 to 2.4.6
+- Upgrade winston dep from ~2.3.1 to 2.4.6
 - Add: conf and env var (DISABLE_DOMAIN_MIDDLEWARE) to disable domain middleware to reduce overhead (but loosing some info in logs) (#498)
 - Upgrade mustache dep from 2.2.1 to 2.3.2
 - Upgrade node-cache dep from 1.0.3 to 5.1.2
