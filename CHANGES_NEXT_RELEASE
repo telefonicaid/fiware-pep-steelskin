@@ -1,5 +1,8 @@
 - Add conf and env var to disable domain middlware to reducee overhead (bug loosing some info in logs)
-- Upgrade node-acache dep from 1.0.3 to 5.1.2
+- Upgrade mustache dep from 2.2.1 to 2.3.2
+- Upgrade node-cache dep from 1.0.3 to 5.1.2
+- Add: new API to retrieve and reset cache stats (GET, DELETE /admin/cacheStats)
+- Add: new API to reset cache (DELETE /admin/cache)
 - Upgrade uuid dep from ~3.0.0 to 8.3.2 
 - Upgrade sax dep from 0.6.0 to 1.2.4
 - Upgrade body-parser dep from 1.18.3 to 1.20.0
