@@ -540,7 +540,7 @@ describe('Validate action with Access Control', function() {
                 } else {
                     should.exist(req.headers['x-auth-token']);
                     should.exist(req.query['user.id']);
-                    req.query['user.id'].should.equal('5e817c5e0d624ee68dfb7a72d0d31ce4');
+                    req.query['user.id'].should.equal('d6809594b8794f23a8ec51f0c6b2c5d6');
                     req.headers['x-auth-token'].should.equal('092016b75474ea6b492e29fb69d23029');
                     res.status(200).json(utils.readExampleFile('./test/keystoneResponses/rolesOfUser.json'));
                     mockExecuted = true;
