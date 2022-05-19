@@ -49,7 +49,7 @@ if [[  -z "$PM2_ENABLED" ]]; then
     if [[  -z "$INSPECT_ENABLED" ]]; then
         node /opt/fiware-pep-steelskin/bin/pepProxy
     else
-	node --inspect-brk=0.0.0.0 /opt/fiware-pep-steelskin/bin/pepProxy
+        node --inspect-brk=0.0.0.0 /opt/fiware-pep-steelskin/bin/pepProxy
     fi
 else
     echo "***********************************************"
