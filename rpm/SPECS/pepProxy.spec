@@ -171,12 +171,12 @@ rm -rf $RPM_BUILD_ROOT
 
 %changelog
 * Mon May 23 2022 Alvaro Vega <alvaro.vegagarcia.com> 1.15.0
-- Add INSPECT_ENABLED env var to enable node inspection/debuging (#489)
+- Add: INSPECT_ENABLED env var to enable node inspection/debuging (#489)
 - Add: conf and env var (DISABLE_DOMAIN_MIDDLEWARE) to disable domain middleware to reduce overhead (but loosing some info in logs) (#498)
 - Add: new API to retrieve and reset cache stats (GET, DELETE /admin/cacheStats)
 - Add: new API to reset cache (DELETE /admin/cache)
-- Remove: unrequired dep underscore
 - Fix: Dockerfile to include initial packages upgrade
+- Remove: unrequired dep underscore
 - Upgrade winston dep from ~2.3.1 to 2.4.6
 - Upgrade mustache dep from 2.2.1 to 2.3.2
 - Upgrade node-cache dep from 1.0.3 to 5.1.2
