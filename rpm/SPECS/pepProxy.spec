@@ -170,7 +170,24 @@ rm -rf $RPM_BUILD_ROOT
 %{_install_dir}
 
 %changelog
-* Thu Mar 24 2021 Alvaro Vega <alvaro.vegagarcia.com> 1.14.0
+* Mon May 23 2022 Alvaro Vega <alvaro.vegagarcia.com> 1.15.0
+- Add: INSPECT_ENABLED env var to enable node inspection/debuging (#489)
+- Add: conf and env var (DISABLE_DOMAIN_MIDDLEWARE) to disable domain middleware to reduce overhead (but loosing some info in logs) (#498)
+- Add: new API to retrieve and reset cache stats (GET, DELETE /admin/cacheStats)
+- Add: new API to reset cache (DELETE /admin/cache)
+- Fix: Dockerfile to include initial packages upgrade
+- Remove: unrequired dep underscore
+- Upgrade winston dep from ~2.3.1 to 2.4.6
+- Upgrade mustache dep from 2.2.1 to 2.3.2
+- Upgrade node-cache dep from 1.0.3 to 5.1.2
+- Upgrade uuid dep from ~3.0.0 to 8.3.2 
+- Upgrade sax dep from 0.6.0 to 1.2.4
+- Upgrade body-parser dep from 1.18.3 to 1.20.0
+- Upgrade express dep from 4.16.4 to 4.18.1
+- Upgrade async dep from 0.9.0 to 2.6.4 
+- Set Nodejs 12 as minimum version in packages.json (effectively removing Nodev10 from supported versions)
+
+* Thu Mar 24 2022 Alvaro Vega <alvaro.vegagarcia.com> 1.14.0
 - Add: Add graceful shutdown listening to SIGINT (#487)
 - Fix: use logops library instead of direct console.log printing in all cases (#487)
 - Upgrade logops dep from 2.1.0 to 2.1.2 due to colors dependency corruption
