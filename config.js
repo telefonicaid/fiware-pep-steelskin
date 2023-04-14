@@ -18,6 +18,7 @@ config.resource = {
 
     proxy: {
         host: 'localhost',
+        adminHost: 'localhost',        
         /**
          * Port where the proxy is listening to redirect requests.
          */
@@ -119,7 +120,7 @@ config.ssl = {
 /**
  * Default log level. Can be one of: 'DEBUG', 'INFO', 'WARN', 'ERROR', 'FATAL'
  */
-config.logLevel = 'FATAL';
+config.logLevel = 'DEBUG';
 
 // List of component middlewares
 //-------------------------------------------------

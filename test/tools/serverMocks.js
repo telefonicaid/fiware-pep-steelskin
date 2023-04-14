@@ -58,7 +58,7 @@ function startMock(port, callback) {
     var app = express();
 
     app.set('port', port);
-    app.set('host', '0.0.0.0');
+    app.set('host', 'localhost');
     app.use(express.json());
     app.use(xmlRawBody);
     app.use(express.urlencoded({ extended: true }));
