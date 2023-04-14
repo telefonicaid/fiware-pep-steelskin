@@ -17,6 +17,7 @@ config.resource = {
     },
 
     proxy: {
+        host: 'localhost',
         /**
          * Port where the proxy is listening to redirect requests.
          */
