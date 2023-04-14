@@ -120,7 +120,7 @@ config.ssl = {
 /**
  * Default log level. Can be one of: 'DEBUG', 'INFO', 'WARN', 'ERROR', 'FATAL'
  */
-config.logLevel = 'DEBUG';
+config.logLevel = 'FATAL';
 
 // List of component middlewares
 //-------------------------------------------------
