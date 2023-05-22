@@ -1,7 +1,7 @@
 lettuce==0.2.20
 fabric==1.10.0
 flask==2.3.2         # blindly changing from 0.12.3 due to a github vulnerability warning, not yet tested...
-requests==2.20.0
+requests==2.31.0
 colorama==0.2.5
 paramiko==2.10.1     # blindly changing from 2.0.9 due to a github vulnerability warning, not yet tested...
 psutil==5.6.6
