@@ -112,13 +112,7 @@ describe('Extract Context Broker action from request', function() {
     var standardOperation = [
         ['/NGSI10/queryContext', 'read'],
         ['/v2/op/query', 'read'],
-        ['/v1/queryContext', 'read'],
-        ['/v1/contextTypes', 'read'],
-        ['/v1/subscribeContext', 'subscribe'],
-        ['/v1/updateContextSubscription', 'subscribe'],
-        ['/v1/unsubscribeContext', 'subscribe'],
-        ['/v1/registry/registerContext', 'register'],
-        ['/v1/registry/discoverContextAvailability', 'discover']
+        ['/v1/queryContext', 'read']
     ];
 
     function testStandardOperation(url, action) {
