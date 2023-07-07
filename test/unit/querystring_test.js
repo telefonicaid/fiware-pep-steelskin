@@ -94,7 +94,7 @@ describe('Proxy querystring behavior', function() {
 
     describe('When a request to the CB arrives to the proxy with a querystring', function() {
         var options = {
-            uri: 'http://localhost:' + config.resource.proxy.port + '/v1/contextEntities',
+            uri: 'http://localhost:' + config.resource.proxy.port + '/v2/entities',
             method: 'GET',
             headers: {
                 'Accept': 'application/json',
@@ -112,7 +112,7 @@ describe('Proxy querystring behavior', function() {
         beforeEach(function(done) {
             async.series([
                 async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
-                async.apply(serverMocks.mockPath, '/v1/contextentities', mockTargetApp)
+                async.apply(serverMocks.mockPath, '/v2/entities', mockTargetApp)
             ], done);
         });
 
