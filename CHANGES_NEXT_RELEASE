@@ -1,1 +1,2 @@
+- Remove: operations no longer supported in CB API (aligned with Orion 3.10.1)
 - Upgrade NodeJS version from 14-slim to 16-slim in Dockerfile
