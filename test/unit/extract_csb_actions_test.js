@@ -111,11 +111,6 @@ describe('Extract Context Broker action from request', function() {
 
     var standardOperation = [
         ['/NGSI10/queryContext', 'read'],
-        ['/ngsi10/subscribeContext', 'subscribe'],
-        ['/ngsi10/updateContextSubscription', 'subscribe'],
-        ['/ngsi10/unsubscribeContext', 'subscribe'],
-        ['/ngsi9/registerContext', 'register'],
-        ['/ngsi9/discoverContextAvailability', 'discover'],
         ['/v2/op/query', 'read'],
         ['/v1/queryContext', 'read'],
         ['/v1/contextTypes', 'read'],
@@ -255,67 +250,6 @@ describe('Extract Context Broker action from request', function() {
 
         it('should add the action attribute with value "delete" to the request', testAction('delete', options));
     });
-    describe('When a create action arrives with XML payload', function() {
-        var options = {
-            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/xml',
-                'Accept': 'application/xml',
-                'fiware-service': 'SmartValencia',
-                'fiware-servicepath': 'Electricidad',
-                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
-            },
-            body: utils.readExampleFile('./test/orionRequests/entityCreation.xml', true)
-        };
-
-        beforeEach(function(done) {
-            serverMocks.mockPath('/NGSI10/queryContext', mockApp, done);
-        });
-
-        it('should add the action attribute with value "create" to the request', testAction('create', options));
-    });
-
-    describe('When a update action arrives with XML payload', function() {
-        var options = {
-            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/xml',
-                'Accept': 'application/xml',
-                'fiware-service': 'SmartValencia',
-                'fiware-servicepath': 'Electricidad',
-                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
-            },
-            body: utils.readExampleFile('./test/orionRequests/entityUpdate.xml', true)
-        };
-
-        beforeEach(function(done) {
-            serverMocks.mockPath('/NGSI10/queryContext', mockApp, done);
-        });
-
-        it('should add the action attribute with value "update" to the request', testAction('update', options));
-    });
-    describe('When a delete action arrives with XML payload', function() {
-        var options = {
-            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/xml',
-                'Accept': 'application/xml',
-                'fiware-service': 'SmartValencia',
-                'fiware-servicepath': 'Electricidad',
-                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
-            },
-            body: utils.readExampleFile('./test/orionRequests/entityDelete.xml', true)
-        };
-
-        beforeEach(function(done) {
-            serverMocks.mockPath('/NGSI10/queryContext', mockApp, done);
-        });
-
-        it('should add the action attribute with value "delete" to the request', testAction('delete', options));
-    });
 
     describe('When a update action arrives with JSON payload without the \'updateAction\' attribute', function() {
         var options = {
@@ -339,32 +273,6 @@ describe('Extract Context Broker action from request', function() {
             request(options, function(error, response, body) {
                 response.statusCode.should.equal(400
                 );
-                done();
-            });
-        });
-    });
-
-    describe('When a update action arrives with XML payload without the \'updateAction\' attribute', function() {
-        var options = {
-            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/xml',
-                'Accept': 'application/xml',
-                'fiware-service': 'SmartValencia',
-                'fiware-servicepath': 'Electricidad',
-                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
-            },
-            body: utils.readExampleFile('./test/orionErrorRequests/entityUpdateNoAttribute.xml', true)
-        };
-
-        beforeEach(function(done) {
-            serverMocks.mockPath('/NGSI10/queryContext', mockApp, done);
-        });
-
-        it('should reject the request with an Unauthorized code', function(done) {
-            request(options, function(error, response, body) {
-                response.statusCode.should.equal(400);
                 done();
             });
         });
@@ -421,31 +329,6 @@ describe('Extract Context Broker action from request', function() {
             });
         });
     });
-    describe('When an update action comes with an unknown action in an XML format', function() {
-        var options = {
-            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/xml',
-                'Accept': 'application/xml',
-                'fiware-service': 'SmartValencia',
-                'fiware-servicepath': 'Electricidad',
-                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
-            },
-            body: utils.readExampleFile('./test/orionErrorRequests/entityUnknownOperation.xml', true)
-        };
-
-        beforeEach(function(done) {
-            serverMocks.mockPath('/NGSI10/queryContext', mockApp, done);
-        });
-
-        it('should reject the request with a 400', function(done) {
-            request(options, function(error, response, body) {
-                response.statusCode.should.equal(400);
-                done();
-            });
-        });
-    });
 
     describe('When a request arrives with an unknown body type', function() {
         var options = {
@@ -473,32 +356,6 @@ describe('Extract Context Broker action from request', function() {
         });
     });
 
-    describe('When a request arrives with an XML body with a wrong syntax', function() {
-        var options = {
-            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/xml',
-                'Accept': 'application/xml',
-                'fiware-service': 'SmartValencia',
-                'fiware-servicepath': 'Electricidad',
-                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
-            },
-            body: utils.readExampleFile('./test/orionErrorRequests/entitySyntaxError.xml', true)
-        };
-
-        beforeEach(function(done) {
-            serverMocks.mockPath('/NGSI10/queryContext', mockApp, done);
-        });
-
-        it('should reject the request with a 400 error', function(done) {
-            request(options, function(error, response, body) {
-                response.statusCode.should.equal(400);
-                done();
-            });
-        });
-    });
-
     describe('When a request arrives with a JSON body with a wrong syntax', function() {
         var options = {
             uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
@@ -520,46 +377,6 @@ describe('Extract Context Broker action from request', function() {
         it('should reject the request with a 400 error', function(done) {
             request(options, function(error, response, body) {
                 response.statusCode.should.equal(400);
-                done();
-            });
-        });
-    });
-
-    describe('When a request arrives with a valid XML payload to the proxy', function() {
-        var options = {
-            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/xml',
-                'Accept': 'application/xml',
-                'fiware-service': 'SmartValencia',
-                'fiware-servicepath': 'Electricidad',
-                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
-            },
-            body: utils.readExampleFile('./test/orionRequests/entityUpdate.xml', true)
-        };
-
-        beforeEach(function(done) {
-            async.series([
-                async.apply(serverMocks.mockPath, '/v3/role_assignments', mockOAuthApp),
-                async.apply(serverMocks.mockPath, '/v3/auth/tokens', mockOAuthApp),
-                async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
-                async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
-                async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockApp)
-            ], done);
-        });
-
-        it('should proxy the request to the target URL', function(done) {
-            var mockExecuted = false;
-
-            mockApp.handler = function(req, res) {
-                req.rawBody.replace(/\n/g, '').should.match(/<updateContextRequest>.*<\/updateContextRequest>/);
-                mockExecuted = true;
-                res.status(200).json({});
-            };
-
-            request(options, function(error, response, body) {
-                mockExecuted.should.equal(true);
                 done();
             });
         });
