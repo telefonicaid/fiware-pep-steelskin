@@ -2,7 +2,8 @@
 
 [![FIWARE Security](https://nexus.lab.fiware.org/static/badges/chapters/security.svg)](https://www.fiware.org/developers/catalogue/)
 [![License: APGL](https://img.shields.io/github/license/telefonicaid/fiware-pep-steelskin.svg)](https://opensource.org/licenses/AGPL-3.0)
-[![Docker badge](https://img.shields.io/badge/quay.io-fiware%2Fpep--steelskin-grey?logo=red%20hat&labelColor=EE0000)](https://quay.io/repository/fiware/pep-steelskin)
+[![Quay badge](https://img.shields.io/badge/quay.io-fiware%2Fpep--steelskin-grey?logo=red%20hat&labelColor=EE0000)](https://quay.io/repository/fiware/pep-steelskin)
+[![Docker badge](https://img.shields.io/badge/docker-telefonicaiot%2Ffiware--pep--steelskin-blue?logo=docker)](https://hub.docker.com/r/telefonicaiot/fiware-pep-steelskin)
 <br/>
 [![CI](https://github.com/telefonicaid/fiware-pep-steelskin/workflows/CI/badge.svg)](https://github.com/telefonicaid/fiware-pep-steelskin/actions?query=workflow%3ACI)
 [![Coverage Status](https://coveralls.io/repos/github/telefonicaid/fiware-pep-steelskin/badge.svg?branch=master)](https://coveralls.io/github/telefonicaid/fiware-pep-steelskin?branch=master)
