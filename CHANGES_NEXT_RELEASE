@@ -1,1 +1,2 @@
-
+- Remove: `disableDomainMiddleware` config option
+- Remove: `DISABLE_DOMAIN_MIDDLEWARE` environment variable
