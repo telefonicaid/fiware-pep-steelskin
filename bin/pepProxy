@@ -148,9 +148,6 @@ function loadConfiguration() {
     if (process.env.BODY_LIMIT) {
         config.bodyLimit = process.env.BODY_LIMIT;
     }
-    if (process.env.DISABLE_DOMAIN_MIDDLEWARE) {
-        config.disableDomainMiddleware = process.env.DISABLE_DOMAIN_MIDDLEWARE == 'true';
-    }
 }
 
 loadConfiguration();

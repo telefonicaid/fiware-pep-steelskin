@@ -496,7 +496,6 @@ Right Attempt | ResponseStatus=200 | Token=860864fb6d1a4c8a8cb7d59d16daaa52 | Or
 * `config.bypassRoleId`: ID of the role that will be considered to have administrative rights over the proxy (so being transparently proxied without validation). Valid values are Role UUIDs. E.g.: `db50362d5f264c8292bebdb5c5783741`.
 * `config.dieOnRedirectError`: this flags changes the behavior of the PEP Proxy when an error is received when redirecting a request. If the flag is true, the PEP Proxy process is shut down immediately; if it is false, the behavior is the usual: generate a 501 Code error.
 * `config.bodyLimit`: Controls the maximum request body size allowed, in bytes. Default is 1 Mb
-* `config.disableDomainMiddleware`:Disable domain middleware used for logging. Disabled will reduce overhead, but loses info (transaction, correlator, service, subservice, etc) in logs. Default is false.
 
 ### Authentication configuration
 * `config.authentication.checkHeaders`: when the proxy is working with the access control disabled (just user authentication), indicates whether the `fiware-service` and `fiware-servicepath` headers should be checked for existance and validity (checking: the headers exist, thy are not empty and the user is really part of the service and subservice mentioned in the header). This option is ignored when authorization is enabled, and considered to be `true` (as the headers constitute a mandatory part of the authorization process). Default value is `true`.
@@ -554,7 +553,6 @@ Some of the configuration values for the attributes above mentioned can be overr
 | COMPONENT_NAME       | config.componentName                |
 | COMPONENT_PLUGIN     | config.middlewares and config.componentName if no COMPONENT_NAME provided     |
 | BODY_LIMIT           | config.bodyLimit                        |
-| DISABLE_DOMAIN_MIDDLEWARE       | config.disableDomainMiddleware                    |
 
 ### Component configuration
 A special environment variable, called `COMPONENT_PLUGIN` can be set with one of this values: `orion`, `perseo`, `keypass` and `rest`. This variable can be used to select what component plugin to load in order to determine the action of the incoming requests. This variable also rewrites `config.componentName` configuration paramenter.
