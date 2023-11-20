@@ -170,6 +170,13 @@ rm -rf $RPM_BUILD_ROOT
 %{_install_dir}
 
 %changelog
+* Mon Nov 20 2022 Fermin Galan <fermin.galanmarquez@telefonica.com> 1.16.0
+- Remove: dependency on deprecated `domain` node module, improving performance
+- Remove: `disableDomainMiddleware` config option
+- Remove: `DISABLE_DOMAIN_MIDDLEWARE` environment variable
+- Remove: operations no longer supported in CB API (aligned with Orion 3.10.1)
+- Upgrade NodeJS version from 14-slim to 16-slim in Dockerfile
+
 * Mon May 23 2022 Alvaro Vega <alvaro.vegagarcia.com> 1.15.0
 - Add: INSPECT_ENABLED env var to enable node inspection/debuging (#489)
 - Add: conf and env var (DISABLE_DOMAIN_MIDDLEWARE) to disable domain middleware to reduce overhead (but loosing some info in logs) (#498)
