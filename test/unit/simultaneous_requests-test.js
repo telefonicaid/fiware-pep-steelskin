@@ -23,8 +23,7 @@
 
 'use strict';
 
-var domain = require('domain'),
-    serverMocks = require('../tools/serverMocks'),
+var serverMocks = require('../tools/serverMocks'),
     proxyLib = require('../../lib/fiware-pep-steelskin'),
     orionPlugin = require('../../lib/plugins/orionPlugin'),
     cacheUtils = require('../../lib/services/cacheUtils'),
@@ -64,7 +63,7 @@ describe('Simultaneous requests', function() {
 
         proxyLib.start(function(error, proxyObj) {
             var testExtraction = function(req, res, callback) {
-                correlatorIds.push(domain.active.corr);
+                correlatorIds.push(req.corr);
                 callback(null, req, res);
             };
 
@@ -119,7 +118,7 @@ describe('Simultaneous requests', function() {
 
             sendRequestBackup = proxyPlugin.sendRequest;
             proxyPlugin.sendRequest = function(req, res, next) {
-                correlatorIdsPost.push(domain.active.corr);
+                correlatorIdsPost.push(req.corr);
                 sendRequestBackup(req, res, next);
             };
 
@@ -191,7 +190,7 @@ describe('Simultaneous requests', function() {
 
             sendRequestBackup = proxyPlugin.sendRequest;
             proxyPlugin.sendRequest = function(req, res, next) {
-                correlatorIdsPost.push(domain.active.corr);
+                correlatorIdsPost.push(req.corr);
                 sendRequestBackup(req, res, next);
             };
 
