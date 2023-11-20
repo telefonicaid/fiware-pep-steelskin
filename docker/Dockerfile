@@ -81,9 +81,12 @@ RUN apt-get update && \
 WORKDIR /opt/fiware-pep-steelskin
 # hadolint ignore=DL3008,DL3009,DL3015
 RUN \
-	# Ensure that Git is installed prior to running npm install
+	# Ensure that Git is installed prior to running npm install.
+        # curl is added here (again) because the RUN ... above is usually
+        # removed for local testing, and and curl is required for
+        # docker health-checks.
 	apt-get update && \
-	apt-get install -y git && \
+	apt-get install -y git curl && \
 	echo "INFO: npm install --production..." && \
 	npm install --production && \
 	# Remove Git and clean apt cache
