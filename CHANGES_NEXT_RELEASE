@@ -1,4 +1,4 @@
-- Removed dependency on deprecated `domain` node module
+- Remove: dependency on deprecated `domain` node module, improving performance
 - Remove: `disableDomainMiddleware` config option
 - Remove: `DISABLE_DOMAIN_MIDDLEWARE` environment variable
 - Remove: operations no longer supported in CB API (aligned with Orion 3.10.1)
