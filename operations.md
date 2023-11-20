@@ -65,7 +65,7 @@ The following sections list all the critical errors that may completely stop the
 ### Validation errors
 #### VALIDATION-FATAL-001 Validation Request templates not found
 Indicates that the XACML templates used to generate the validation requests are not present, so no interaction with the validation system will be possible. This is a critical error and must be fixed before the system starts working.
-Considering the templates come packaged inside the RPM, the problem is most likely to be an installation problem. Check the contents of the RPM are all unpackaged, specifically the directory /opt/pepProxy/lib/templates.
+Considering the templates come packaged inside the Docker container, the problem is most likely to be an installation problem. Check the contents of the Docker container are all unpackaged, specifically the directory /opt/pepProxy/lib/templates.
 
 #### PROXY-FATAL-001 Configured to die upon error in a redirection. Stopping process.
 Indicates that the PEP Proxy was configured to die upon error in a redirection, and that redirection did occurr, so the PEP

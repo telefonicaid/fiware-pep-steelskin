@@ -45,9 +45,8 @@ Three other documents provide further information about the PEP Proxy:
 
 ## <a name="deployment"/> Deployment
 ### Dependencies
-The PEP Proxy is standard Node.js app and doesn't require more dependencies than the Node.js interpreter (0.10 or higher) and the NPM package utility. For RPM installations using Yum, those dependencies should be automatically installed.
+The PEP Proxy is standard Node.js app and doesn't require more dependencies than the Node.js interpreter and the NPM package utility.
 
-### Without RPM Packages
 Just checkout this directory and install the Node.js dependencies using:
 
 ```
@@ -55,26 +54,6 @@ npm install --production
 ```
 
 The proxy should be then ready to be configured and used.
-
-### With RPM Packages
-This project provides the specs to create the RPM Package for the project, that may (in the future) be installed in a package repository.
-
-To generate the RPM, checkout the project to a machine with the RPM Build Tools installed, and, from the `rpm/` folder,
-execute the following command:
-
-```
-./create-rpm.sh <release-number> <release-version>
-```
-
-This command will generate some folders, including one called RPMS, holding the RPM created for every architecture (noarch is currently generated).
-
-In order to install the generated RPM from the local file, use the following command (changing the PEP RPM for the one you have just generated; X.Y.Z being the version you are about to install):
-
-```
-yum --nogpgcheck localinstall  pep-proxy-X.Y-Z.noarch.rpm
-```
-
-It should automatically download all the dependencies provided they are available (Node.js and NPM may require the EPEL repositories to be added).
 
 ### With Docker
 There are automatic builds of the development version of the Steelskin PEP Proxy published in Docker hub. In order to install
@@ -129,22 +108,10 @@ docker run --name pep -e INSPECT_ENABLED=true -d fiware/fiware-pep-steelskin
 Use of node inspection is **disabled** by default.
 
 ### Undeployment
-In order to undeploy the proxy:
-* If it was installed directly from the GIT repositories, just kill the process and remove the directory.
-* If it was installed using the RPM, use standard YUM commands to remove it:
+In order to undeploy the proxy, if it was installed directly from the GIT repositories, just kill the process and remove the directory.
 
-```
-yum remove pep-proxy
-```
-
-### Configuration with an RPM package
-If the PEP Proxy is deployed in a machine with an installed Context Broker service, the PEP Proxy will automatically change the Context Broker port to the 10026 and install itself on the port where the Context Broker was listening, so no further configuration should be needed for the connectivity.
-
-During the uninstallation of the PEP Proxy, this process is reversed, to revert the Broker to its original state.
-If there is no previous Context Broker instance, the default behaviour of the PEP Proxy is to listen in the port 1026 and redirect its requests to the port 10026 in the local host. This behaviour can be changed configuring the attributes PROXY_PORT and TARGET_PORT in the configuration file.
-
-### Configuration without an RPM package
-If the PEP Proxy is deployed directly from the source code, it won't add itself as a service, and the running ports should be configured manually. This configuration will involve two steps:
+### Configuration
+Assuming the PEP Proxy is deployed directly from the source code, it won't add itself as a service, and the running ports should be configured manually. This configuration will involve two steps:
 * Changing the port of the Context Broker to a different internal port (not open to external connections). Refer to the Orion Context Broker Deployment Manual for instructions on how to do it.
 * Changing the port of the proxy to listen in the Context Broker original port, and to redirect to the new one. This parameters can be changed in the config.js file in the root folder.
 Once configured, the service can be started as a demon with the following comand:
@@ -567,7 +534,7 @@ If SSL Termination is not available, the PEP Proxy can be configured to listen H
 ### Multi-instance configuration
 PEP Proxy is able to start multiple instances by adding and configuring certain files in `/etc/pepProxy.d` and using `pepProxy` service script
 
-In order to start multiple instances of the proxy, just add one configuration file per instance in the `/etc/pepProxy.d` folder. RPM comes with one preconfigured instance (config file called pepproxy_default.conf) that can be used as a template to configure another instances.
+In order to start multiple instances of the proxy, just add one configuration file per instance in the `/etc/pepProxy.d` folder.
 
 In its starting sequence, the `pepProxy` service looks for files in  `/etc/pepProxy.d` that begins with `pepproxy_` prefix and has `.conf` extension and start (or stop or status or restat) one process for file found.
 
