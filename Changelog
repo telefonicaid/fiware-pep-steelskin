@@ -1,6 +1,6 @@
 1.16.0 (November 20th, 2023)
 
-- Remove: dependency on deprecated `domain` node module, improving performance
+- Remove: dependency on deprecated `domain` node module, improving performance (#498)
 - Remove: `disableDomainMiddleware` config option
 - Remove: `DISABLE_DOMAIN_MIDDLEWARE` environment variable
 - Remove: operations no longer supported in CB API (aligned with Orion 3.10.1)
