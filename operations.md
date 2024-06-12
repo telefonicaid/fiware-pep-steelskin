@@ -110,8 +110,6 @@ it is critical: human supervision is highly advisable. Check the Keystone instan
 the Keystone Operations Manual.
 
 ### Orion errors
-#### ORION-PLUGIN-001: Wrong XML Payload. Action not found
-Indicates that a received request didn't have the appropriate information to determine which action it's going to execute, so the validation process can't proceed. This is a client error and should not require human intervention. Warn the user if the error repeats.
 #### ORION-PLUGIN-002: Wrong XML Payload. Parsing error: %s
 An XML payload with syntactic errors has been received. This should be a client error, and it shouldn't require human intervention. Warn the user if the error repeats.
 #### ORION-PLUGIN-003: Wrong JSON Payload: updateAction element not found
