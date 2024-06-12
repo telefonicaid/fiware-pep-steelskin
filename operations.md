@@ -110,13 +110,11 @@ it is critical: human supervision is highly advisable. Check the Keystone instan
 the Keystone Operations Manual.
 
 ### Orion errors
-#### ORION-PLUGIN-002: Wrong XML Payload. Parsing error: %s
-An XML payload with syntactic errors has been received. This should be a client error, and it shouldn't require human intervention. Warn the user if the error repeats.
-#### ORION-PLUGIN-003: Wrong JSON Payload: updateAction element not found
+#### ORION-PLUGIN-001: Wrong JSON Payload: updateAction element not found
 Indicates that a received request didn't have the appropriate information to determine which action it's going to execute, so the validation process can't proceed. This is a client error and should not require human intervention. Warn the user if the error repeats.
-#### ORION-PLUGIN-004: Unknown content type: %s
+#### ORION-PLUGIN-002: Unknown content type: %s
 The proxy received a request with a content type that is not supported. Currently only JSON ('application/json') and XML ('application/xml' and 'text/xml') are supported. This is a client error and should not require human intervention. This may be a problem with the content headers; if repeated, advice the client to check what headers are being sent and the API for the content payload.
-#### ORION-PLUGIN-005: Action not found
+#### ORION-PLUGIN-003: Action not found
 This error is raised when a request action should be identifiable with the information in the URL but the proxy was unavailable to do so. It might happen when the request is trying to access a URL that is not known by the Orion plugin (maybe because the client is trying to access version of the Orion Context Broker different of the one supported by the proxy). This is a client error. The client should check the API he is trying to use is the appropriate one for this version of the proxy and the Context Broker.
 
 ## <a name="problems"/> Expected problems and known solutions
