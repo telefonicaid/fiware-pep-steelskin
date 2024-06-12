@@ -1,3 +1,9 @@
+1.17.0 (June 12th, 2024)
+
+- Upgrade express dep from 4.18.1 to 4.19.2 due to a vulnerability
+- Remove: operations no longer supported in CB API (aligned with Orion 4.0.0)
+- Remove: RPM stuff
+
 1.16.0 (November 20th, 2023)
 
 - Remove: dependency on deprecated `domain` node module, improving performance (#498)
