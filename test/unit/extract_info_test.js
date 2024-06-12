@@ -93,7 +93,7 @@ describe('Extract information from requests', function() {
 
     describe('When a request to the CB arrives to the proxy with all the information', function() {
         var options = {
-            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+            uri: 'http://localhost:' + config.resource.proxy.port + '/V2/op/update',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -102,11 +102,11 @@ describe('Extract information from requests', function() {
                 'Fiware-ServicePath': 'admin_domain',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
-            json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
+            json: utils.readExampleFile('./test/orionRequests/v2EntityCreation.json')
         };
 
         beforeEach(function(done) {
-            serverMocks.mockPath('/NGSI10/updateContext', mockApp, done);
+            serverMocks.mockPath('/v2/op/update', mockApp, done);
         });
 
         it('should extract the organization to an attribute in the request', function(done) {
@@ -162,18 +162,18 @@ describe('Extract information from requests', function() {
 
     describe('When a request arrives to the CB without a user token', function() {
         var options = {
-            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+            uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
                 'Fiware-Service': 'frn:contextbroker:admin_domain:::'
             },
-            json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
+            json: utils.readExampleFile('./test/orionRequests/v2EntityCreation.json')
         };
 
         beforeEach(function(done) {
-            serverMocks.mockPath('/NGSI10/updateContext', mockApp, done);
+            serverMocks.mockPath('/v2/op/update', mockApp, done);
         });
 
         it('should reject the request with a 400 error code', function(done) {
@@ -200,18 +200,18 @@ describe('Extract information from requests', function() {
 
     describe('When a request arrives to the CB without a Fiware Service header', function() {
         var options = {
-            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+            uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
-            json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
+            json: utils.readExampleFile('./test/orionRequests/v2EntityCreation.json')
         };
 
         beforeEach(function(done) {
-            serverMocks.mockPath('/NGSI10/updateContext', mockApp, done);
+            serverMocks.mockPath('/v2/op/update', mockApp, done);
         });
 
         it('should reject the request with a 400 error code', function(done) {

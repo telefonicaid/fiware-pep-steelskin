@@ -85,7 +85,7 @@ describe('Connection error tests', function() {
 
     describe('When a request arrives to the PEP and the target app shut down the connection', function() {
         var options = {
-                uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+                uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -94,7 +94,7 @@ describe('Connection error tests', function() {
                     'fiware-servicepath': 'Electricidad',
                     'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
                 },
-                json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
+                json: utils.readExampleFile('./test/orionRequests/v2EntityCreation.json')
             },
             currentAuthentication = authenticationMechanism;
 
@@ -107,7 +107,7 @@ describe('Connection error tests', function() {
                     async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
                     async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
                     async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
-                    async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
+                    async.apply(serverMocks.mockPath, '/v2/op/update', mockTargetApp)
                 ], function(error) {
                     cacheUtils.clean();
                     done();

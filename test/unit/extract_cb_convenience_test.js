@@ -109,12 +109,8 @@ describe('Extract Context Broker action from convenience operation requests', fu
                     'Fiware-ServicePath': 'admin_domain',
                     'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
                 },
-                json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
+                json: utils.readExampleFile('./test/orionRequests/v2EntityCreation.json')
             };
-
-            beforeEach(function(done) {
-                serverMocks.mockPath('/NGSI10/queryContext', mockApp, done);
-            });
 
             it('should add the action attribute with value ' + convenienceAction + ' to the request',
                 testAction(convenienceAction, options));
