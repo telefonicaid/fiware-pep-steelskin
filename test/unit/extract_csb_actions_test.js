@@ -110,9 +110,7 @@ describe('Extract Context Broker action from request', function() {
     });
 
     var standardOperation = [
-        ['/NGSI10/queryContext', 'read'],
-        ['/v2/op/query', 'read'],
-        ['/v1/queryContext', 'read']
+        ['/v2/op/query', 'read']
     ];
 
     function testStandardOperation(url, action) {
@@ -127,7 +125,7 @@ describe('Extract Context Broker action from request', function() {
                     'fiware-servicepath': 'Electricidad',
                     'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
                 },
-                json: utils.readExampleFile('./test/orionRequests/queryContext.json')
+                json: utils.readExampleFile('./test/orionRequests/v2QueryContext.json')
             };
 
             it('should add the action attribute with value "' + action + '" to the request',
@@ -142,139 +140,9 @@ describe('Extract Context Broker action from request', function() {
         ));
     }
 
-    describe('When a create action arrives with JSON payload and the "/NGSI10" prefix', function() {
-        var options = {
-            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'fiware-service': 'SmartValencia',
-                'fiware-servicepath': 'Electricidad',
-                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
-            },
-            json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
-        };
-
-        beforeEach(function(done) {
-            serverMocks.mockPath('/NGSI10/queryContext', mockApp, done);
-        });
-
-        it('should add the action attribute with value "create" to the request', testAction('create', options));
-    });
-
-    describe('When a create action arrives with JSON payload and the "/v1" prefix', function() {
-        var options = {
-            uri: 'http://localhost:' + config.resource.proxy.port + '/v1/updateContext',
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'fiware-service': 'SmartValencia',
-                'fiware-servicepath': 'Electricidad',
-                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
-            },
-            json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
-        };
-
-        beforeEach(function(done) {
-            serverMocks.mockPath('/NGSI10/queryContext', mockApp, done);
-        });
-
-        it('should add the action attribute with value "create" to the request', testAction('create', options));
-    });
-
-    describe('When a update action arrives with JSON payload', function() {
-        var options = {
-            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'fiware-service': 'SmartValencia',
-                'fiware-servicepath': 'Electricidad',
-                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
-            },
-            json: utils.readExampleFile('./test/orionRequests/entityUpdate.json')
-        };
-
-        beforeEach(function(done) {
-            serverMocks.mockPath('/NGSI10/queryContext', mockApp, done);
-        });
-
-        it('should add the action attribute with value "update" to the request', testAction('update', options));
-    });
-    describe('When a delete action arrives with JSON payload', function() {
-        var options = {
-            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'fiware-service': 'SmartValencia',
-                'fiware-servicepath': 'Electricidad',
-                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
-            },
-            json: utils.readExampleFile('./test/orionRequests/entityDelete.json')
-        };
-
-        beforeEach(function(done) {
-            serverMocks.mockPath('/NGSI10/queryContext', mockApp, done);
-        });
-
-        it('should add the action attribute with value "delete" to the request', testAction('delete', options));
-    });
-    describe('When a delete action arrives with JSON payload', function() {
-        var options = {
-            uri: 'http://localhost:' + config.resource.proxy.port + '/v1/updateContext?details=on&limit=15&offset=0',
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'fiware-service': 'SmartValencia',
-                'fiware-servicepath': 'Electricidad',
-                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
-            },
-            json: utils.readExampleFile('./test/orionRequests/entityDelete.json')
-        };
-
-        beforeEach(function(done) {
-            serverMocks.mockPath('/NGSI10/queryContext', mockApp, done);
-        });
-
-        it('should add the action attribute with value "delete" to the request', testAction('delete', options));
-    });
-
-    describe('When a update action arrives with JSON payload without the \'updateAction\' attribute', function() {
-        var options = {
-            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'fiware-service': 'SmartValencia',
-                'fiware-servicepath': 'Electricidad',
-                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
-            },
-            json: utils.readExampleFile('./test/orionErrorRequests/entityUpdateNoAttribute.json')
-        };
-
-        beforeEach(function(done) {
-            serverMocks.mockPath('/NGSI10/queryContext', mockApp, done);
-        });
-
-        it('should reject the request with an Unauthorized code', function(done) {
-            request(options, function(error, response, body) {
-                response.statusCode.should.equal(400
-                );
-                done();
-            });
-        });
-    });
-
     describe('When a update action arrives with a URL that it\'s not recognized by the system', function() {
         var options = {
-            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/falsePath',
+            uri: 'http://localhost:' + config.resource.proxy.port + '/falsePath',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/xml',
@@ -283,12 +151,8 @@ describe('Extract Context Broker action from request', function() {
                 'fiware-servicepath': 'Electricidad',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
-            body: utils.readExampleFile('./test/orionRequests/entityUpdate.xml', true)
+            body: utils.readExampleFile('./test/orionRequests/v2EntityCreation.json', true)
         };
-
-        beforeEach(function(done) {
-            serverMocks.mockPath('/NGSI10/queryContext', mockApp, done);
-        });
 
         it('should reject the request with a 400 Bad Request code', function(done) {
             request(options, function(error, response, body) {
@@ -298,124 +162,6 @@ describe('Extract Context Broker action from request', function() {
         });
     });
 
-    describe('When an update action comes with an unknown action in a JSON format', function() {
-        var options = {
-            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'fiware-service': 'SmartValencia',
-                'fiware-servicepath': 'Electricidad',
-                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
-            },
-            json: utils.readExampleFile('./test/orionErrorRequests/entityUnknownOperation.json')
-        };
-
-        beforeEach(function(done) {
-            serverMocks.mockPath('/NGSI10/queryContext', mockApp, done);
-        });
-
-        it('should reject the request with a 400', function(done) {
-            request(options, function(error, response, body) {
-                response.statusCode.should.equal(400);
-                done();
-            });
-        });
-    });
-
-    describe('When a request arrives with an unknown body type', function() {
-        var options = {
-            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/csv',
-                'Accept': 'application/csv',
-                'fiware-service': 'SmartValencia',
-                'fiware-servicepath': 'Electricidad',
-                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
-            },
-            body: utils.readExampleFile('./test/orionErrorRequests/entityUnknownOperation.xml', true)
-        };
-
-        beforeEach(function(done) {
-            serverMocks.mockPath('/NGSI10/queryContext', mockApp, done);
-        });
-
-        it('should reject the request with a 415 error', function(done) {
-            request(options, function(error, response, body) {
-                response.statusCode.should.equal(415);
-                done();
-            });
-        });
-    });
-
-    describe('When a request arrives with a JSON body with a wrong syntax', function() {
-        var options = {
-            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'fiware-service': 'SmartValencia',
-                'fiware-servicepath': 'Electricidad',
-                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
-            },
-            body: utils.readExampleFile('./test/orionErrorRequests/entitySyntaxError.json', true)
-        };
-
-        beforeEach(function(done) {
-            serverMocks.mockPath('/NGSI10/queryContext', mockApp, done);
-        });
-
-        it('should reject the request with a 400 error', function(done) {
-            request(options, function(error, response, body) {
-                response.statusCode.should.equal(400);
-                done();
-            });
-        });
-    });
-
-    describe('When a request arrives with a valid JSON payload to the proxy', function() {
-        var options = {
-            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
-                'fiware-service': 'SmartValencia',
-                'fiware-servicepath': 'Electricidad',
-                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
-            },
-            json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
-        };
-
-        beforeEach(function(done) {
-            async.series([
-                async.apply(serverMocks.mockPath, '/v3/role_assignments', mockOAuthApp),
-                async.apply(serverMocks.mockPath, '/v3/auth/tokens', mockOAuthApp),
-                async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
-                async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
-                async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockApp)
-            ], done);
-        });
-
-        it('should proxy the request to the target URL', function(done) {
-            var mockExecuted = false;
-
-            mockApp.handler = function(req, res) {
-                should.exist(req.body.updateAction);
-                req.body.updateAction.should.equal('APPEND');
-                mockExecuted = true;
-                res.status(200).json({});
-            };
-
-            request(options, function(error, response, body) {
-                mockExecuted.should.equal(true);
-                done();
-            });
-        });
-    });
 
     var v2UpdateOperationMatrix = [
         ['append', 'create'],

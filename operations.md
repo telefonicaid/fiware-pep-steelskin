@@ -120,8 +120,6 @@ Indicates that a received request didn't have the appropriate information to det
 The proxy received a request with a content type that is not supported. Currently only JSON ('application/json') and XML ('application/xml' and 'text/xml') are supported. This is a client error and should not require human intervention. This may be a problem with the content headers; if repeated, advice the client to check what headers are being sent and the API for the content payload.
 #### ORION-PLUGIN-005: Action not found
 This error is raised when a request action should be identifiable with the information in the URL but the proxy was unavailable to do so. It might happen when the request is trying to access a URL that is not known by the Orion plugin (maybe because the client is trying to access version of the Orion Context Broker different of the one supported by the proxy). This is a client error. The client should check the API he is trying to use is the appropriate one for this version of the proxy and the Context Broker.
-#### ORION-PLUGIN-006: Wrong XML Payload. Parsing error: %s
-An XML payload with syntactic errors has been received. This should be a client error, and it shouldn't require human intervention. Warn the user if the error repeats.
 
 ## <a name="problems"/> Expected problems and known solutions
 | Symptoms | Causes | Procedure

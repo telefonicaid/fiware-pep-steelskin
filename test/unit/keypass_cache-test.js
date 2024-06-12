@@ -91,7 +91,7 @@ describe('Keypass authentication cache', function() {
 
     describe('When the keypass cache is activated and multiple requests for a user arrive', function() {
         var options = {
-            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+            uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -100,7 +100,7 @@ describe('Keypass authentication cache', function() {
                 'fiware-servicepath': 'Electricidad',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
-            json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
+            json: utils.readExampleFile('./test/orionRequests/v2EntityCreation.json')
         };
 
         beforeEach(function(done) {
@@ -111,7 +111,7 @@ describe('Keypass authentication cache', function() {
                     async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
                     async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
                     async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
-                    async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
+                    async.apply(serverMocks.mockPath, '/v2/op/update', mockTargetApp)
                 ], done);
             });
         });

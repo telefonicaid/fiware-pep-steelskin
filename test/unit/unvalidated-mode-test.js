@@ -97,7 +97,7 @@ describe('Unvalidated mode', function() {
                 async.apply(serverMocks.mockPath, authenticationMechanism.authPath, mockOAuthApp),
                 async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
                 async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
-                async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
+                async.apply(serverMocks.mockPath, '/v2/op/update', mockTargetApp)
             ], done);
         });
     });
@@ -118,7 +118,7 @@ describe('Unvalidated mode', function() {
     describe('[' + authenticationMechanism.module + '] ' +
     'When a request arrives for a user and the access.disable flag is true', function() {
         var options = {
-                uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+                uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -127,7 +127,7 @@ describe('Unvalidated mode', function() {
                     'fiware-servicepath': 'Electricidad',
                     'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
                 },
-                json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
+                json: utils.readExampleFile('./test/orionRequests/v2EntityCreation.json')
             };
 
         it('shouldn\'t call the Access Control and should not extract the roles', function(done) {
@@ -165,13 +165,13 @@ describe('Unvalidated mode', function() {
     describe('[' + authenticationMechanism.module + '] ' +
     'When a request arrives for a user without the X-Auth-Token header and the access control is disabled', function() {
         var options = {
-                uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+                uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json'
                 },
-                json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
+                json: utils.readExampleFile('./test/orionRequests/v2EntityCreation.json')
             };
 
         it('should return a MISSING_HEADERS error', function(done) {

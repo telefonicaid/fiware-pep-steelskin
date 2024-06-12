@@ -94,7 +94,7 @@ describe('Control header behavior', function() {
 
     describe('When a request to the CB arrives to the proxy without X-Forwarded-For', function() {
         var options = {
-            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+            uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -103,13 +103,13 @@ describe('Control header behavior', function() {
                 'Fiware-ServicePath': 'admin_domain',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
-            json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
+            json: utils.readExampleFile('./test/orionRequests/v2EntityCreation.json')
         };
 
         beforeEach(function(done) {
             async.series([
                 async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
-                async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
+                async.apply(serverMocks.mockPath, '/v2/op/update', mockTargetApp)
             ], done);
         });
 
@@ -138,7 +138,7 @@ describe('Control header behavior', function() {
 
     describe('When a request to the CB arrives to the proxy with the X-Forwarded-For header', function() {
         var options = {
-            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+            uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -148,13 +148,13 @@ describe('Control header behavior', function() {
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q',
                 'X-Forwarded-For': '192.168.2.1'
             },
-            json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
+            json: utils.readExampleFile('./test/orionRequests/v2EntityCreation.json')
         };
 
         beforeEach(function(done) {
             async.series([
                 async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
-                async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
+                async.apply(serverMocks.mockPath, '/v2/op/update', mockTargetApp)
             ], done);
         });
 
@@ -181,87 +181,9 @@ describe('Control header behavior', function() {
         });
     });
 
-    describe('When a request to the CB arrives to the proxy with a xml body', function() {
-        var options = {
-            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
-            method: 'POST',
-            headers: {
-                'Accept': 'application/xml',
-                'Fiware-Service': 'frn:contextbroker:admin_domain:::',
-                'Fiware-ServicePath': 'admin_domain',
-                'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q',
-                'X-Forwarded-For': '192.168.2.1'
-            },
-            body: utils.readExampleFile('./test/orionRequests/entityCreation.xml', true)
-        };
-        beforeEach(function(done) {
-            async.series([
-                async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
-                async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
-            ], done);
-        });
-
-        it('should manage content-type: application/xml header', function(done) {
-            var mockExecuted = false,
-                expectedBody,
-                expectedLength;
-
-            options.headers['Content-Type'] = 'application/xml';
-
-            mockAccessApp.handler = function(req, res) {
-                res.set('Content-Type', 'application/xml');
-                res.send(utils.readExampleFile('./test/accessControlResponses/permitResponse.xml', true));
-            };
-
-            mockTargetApp.handler = function(req, res) {
-                mockExecuted = true;
-                expectedBody = req.body;
-                expectedLength = req.headers['content-length'];
-
-                res.status(200).json({});
-            };
-
-            request(options, function(error, response, body) {
-                mockExecuted.should.equal(true);
-                should.exist(expectedBody);
-                expectedLength.should.be.above(0);
-                done();
-            });
-        });
-
-        it('should manage content-type: text/xml header', function(done) {
-            var mockExecuted = false,
-                expectedBody,
-                expectedLength;
-
-            options.headers['Content-Type'] = 'text/xml';
-
-            mockAccessApp.handler = function(req, res) {
-                res.set('Content-Type', 'application/xml');
-                res.send(utils.readExampleFile('./test/accessControlResponses/permitResponse.xml', true));
-            };
-
-            mockTargetApp.handler = function(req, res) {
-                mockExecuted = true;
-                expectedBody = req.body;
-                expectedLength = req.headers['content-length'];
-
-                res.status(200).json({});
-            };
-
-            request(options, function(error, response, body) {
-                mockExecuted.should.equal(true);
-                should.exist(expectedBody);
-                expectedLength.should.be.above(0);
-                done();
-            });
-        });
-
-    });
-
     describe('When a request to the CB arrives to the proxy with a json body', function() {
         var options = {
-            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+            uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -270,12 +192,12 @@ describe('Control header behavior', function() {
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q',
                 'X-Forwarded-For': '192.168.2.1'
             },
-            body: JSON.stringify(utils.readExampleFile('./test/orionRequests/entityCreation.json'))
+            body: JSON.stringify(utils.readExampleFile('./test/orionRequests/v2EntityCreation.json'))
         };
         beforeEach(function(done) {
             async.series([
                 async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
-                async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
+                async.apply(serverMocks.mockPath, '/v2/op/update', mockTargetApp)
             ], done);
         });
 
@@ -338,7 +260,7 @@ describe('Control header behavior', function() {
 
     describe('When a request to the CB arrives to the proxy with a json content header but wrong body', function() {
         var options = {
-            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+            uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -352,7 +274,7 @@ describe('Control header behavior', function() {
         beforeEach(function(done) {
             async.series([
                 async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
-                async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
+                async.apply(serverMocks.mockPath, '/v2/op/update', mockTargetApp)
             ], done);
         });
 
@@ -388,7 +310,7 @@ describe('Control header behavior', function() {
 
     describe('When the PEP Proxy sends a request to the access control', function() {
         var options = {
-            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+            uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -397,13 +319,13 @@ describe('Control header behavior', function() {
                 'Fiware-ServicePath': 'admin_domain',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
-            json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
+            json: utils.readExampleFile('./test/orionRequests/v2EntityCreation.json')
         };
 
         beforeEach(function(done) {
             async.series([
                 async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
-                async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
+                async.apply(serverMocks.mockPath, '/v2/op/update', mockTargetApp)
             ], done);
         });
 
@@ -436,7 +358,7 @@ describe('Control header behavior', function() {
 
             beforeEach(function(done) {
                 options = {
-                    uri: 'http://localhost:' + config.resource.proxy.port + '/v1/updateContext',
+                    uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
                     method: 'POST',
                     headers: {
                         'content-type': 'application/json',
@@ -445,13 +367,13 @@ describe('Control header behavior', function() {
                         'fiware-servicepath': 'admin_domain',
                         'x-auth-token': 'UAidNA9uQJiIVYSCg0IQ8Q'
                     },
-                    json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
+                    json: utils.readExampleFile('./test/orionRequests/v2EntityCreation.json')
                 };
 
                 delete options.headers[headerTest];
                 async.series([
                     async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
-                    async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
+                    async.apply(serverMocks.mockPath, '/v2/op/update', mockTargetApp)
                 ], done);
             });
 
@@ -472,7 +394,7 @@ describe('Control header behavior', function() {
 
             beforeEach(function(done) {
                 options = {
-                    uri: 'http://localhost:' + config.resource.proxy.port + '/v1/updateContext',
+                    uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
                     method: 'POST',
                     headers: {
                         'content-type': 'application/json',
@@ -481,13 +403,13 @@ describe('Control header behavior', function() {
                         'fiware-servicepath': 'admin_domain',
                         'x-auth-token': 'UAidNA9uQJiIVYSCg0IQ8Q'
                     },
-                    json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
+                    json: utils.readExampleFile('./test/orionRequests/v2EntityCreation.json')
                 };
 
                 options.headers[headerTest] = '';
                 async.series([
                     async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
-                    async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
+                    async.apply(serverMocks.mockPath, '/v2/op/update', mockTargetApp)
                 ], done);
             });
 

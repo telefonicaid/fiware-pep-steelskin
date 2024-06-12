@@ -113,7 +113,7 @@ describe('Validate action with Access Control', function() {
         describe('[' + authenticationMechanisms[q].module +
             '] When a request to the CB arrives to the proxy with appropriate permissions', function() {
             var options = {
-                    uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+                    uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -122,7 +122,7 @@ describe('Validate action with Access Control', function() {
                         'fiware-servicepath': 'Electricidad',
                         'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
                     },
-                    json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
+                    json: utils.readExampleFile('./test/orionRequests/v2EntityCreation.json')
                 },
                 currentAuthentication = authenticationMechanisms[q];
 
@@ -134,7 +134,7 @@ describe('Validate action with Access Control', function() {
                         async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
                         async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
                         async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
-                        async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
+                        async.apply(serverMocks.mockPath, '/v2/op/update', mockTargetApp)
                     ], done);
                 });
             });
@@ -172,7 +172,7 @@ describe('Validate action with Access Control', function() {
         describe('[' + authenticationMechanisms[q].module +
             '] When a request to the CB arrives for a user with wrong permissions', function() {
             var options = {
-                    uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+                    uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -181,7 +181,7 @@ describe('Validate action with Access Control', function() {
                         'fiware-servicepath': 'Electricidad',
                         'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
                     },
-                    json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
+                    json: utils.readExampleFile('./test/orionRequests/v2EntityCreation.json')
                 },
                 currentAuthentication = authenticationMechanisms[q];
 
@@ -192,7 +192,7 @@ describe('Validate action with Access Control', function() {
                         async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
                         async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
                         async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
-                        async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
+                        async.apply(serverMocks.mockPath, '/v2/op/update', mockTargetApp)
                     ], done);
                 });
 
@@ -232,7 +232,7 @@ describe('Validate action with Access Control', function() {
         describe('[' + authenticationMechanisms[q].module +
             '] When a request to the CB arrives and the connection to the Access Control is not working', function() {
             var options = {
-                    uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+                    uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -241,7 +241,7 @@ describe('Validate action with Access Control', function() {
                         'Fiware-Servicepath': 'Electricidad',
                         'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
                     },
-                    json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
+                    json: utils.readExampleFile('./test/orionRequests/v2EntityCreation.json')
                 },
                 currentAuthentication = authenticationMechanisms[q];
 
@@ -253,7 +253,7 @@ describe('Validate action with Access Control', function() {
                             async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
                             async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
                             async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
-                            async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
+                            async.apply(serverMocks.mockPath, '/v2/op/update', mockTargetApp)
                         ], done);
                     });
                 });
@@ -287,7 +287,7 @@ describe('Validate action with Access Control', function() {
         describe('[' + authenticationMechanisms[q].module + '] ' +
             'When a request to the CB arrives and the Access Control fails to make a proper decision', function() {
             var options = {
-                    uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+                    uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -296,7 +296,7 @@ describe('Validate action with Access Control', function() {
                         'Fiware-Servicepath': 'Electricidad',
                         'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
                     },
-                    json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
+                    json: utils.readExampleFile('./test/orionRequests/v2EntityCreation.json')
                 },
                 currentAuthentication = authenticationMechanisms[q];
 
@@ -307,7 +307,7 @@ describe('Validate action with Access Control', function() {
                         async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
                         async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
                         async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
-                        async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
+                        async.apply(serverMocks.mockPath, '/v2/op/update', mockTargetApp)
                     ], done);
                 });
             });
@@ -342,7 +342,7 @@ describe('Validate action with Access Control', function() {
     describe('[' + authenticationMechanisms[1].module + '] ' +
     'When a request arrives and the authentication token has expired', function() {
         var options = {
-                uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+                uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -351,7 +351,7 @@ describe('Validate action with Access Control', function() {
                     'fiware-servicepath': 'Electricidad',
                     'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
                 },
-                json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
+                json: utils.readExampleFile('./test/orionRequests/v2EntityCreation.json')
             },
             currentAuthentication = authenticationMechanisms[1];
 
@@ -365,7 +365,7 @@ describe('Validate action with Access Control', function() {
                     async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
                     async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
                     async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
-                    async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
+                    async.apply(serverMocks.mockPath, '/v2/op/update', mockTargetApp)
                 ], done);
             });
         });
@@ -399,7 +399,7 @@ describe('Validate action with Access Control', function() {
     describe('[' + authenticationMechanisms[1].module + '] ' +
         'When a request is validated using Keystone', function() {
         var options = {
-                uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+                uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -408,7 +408,7 @@ describe('Validate action with Access Control', function() {
                     'fiware-servicepath': 'Electricidad',
                     'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
                 },
-                json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
+                json: utils.readExampleFile('./test/orionRequests/v2EntityCreation.json')
             },
             currentAuthentication = authenticationMechanisms[1];
 
@@ -422,7 +422,7 @@ describe('Validate action with Access Control', function() {
                     async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
                     async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
                     async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
-                    async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
+                    async.apply(serverMocks.mockPath, '/v2/op/update', mockTargetApp)
                 ], done);
             });
         });
@@ -557,7 +557,7 @@ describe('Validate action with Access Control', function() {
     describe('[' + authenticationMechanisms[1].module + '] ' +
     'When a request arrives for a user that doesn\'t have a role on the subservice', function() {
         var options = {
-                uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+                uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -566,7 +566,7 @@ describe('Validate action with Access Control', function() {
                     'fiware-servicepath': 'Electricidad',
                     'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
                 },
-                json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
+                json: utils.readExampleFile('./test/orionRequests/v2EntityCreation.json')
             },
             currentAuthentication = authenticationMechanisms[1];
 
@@ -578,7 +578,7 @@ describe('Validate action with Access Control', function() {
                     async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
                     async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
                     async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
-                    async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
+                    async.apply(serverMocks.mockPath, '/v2/op/update', mockTargetApp)
                 ], done);
             });
         });
@@ -621,7 +621,7 @@ describe('Validate action with Access Control', function() {
     describe('[' + authenticationMechanisms[1].module + '] ' +
     'When a request arrives for a user that has roles in the domain as well as in the project', function() {
         var options = {
-                uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+                uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -630,7 +630,7 @@ describe('Validate action with Access Control', function() {
                     'fiware-servicepath': 'Electricidad',
                     'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
                 },
-                json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
+                json: utils.readExampleFile('./test/orionRequests/v2EntityCreation.json')
             },
             currentAuthentication = authenticationMechanisms[1];
 
@@ -642,7 +642,7 @@ describe('Validate action with Access Control', function() {
                     async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
                     async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
                     async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
-                    async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
+                    async.apply(serverMocks.mockPath, '/v2/op/update', mockTargetApp)
                 ], done);
             });
         });
@@ -690,7 +690,7 @@ describe('Validate action with Access Control', function() {
     describe('[' + authenticationMechanisms[1].module + '] ' +
     'When a request arrives for a user and the token is not valid', function() {
         var options = {
-                uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+                uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -699,7 +699,7 @@ describe('Validate action with Access Control', function() {
                     'fiware-servicepath': 'Electricidad',
                     'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
                 },
-                json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
+                json: utils.readExampleFile('./test/orionRequests/v2EntityCreation.json')
             },
             currentAuthentication = authenticationMechanisms[1];
 
@@ -711,7 +711,7 @@ describe('Validate action with Access Control', function() {
                     async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
                     async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
                     async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
-                    async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
+                    async.apply(serverMocks.mockPath, '/v2/op/update', mockTargetApp)
                 ], done);
             });
         });
@@ -755,14 +755,14 @@ describe('Validate action with Access Control', function() {
     'When a request arrives and the access.disable flag is true and the authentication.checkHeaders flag is false',
         function() {
         var options = {
-                uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+                uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                     'Accept': 'application/json',
                     'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
                 },
-                json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
+                json: utils.readExampleFile('./test/orionRequests/v2EntityCreation.json')
             },
             currentAuthentication = authenticationMechanisms[1];
 
@@ -776,7 +776,7 @@ describe('Validate action with Access Control', function() {
                     async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
                     async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
                     async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
-                    async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
+                    async.apply(serverMocks.mockPath, '/v2/op/update', mockTargetApp)
                 ], done);
             });
         });
@@ -818,7 +818,7 @@ describe('Validate action with Access Control', function() {
     describe('[' + authenticationMechanisms[1].module + '] ' +
         'When a request with a tenant A tries to access things on tenant B', function() {
         var options = {
-                uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+                uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -827,7 +827,7 @@ describe('Validate action with Access Control', function() {
                     'fiware-servicepath': 'Electricidad',
                     'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
                 },
-                json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
+                json: utils.readExampleFile('./test/orionRequests/v2EntityCreation.json')
             },
             currentAuthentication = authenticationMechanisms[1];
 
@@ -839,7 +839,7 @@ describe('Validate action with Access Control', function() {
                     async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
                     async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
                     async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
-                    async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
+                    async.apply(serverMocks.mockPath, '/v2/op/update', mockTargetApp)
                 ], done);
             });
         });
@@ -866,7 +866,7 @@ describe('Validate action with Access Control', function() {
     describe('[' + authenticationMechanisms[1].module + '] ' +
     'When a request is validated using a trust token in Keystone', function() {
         var options = {
-                uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+                uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -875,7 +875,7 @@ describe('Validate action with Access Control', function() {
                     'fiware-servicepath': 'Electricidad',
                     'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
                 },
-                json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
+                json: utils.readExampleFile('./test/orionRequests/v2EntityCreation.json')
             },
             currentAuthentication = authenticationMechanisms[1];
 
@@ -889,7 +889,7 @@ describe('Validate action with Access Control', function() {
                     async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
                     async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
                     async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
-                    async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
+                    async.apply(serverMocks.mockPath, '/v2/op/update', mockTargetApp)
                 ], done);
             });
         });

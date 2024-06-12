@@ -100,7 +100,7 @@ describe('HTTPS Options', function() {
     });
     describe('When a request to the CB arrives to the proxy with HTTPS', function() {
         var options = {
-            uri: 'https://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+            uri: 'https://localhost:' + config.resource.proxy.port + '/v2/op/update',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -109,13 +109,13 @@ describe('HTTPS Options', function() {
                 'Fiware-ServicePath': 'admin_domain',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
-            json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
+            json: utils.readExampleFile('./test/orionRequests/v2EntityCreation.json')
         };
 
         beforeEach(function(done) {
             async.series([
                 async.apply(serverMocks.mockPath, '/validate', mockAccessApp),
-                async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
+                async.apply(serverMocks.mockPath, '/v2/op/update', mockTargetApp)
             ], done);
         });
 

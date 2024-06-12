@@ -90,7 +90,7 @@ describe('Reuse authentication tokens', function() {
 
     describe('When a PEP Proxy has a token and it\'s still valid', function() {
         var options = {
-                uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+                uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -99,7 +99,7 @@ describe('Reuse authentication tokens', function() {
                     'fiware-servicepath': 'Electricidad',
                     'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
                 },
-                json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
+                json: utils.readExampleFile('./test/orionRequests/v2EntityCreation.json')
             };
 
         beforeEach(function(done) {
@@ -111,7 +111,7 @@ describe('Reuse authentication tokens', function() {
                     async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
                     async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
                     async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
-                    async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
+                    async.apply(serverMocks.mockPath, '/v2/op/update', mockTargetApp)
                 ], function() {
                     request(options, function(error, response, body) {
                         done();
@@ -153,7 +153,7 @@ describe('Reuse authentication tokens', function() {
 
     describe('When a PEP Proxy has a token and it has expired', function() {
         var options = {
-            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+            uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -162,7 +162,7 @@ describe('Reuse authentication tokens', function() {
                 'fiware-servicepath': 'Electricidad',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
-            json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
+            json: utils.readExampleFile('./test/orionRequests/v2EntityCreation.json')
         };
 
         beforeEach(function(done) {
@@ -174,7 +174,7 @@ describe('Reuse authentication tokens', function() {
                     async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
                     async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
                     async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
-                    async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
+                    async.apply(serverMocks.mockPath, '/v2/op/update', mockTargetApp)
                 ], function() {
                     request(options, function(error, response, body) {
                         cacheUtils.clean();
@@ -229,7 +229,7 @@ describe('Reuse authentication tokens', function() {
 
     describe('When a PEP Proxy has an expired token and another request arrives to the proxy', function() {
         var options = {
-            uri: 'http://localhost:' + config.resource.proxy.port + '/NGSI10/updateContext',
+            uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -238,7 +238,7 @@ describe('Reuse authentication tokens', function() {
                 'fiware-servicepath': 'Electricidad',
                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
             },
-            json: utils.readExampleFile('./test/orionRequests/entityCreation.json')
+            json: utils.readExampleFile('./test/orionRequests/v2EntityCreation.json')
         };
 
         beforeEach(function(done) {
@@ -251,7 +251,7 @@ describe('Reuse authentication tokens', function() {
                     async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
                     async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
                     async.apply(serverMocks.mockPath, '/pdp/v3', mockAccessApp),
-                    async.apply(serverMocks.mockPath, '/NGSI10/updateContext', mockTargetApp)
+                    async.apply(serverMocks.mockPath, '/v2/op/update', mockTargetApp)
                 ], function() {
                     request(options, function(error, response, body) {
                         cacheUtils.clean();
