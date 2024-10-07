@@ -12,11 +12,12 @@ configAccessMatch.users = [
 
 // Activity related with request which the following headers
 configAccessMatch.headers = [
-    { "Fiware-service": "smartcity" },
+    { "fiware-service": "smartcity" },
+    { "x-real-ip": "127.0.0.1" }
 ];
 
 // Activity related with request including the following subpaths
-configAccessMatch.subpath = [
+configAccessMatch.subpaths = [
     '/v1',
 ];
 
