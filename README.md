@@ -449,13 +449,56 @@ Accounting access log include daba about:
 * Token
 * Origin
 * UserId
+* UserName
 * ServiceId
+* Service
 * SubServiceId
+* SubService
 * Action
+* Path
+* Body
 * Date
 Example of access log:
 ```
-Right Attempt | ResponseStatus=200 | Token=860864fb6d1a4c8a8cb7d59d16daaa52 | Origin=192.168.1.125 | UserId=62c63ada8694451fb67a341346172499 | ServiceId=a9b38dd2a97e4944b2daebdb74ed60ff | Service=smartgondor | SubServiceId=/ | SubService=/ | Action=read | Date=2017-09-21T12:46:57.844Z
+{"level":"info","message":"Right Attempt | ResponseStatus=200 | Token=gAAAAABnBPgPrgwpcAkbQOZIryu5ADUIScyorN3vbPYbTJxTE5AF3RO1y25Tf-sL3EKzvfr_1U3u8IL8ylB4e4B_vD5yZjc9rnrSIqoiC77B7uZ1O1xZCyukq_MkjRxJLqA9yQ5lQtAQCC6ig7Kn5uPhpPD-mhVb7kyQjUw1QjtCiyP7UKXZvKU | Origin=172.17.0.22 | UserId=753b954985bf460fabbd6953c71d50c7 | UserName=adm1 | ServiceId=9f710408f5944c3993db600810e97c83 | Service=smartcity | SubServiceId=/ | SubService=/ | Action=read | Path=/v2/entities | Body={} | Date=2024-10-08T09:25:30.441Z","timestamp":"2024-10-08T09:25:30.441Z"}
+```
+
+Additionally a file configAccessMatch could be provided to pep to check matches about some elements involved in current access, regardless is right or not right access. For example:
+* List for users involved
+* List of headers and values
++ List of subpaths in URL request
+* List of strings in body
+
+```
+// Activity related with a list of users
+configAccessMatch.users = [
+    'cracker1', 'cracker2',
+];
+
+// Activity related with request which the following headers
+configAccessMatch.headers = [
+    { "fiware-service": "smartcity" },
+    { "x-real-ip": "127.0.0.1" }
+];
+
+// Activity related with request including the following subpaths
+configAccessMatch.subpaths = [
+    '/v1',
+];
+
+// Activity related with request including the following strings in body
+configAccessMatch.body = [
+    'legacy',
+];
+```
+
+When any of theses patterns maches in current access message access is added with `MATCHED <element> <value>` . For example:
+
+```
+{"level":"info","message":"Right Attempt MATCHED HEADER Service smartcity | ResponseStatus=200 | Token=gAAAAABnBPgPrgwpcAkbQOZIryu5ADUIScyorN3vbPYbTJxTE5AF3RO1y25Tf-sL3EKzvfr_1U3u8IL8ylB4e4B_vD5yZjc9rnrSIqoiC77B7uZ1O1xZCyukq_MkjRxJLqA9yQ5lQtAQCC6ig7Kn5uPhpPD-mhVb7kyQjUw1QjtCiyP7UKXZvKU | Origin=172.17.0.22 | UserId=753b954985bf460fabbd6953c71d50c7 | UserName=adm1 | ServiceId=9f710408f5944c3993db600810e97c83 | Service=smartcity | SubServiceId=/ | SubService=/ | Action=read | Path=/v2/entities | Body={} | Date=2024-10-08T09:25:30.441Z","timestamp":"2024-10-08T09:25:30.441Z"}
+```
+
+
 ```
 * `config.componentName`: name of the component that will be used to compose the FRN that will identify the resource to be accessed. E.g.: `orion`.
 * `config.resourceNamePrefix`: string prefix that will be used to compose the FRN that will identify the resource to be accessed. E.g.: `fiware:`.
