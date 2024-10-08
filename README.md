@@ -25,7 +25,7 @@
 * [Development documentation](#development)
 
 ## <a name="overview"/> Overview
-The Orion Policy Enforcement Point (PEP) is a proxy meant to secure independent FiWare components, by intercepting every request sent to the component, validating it against the Access Control component. This validation is based in several pieces of data:
+The Policy Enforcement Point (PEP) is a proxy meant to secure independent FiWare components, by intercepting every request sent to the component, validating it against the Access Control component. This validation is based in several pieces of data:
 
 * User token: comes from the OAuth authorization server and is taken from the `x-auth-token` header.
 * ServiceId: is read from the `fiware-service` header and identifies the protected component.
@@ -442,9 +442,9 @@ In order to have the proxy running, there are several basic pieces of informatio
     accountFile: '/tmp/pepAccount.log'
 }
 ```
-Accounting log is only activated when account flag is true, and the logs are produced in a fixed INFO level for accountLogger, redardless of the pep log level.
-Note that accunting log is not rotate, so you should make sure you configure your own rotation system.
-Accounting access log include daba about:
+Accounting log is only activated when account flag is true, and the logs are produced in a fixed INFO level for accessLogger, redardless of the pep log level.
+Note that accounting log is not rotated, so you should make sure you configure your own rotation system.
+Accounting access log include data about:
 * Attempt was right or not
 * Token
 * Origin
