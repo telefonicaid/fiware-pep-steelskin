@@ -492,7 +492,7 @@ configAccessMatch.body = [
 ];
 ```
 
-When any of theses patterns maches in current access message access is added with `MATCHED <element> <value>` . For example:
+When any of theses patterns maches in current access message access is added with `MATCHED <element> <value>` , where `<element>` would be: `USER`, `HEADER Service`, `HEADER SubService`, HEADER Origin, SUBPATH, BODY and `<value>` the value which matches.  For example:
 
 ```
 {"level":"info","message":"Right Attempt MATCHED HEADER Service smartcity | ResponseStatus=200 | Token=gAAAAABnBPgPrgwpcAkbQOZIryu5ADUIScyorN3vbPYbTJxTE5AF3RO1y25Tf-sL3EKzvfr_1U3u8IL8ylB4e4B_vD5yZjc9rnrSIqoiC77B7uZ1O1xZCyukq_MkjRxJLqA9yQ5lQtAQCC6ig7Kn5uPhpPD-mhVb7kyQjUw1QjtCiyP7UKXZvKU | Origin=172.17.0.22 | UserId=753b954985bf460fabbd6953c71d50c7 | UserName=adm1 | ServiceId=9f710408f5944c3993db600810e97c83 | Service=smartcity | SubServiceId=/ | SubService=/ | Action=read | Path=/v2/entities | Body={} | Date=2024-10-08T09:25:30.441Z","timestamp":"2024-10-08T09:25:30.441Z"}
