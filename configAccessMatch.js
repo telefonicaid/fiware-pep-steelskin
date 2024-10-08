@@ -7,7 +7,7 @@ var configAccessMatch = {};
 
 // Activity related with a list of users
 configAccessMatch.users = [
-    'cloud_admin', 'pep',
+    'user1', 'user2',
 ];
 
 // Activity related with request which the following headers
