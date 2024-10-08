@@ -1,2 +1,4 @@
+- Add User Name, path request URL and request body to AccessLogger (#541)
+- Add Access Logger Patterns to match to Access Logger (#541)
 - Upgrade body-parser dep from 1.20.0 to 1.20.3
 - Upgrade express from 4.19.2 to 4.20.0
