@@ -21,6 +21,11 @@ configAccessMatch.subpaths = [
     '/v1',
 ];
 
+// Activity related with request including the following subqueries
+configAccessMatch.subqueries = [
+    'flowControl', 'options',
+];
+
 // Activity related with request including the following strings in body
 configAccessMatch.body = [
     'legacy'
