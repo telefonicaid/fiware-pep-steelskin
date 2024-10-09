@@ -439,7 +439,8 @@ In order to have the proxy running, there are several basic pieces of informatio
     port: 7070,
     path: '/pdp/v3',
     account: false,
-    accountFile: '/tmp/pepAccount.log'
+    accountFile: '/tmp/pepAccount.log',
+    accountMode: 'all'
 }
 ```
 Accounting log is only activated when account flag is true, and the logs are produced in a fixed INFO level for accessLogger, redardless of the pep log level.
@@ -505,7 +506,7 @@ When any of theses patterns maches in current access message access is added wit
 ```
 {"level":"info","message":"Right Attempt MATCHED HEADER Service smartcity | ResponseStatus=200 | Token=gAAAAABnBPgPrgwpcAkbQOZIryu5ADUIScyorN3vbPYbTJxTE5AF3RO1y25Tf-sL3EKzvfr_1U3u8IL8ylB4e4B_vD5yZjc9rnrSIqoiC77B7uZ1O1xZCyukq_MkjRxJLqA9yQ5lQtAQCC6ig7Kn5uPhpPD-mhVb7kyQjUw1QjtCiyP7UKXZvKU | Origin=172.17.0.22 | UserId=753b954985bf460fabbd6953c71d50c7 | UserName=adm1 | ServiceId=9f710408f5944c3993db600810e97c83 | Service=smartcity | SubServiceId=/ | SubService=/ | Action=read | Path=/v2/entities | Query={\"limit\":\"15\",\"offset\":\"0\",\"options\":\"count\"} | Body={} | Date=2024-10-08T09:25:30.441Z","timestamp":"2024-10-08T09:25:30.441Z"}
 ```
-
+Account log has three modes: `all`, `matched`, `wrong`. First one `all` includes right and wrong access regardles if matches or not. Second one `matched` includes all wrong and just rigth matches acess. And `wrong` monde only includes all wrong access, regardless is maches or not with patterns.
 
 ```
 * `config.componentName`: name of the component that will be used to compose the FRN that will identify the resource to be accessed. E.g.: `orion`.

@@ -48,6 +48,7 @@ function loadConfiguration() {
         'ACCESS_PROTOCOL',
         'ACCESS_ACCOUNT',
         'ACCESS_ACCOUNTFILE',
+        'ACCESS_ACCOUNTMODE',
         'ADMIN_PORT',
         'AUTHENTICATION_HOST',
         'AUTHENTICATION_PORT',
@@ -102,6 +103,9 @@ function loadConfiguration() {
     }
     if (process.env.ACCESS_ACCOUNTFILE) {
         config.access.accountFile = process.env.ACCESS_ACCOUNTFILE;
+    }
+    if (process.env.ACCESS_ACCOUNTMODE) {
+        config.access.accountMode = process.env.ACCESS_ACCOUNTMODE;
     }
     if (process.env.AUTHENTICATION_HOST) {
         config.authentication.options.host = process.env.AUTHENTICATION_HOST;
