@@ -471,7 +471,7 @@ Additionally a file configAccessMatch could be provided to pep to check matches 
 * List of subqueries in query request
 * List of strings in body
 
-This is an example of file `configAccessMatch.js`:
+This is an example of file `configAccessMatch.js` (full path /opt/fiware-pep-steelskin/configAccessMatch.js i.e. in a docker image):
 
 ```
 // Activity related with a list of users
