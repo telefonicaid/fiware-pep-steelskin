@@ -64,7 +64,11 @@ config.access = {
     /**
      * Log Account file
      */
-    accountFile: '/tmp/pepAccount.log'
+    accountFile: '/tmp/pepAccount.log',
+    /**
+     * Account mode: `all`, `matched`, `wrong`
+     */
+    accountMode: 'all'
 };
 
 // User identity configuration
