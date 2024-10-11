@@ -459,6 +459,7 @@ Accounting access log include data about:
 * Path
 * Body
 * Date
+* Query
 Example of access log:
 ```
 "Right Attempt | ResponseStatus=200 | Token=gAAAAABnBPgPrgwpcAkbQOZIryu5ADUIScyorN3vbPYbTJxTE5AF3RO1y25Tf-sL3EKzvfr_1U3u8IL8ylB4e4B_vD5yZjc9rnrSIqoiC77B7uZ1O1xZCyukq_MkjRxJLqA9yQ5lQtAQCC6ig7Kn5uPhpPD-mhVb7kyQjUw1QjtCiyP7UKXZvKU | Origin=172.17.0.22 | UserId=753b954985bf460fabbd6953c71d50c7 | UserName=adm1 | ServiceId=9f710408f5944c3993db600810e97c83 | Service=smartcity | SubServiceId=/ | SubService=/ | Action=read | Path=/v2/entities | Query={\"limit\":\"15\",\"offset\":\"0\",\"options\":\"count\"} | Body={} | Date=2024-10-08T09:25:30.441Z"
