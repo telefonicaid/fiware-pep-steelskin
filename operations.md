@@ -26,7 +26,7 @@ curl -X GET "http://localhost:11211/admin/log"
 
 Every error message is identified with a prefix code in brackets. The code convention can be found in Apendix A.
 
-There is another log about accounting access which is produced when access.account flag is enabled and is done over access.accountFile file. This accounting access logs run always in the a fixed `info` level and logs right and wrong access attempts, providing for each one user, service, subservice, path, date and other relevant info about access. Additionallys some patterns could be configured in order to mark some of these access.
+There is another log about accounting access which is produced when access.account flag is enabled and is done over access.accountFile file. This accounting access logs right and wrong access attempts, providing for each one user, service, subservice, path, date and other relevant info about access. Additionally, some patterns could be configured in order to mark some of these access.
 
 ## <a name="cache"/> Cache management
 
