@@ -25,7 +25,7 @@
 * [Development documentation](#development)
 
 ## <a name="overview"/> Overview
-The Orion Policy Enforcement Point (PEP) is a proxy meant to secure independent FiWare components, by intercepting every request sent to the component, validating it against the Access Control component. This validation is based in several pieces of data:
+The Policy Enforcement Point (PEP) is a proxy meant to secure independent FiWare components, by intercepting every request sent to the component, validating it against the Access Control component. This validation is based in several pieces of data:
 
 * User token: comes from the OAuth authorization server and is taken from the `x-auth-token` header.
 * ServiceId: is read from the `fiware-service` header and identifies the protected component.
@@ -439,23 +439,80 @@ In order to have the proxy running, there are several basic pieces of informatio
     port: 7070,
     path: '/pdp/v3',
     account: false,
-    accountFile: '/tmp/pepAccount.log'
+    accountFile: '/tmp/pepAccount.log',
+    accountMode: 'all'
 }
 ```
-Accounting log is only activated when account flag is true, and the logs are produced in a fixed INFO level for accountLogger, redardless of the pep log level.
-Note that accunting log is not rotate, so you should make sure you configure your own rotation system.
-Accounting access log include daba about:
+Accounting log is only activated when account flag is true, and the logs are produced in a fixed INFO level for accessLogger, redardless of the pep log level.
+Note that accounting log is not rotated, so you should make sure you configure your own rotation system.
+Accounting access log include data about:
 * Attempt was right or not
 * Token
 * Origin
 * UserId
+* UserName
 * ServiceId
+* Service
 * SubServiceId
+* SubService
 * Action
+* Path
+* Body
 * Date
+* Query
 Example of access log:
 ```
-Right Attempt | ResponseStatus=200 | Token=860864fb6d1a4c8a8cb7d59d16daaa52 | Origin=192.168.1.125 | UserId=62c63ada8694451fb67a341346172499 | ServiceId=a9b38dd2a97e4944b2daebdb74ed60ff | Service=smartgondor | SubServiceId=/ | SubService=/ | Action=read | Date=2017-09-21T12:46:57.844Z
+"Right Attempt | ResponseStatus=200 | Token=gAAAAABnBPgPrgwpcAkbQOZIryu5ADUIScyorN3vbPYbTJxTE5AF3RO1y25Tf-sL3EKzvfr_1U3u8IL8ylB4e4B_vD5yZjc9rnrSIqoiC77B7uZ1O1xZCyukq_MkjRxJLqA9yQ5lQtAQCC6ig7Kn5uPhpPD-mhVb7kyQjUw1QjtCiyP7UKXZvKU | Origin=172.17.0.22 | UserId=753b954985bf460fabbd6953c71d50c7 | UserName=adm1 | ServiceId=9f710408f5944c3993db600810e97c83 | Service=smartcity | SubServiceId=/ | SubService=/ | Action=read | Path=/v2/entities | Query={\"limit\":\"15\",\"offset\":\"0\",\"options\":\"count\"} | Body={} | Date=2024-10-08T09:25:30.441Z"
+```
+
+Note that the above format is not the same than the regular PEP log (although it is also based in fields separated by `|`, the fields themselves are not the same).
+
+Additionally a file configAccessMatch could be provided to pep to check matches about some elements involved in current access, regardless is right or not right access. For example:
+* List for users involved
+* List of headers and values
+* List of subpaths in URL request
+* List of subqueries in query request
+* List of strings in body
+
+PEP reloads this file each time it changes without needing restarting PEP itself.
+
+This is an example of file `configAccessMatch.js` (full path `/opt/fiware-pep-steelskin/configAccessMatch.js` i.e. in a docker image):
+
+```
+// Activity related with a list of users
+configAccessMatch.users = [
+    'cracker1', 'cracker2',
+];
+
+// Activity related with request which the following headers
+configAccessMatch.headers = [
+    { "fiware-service": "smartcity" },
+    { "x-real-ip": "127.0.0.1" }
+];
+
+// Activity related with request including the following subpaths
+configAccessMatch.subpaths = [
+    '/v1',
+];
+
+// Activity related with request including the following subqueries
+configAccessMatch.subqueries = [
+    'flowControl', 'options',
+];
+
+// Activity related with request including the following strings in body
+configAccessMatch.body = [
+    'legacy',
+];
+```
+
+When any of theses patterns matches in current access, message access is added with `MATCHED <element> <value>` , where `<element>` would be: `USER`, `HEADER <header-name>`, `SUBPATH`, `SUBQUERY`, `BODY` and `<value>` the value which matches. For example:
+
+```
+Right Attempt MATCHED HEADER fiware-service smartcity | ResponseStatus=200 | Token=gAAAAABnBPgPrgwpcAkbQOZIryu5ADUIScyorN3vbPYbTJxTE5AF3RO1y25Tf-sL3EKzvfr_1U3u8IL8ylB4e4B_vD5yZjc9rnrSIqoiC77B7uZ1O1xZCyukq_MkjRxJLqA9yQ5lQtAQCC6ig7Kn5uPhpPD-mhVb7kyQjUw1QjtCiyP7UKXZvKU | Origin=172.17.0.22 | UserId=753b954985bf460fabbd6953c71d50c7 | UserName=adm1 | ServiceId=9f710408f5944c3993db600810e97c83 | Service=smartcity | SubServiceId=/ | SubService=/ | Action=read | Path=/v2/entities | Query={\"limit\":\"15\",\"offset\":\"0\",\"options\":\"count\"} | Body={} | Date=2024-10-08T09:25:30.441Z"
+```
+Account log has three modes: `all`, `matched`, `wrong`. First one `all` includes right and wrong access regardles if matches or not. Second one `matched` includes all wrong and just rigth matches acess. And `wrong` mode only includes all wrong access, regardless is matches or not with patterns.
+
 ```
 * `config.componentName`: name of the component that will be used to compose the FRN that will identify the resource to be accessed. E.g.: `orion`.
 * `config.resourceNamePrefix`: string prefix that will be used to compose the FRN that will identify the resource to be accessed. E.g.: `fiware:`.
