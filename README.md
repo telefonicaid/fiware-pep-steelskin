@@ -457,7 +457,7 @@ Accounting access log include data about:
 * SubService
 * Action
 * Path
-* Body
+* Body (Truncated to 100 chars when is valid access)
 * Date
 * Query
 Example of access log:
