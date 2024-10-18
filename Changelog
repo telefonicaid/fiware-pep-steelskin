@@ -1,4 +1,4 @@
-1.18.0 (October 17th, 2024)
+1.18.0 (October 18th, 2024)
 
 - Add: user name, request path, query and body to AccessLogger (#541)
 - Add: Access Logger Patterns to match to Access Logger (#541)
