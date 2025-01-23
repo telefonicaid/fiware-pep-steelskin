@@ -513,7 +513,7 @@ Right Attempt MATCHED HEADER fiware-service smartcity | ResponseStatus=200 | Tok
 ```
 Account log has three modes: `all`, `matched`, `wrong`. First one `all` includes right and wrong access regardles if matches or not. Second one `matched` includes all wrong and just rigth matches acess. And `wrong` mode only includes all wrong access, regardless is matches or not with patterns.
 
-```
+
 * `config.componentName`: name of the component that will be used to compose the FRN that will identify the resource to be accessed. E.g.: `orion`.
 * `config.resourceNamePrefix`: string prefix that will be used to compose the FRN that will identify the resource to be accessed. E.g.: `fiware:`.
 * `config.bypass`: used to activate the administration bypass in the proxy. Valid values are `true` or `false`.
