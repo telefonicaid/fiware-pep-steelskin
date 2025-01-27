@@ -1,5 +1,3 @@
-- Fix: init express trust proxy to proper fill origin field from accessLogger (#552)
-
 1.18.0 (October 18th, 2024)
 
 - Add: user name, request path, query and body to AccessLogger (#541)
