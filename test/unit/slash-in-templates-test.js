@@ -31,7 +31,7 @@ var serverMocks = require('../tools/serverMocks'),
     config = require('../../config'),
     utils = require('../tools/utils'),
     should = require('should'),
-    request = require('request');
+    request = require('../../lib/request-shim');
 
 describe('Slash in Access Control templates', function() {
     var proxy,
