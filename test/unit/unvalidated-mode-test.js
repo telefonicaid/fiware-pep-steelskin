@@ -30,7 +30,7 @@ var serverMocks = require('../tools/serverMocks'),
     async = require('async'),
     config = require('../../config'),
     utils = require('../tools/utils'),
-    request = require('request');
+    request = require('../../lib/request-shim');
 
 describe('Unvalidated mode', function() {
     /* jshint loopfunc: true */
