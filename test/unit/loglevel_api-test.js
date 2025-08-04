@@ -94,10 +94,8 @@ describe('Log Level API', function() {
 
         it('should return the current log level', function(done) {
             request(options, function(error, response, body) {
-                var parsedBody = JSON.parse(body);
-
-                should.exist(parsedBody.level);
-                parsedBody.level.should.equal('FATAL');
+                should.exist(body.level);
+                body.level.should.equal('FATAL');
 
                 done();
             });
@@ -119,15 +117,11 @@ describe('Log Level API', function() {
 
         it('should return a 400 error indicating the log level is not valid', function(done) {
             request(options, function(error, response, body) {
-                var parsedBody;
-
                 should.not.exist(error);
                 response.statusCode.should.equal(400);
                 should.exist(body);
 
-                parsedBody = JSON.parse(body);
-
-                parsedBody.error.should.equal('invalid log level');
+                body.error.should.equal('invalid log level');
 
                 done();
             });
@@ -146,15 +140,11 @@ describe('Log Level API', function() {
 
         it('should return a 400 error indicating the log level is missing', function(done) {
             request(options, function(error, response, body) {
-                var parsedBody;
-
                 should.not.exist(error);
                 response.statusCode.should.equal(400);
                 should.exist(body);
 
-                parsedBody = JSON.parse(body);
-
-                parsedBody.error.should.equal('log level missing');
+                body.error.should.equal('log level missing');
 
                 done();
             });

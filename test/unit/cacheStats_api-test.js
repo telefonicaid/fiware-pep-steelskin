@@ -64,16 +64,13 @@ describe('Cache Stats API', function() {
             request(options, function(error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(200);
-
                 done();
             });
         });
 
         it('should return the current cache stats', function(done) {
             request(options, function(error, response, body) {
-                var parsedBody = JSON.parse(body);
-
-                should.exist(parsedBody.cacheStats);
+                should.exist(body.cacheStats);
                 done();
             });
         });
