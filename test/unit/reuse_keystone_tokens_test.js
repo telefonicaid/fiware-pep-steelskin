@@ -90,7 +90,7 @@ describe('Reuse authentication tokens', function() {
 
     describe('When a PEP Proxy has a token and it\'s still valid', function() {
         var options = {
-                uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
+                uri: 'http://127.0.0.1:' + config.resource.proxy.port + '/v2/op/update',
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -153,7 +153,7 @@ describe('Reuse authentication tokens', function() {
 
     describe('When a PEP Proxy has a token and it has expired', function() {
         var options = {
-            uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
+            uri: 'http://127.0.0.1:' + config.resource.proxy.port + '/v2/op/update',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -229,7 +229,7 @@ describe('Reuse authentication tokens', function() {
 
     describe('When a PEP Proxy has an expired token and another request arrives to the proxy', function() {
         var options = {
-            uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
+            uri: 'http://127.0.0.1:' + config.resource.proxy.port + '/v2/op/update',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

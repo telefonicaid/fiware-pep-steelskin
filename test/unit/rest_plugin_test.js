@@ -103,7 +103,7 @@ describe('REST Plugin tests', function() {
 
     function apiCase(particularCase) {
         var options = {
-            uri: 'http://localhost:' + config.resource.proxy.port + '/generalResource',
+            uri: 'http://127.0.0.1:' + config.resource.proxy.port + '/generalResource',
             method: particularCase[0],
             headers: {
                 'Content-Type': 'application/json',
@@ -140,7 +140,7 @@ describe('REST Plugin tests', function() {
 
     describe('When a request with query parameters arrive', function() {
         var options = {
-            uri: 'http://localhost:' + config.resource.proxy.port + '/generalResource',
+            uri: 'http://127.0.0.1:' + config.resource.proxy.port + '/generalResource',
             qs: {
                 param1: 'value1',
                 param2: 'value2'

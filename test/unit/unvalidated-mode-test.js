@@ -118,7 +118,7 @@ describe('Unvalidated mode', function() {
     describe('[' + authenticationMechanism.module + '] ' +
     'When a request arrives for a user and the access.disable flag is true', function() {
         var options = {
-                uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
+                uri: 'http://127.0.0.1:' + config.resource.proxy.port + '/v2/op/update',
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -165,7 +165,7 @@ describe('Unvalidated mode', function() {
     describe('[' + authenticationMechanism.module + '] ' +
     'When a request arrives for a user without the X-Auth-Token header and the access control is disabled', function() {
         var options = {
-                uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
+                uri: 'http://127.0.0.1:' + config.resource.proxy.port + '/v2/op/update',
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

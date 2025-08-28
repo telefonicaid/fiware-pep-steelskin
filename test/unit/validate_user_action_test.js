@@ -113,7 +113,7 @@ describe('Validate action with Access Control', function() {
         describe('[' + authenticationMechanisms[q].module +
             '] When a request to the CB arrives to the proxy with appropriate permissions', function() {
             var options = {
-                    uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
+                    uri: 'http://127.0.0.1:' + config.resource.proxy.port + '/v2/op/update',
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -172,7 +172,7 @@ describe('Validate action with Access Control', function() {
         describe('[' + authenticationMechanisms[q].module +
             '] When a request to the CB arrives for a user with wrong permissions', function() {
             var options = {
-                    uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
+                    uri: 'http://127.0.0.1:' + config.resource.proxy.port + '/v2/op/update',
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -232,7 +232,7 @@ describe('Validate action with Access Control', function() {
         describe('[' + authenticationMechanisms[q].module +
             '] When a request to the CB arrives and the connection to the Access Control is not working', function() {
             var options = {
-                    uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
+                    uri: 'http://127.0.0.1:' + config.resource.proxy.port + '/v2/op/update',
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -287,7 +287,7 @@ describe('Validate action with Access Control', function() {
         describe('[' + authenticationMechanisms[q].module + '] ' +
             'When a request to the CB arrives and the Access Control fails to make a proper decision', function() {
             var options = {
-                    uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
+                    uri: 'http://127.0.0.1:' + config.resource.proxy.port + '/v2/op/update',
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -342,7 +342,7 @@ describe('Validate action with Access Control', function() {
     describe('[' + authenticationMechanisms[1].module + '] ' +
     'When a request arrives and the authentication token has expired', function() {
         var options = {
-                uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
+                uri: 'http://127.0.0.1:' + config.resource.proxy.port + '/v2/op/update',
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -399,7 +399,7 @@ describe('Validate action with Access Control', function() {
     describe('[' + authenticationMechanisms[1].module + '] ' +
         'When a request is validated using Keystone', function() {
         var options = {
-                uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
+                uri: 'http://127.0.0.1:' + config.resource.proxy.port + '/v2/op/update',
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -557,7 +557,7 @@ describe('Validate action with Access Control', function() {
     describe('[' + authenticationMechanisms[1].module + '] ' +
     'When a request arrives for a user that doesn\'t have a role on the subservice', function() {
         var options = {
-                uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
+                uri: 'http://127.0.0.1:' + config.resource.proxy.port + '/v2/op/update',
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -621,7 +621,7 @@ describe('Validate action with Access Control', function() {
     describe('[' + authenticationMechanisms[1].module + '] ' +
     'When a request arrives for a user that has roles in the domain as well as in the project', function() {
         var options = {
-                uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
+                uri: 'http://127.0.0.1:' + config.resource.proxy.port + '/v2/op/update',
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -690,7 +690,7 @@ describe('Validate action with Access Control', function() {
     describe('[' + authenticationMechanisms[1].module + '] ' +
     'When a request arrives for a user and the token is not valid', function() {
         var options = {
-                uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
+                uri: 'http://127.0.0.1:' + config.resource.proxy.port + '/v2/op/update',
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -755,7 +755,7 @@ describe('Validate action with Access Control', function() {
     'When a request arrives and the access.disable flag is true and the authentication.checkHeaders flag is false',
         function() {
         var options = {
-                uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
+                uri: 'http://127.0.0.1:' + config.resource.proxy.port + '/v2/op/update',
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -818,7 +818,7 @@ describe('Validate action with Access Control', function() {
     describe('[' + authenticationMechanisms[1].module + '] ' +
         'When a request with a tenant A tries to access things on tenant B', function() {
         var options = {
-                uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
+                uri: 'http://127.0.0.1:' + config.resource.proxy.port + '/v2/op/update',
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -866,7 +866,7 @@ describe('Validate action with Access Control', function() {
     describe('[' + authenticationMechanisms[1].module + '] ' +
     'When a request is validated using a trust token in Keystone', function() {
         var options = {
-                uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
+                uri: 'http://127.0.0.1:' + config.resource.proxy.port + '/v2/op/update',
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

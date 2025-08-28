@@ -57,7 +57,7 @@ describe('IOT Agent Plugin tests', function() {
 
     function apiCase(particularCase) {
         var options = {
-            uri: 'http://localhost:' + config.resource.proxy.port + particularCase[1],
+            uri: 'http://127.0.0.1:' + config.resource.proxy.port + particularCase[1],
             method: particularCase[0],
             headers: {
                 'Content-Type': 'application/json',

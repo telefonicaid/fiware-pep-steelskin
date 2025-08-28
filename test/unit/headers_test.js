@@ -94,7 +94,7 @@ describe('Control header behavior', function() {
 
     describe('When a request to the CB arrives to the proxy without X-Forwarded-For', function() {
         var options = {
-            uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
+            uri: 'http://127.0.0.1:' + config.resource.proxy.port + '/v2/op/update',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -138,7 +138,7 @@ describe('Control header behavior', function() {
 
     describe('When a request to the CB arrives to the proxy with the X-Forwarded-For header', function() {
         var options = {
-            uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
+            uri: 'http://127.0.0.1:' + config.resource.proxy.port + '/v2/op/update',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -183,7 +183,7 @@ describe('Control header behavior', function() {
 
     describe('When a request to the CB arrives to the proxy with a json body', function() {
         var options = {
-            uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
+            uri: 'http://127.0.0.1:' + config.resource.proxy.port + '/v2/op/update',
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -260,7 +260,7 @@ describe('Control header behavior', function() {
 
     describe('When a request to the CB arrives to the proxy with a json content header but wrong body', function() {
         var options = {
-            uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
+            uri: 'http://127.0.0.1:' + config.resource.proxy.port + '/v2/op/update',
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -310,7 +310,7 @@ describe('Control header behavior', function() {
 
     describe('When the PEP Proxy sends a request to the access control', function() {
         var options = {
-            uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
+            uri: 'http://127.0.0.1:' + config.resource.proxy.port + '/v2/op/update',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -358,7 +358,7 @@ describe('Control header behavior', function() {
 
             beforeEach(function(done) {
                 options = {
-                    uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
+                    uri: 'http://127.0.0.1:' + config.resource.proxy.port + '/v2/op/update',
                     method: 'POST',
                     headers: {
                         'content-type': 'application/json',
@@ -394,7 +394,7 @@ describe('Control header behavior', function() {
 
             beforeEach(function(done) {
                 options = {
-                    uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
+                    uri: 'http://127.0.0.1:' + config.resource.proxy.port + '/v2/op/update',
                     method: 'POST',
                     headers: {
                         'content-type': 'application/json',

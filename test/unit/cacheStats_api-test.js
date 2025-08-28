@@ -52,7 +52,7 @@ describe('Cache Stats API', function() {
 
     describe('When the current cache stats is requested through the API', function() {
         var options = {
-            uri: 'http://localhost:' + config.resource.proxy.adminPort + '/admin/cacheStats',
+            uri: 'http://127.0.0.1:' + config.resource.proxy.adminPort + '/admin/cacheStats',
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -82,7 +82,7 @@ describe('Cache Stats API', function() {
 
     describe('When the current cache stats is reset through the API', function() {
         var options = {
-            uri: 'http://localhost:' + config.resource.proxy.adminPort + '/admin/cacheStats',
+            uri: 'http://127.0.0.1:' + config.resource.proxy.adminPort + '/admin/cacheStats',
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -102,7 +102,7 @@ describe('Cache Stats API', function() {
 
     describe('When the current cache is reset through the API', function() {
         var options = {
-            uri: 'http://localhost:' + config.resource.proxy.adminPort + '/admin/cache',
+            uri: 'http://127.0.0.1:' + config.resource.proxy.adminPort + '/admin/cache',
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',

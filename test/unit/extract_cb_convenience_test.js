@@ -100,7 +100,7 @@ describe('Extract Context Broker action from convenience operation requests', fu
     function testConvenienceOperation(convenienceUrl, convenienceMethod, convenienceAction) {
         return function() {
             var options = {
-                uri: 'http://localhost:' + config.resource.proxy.port + convenienceUrl,
+                uri: 'http://127.0.0.1:' + config.resource.proxy.port + convenienceUrl,
                 method: convenienceMethod,
                 headers: {
                     'Content-Type': 'application/json',

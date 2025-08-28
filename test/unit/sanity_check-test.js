@@ -46,7 +46,7 @@ describe('Sanity check', function() {
     });
     describe('When a request for the PEP Version arrives', function() {
         var options = {
-            uri: 'http://localhost:' + config.resource.proxy.adminPort + '/version',
+            uri: 'http://127.0.0.1:' + config.resource.proxy.adminPort + '/version',
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
