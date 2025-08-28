@@ -41,7 +41,10 @@ jobs:
           - 12.x
           - 14.x
           - 16.x
-          #- 18.x
+          - 18.x
+          - 20.x
+          - 22.x
+          - 24.x
     steps:
       - name: Git checkout
         uses: actions/checkout@v2
