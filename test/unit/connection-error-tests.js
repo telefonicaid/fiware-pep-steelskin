@@ -85,7 +85,7 @@ describe('Connection error tests', function() {
 
     describe('When a request arrives to the PEP and the target app shut down the connection', function() {
         var options = {
-                uri: 'http://127.0.0.1:' + config.resource.proxy.port + '/v2/op/update',
+                uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

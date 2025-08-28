@@ -8,7 +8,7 @@ config.resource = {
         /**
          * Host that is being proxied.
          */
-        host: '127.0.0.1',
+        host: 'localhost',
 
         /**
          * Port where the proxied server is listening.
@@ -48,7 +48,7 @@ config.access = {
     /**
      * Host where the Access Control is located.
      */
-    host: '127.0.0.1',
+    host: 'localhost',
     /**
      * Port where the Access Control is listening.
      */
@@ -91,7 +91,7 @@ config.authentication = {
     },
     options: {
         protocol: 'http',
-        host: '127.0.0.1',
+        host: 'localhost',
         port: 5000,
         path: '/v3/role_assignments',
         authPath: '/v3/auth/tokens'

@@ -85,7 +85,7 @@ describe('Slash in Access Control templates', function() {
     describe('When a request with the value "/" in the "fiware-service-path" header arrives and the user doesn\'t ' +
     ' have domain roles', function() {
         var options = {
-            uri: 'http://127.0.0.1:' + config.resource.proxy.port + '/v2/op/update',
+            uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

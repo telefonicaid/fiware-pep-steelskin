@@ -94,7 +94,7 @@ describe('Proxy querystring behavior', function() {
 
     describe('When a request to the CB arrives to the proxy with a querystring', function() {
         var options = {
-            uri: 'http://127.0.0.1:' + config.resource.proxy.port + '/v2/entities',
+            uri: 'http://localhost:' + config.resource.proxy.port + '/v2/entities',
             method: 'GET',
             headers: {
                 'Accept': 'application/json',

@@ -92,7 +92,7 @@ describe('Keystone authentication cache', function() {
 
     describe('When the keystone cache is activated and multiple requests for a user arrive', function() {
         var options = {
-            uri: 'http://127.0.0.1:' + config.resource.proxy.port + '/v2/op/update',
+            uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -251,7 +251,7 @@ describe('Keystone authentication cache', function() {
 
     describe('When multiple requests for a user arrive at the same time', function() {
         var options = {
-            uri: 'http://127.0.0.1:' + config.resource.proxy.port + '/v2/op/update',
+            uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

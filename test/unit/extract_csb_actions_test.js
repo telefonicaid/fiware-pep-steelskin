@@ -116,7 +116,7 @@ describe('Extract Context Broker action from request', function() {
     function testStandardOperation(url, action) {
         return function() {
             var options = {
-                uri: 'http://127.0.0.1:' + config.resource.proxy.port + url,
+                uri: 'http://localhost:' + config.resource.proxy.port + url,
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -142,7 +142,7 @@ describe('Extract Context Broker action from request', function() {
 
     describe('When a update action arrives with a URL that it\'s not recognized by the system', function() {
         var options = {
-            uri: 'http://127.0.0.1:' + config.resource.proxy.port + '/falsePath',
+            uri: 'http://localhost:' + config.resource.proxy.port + '/falsePath',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/xml',
@@ -176,7 +176,7 @@ describe('Extract Context Broker action from request', function() {
             '" payload to the proxy', function() {
 
             var options = {
-                uri: 'http://127.0.0.1:' + config.resource.proxy.port + '/v2/op/update',
+                uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

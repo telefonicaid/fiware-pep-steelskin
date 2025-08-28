@@ -100,7 +100,7 @@ describe('HTTPS Options', function() {
     });
     describe('When a request to the CB arrives to the proxy with HTTPS', function() {
         var options = {
-            uri: 'https://127.0.0.1:' + config.resource.proxy.port + '/v2/op/update',
+            uri: 'https://localhost:' + config.resource.proxy.port + '/v2/op/update',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -65,7 +65,7 @@ describe('Keypass Plugin tests', function() {
 
     function apiCase(particularCase) {
         var options = {
-            uri: 'http://127.0.0.1:' + config.resource.proxy.port + particularCase[1],
+            uri: 'http://localhost:' + config.resource.proxy.port + particularCase[1],
             method: particularCase[0],
             headers: {
                 'Content-Type': 'application/json',
@@ -218,7 +218,7 @@ describe('Keypass Plugin tests', function() {
         });
 
         var options = {
-            uri: 'http://127.0.0.1:' + config.resource.proxy.port + '/pdp/v3',
+            uri: 'http://localhost:' + config.resource.proxy.port + '/pdp/v3',
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

@@ -85,7 +85,7 @@ describe('Admin bypass tests', function() {
     describe('[' + authenticationMechanism.module + '] ' +
     'When a request arrives to the PEP and for a user with the admin role', function() {
         var options = {
-                uri: 'http://127.0.0.1:' + config.resource.proxy.port + '/v2/op/update',
+                uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
