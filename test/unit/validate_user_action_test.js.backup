@@ -842,14 +842,6 @@ describe('Validate action with Access Control', function() {
             };
 
             request(options, function(error, response, body) {
-                // Handle connection errors or authentication issues
-                if (!response) {
-                    // If there's no response, it's likely a connection error or server startup issue
-                    // This is a known issue with keystone authentication tests
-                    console.log('Warning: No response received, likely due to server setup issue');
-                    return done();
-                }
-                
                 response.statusCode.should.equal(200);
                 keystoneCalled.should.equal(true);
                 done();
@@ -963,14 +955,6 @@ describe('Validate action with Access Control', function() {
             };
 
             request(options, function(error, response, body) {
-                // Handle connection errors or authentication issues
-                if (!response) {
-                    // If there's no response, it's likely a connection error or server startup issue
-                    // This is a known issue with keystone authentication tests
-                    console.log('Warning: No response received, likely due to server setup issue');
-                    return done();
-                }
-                
                 response.statusCode.should.equal(200);
                 done();
             });
