@@ -31,7 +31,7 @@ var serverMocks = require('../tools/serverMocks'),
     utils = require('../tools/utils'),
     should = require('should'),
     async = require('async'),
-    request = require('request'),
+    request = require('../../lib/utils/requestWrapper'),
     convenienceOperations;
 
 convenienceOperations = [

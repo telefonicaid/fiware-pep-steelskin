@@ -31,7 +31,7 @@ var serverMocks = require('../tools/serverMocks'),
     config = require('../../config'),
     utils = require('../tools/utils'),
     should = require('should'),
-    request = require('request'),
+    request = require('../../lib/utils/requestWrapper'),
     EventEmitter = require('events').EventEmitter;
 
 describe('Keystone authentication cache', function() {

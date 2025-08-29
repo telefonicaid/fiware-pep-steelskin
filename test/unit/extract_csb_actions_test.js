@@ -32,7 +32,7 @@ var serverMocks = require('../tools/serverMocks'),
     cacheUtils = require('../../lib/services/cacheUtils'),
     async = require('async'),
     should = require('should'),
-    request = require('request');
+    request = require('../../lib/utils/requestWrapper');
 
 
 describe('Extract Context Broker action from request', function() {
