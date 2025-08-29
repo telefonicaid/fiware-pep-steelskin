@@ -30,7 +30,7 @@ var serverMocks = require('../tools/serverMocks'),
     async = require('async'),
     utils = require('../tools/utils'),
     should = require('should'),
-    request = require('request'),
+    request = require('../../lib/utils/requestWrapper'),
     originalAuthenticationModule;
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';

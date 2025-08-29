@@ -26,7 +26,7 @@
 var should = require('should'),
     proxyLib = require('../../lib/fiware-pep-steelskin'),
     config = require('../../config'),
-    request = require('request');
+    request = require('../../lib/utils/requestWrapper');
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 

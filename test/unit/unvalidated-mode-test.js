@@ -30,7 +30,7 @@ var serverMocks = require('../tools/serverMocks'),
     async = require('async'),
     config = require('../../config'),
     utils = require('../tools/utils'),
-    request = require('request');
+    request = require('../../lib/utils/requestWrapper');
 
 describe('Unvalidated mode', function() {
     /* jshint loopfunc: true */
@@ -59,17 +59,33 @@ describe('Unvalidated mode', function() {
         config.authentication.authPath = currentAuthentication.authPath;
 
         proxyLib.start(function(error, proxyObj) {
+            if (error) {
+                return done(error);
+            }
+            
             proxy = proxyObj;
 
             proxy.middlewares.push(orionPlugin.extractCBAction);
 
             serverMocks.start(config.resource.original.port, function(error, server, app) {
+                if (error) {
+                    return done(error);
+                }
+                
                 mockTarget = server;
                 mockTargetApp = app;
                 serverMocks.start(config.access.port, function(error, serverAccess, appAccess) {
+                    if (error) {
+                        return done(error);
+                    }
+                    
                     mockAccess = serverAccess;
                     mockAccessApp = appAccess;
                     serverMocks.start(config.authentication.options.port, function(error, serverAuth, appAuth) {
+                        if (error) {
+                            return done(error);
+                        }
+                        
                         mockOAuth = serverAuth;
                         mockOAuthApp = appAuth;
 
