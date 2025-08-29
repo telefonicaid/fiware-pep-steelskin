@@ -62,6 +62,10 @@ describe('Simultaneous requests', function() {
         config.authentication.authPath = currentAuthentication.authPath;
 
         proxyLib.start(function(error, proxyObj) {
+            if (error) {
+                return done(error);
+            }
+            
             var testExtraction = function(req, res, callback) {
                 correlatorIds.push(req.corr);
                 callback(null, req, res);
@@ -73,12 +77,24 @@ describe('Simultaneous requests', function() {
             proxy.middlewares.push(testExtraction);
 
             serverMocks.start(config.resource.original.port, function(error, server, app) {
+                if (error) {
+                    return done(error);
+                }
+                
                 mockTarget = server;
                 mockTargetApp = app;
                 serverMocks.start(config.access.port, function(error, serverAccess, appAccess) {
+                    if (error) {
+                        return done(error);
+                    }
+                    
                     mockAccess = serverAccess;
                     mockAccessApp = appAccess;
                     serverMocks.start(config.authentication.options.port, function(error, serverAuth, appAuth) {
+                        if (error) {
+                            return done(error);
+                        }
+                        
                         mockOAuth = serverAuth;
                         mockOAuthApp = appAuth;
 

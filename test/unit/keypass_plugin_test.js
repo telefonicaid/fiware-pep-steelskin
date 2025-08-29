@@ -89,15 +89,27 @@ describe('Keypass Plugin tests', function() {
                 cacheUtils.clean();
 
                 proxyLib.start(function(error, proxyObj) {
+            if (error) {
+                return done(error);
+            }
+            
                     proxy = proxyObj;
 
                     proxy.middlewares.push(keypassPlugin.extractAction);
 
                     serverMocks.start(config.resource.original.port, function(error, server, app) {
+                if (error) {
+                    return done(error);
+                }
+                
                         mockServer = server;
                         mockApp = app;
 
                         serverMocks.start(config.access.port, function(error, serverAccess, appAccess) {
+                    if (error) {
+                        return done(error);
+                    }
+                    
                             mockAccess = serverAccess;
                             mockAccessApp = appAccess;
                             mockAccessApp.handler = function(req, res) {
@@ -107,6 +119,10 @@ describe('Keypass Plugin tests', function() {
                             };
 
                             serverMocks.start(config.authentication.options.port, function(error, serverAuth, appAuth) {
+                        if (error) {
+                            return done(error);
+                        }
+                        
                                 mockOAuth = serverAuth;
                                 mockOAuthApp = appAuth;
 
@@ -165,6 +181,10 @@ describe('Keypass Plugin tests', function() {
             config.authentication.authPath = currentAuthentication.authPath;
 
             proxyLib.start(function(error, proxyObj) {
+            if (error) {
+                return done(error);
+            }
+            
                 proxy = proxyObj;
 
                 proxy.middlewares.push(keypassPlugin.extractAction);
@@ -172,12 +192,24 @@ describe('Keypass Plugin tests', function() {
                 keystonePlugin.invalidate();
 
                 serverMocks.start(config.resource.original.port, function(error, server, app) {
+                if (error) {
+                    return done(error);
+                }
+                
                     mockTarget = server;
                     mockTargetApp = app;
                     serverMocks.start(config.access.port, function(error, serverAccess, appAccess) {
+                    if (error) {
+                        return done(error);
+                    }
+                    
                         mockAccess = serverAccess;
                         mockAccessApp = appAccess;
                         serverMocks.start(config.authentication.options.port, function(error, serverAuth, appAuth) {
+                        if (error) {
+                            return done(error);
+                        }
+                        
                             mockOAuth = serverAuth;
                             mockOAuthApp = appAuth;
 
