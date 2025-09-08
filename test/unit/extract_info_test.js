@@ -29,7 +29,7 @@ var serverMocks = require('../tools/serverMocks'),
     utils = require('../tools/utils'),
     async = require('async'),
     should = require('should'),
-    request = require('request'),
+    request = require('../../lib/request-shim'),
     originalAuthenticationModule;
 
 

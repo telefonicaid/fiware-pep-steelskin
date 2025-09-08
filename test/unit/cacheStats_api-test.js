@@ -26,7 +26,7 @@
 var should = require('should'),
     proxyLib = require('../../lib/fiware-pep-steelskin'),
     config = require('../../config'),
-    request = require('request'),
+    request = require('../../lib/request-shim'),
     logger = require('logops');
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
@@ -64,16 +64,13 @@ describe('Cache Stats API', function() {
             request(options, function(error, response, body) {
                 should.not.exist(error);
                 response.statusCode.should.equal(200);
-
                 done();
             });
         });
 
         it('should return the current cache stats', function(done) {
             request(options, function(error, response, body) {
-                var parsedBody = JSON.parse(body);
-
-                should.exist(parsedBody.cacheStats);
+                should.exist(body.cacheStats);
                 done();
             });
         });
