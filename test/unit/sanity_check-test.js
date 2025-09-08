@@ -26,7 +26,7 @@
 var should = require('should'),
     proxyLib = require('../../lib/fiware-pep-steelskin'),
     config = require('../../config'),
-    request = require('request');
+    request = require('../../lib/request-shim');
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
@@ -56,15 +56,11 @@ describe('Sanity check', function() {
 
         it('should return the current proxy version and listening ports', function(done) {
             request(options, function(error, response, body) {
-                var parsedBody;
-
                 should.not.exist(error);
                 response.statusCode.should.equal(200);
 
-                parsedBody = JSON.parse(body);
-
-                should.exist(parsedBody.version);
-                should.exist(parsedBody.port);
+                should.exist(body.version);
+                should.exist(body.port);
                 done();
             });
         });
