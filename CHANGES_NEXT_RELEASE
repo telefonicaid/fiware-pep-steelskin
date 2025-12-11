@@ -1,4 +1,4 @@
-- Rename: access logger fields: Service -> src and SubService -> subsrc (#568)
+- Rename: access logger fields: Service -> src and SubService -> subsrv (#568)
 - Remove node cache legacy callbacks warning
 - Fix: fill from log field with real IP
 - Upgrade NodeJS version from 16-slim to 24-bullseye-slim in Dockerfile
