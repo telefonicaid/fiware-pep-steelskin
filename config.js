@@ -93,7 +93,7 @@ config.authentication = {
         protocol: 'http',
         host: 'localhost',
         port: 5000,
-        path: '/v3/role_assignments',
+        path: '/v3/role_assignments?include_names',
         authPath: '/v3/auth/tokens'
     }
 };
@@ -122,7 +122,7 @@ config.ssl = {
 /**
  * Default log level. Can be one of: 'DEBUG', 'INFO', 'WARN', 'ERROR', 'FATAL'
  */
-config.logLevel = 'FATAL';
+config.logLevel = 'DEBUG';
 
 // List of component middlewares
 //-------------------------------------------------
