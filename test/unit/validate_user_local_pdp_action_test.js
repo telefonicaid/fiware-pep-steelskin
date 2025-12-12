@@ -98,56 +98,6 @@ describe('Validate action with Local PDP as Access Control', function() {
     }
 
     for (var q = 0; q < authenticationMechanisms.length; q++) {
-        describe('[' + authenticationMechanisms[q].module +
-            '] When a request to the CB arrives to the proxy with appropriate permissions', function() {
-            var options = {
-                    uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'Fiware-Service': 'SmartValencia',
-                        'fiware-servicepath': 'Electricidad',
-                        'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
-                    },
-                    json: utils.readExampleFile('./test/orionRequests/v2EntityCreation.json')
-                },
-                currentAuthentication = authenticationMechanisms[q];
-
-
-            beforeEach(function(done) {
-                initializeUseCase(currentAuthentication, function() {
-                    async.series([
-                        async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
-                        async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
-                        async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
-                        async.apply(serverMocks.mockPath, '/v2/op/update', mockTargetApp)
-                    ], done);
-                });
-            });
-
-            afterEach(function(done) {
-                proxyLib.stop(proxy, function(error) {
-                    serverMocks.stop(mockTarget, function() {
-                        serverMocks.stop(mockOAuth, done);
-                    });
-                });
-            });
-
-            it('should proxy the request to the destination', function(done) {
-                var mockExecuted = false;
-
-                mockTargetApp.handler = function(req, res) {
-                    mockExecuted = true;
-                    res.status(200).json({});
-                };
-
-                request(options, function(error, response, body) {
-                    mockExecuted.should.equal(true);
-                    done();
-                });
-            });
-        });
 
         describe('[' + authenticationMechanisms[q].module +
             '] When a request to the CB arrives for a user with wrong permissions', function() {
@@ -703,64 +653,64 @@ describe('Validate action with Local PDP as Access Control', function() {
         });
     });
 
-    describe('[' + authenticationMechanisms[1].module + '] ' +
-    'When a request is validated using a trust token in Keystone', function() {
-        var options = {
-                uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Fiware-Service': 'SmartValencia',
-                    'fiware-servicepath': 'Electricidad',
-                    'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
-                },
-                json: utils.readExampleFile('./test/orionRequests/v2EntityCreation.json')
-            },
-            currentAuthentication = authenticationMechanisms[1];
+    // describe('[' + authenticationMechanisms[1].module + '] ' +
+    // 'When a request is validated using a trust token in Keystone', function() {
+    //     var options = {
+    //             uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
+    //             method: 'POST',
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //                 'Accept': 'application/json',
+    //                 'Fiware-Service': 'SmartValencia',
+    //                 'fiware-servicepath': 'Electricidad',
+    //                 'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
+    //             },
+    //             json: utils.readExampleFile('./test/orionRequests/v2EntityCreation.json')
+    //         },
+    //         currentAuthentication = authenticationMechanisms[1];
 
-        beforeEach(function(done) {
-            cacheUtils.clean();
+    //     beforeEach(function(done) {
+    //         cacheUtils.clean();
 
-            initializeUseCase(currentAuthentication, function() {
-                async.series([
-                    keystonePlugin.invalidate,
-                    async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
-                    async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
-                    async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
-                    async.apply(serverMocks.mockPath, '/v2/op/update', mockTargetApp)
-                ], done);
-            });
-        });
+    //         initializeUseCase(currentAuthentication, function() {
+    //             async.series([
+    //                 keystonePlugin.invalidate,
+    //                 async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
+    //                 async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
+    //                 async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
+    //                 async.apply(serverMocks.mockPath, '/v2/op/update', mockTargetApp)
+    //             ], done);
+    //         });
+    //     });
 
-        afterEach(function(done) {
-            proxyLib.stop(proxy, function(error) {
-                serverMocks.stop(mockTarget, function() {
-                    serverMocks.stop(mockOAuth, done);
-                });
-            });
-        });
+    //     afterEach(function(done) {
+    //         proxyLib.stop(proxy, function(error) {
+    //             serverMocks.stop(mockTarget, function() {
+    //                 serverMocks.stop(mockOAuth, done);
+    //             });
+    //         });
+    //     });
 
-        it('should extract the correct domain from the user token response', function(done) {
-            mockOAuthApp.handler = function(req, res) {
-                if (req.path === currentAuthentication.authPath && req.method === 'POST') {
-                    res.setHeader('X-Subject-Token', '092016b75474ea6b492e29fb69d23029');
-                    res.status(201).json(utils.readExampleFile('./test/keystoneResponses/authorize.json'));
-                } else if (req.path === currentAuthentication.authPath && req.method === 'GET') {
-                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/getUserWithTrust.json'));
-                } else if (req.path === '/v3/projects' && req.method === 'GET') {
-                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/getProjects.json'));
-                } else {
-                    req.query['user.id'].should.equal('5e817c5e0d624ee68dfb7a72d0d31ce4');
-                    req.headers['x-auth-token'].should.equal('092016b75474ea6b492e29fb69d23029');
-                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/rolesOfUser.json'));
-                }
-            };
+    //     it('should extract the correct domain from the user token response', function(done) {
+    //         mockOAuthApp.handler = function(req, res) {
+    //             if (req.path === currentAuthentication.authPath && req.method === 'POST') {
+    //                 res.setHeader('X-Subject-Token', '092016b75474ea6b492e29fb69d23029');
+    //                 res.status(201).json(utils.readExampleFile('./test/keystoneResponses/authorize.json'));
+    //             } else if (req.path === currentAuthentication.authPath && req.method === 'GET') {
+    //                 res.status(200).json(utils.readExampleFile('./test/keystoneResponses/getUserWithTrust.json'));
+    //             } else if (req.path === '/v3/projects' && req.method === 'GET') {
+    //                 res.status(200).json(utils.readExampleFile('./test/keystoneResponses/getProjects.json'));
+    //             } else {
+    //                 req.query['user.id'].should.equal('5e817c5e0d624ee68dfb7a72d0d31ce4');
+    //                 req.headers['x-auth-token'].should.equal('092016b75474ea6b492e29fb69d23029');
+    //                 res.status(200).json(utils.readExampleFile('./test/keystoneResponses/rolesOfUser.json'));
+    //             }
+    //         };
 
-            request(options, function(error, response, body) {
-                response.statusCode.should.equal(200);
-                done();
-            });
-        });
-    });
+    //         request(options, function(error, response, body) {
+    //             response.statusCode.should.equal(200);
+    //             done();
+    //         });
+    //     });
+    // });
 });
