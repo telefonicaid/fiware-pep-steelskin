@@ -7,7 +7,8 @@
                 }
             },
             "role": {
-                "id": 8907
+                "id": 8907,
+                "name": "ServiceAdmin"
             },
             "user": {
                 "id": 2836
