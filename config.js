@@ -175,6 +175,11 @@ config.bypass = false;
 config.bypassRoleId = '';
 
 /**
+ * Uses local PDP (policy decision point) for validate actions instead of remote PDP.
+ */
+config.localPDP = false;
+
+/**
  * Configures the maximum number of clients that can be simultaneously queued while waiting for the PEP to
  * authenticate itself against Keystone (due to an expired token).
  */
