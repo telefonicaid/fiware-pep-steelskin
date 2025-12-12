@@ -42,7 +42,7 @@ function mockIdm(req, res) {
     }
 }
 
-describe('Validate action with Access Control', function() {
+describe('Validate action with Local PDP as Access Control', function() {
     /* jshint loopfunc: true */
 
     var proxy,
@@ -612,6 +612,7 @@ describe('Validate action with Access Control', function() {
 
         beforeEach(function(done) {
             config.access.disable = true;
+            config.localPDP = true;
             config.authentication.checkHeaders = false;
             cacheUtils.clean();
             initializeUseCase(currentAuthentication, function() {
@@ -626,6 +627,7 @@ describe('Validate action with Access Control', function() {
 
         afterEach(function(done) {
             config.access.disable = false;
+            config.localPDP = true;
             config.authentication.checkHeaders = true;
 
             proxyLib.stop(proxy, function(error) {
