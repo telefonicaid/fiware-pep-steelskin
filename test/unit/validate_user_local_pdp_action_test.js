@@ -19,6 +19,7 @@
  */
 'use strict';
 
+/* jshint -W098 */
 const should = require('should');
 const proxyquire = require('proxyquire').noCallThru();
 
