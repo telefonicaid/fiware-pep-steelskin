@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 Telefonica InvestigaciÃ³n y Desarrollo, S.A.U
+ * Copyright 2014 Telefonica Investigación y Desarrollo, S.A.U
  *
  * This file is part of fiware-pep-steelskin
  *
@@ -13,12 +13,9 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
  * See the GNU Affero General Public License for more details.
  *
- * You should have received a copy of the GNU Affero General Public
- * License along with fiware-pep-steelskin.
- * If not, seehttp://www.gnu.org/licenses/.
- *
- * For those usages not covered by the GNU Affero General Public License
- * please contact with::[daniel.moranjimenez@telefonica.com]
+ * You should have received a copy of the GNU Affero General Public License
+ * along with fiware-pep-steelskin.
+ * If not, see http://www.gnu.org/licenses/.
  */
 'use strict';
 
@@ -64,13 +61,13 @@ const validationRequest = pdp.validationRequest;
 // ----------------------------------------------------
 // Helper: execute validationRequest
 // ----------------------------------------------------
-function runValidation({ roles, frn, action }) {
-    return new Promise((resolve, reject) => {
+function runValidation(params) {
+    return new Promise(function (resolve, reject) {
         validationRequest(
             loggerMock,
-            roles,
-            frn,
-            action,
+            params.roles,
+            params.frn,
+            params.action,
             {},
             function (err, decision) {
                 if (err) {
@@ -96,141 +93,179 @@ describe('Local PDP validationRequest decision tree', function () {
     // Valid scenarios
     // ------------------------
 
-    it('ServiceCustomer without component can READ ORION at service level', async function () {
-        const decision = await runValidation({
+    it('ServiceCustomer without component can READ ORION at service level', function (done) {
+        runValidation({
             roles: [{ id: '1', name: 'x#ServiceCustomer' }],
             frn: 'fiware:orion:smartcity:/:::',
             action: 'read'
-        });
-
-        decision.should.equal('Permit');
+        })
+        .then(function (decision) {
+            decision.should.equal('Permit');
+            done();
+        })
+        .catch(done);
     });
 
-    it('ServiceCustomer without component cannot CREATE in ORION', async function () {
-        const decision = await runValidation({
+    it('ServiceCustomer without component cannot CREATE in ORION', function (done) {
+        runValidation({
             roles: [{ id: '1', name: 'x#ServiceCustomer' }],
             frn: 'fiware:orion:smartcity:/:::',
             action: 'create'
-        });
-
-        decision.should.equal('Deny');
+        })
+        .then(function (decision) {
+            decision.should.equal('Deny');
+            done();
+        })
+        .catch(done);
     });
 
-    it('ServiceAdminORION can DELETE in ORION', async function () {
-        const decision = await runValidation({
+    it('ServiceAdminORION can DELETE in ORION', function (done) {
+        runValidation({
             roles: [{ id: '1', name: 'x#ServiceAdminORION' }],
             frn: 'fiware:orion:smartcity:/:::',
             action: 'delete'
-        });
-
-        decision.should.equal('Permit');
+        })
+        .then(function (decision) {
+            decision.should.equal('Permit');
+            done();
+        })
+        .catch(done);
     });
 
-    it('ServiceAdminORION cannot operate on PERSEO', async function () {
-        const decision = await runValidation({
+    it('ServiceAdminORION cannot operate on PERSEO', function (done) {
+        runValidation({
             roles: [{ id: '1', name: 'x#ServiceAdminORION' }],
             frn: 'fiware:perseo:smartcity:/:::',
             action: 'readRule'
-        });
-
-        decision.should.equal('Deny');
+        })
+        .then(function (decision) {
+            decision.should.equal('Deny');
+            done();
+        })
+        .catch(done);
     });
 
-    it('SubServiceCustomer can READ ORION at subservice level', async function () {
-        const decision = await runValidation({
+    it('SubServiceCustomer can READ ORION at subservice level', function (done) {
+        runValidation({
             roles: [{ id: '1', name: 'x#SubServiceCustomer' }],
             frn: 'fiware:orion:smartcity:/tourism:::',
             action: 'read'
-        });
-
-        decision.should.equal('Permit');
+        })
+        .then(function (decision) {
+            decision.should.equal('Permit');
+            done();
+        })
+        .catch(done);
     });
 
-    it('ServiceCustomer cannot access subservice resources', async function () {
-        const decision = await runValidation({
+    it('ServiceCustomer cannot access subservice resources', function (done) {
+        runValidation({
             roles: [{ id: '1', name: 'x#ServiceCustomer' }],
             frn: 'fiware:orion:smartcity:/tourism:::',
             action: 'read'
-        });
-
-        decision.should.equal('Deny');
+        })
+        .then(function (decision) {
+            decision.should.equal('Deny');
+            done();
+        })
+        .catch(done);
     });
 
-    it('SubServiceAdminIOTAGENT can UPDATE IOTAGENT at subservice level', async function () {
-        const decision = await runValidation({
+    it('SubServiceAdminIOTAGENT can UPDATE IOTAGENT at subservice level', function (done) {
+        runValidation({
             roles: [{ id: '1', name: 'x#SubServiceAdminIOTAGENT' }],
             frn: 'fiware:iotagent:smartcity:/devices:::',
             action: 'update'
-        });
-
-        decision.should.equal('Permit');
+        })
+        .then(function (decision) {
+            decision.should.equal('Permit');
+            done();
+        })
+        .catch(done);
     });
 
-    it('ServiceCustomer (ANY) can READ STH', async function () {
-        const decision = await runValidation({
+    it('ServiceCustomer (ANY) can READ STH', function (done) {
+        runValidation({
             roles: [{ id: '1', name: 'x#ServiceCustomer' }],
             frn: 'fiware:sth:smartcity:/:::',
             action: 'read'
-        });
-
-        decision.should.equal('Permit');
+        })
+        .then(function (decision) {
+            decision.should.equal('Permit');
+            done();
+        })
+        .catch(done);
     });
 
     // ------------------------
     // Edge cases
     // ------------------------
 
-    it('Invalid FRN format should return an error', async function () {
-        try {
-            await runValidation({
-                roles: [{ id: '1', name: 'x#ServiceCustomer' }],
-                frn: 'invalid-frn',
-                action: 'read'
-            });
-            should.fail('Expected an error to be thrown');
-        } catch (err) {
+    it('Invalid FRN format should return an error', function (done) {
+        runValidation({
+            roles: [{ id: '1', name: 'x#ServiceCustomer' }],
+            frn: 'invalid-frn',
+            action: 'read'
+        })
+        .then(function () {
+            done(new Error('Expected error was not thrown'));
+        })
+        .catch(function (err) {
             err.message.should.equal('Invalid FRN format');
-        }
+            done();
+        });
     });
 
-    it('Role with invalid format should be ignored and result in Deny', async function () {
-        const decision = await runValidation({
+    it('Role with invalid format should be ignored and result in Deny', function (done) {
+        runValidation({
             roles: [{ id: '1', name: 'INVALID_ROLE_NAME' }],
             frn: 'fiware:orion:smartcity:/:::',
             action: 'read'
-        });
-
-        decision.should.equal('Deny');
+        })
+        .then(function (decision) {
+            decision.should.equal('Deny');
+            done();
+        })
+        .catch(done);
     });
 
-    it('Unknown role type should result in Deny', async function () {
-        const decision = await runValidation({
+    it('Unknown role type should result in Deny', function (done) {
+        runValidation({
             roles: [{ id: '1', name: 'x#SuperAdminORION' }],
             frn: 'fiware:orion:smartcity:/:::',
             action: 'read'
-        });
-
-        decision.should.equal('Deny');
+        })
+        .then(function (decision) {
+            decision.should.equal('Deny');
+            done();
+        })
+        .catch(done);
     });
 
-    it('Unknown action should result in Deny', async function () {
-        const decision = await runValidation({
+    it('Unknown action should result in Deny', function (done) {
+        runValidation({
             roles: [{ id: '1', name: 'x#ServiceAdminORION' }],
             frn: 'fiware:orion:smartcity:/:::',
             action: 'fly'
-        });
-
-        decision.should.equal('Deny');
+        })
+        .then(function (decision) {
+            decision.should.equal('Deny');
+            done();
+        })
+        .catch(done);
     });
 
-    it('No roles provided should result in Deny', async function () {
-        const decision = await runValidation({
+    it('No roles provided should result in Deny', function (done) {
+        runValidation({
             roles: [],
             frn: 'fiware:orion:smartcity:/:::',
             action: 'read'
-        });
-
-        decision.should.equal('Deny');
+        })
+        .then(function (decision) {
+            decision.should.equal('Deny');
+            done();
+        })
+        .catch(done);
     });
 
 });
