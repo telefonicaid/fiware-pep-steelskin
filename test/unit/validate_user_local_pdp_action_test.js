@@ -20,637 +20,217 @@
  * For those usages not covered by the GNU Affero General Public License
  * please contact with::[daniel.moranjimenez@telefonica.com]
  */
-
 'use strict';
 
-var serverMocks = require('../tools/serverMocks'),
-    proxyLib = require('../../lib/fiware-pep-steelskin'),
-    orionPlugin = require('../../lib/plugins/orionPlugin'),
-    keystonePlugin = require('../../lib/services/keystoneAuth'),
-    cacheUtils = require('../../lib/services/cacheUtils'),
-    async = require('async'),
-    config = require('../../config'),
-    utils = require('../tools/utils'),
-    should = require('should'),
-    request = require('request');
+const should = require('should');
+const proxyquire = require('proxyquire').noCallThru();
 
-function mockIdm(req, res) {
-    if (req.path === '/user') {
-        res.status(200).json(utils.readExampleFile('./test/authorizationResponses/rolesOfUser.json'));
-    } else {
-        res.status(200).json(utils.readExampleFile('./test/authorizationResponses/authorize.json'));
+// ----------------------------------------------------
+// Mocks
+// ----------------------------------------------------
+const loggerMock = {
+    debug: function () {},
+    error: function () {}
+};
+
+let cacheSetSpy;
+
+const cacheUtilsMock = {
+    get: function () {
+        return {
+            data: {
+                validation: {
+                    set: function (key, value) {
+                        cacheSetSpy(key, value);
+                    }
+                }
+            }
+        };
     }
+};
+
+// ----------------------------------------------------
+// Load PDP module with mocked cacheUtils
+// ----------------------------------------------------
+const pdp = proxyquire(
+    '../../lib/services/pdp',
+    {
+        './cacheUtils': cacheUtilsMock
+    }
+);
+
+const validationRequest = pdp.validationRequest;
+
+// ----------------------------------------------------
+// Helper: execute validationRequest
+// ----------------------------------------------------
+function runValidation({ roles, frn, action }) {
+    return new Promise((resolve, reject) => {
+        validationRequest(
+            loggerMock,
+            roles,
+            frn,
+            action,
+            {},
+            function (err, decision) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve(decision);
+                }
+            }
+        );
+    });
 }
 
-describe('Validate action with Local PDP as Access Control', function() {
-    /* jshint loopfunc: true */
+// ----------------------------------------------------
+// Tests
+// ----------------------------------------------------
+describe('Local PDP validationRequest decision tree', function () {
 
-    var proxy,
-        mockTarget,
-        mockTargetApp,
-        mockOAuth,
-        mockOAuthApp,
-        authenticationMechanisms = [
-            {
-                module: 'idm',
-                path: '/user',
-                authPath: '/oauth2/authorize',
-                rolesFile: './test/authorizationResponses/rolesOfUser.json',
-                authenticationResponse: './test/authorizationResponses/authorize.json',
-                headers: [
-                ],
-                authMock: mockIdm
-            },
-            {
-                module: 'keystone',
-                path: '/v3/role_assignments',
-                authPath: '/v3/auth/tokens',
-                rolesFile: './test/keystoneResponses/rolesOfUser.json',
-                authenticationResponse: './test/keystoneResponses/authorize.json',
-                headers: [
-                ],
-                authMock: serverMocks.mockKeystone
-            }
-        ];
-
-    function initializeUseCase(currentAuthentication, done) {
-        config.authentication.module = currentAuthentication.module;
-        config.authentication.path = currentAuthentication.path;
-        config.authentication.authPath = currentAuthentication.authPath;
-        config.localPDP = true;
-
-        proxyLib.start(function(error, proxyObj) {
-            proxy = proxyObj;
-
-            proxy.middlewares.push(orionPlugin.extractCBAction);
-
-            serverMocks.start(config.resource.original.port, function(error, server, app) {
-                mockTarget = server;
-                mockTargetApp = app;
-                serverMocks.start(config.authentication.options.port, function(error, serverAuth, appAuth) {
-                    mockOAuth = serverAuth;
-                    mockOAuthApp = appAuth;
-                    mockOAuthApp.handler = currentAuthentication.authMock;
-                    done();
-                });
-            });
-        });
-    }
-
-    for (var q = 0; q < authenticationMechanisms.length; q++) {
-
-        describe('[' + authenticationMechanisms[q].module +
-            '] When a request to the CB arrives for a user with wrong permissions', function() {
-            var options = {
-                    uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json',
-                        'Fiware-Service': 'SmartValencia',
-                        'fiware-servicepath': 'Electricidad',
-                        'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
-                    },
-                    json: utils.readExampleFile('./test/orionRequests/v2EntityCreation.json')
-                },
-                currentAuthentication = authenticationMechanisms[q];
-
-            beforeEach(function(done) {
-                initializeUseCase(currentAuthentication, function() {
-                    async.series([
-                        async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
-                        async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
-                        async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
-                        async.apply(serverMocks.mockPath, '/v2/op/update', mockTargetApp)
-                    ], done);
-                });
-
-            });
-
-            afterEach(function(done) {
-                proxyLib.stop(proxy, function(error) {
-                    serverMocks.stop(mockTarget, function() {
-                        serverMocks.stop(mockOAuth, done);
-                    });
-                });
-            });
-
-            it('should reject the request with a 403 error code', function(done) {
-                var mockExecuted = false;
-
-                mockTargetApp.handler = function(req, res) {
-                    mockExecuted = true;
-                    res.status(200).json({});
-                };
-
-                request(options, function(error, response, body) {
-                    mockExecuted.should.equal(false);
-                    response.statusCode.should.equal(403);
-                    done();
-                });
-            });
-        });
-
-    }
-
-    describe('[' + authenticationMechanisms[1].module + '] ' +
-    'When a request arrives and the authentication token has expired', function() {
-        var options = {
-                uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Fiware-Service': 'SmartValencia',
-                    'fiware-servicepath': 'Electricidad',
-                    'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
-                },
-                json: utils.readExampleFile('./test/orionRequests/v2EntityCreation.json')
-            },
-            currentAuthentication = authenticationMechanisms[1];
-
-        beforeEach(function(done) {
-            cacheUtils.clean();
-
-            initializeUseCase(currentAuthentication, function() {
-                async.series([
-                    keystonePlugin.invalidate,
-                    async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
-                    async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
-                    async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
-                    async.apply(serverMocks.mockPath, '/v2/op/update', mockTargetApp)
-                ], done);
-            });
-        });
-
-        afterEach(function(done) {
-            proxyLib.stop(proxy, function(error) {
-                serverMocks.stop(mockTarget, function() {
-                    serverMocks.stop(mockOAuth, done);
-                });
-            });
-        });
-
-        it('should reject the request with a 500 error', function(done) {
-            mockOAuthApp.handler = function(req, res) {
-                if (req.path === currentAuthentication.authPath && req.method === 'POST') {
-                    res.status(401).json(utils.readExampleFile('./test/keystoneResponses/authorize.json'));
-                }
-            };
-
-            request(options, function(error, response, body) {
-                response.statusCode.should.equal(500);
-                should.exist(body.name);
-                body.name.should.equal('PEP_PROXY_AUTHENTICATION_REJECTED');
-                done();
-            });
-        });
+    beforeEach(function () {
+        cacheSetSpy = function () {};
     });
 
-    describe('[' + authenticationMechanisms[1].module + '] ' +
-        'When a request is validated using Keystone', function() {
-        var options = {
-                uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Fiware-Service': 'SmartValencia',
-                    'fiware-servicepath': 'Electricidad',
-                    'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
-                },
-                json: utils.readExampleFile('./test/orionRequests/v2EntityCreation.json')
-            },
-            currentAuthentication = authenticationMechanisms[1];
+    // ------------------------
+    // Valid scenarios
+    // ------------------------
 
-        beforeEach(function(done) {
-            cacheUtils.clean();
-
-            initializeUseCase(currentAuthentication, function() {
-                async.series([
-                    keystonePlugin.invalidate,
-                    async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
-                    async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
-                    async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
-                    async.apply(serverMocks.mockPath, '/v2/op/update', mockTargetApp)
-                ], done);
-            });
+    it('ServiceCustomer without component can READ ORION at service level', async function () {
+        const decision = await runValidation({
+            roles: [{ id: '1', name: 'x#ServiceCustomer' }],
+            frn: 'fiware:orion:smartcity:/:::',
+            action: 'read'
         });
 
-        afterEach(function(done) {
-            proxyLib.stop(proxy, function(error) {
-                serverMocks.stop(mockTarget, function() {
-                    serverMocks.stop(mockOAuth, done);
-                });
-            });
-        });
-
-        it('should authenticate to get the administration token', function(done) {
-            var mockExecuted = false;
-
-            mockOAuthApp.handler = function(req, res) {
-                if (req.path === currentAuthentication.authPath && req.method === 'POST') {
-                    should.exist(req.body);
-                    should.exist(req.body.auth);
-                    should.exist(req.body.auth.identity);
-                    should.exist(req.body.auth.identity.password);
-                    should.exist(req.body.auth.identity.password.user);
-                    should.exist(req.body.auth.scope.domain.name);
-                    should.exist(req.body.auth.identity.password.user.domain);
-
-                    req.body.auth.scope.domain.name.should.equal(config.authentication.domainName);
-                    req.body.auth.identity.password.user.domain.name.should.equal(config.authentication.domainName);
-
-                    req.body.auth.identity.password.user.name.should.equal(config.authentication.user);
-                    req.body.auth.identity.password.user.password.should.equal(config.authentication.password);
-
-                    res.setHeader('X-Subject-Token', '092016b75474ea6b492e29fb69d23029');
-                    res.status(201).json(utils.readExampleFile('./test/keystoneResponses/authorize.json'));
-                    mockExecuted = true;
-                } else if (req.path === currentAuthentication.authPath && req.method === 'GET') {
-                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/getUser.json'));
-                } else {
-                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/rolesOfUser.json'));
-                }
-            };
-
-            request(options, function(error, response, body) {
-                mockExecuted.should.equal(true);
-                done();
-            });
-        });
-
-        it('should get user data', function(done) {
-            var mockExecuted = false;
-
-            mockOAuthApp.handler = function(req, res) {
-                if (req.path === currentAuthentication.authPath && req.method === 'POST') {
-                    res.setHeader('X-Subject-Token', '092016b75474ea6b492e29fb69d23029');
-                    res.status(201).json(utils.readExampleFile('./test/keystoneResponses/authorize.json'));
-                } else if (req.path === currentAuthentication.authPath && req.method === 'GET') {
-                    should.exist(req.headers['x-auth-token']);
-                    should.exist(req.headers['x-subject-token']);
-                    req.headers['x-auth-token'].should.equal('092016b75474ea6b492e29fb69d23029');
-                    req.headers['x-subject-token'].should.equal('UAidNA9uQJiIVYSCg0IQ8Q');
-                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/getUser.json'));
-                    mockExecuted = true;
-                } else {
-                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/rolesOfUser.json'));
-                }
-            };
-
-            request(options, function(error, response, body) {
-                mockExecuted.should.equal(true);
-                done();
-            });
-        });
-        it('should send an authenticated call to get the subservice ID', function(done) {
-            var mockExecuted = false;
-
-            mockOAuthApp.handler = function(req, res) {
-                /* jshint camelcase: false */
-
-                if (req.path === currentAuthentication.authPath && req.method === 'POST') {
-                    res.setHeader('X-Subject-Token', '092016b75474ea6b492e29fb69d23029');
-                    res.status(201).json(utils.readExampleFile('./test/keystoneResponses/authorize.json'));
-                } else if (req.path === currentAuthentication.authPath && req.method === 'GET') {
-                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/getUser.json'));
-                } else if (req.path === '/v3/projects' && req.method === 'GET') {
-                    should.exist(req.headers['x-auth-token']);
-                    should.exist(req.query.domain_id);
-                    should.exist(req.query.name);
-                    req.query.domain_id.should.equal('f7a5b8e303ec43e8a912fe26fa79dc02');
-                    req.query.name.should.equal('Electricidad');
-                    req.headers['x-auth-token'].should.equal('092016b75474ea6b492e29fb69d23029');
-                    mockExecuted = true;
-                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/getProjects.json'));
-                } else {
-                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/rolesOfUser.json'));
-                }
-            };
-
-            request(options, function(error, response, body) {
-                mockExecuted.should.equal(true);
-                done();
-            });
-        });
-        it('should send an authenticated call to get the roles', function(done) {
-            var mockExecuted = false;
-
-            mockOAuthApp.handler = function(req, res) {
-                if (req.path === currentAuthentication.authPath && req.method === 'POST') {
-                    res.setHeader('X-Subject-Token', '092016b75474ea6b492e29fb69d23029');
-                    res.status(201).json(utils.readExampleFile('./test/keystoneResponses/authorize.json'));
-                } else if (req.path === currentAuthentication.authPath && req.method === 'GET') {
-                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/getUser.json'));
-                } else if (req.path === '/v3/projects' && req.method === 'GET') {
-                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/getProjects.json'));
-                } else {
-                    should.exist(req.headers['x-auth-token']);
-                    should.exist(req.query['user.id']);
-                    req.query['user.id'].should.equal('5e817c5e0d624ee68dfb7a72d0d31ce4');
-                    req.headers['x-auth-token'].should.equal('092016b75474ea6b492e29fb69d23029');
-                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/rolesOfUser.json'));
-                    mockExecuted = true;
-                }
-            };
-
-            request(options, function(error, response, body) {
-                mockExecuted.should.equal(true);
-                done();
-            });
-        });
+        decision.should.equal('Permit');
     });
 
-    describe('[' + authenticationMechanisms[1].module + '] ' +
-    'When a request arrives for a user that doesn\'t have a role on the subservice', function() {
-        var options = {
-                uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Fiware-Service': 'SmartValencia',
-                    'fiware-servicepath': 'Electricidad',
-                    'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
-                },
-                json: utils.readExampleFile('./test/orionRequests/v2EntityCreation.json')
-            },
-            currentAuthentication = authenticationMechanisms[1];
-
-        beforeEach(function(done) {
-            cacheUtils.clean();
-            initializeUseCase(currentAuthentication, function() {
-                async.series([
-                    async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
-                    async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
-                    async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
-                    async.apply(serverMocks.mockPath, '/v2/op/update', mockTargetApp)
-                ], done);
-            });
+    it('ServiceCustomer without component cannot CREATE in ORION', async function () {
+        const decision = await runValidation({
+            roles: [{ id: '1', name: 'x#ServiceCustomer' }],
+            frn: 'fiware:orion:smartcity:/:::',
+            action: 'create'
         });
 
-        afterEach(function(done) {
-            proxyLib.stop(proxy, function(error) {
-                serverMocks.stop(mockTarget, function() {
-                    serverMocks.stop(mockOAuth, done);
-                });
-            });
-        });
-
-        it('should forbid its access with a 401', function(done) {
-            var mockExecuted = false;
-
-            mockOAuthApp.handler = function(req, res) {
-                if (req.path === currentAuthentication.authPath && req.method === 'POST') {
-                    res.setHeader('X-Subject-Token', '092016b75474ea6b492e29fb69d23029');
-                    res.status(201).json(utils.readExampleFile('./test/keystoneResponses/authorize.json'));
-                    mockExecuted = true;
-                } else if (req.path === currentAuthentication.authPath && req.method === 'GET') {
-                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/getUser.json'));
-                } else {
-                    res.status(200).json(
-                        utils.readExampleFile('./test/keystoneResponses/rolesOfUserBadSubservice.json'));
-                }
-                mockExecuted = true;
-            };
-
-            request(options, function(error, response, body) {
-                mockExecuted.should.equal(true);
-                response.statusCode.should.equal(401);
-                done();
-            });
-        });
+        decision.should.equal('Deny');
     });
 
-    describe('[' + authenticationMechanisms[1].module + '] ' +
-    'When a request arrives for a user that has roles in the domain as well as in the project', function() {
-        var options = {
-                uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Fiware-Service': 'SmartValencia',
-                    'fiware-servicepath': 'Electricidad',
-                    'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
-                },
-                json: utils.readExampleFile('./test/orionRequests/v2EntityCreation.json')
-            },
-            currentAuthentication = authenticationMechanisms[1];
-
-        beforeEach(function(done) {
-            cacheUtils.clean();
-            initializeUseCase(currentAuthentication, function() {
-                async.series([
-                    async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
-                    async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
-                    async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
-                    async.apply(serverMocks.mockPath, '/v2/op/update', mockTargetApp)
-                ], done);
-            });
+    it('ServiceAdminORION can DELETE in ORION', async function () {
+        const decision = await runValidation({
+            roles: [{ id: '1', name: 'x#ServiceAdminORION' }],
+            frn: 'fiware:orion:smartcity:/:::',
+            action: 'delete'
         });
 
-        afterEach(function(done) {
-            proxyLib.stop(proxy, function(error) {
-                serverMocks.stop(mockTarget, function() {
-                    serverMocks.stop(mockOAuth, done);
-                });
-            });
-        });
-
-        it('should send an authenticated call to get the roles', function(done) {
-            var mockExecuted = false;
-
-            mockOAuthApp.handler = function(req, res) {
-                if (req.path === currentAuthentication.authPath && req.method === 'POST') {
-                    res.setHeader('X-Subject-Token', '092016b75474ea6b492e29fb69d23029');
-                    res.status(201).json(utils.readExampleFile('./test/keystoneResponses/authorize.json'));
-                } else if (req.path === currentAuthentication.authPath && req.method === 'GET') {
-                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/getUser.json'));
-                } else if (req.path === '/v3/projects' && req.method === 'GET') {
-                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/getProjects.json'));
-                } else {
-                    should.exist(req.headers['x-auth-token']);
-                    should.exist(req.query['user.id']);
-                    should.exist(req.query.effective);
-                    req.query['user.id'].should.equal('5e817c5e0d624ee68dfb7a72d0d31ce4');
-                    req.query.effective.should.equal('true');
-                    req.headers['x-auth-token'].should.equal('092016b75474ea6b492e29fb69d23029');
-                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/rolesOfUserWithDomain.json'));
-                    mockExecuted = true;
-                }
-            };
-
-            request(options, function(error, response, body) {
-                mockExecuted.should.equal(true);
-                done();
-            });
-        });
+        decision.should.equal('Permit');
     });
 
-    describe('[' + authenticationMechanisms[1].module + '] ' +
-    'When a request arrives for a user and the token is not valid', function() {
-        var options = {
-                uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Fiware-Service': 'SmartValencia',
-                    'fiware-servicepath': 'Electricidad',
-                    'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
-                },
-                json: utils.readExampleFile('./test/orionRequests/v2EntityCreation.json')
-            },
-            currentAuthentication = authenticationMechanisms[1];
-
-        beforeEach(function(done) {
-            cacheUtils.clean();
-            initializeUseCase(currentAuthentication, function() {
-                async.series([
-                    async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
-                    async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
-                    async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
-                    async.apply(serverMocks.mockPath, '/v2/op/update', mockTargetApp)
-                ], done);
-            });
+    it('ServiceAdminORION cannot operate on PERSEO', async function () {
+        const decision = await runValidation({
+            roles: [{ id: '1', name: 'x#ServiceAdminORION' }],
+            frn: 'fiware:perseo:smartcity:/:::',
+            action: 'readRule'
         });
 
-        afterEach(function(done) {
-            proxyLib.stop(proxy, function(error) {
-                serverMocks.stop(mockTarget, function() {
-                    serverMocks.stop(mockOAuth, done);
-                });
-            });
-        });
-
-        it('should return a 401 error, indicating the authentication was not valid', function(done) {
-            var accessControlCalled = false;
-
-            mockOAuthApp.handler = function(req, res) {
-                if (req.path === currentAuthentication.authPath && req.method === 'POST') {
-                    res.setHeader('X-Subject-Token', '092016b75474ea6b492e29fb69d23029');
-                    res.status(201).json(utils.readExampleFile('./test/keystoneResponses/authorize.json'));
-                } else if (req.path === currentAuthentication.authPath && req.method === 'GET') {
-                    res.status(404).json(utils.readExampleFile('./test/keystoneResponses/tokenExpired.json'));
-                }
-            };
-
-            request(options, function(error, response, body) {
-                response.statusCode.should.equal(401);
-                accessControlCalled.should.equal(false);
-                done();
-            });
-        });
+        decision.should.equal('Deny');
     });
 
-    describe('[' + authenticationMechanisms[1].module + '] ' +
-    'When a request arrives and the access.disable flag is true and the authentication.checkHeaders flag is false',
-        function() {
-        var options = {
-                uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
-                },
-                json: utils.readExampleFile('./test/orionRequests/v2EntityCreation.json')
-            },
-            currentAuthentication = authenticationMechanisms[1];
-
-        beforeEach(function(done) {
-            config.access.disable = true;
-            config.localPDP = true;
-            config.authentication.checkHeaders = false;
-            cacheUtils.clean();
-            initializeUseCase(currentAuthentication, function() {
-                async.series([
-                    async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
-                    async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
-                    async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
-                    async.apply(serverMocks.mockPath, '/v2/op/update', mockTargetApp)
-                ], done);
-            });
+    it('SubServiceCustomer can READ ORION at subservice level', async function () {
+        const decision = await runValidation({
+            roles: [{ id: '1', name: 'x#SubServiceCustomer' }],
+            frn: 'fiware:orion:smartcity:/tourism:::',
+            action: 'read'
         });
 
-        afterEach(function(done) {
-            config.access.disable = false;
-            config.localPDP = true;
-            config.authentication.checkHeaders = true;
-
-            proxyLib.stop(proxy, function(error) {
-                serverMocks.stop(mockTarget, function() {
-                    serverMocks.stop(mockOAuth, done);
-                });
-            });
-        });
-
-        it('should not check for the presence of the headers', function(done) {
-            var keystoneCalled = false;
-
-            mockOAuthApp.handler = function(req, res) {
-                if (req.path === currentAuthentication.authPath && req.method === 'POST') {
-                    res.setHeader('X-Subject-Token', '092016b75474ea6b492e29fb69d23029');
-                    res.status(201).json(utils.readExampleFile('./test/keystoneResponses/authorize.json'));
-                } else if (req.path === currentAuthentication.authPath && req.method === 'GET') {
-                    keystoneCalled = true;
-                    res.status(200).json(utils.readExampleFile('./test/keystoneResponses/getUser.json'));
-                }
-            };
-
-            request(options, function(error, response, body) {
-                response.statusCode.should.equal(200);
-                keystoneCalled.should.equal(true);
-                done();
-            });
-        });
+        decision.should.equal('Permit');
     });
 
-    describe('[' + authenticationMechanisms[1].module + '] ' +
-        'When a request with a tenant A tries to access things on tenant B', function() {
-        var options = {
-                uri: 'http://localhost:' + config.resource.proxy.port + '/v2/op/update',
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json',
-                    'Fiware-Service': 'Mordor',
-                    'fiware-servicepath': 'Electricidad',
-                    'X-Auth-Token': 'UAidNA9uQJiIVYSCg0IQ8Q'
-                },
-                json: utils.readExampleFile('./test/orionRequests/v2EntityCreation.json')
-            },
-            currentAuthentication = authenticationMechanisms[1];
-
-        beforeEach(function(done) {
-            cacheUtils.clean();
-            initializeUseCase(currentAuthentication, function() {
-                async.series([
-                    async.apply(serverMocks.mockPath, currentAuthentication.path, mockOAuthApp),
-                    async.apply(serverMocks.mockPath, currentAuthentication.authPath, mockOAuthApp),
-                    async.apply(serverMocks.mockPath, '/v3/projects', mockOAuthApp),
-                    async.apply(serverMocks.mockPath, '/v2/op/update', mockTargetApp)
-                ], done);
-            });
+    it('ServiceCustomer cannot access subservice resources', async function () {
+        const decision = await runValidation({
+            roles: [{ id: '1', name: 'x#ServiceCustomer' }],
+            frn: 'fiware:orion:smartcity:/tourism:::',
+            action: 'read'
         });
 
-        afterEach(function(done) {
-            proxyLib.stop(proxy, function(error) {
-                serverMocks.stop(mockTarget, function() {
-                    serverMocks.stop(mockOAuth, done);
-                });
-            });
+        decision.should.equal('Deny');
+    });
+
+    it('SubServiceAdminIOTAGENT can UPDATE IOTAGENT at subservice level', async function () {
+        const decision = await runValidation({
+            roles: [{ id: '1', name: 'x#SubServiceAdminIOTAGENT' }],
+            frn: 'fiware:iotagent:smartcity:/devices:::',
+            action: 'update'
         });
 
-        it('should reject the request with a 401', function(done) {
-            request(options, function(error, response, body) {
-                response.statusCode.should.equal(401);
-                body.name.should.equal('TOKEN_DOES_NOT_MATCH_SERVICE');
-                done();
-            });
+        decision.should.equal('Permit');
+    });
+
+    it('ServiceCustomer (ANY) can READ STH', async function () {
+        const decision = await runValidation({
+            roles: [{ id: '1', name: 'x#ServiceCustomer' }],
+            frn: 'fiware:sth:smartcity:/:::',
+            action: 'read'
         });
+
+        decision.should.equal('Permit');
+    });
+
+    // ------------------------
+    // Edge cases
+    // ------------------------
+
+    it('Invalid FRN format should return an error', async function () {
+        try {
+            await runValidation({
+                roles: [{ id: '1', name: 'x#ServiceCustomer' }],
+                frn: 'invalid-frn',
+                action: 'read'
+            });
+            should.fail('Expected an error to be thrown');
+        } catch (err) {
+            err.message.should.equal('Invalid FRN format');
+        }
+    });
+
+    it('Role with invalid format should be ignored and result in Deny', async function () {
+        const decision = await runValidation({
+            roles: [{ id: '1', name: 'INVALID_ROLE_NAME' }],
+            frn: 'fiware:orion:smartcity:/:::',
+            action: 'read'
+        });
+
+        decision.should.equal('Deny');
+    });
+
+    it('Unknown role type should result in Deny', async function () {
+        const decision = await runValidation({
+            roles: [{ id: '1', name: 'x#SuperAdminORION' }],
+            frn: 'fiware:orion:smartcity:/:::',
+            action: 'read'
+        });
+
+        decision.should.equal('Deny');
+    });
+
+    it('Unknown action should result in Deny', async function () {
+        const decision = await runValidation({
+            roles: [{ id: '1', name: 'x#ServiceAdminORION' }],
+            frn: 'fiware:orion:smartcity:/:::',
+            action: 'fly'
+        });
+
+        decision.should.equal('Deny');
+    });
+
+    it('No roles provided should result in Deny', async function () {
+        const decision = await runValidation({
+            roles: [],
+            frn: 'fiware:orion:smartcity:/:::',
+            action: 'read'
+        });
+
+        decision.should.equal('Deny');
     });
 
 });
