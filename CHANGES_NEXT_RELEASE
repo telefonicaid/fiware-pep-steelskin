@@ -1,3 +1,4 @@
+- Allow authorize using local PDP implementation (#571)
 - Remove node cache legacy callbacks warning
 - Fix: fill from log field with real IP
 - Upgrade NodeJS version from 16-slim to 24-bullseye-slim in Dockerfile
