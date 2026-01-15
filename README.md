@@ -519,6 +519,7 @@ Account log has three modes: `all`, `matched`, `wrong`. First one `all` includes
 * `config.bypassRoleId`: ID of the role that will be considered to have administrative rights over the proxy (so being transparently proxied without validation). Valid values are Role UUIDs. E.g.: `db50362d5f264c8292bebdb5c5783741`.
 * `config.dieOnRedirectError`: this flags changes the behavior of the PEP Proxy when an error is received when redirecting a request. If the flag is true, the PEP Proxy process is shut down immediately; if it is false, the behavior is the usual: generate a 501 Code error.
 * `config.bodyLimit`: Controls the maximum request body size allowed, in bytes. Default is 1 Mb
+* `config.localPDP`: Use local implementation for validate PDP (Policy Decision Point) or not. This validation is done by the logic in pdp.js file (out of scope of this documentation). Default is false
 
 ### Authentication configuration
 * `config.authentication.checkHeaders`: when the proxy is working with the access control disabled (just user authentication), indicates whether the `fiware-service` and `fiware-servicepath` headers should be checked for existance and validity (checking: the headers exist, thy are not empty and the user is really part of the service and subservice mentioned in the header). This option is ignored when authorization is enabled, and considered to be `true` (as the headers constitute a mandatory part of the authorization process). Default value is `true`.
@@ -550,33 +551,34 @@ The environment variables provide ways of configuring the plugin without taking 
 ### Configuration based on environment variables
 Some of the configuration values for the attributes above mentioned can be overriden with values in environment variables. The following table shows the environment variables and what attribute they map to.
 
-| Environment variable | Configuration attribute             |
-|:-------------------- |:----------------------------------- |
-| PROXY_PORT           | config.resource.proxy.port          | 
-| ADMIN_PORT           | config.resource.proxy.adminPort     | 
-| TARGET_HOST          | config.resource.original.host       |
-| TARGET_PORT          | config.resource.original.port       |
-| LOG_LEVEL            | config.logLevel                     |
-| ACCESS_DISABLE       | config.access.disable               |
-| ACCESS_HOST          | config.access.host                  |
-| ACCESS_PORT          | config.access.port                  |
-| ACCESS_PROTOCOL      | config.access.protocol              |
-| ACCESS_ACCOUNT       | config.access.account               |
-| ACCESS_ACCOUNTFILE   | config.access.accountFile           |
-| ACCESS_ACCOUNTMODE   | config.access.accountMode           |
-| AUTHENTICATION_HOST  | config.authentication.options.host  |
-| AUTHENTICATION_PORT  | config.authentication.options.port  |
-| AUTHENTICATION_PROTOCOL  | config.authentication.options.protocol  |
-| AUTHENTICATION_CACHE_PROJECTIDS  | config.authentication.cacheTTLs.projectIds  |
-| AUTHENTICATION_CACHE_ROLES  | config.authentication.cacheTTLs.roles  |
-| AUTHENTICATION_CACHE_USERS  | config.authentication.cacheTTLs.users  |
-| AUTHENTICATION_CACHE_VALIDATION | config.authentication.cacheTTLs.validation  |
-| PROXY_USERNAME       | config.authentication.user          |
-| PROXY_PASSWORD       | config.authentication.password      |
-| PROXY_PASSWORD       | config.authentication.password      |
-| COMPONENT_NAME       | config.componentName                |
-| COMPONENT_PLUGIN     | config.middlewares and config.componentName if no COMPONENT_NAME provided     |
-| BODY_LIMIT           | config.bodyLimit                        |
+| Environment variable            | Configuration attribute                                                   |
+|:--------------------------------|:--------------------------------------------------------------------------|
+| PROXY_PORT                      | config.resource.proxy.port                                                |
+| ADMIN_PORT                      | config.resource.proxy.adminPort                                           |
+| TARGET_HOST                     | config.resource.original.host                                             |
+| TARGET_PORT                     | config.resource.original.port                                             |
+| LOG_LEVEL                       | config.logLevel                                                           |
+| ACCESS_DISABLE                  | config.access.disable                                                     |
+| ACCESS_HOST                     | config.access.host                                                        |
+| ACCESS_PORT                     | config.access.port                                                        |
+| ACCESS_PROTOCOL                 | config.access.protocol                                                    |
+| ACCESS_ACCOUNT                  | config.access.account                                                     |
+| ACCESS_ACCOUNTFILE              | config.access.accountFile                                                 |
+| ACCESS_ACCOUNTMODE              | config.access.accountMode                                                 |
+| AUTHENTICATION_HOST             | config.authentication.options.host                                        |
+| AUTHENTICATION_PORT             | config.authentication.options.port                                        |
+| AUTHENTICATION_PROTOCOL         | config.authentication.options.protocol                                    |
+| AUTHENTICATION_CACHE_PROJECTIDS | config.authentication.cacheTTLs.projectIds                                |
+| AUTHENTICATION_CACHE_ROLES      | config.authentication.cacheTTLs.roles                                     |
+| AUTHENTICATION_CACHE_USERS      | config.authentication.cacheTTLs.users                                     |
+| AUTHENTICATION_CACHE_VALIDATION | config.authentication.cacheTTLs.validation                                |
+| PROXY_USERNAME                  | config.authentication.user                                                |
+| PROXY_PASSWORD                  | config.authentication.password                                            |
+| PROXY_PASSWORD                  | config.authentication.password                                            |
+| COMPONENT_NAME                  | config.componentName                                                      |
+| COMPONENT_PLUGIN                | config.middlewares and config.componentName if no COMPONENT_NAME provided |
+| BODY_LIMIT                      | config.bodyLimit                                                          |
+| AUTHORIZE_BY_LOCAL_PDP          | config.localPDP                                                           |
 
 ### Component configuration
 A special environment variable, called `COMPONENT_PLUGIN` can be set with one of this values: `orion`, `perseo`, `keypass` and `rest`. This variable can be used to select what component plugin to load in order to determine the action of the incoming requests. This variable also rewrites `config.componentName` configuration paramenter.

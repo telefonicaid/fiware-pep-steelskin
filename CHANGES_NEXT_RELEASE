@@ -1,3 +1,5 @@
+- Add: allow authorize using local PDP implementation (new config.localPDP / AUTHORIZE_BY_LOCAL_PDP setting) (#571)
+- Add: get roles from keystone and cache them using role names (#571)
 - Rename: access logger fields: Service -> src and SubService -> subsrv (#568)
 - Remove node cache legacy callbacks warning
 - Fix: fill from log field with real IP
