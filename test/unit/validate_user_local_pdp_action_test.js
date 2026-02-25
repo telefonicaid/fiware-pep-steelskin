@@ -107,6 +107,19 @@ describe('Local PDP validationRequest decision tree', function () {
         .catch(done);
     });
 
+    it('admin without component can READ ORION at service level', function (done) {
+        runValidation({
+            roles: [{ id: '1', name: 'admin' }],
+            frn: 'fiware:orion:smartcity:/:::',
+            action: 'create'
+        })
+        .then(function (decision) {
+            decision.should.equal('Permit');
+            done();
+        })
+        .catch(done);
+    });
+
     it('ServiceCustomer without component cannot CREATE in ORION', function (done) {
         runValidation({
             roles: [{ id: '1', name: 'x#ServiceCustomer' }],
