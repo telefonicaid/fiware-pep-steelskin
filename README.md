@@ -1,13 +1,13 @@
 # fiware-pep-steelskin
 
-[![FIWARE Security](https://nexus.lab.fiware.org/static/badges/chapters/security.svg)](https://www.fiware.org/developers/catalogue/)
+[![FIWARE Security](https://fiware.github.io/catalogue/badges/chapters/security.svg)](https://www.fiware.org/developers/catalogue/)
 [![License: APGL](https://img.shields.io/github/license/telefonicaid/fiware-pep-steelskin.svg)](https://opensource.org/licenses/AGPL-3.0)
 [![Quay badge](https://img.shields.io/badge/quay.io-fiware%2Fpep--steelskin-grey?logo=red%20hat&labelColor=EE0000)](https://quay.io/repository/fiware/pep-steelskin)
 [![Docker badge](https://img.shields.io/badge/docker-telefonicaiot%2Ffiware--pep--steelskin-blue?logo=docker)](https://hub.docker.com/r/telefonicaiot/fiware-pep-steelskin)
 <br/>
 [![CI](https://github.com/telefonicaid/fiware-pep-steelskin/workflows/CI/badge.svg)](https://github.com/telefonicaid/fiware-pep-steelskin/actions?query=workflow%3ACI)
 [![Coverage Status](https://coveralls.io/repos/github/telefonicaid/fiware-pep-steelskin/badge.svg?branch=master)](https://coveralls.io/github/telefonicaid/fiware-pep-steelskin?branch=master)
-![Status](https://nexus.lab.fiware.org/static/badges/statuses/incubating.svg)
+![Status](https://fiware.github.io/catalogue/badges/statuses/status-incubating.svg )
 
 ## Index
 
@@ -452,9 +452,9 @@ Accounting access log include data about:
 * UserId
 * UserName
 * ServiceId
-* Service
+* srv
 * SubServiceId
-* SubService
+* subsrv
 * Action
 * Path
 * Body (Truncated to 100 chars when is valid access)
@@ -462,7 +462,7 @@ Accounting access log include data about:
 * Query
 Example of access log:
 ```
-"Right Attempt | ResponseStatus=200 | Token=gAAAAABnBPgPrgwpcAkbQOZIryu5ADUIScyorN3vbPYbTJxTE5AF3RO1y25Tf-sL3EKzvfr_1U3u8IL8ylB4e4B_vD5yZjc9rnrSIqoiC77B7uZ1O1xZCyukq_MkjRxJLqA9yQ5lQtAQCC6ig7Kn5uPhpPD-mhVb7kyQjUw1QjtCiyP7UKXZvKU | Origin=172.17.0.22 | UserId=753b954985bf460fabbd6953c71d50c7 | UserName=adm1 | ServiceId=9f710408f5944c3993db600810e97c83 | Service=smartcity | SubServiceId=/ | SubService=/ | Action=read | Path=/v2/entities | Query={\"limit\":\"15\",\"offset\":\"0\",\"options\":\"count\"} | Body={} | Date=2024-10-08T09:25:30.441Z"
+"Right Attempt | ResponseStatus=200 | Token=gAAAAABnBPgPrgwpcAkbQOZIryu5ADUIScyorN3vbPYbTJxTE5AF3RO1y25Tf-sL3EKzvfr_1U3u8IL8ylB4e4B_vD5yZjc9rnrSIqoiC77B7uZ1O1xZCyukq_MkjRxJLqA9yQ5lQtAQCC6ig7Kn5uPhpPD-mhVb7kyQjUw1QjtCiyP7UKXZvKU | Origin=172.17.0.22 | UserId=753b954985bf460fabbd6953c71d50c7 | UserName=adm1 | ServiceId=9f710408f5944c3993db600810e97c83 | srv=smartcity | SubServiceId=/ | subsrv=/ | Action=read | Path=/v2/entities | Query={\"limit\":\"15\",\"offset\":\"0\",\"options\":\"count\"} | Body={} | Date=2024-10-08T09:25:30.441Z"
 ```
 
 Note that the above format is not the same than the regular PEP log (although it is also based in fields separated by `|`, the fields themselves are not the same).
@@ -509,7 +509,7 @@ configAccessMatch.body = [
 When any of theses patterns matches in current access, message access is added with `MATCHED <element> <value>` , where `<element>` would be: `USER`, `HEADER <header-name>`, `SUBPATH`, `SUBQUERY`, `BODY` and `<value>` the value which matches. For example:
 
 ```
-Right Attempt MATCHED HEADER fiware-service smartcity | ResponseStatus=200 | Token=gAAAAABnBPgPrgwpcAkbQOZIryu5ADUIScyorN3vbPYbTJxTE5AF3RO1y25Tf-sL3EKzvfr_1U3u8IL8ylB4e4B_vD5yZjc9rnrSIqoiC77B7uZ1O1xZCyukq_MkjRxJLqA9yQ5lQtAQCC6ig7Kn5uPhpPD-mhVb7kyQjUw1QjtCiyP7UKXZvKU | Origin=172.17.0.22 | UserId=753b954985bf460fabbd6953c71d50c7 | UserName=adm1 | ServiceId=9f710408f5944c3993db600810e97c83 | Service=smartcity | SubServiceId=/ | SubService=/ | Action=read | Path=/v2/entities | Query={\"limit\":\"15\",\"offset\":\"0\",\"options\":\"count\"} | Body={} | Date=2024-10-08T09:25:30.441Z"
+Right Attempt MATCHED HEADER fiware-service smartcity | ResponseStatus=200 | Token=gAAAAABnBPgPrgwpcAkbQOZIryu5ADUIScyorN3vbPYbTJxTE5AF3RO1y25Tf-sL3EKzvfr_1U3u8IL8ylB4e4B_vD5yZjc9rnrSIqoiC77B7uZ1O1xZCyukq_MkjRxJLqA9yQ5lQtAQCC6ig7Kn5uPhpPD-mhVb7kyQjUw1QjtCiyP7UKXZvKU | Origin=172.17.0.22 | UserId=753b954985bf460fabbd6953c71d50c7 | UserName=adm1 | ServiceId=9f710408f5944c3993db600810e97c83 | srv=smartcity | SubServiceId=/ | subsrv=/ | Action=read | Path=/v2/entities | Query={\"limit\":\"15\",\"offset\":\"0\",\"options\":\"count\"} | Body={} | Date=2024-10-08T09:25:30.441Z"
 ```
 Account log has three modes: `all`, `matched`, `wrong`. First one `all` includes right and wrong access regardles if matches or not. Second one `matched` includes all wrong and just rigth matches acess. And `wrong` mode only includes all wrong access, regardless is matches or not with patterns.
 
@@ -519,6 +519,7 @@ Account log has three modes: `all`, `matched`, `wrong`. First one `all` includes
 * `config.bypassRoleId`: ID of the role that will be considered to have administrative rights over the proxy (so being transparently proxied without validation). Valid values are Role UUIDs. E.g.: `db50362d5f264c8292bebdb5c5783741`.
 * `config.dieOnRedirectError`: this flags changes the behavior of the PEP Proxy when an error is received when redirecting a request. If the flag is true, the PEP Proxy process is shut down immediately; if it is false, the behavior is the usual: generate a 501 Code error.
 * `config.bodyLimit`: Controls the maximum request body size allowed, in bytes. Default is 1 Mb
+* `config.localPDP`: Use local implementation for validate PDP (Policy Decision Point) or not. This validation is done by the logic in pdp.js file (out of scope of this documentation). Default is false
 
 ### Authentication configuration
 * `config.authentication.checkHeaders`: when the proxy is working with the access control disabled (just user authentication), indicates whether the `fiware-service` and `fiware-servicepath` headers should be checked for existance and validity (checking: the headers exist, thy are not empty and the user is really part of the service and subservice mentioned in the header). This option is ignored when authorization is enabled, and considered to be `true` (as the headers constitute a mandatory part of the authorization process). Default value is `true`.
@@ -550,33 +551,34 @@ The environment variables provide ways of configuring the plugin without taking 
 ### Configuration based on environment variables
 Some of the configuration values for the attributes above mentioned can be overriden with values in environment variables. The following table shows the environment variables and what attribute they map to.
 
-| Environment variable | Configuration attribute             |
-|:-------------------- |:----------------------------------- |
-| PROXY_PORT           | config.resource.proxy.port          | 
-| ADMIN_PORT           | config.resource.proxy.adminPort     | 
-| TARGET_HOST          | config.resource.original.host       |
-| TARGET_PORT          | config.resource.original.port       |
-| LOG_LEVEL            | config.logLevel                     |
-| ACCESS_DISABLE       | config.access.disable               |
-| ACCESS_HOST          | config.access.host                  |
-| ACCESS_PORT          | config.access.port                  |
-| ACCESS_PROTOCOL      | config.access.protocol              |
-| ACCESS_ACCOUNT       | config.access.account               |
-| ACCESS_ACCOUNTFILE   | config.access.accountFile           |
-| ACCESS_ACCOUNTMODE   | config.access.accountMode           |
-| AUTHENTICATION_HOST  | config.authentication.options.host  |
-| AUTHENTICATION_PORT  | config.authentication.options.port  |
-| AUTHENTICATION_PROTOCOL  | config.authentication.options.protocol  |
-| AUTHENTICATION_CACHE_PROJECTIDS  | config.authentication.cacheTTLs.projectIds  |
-| AUTHENTICATION_CACHE_ROLES  | config.authentication.cacheTTLs.roles  |
-| AUTHENTICATION_CACHE_USERS  | config.authentication.cacheTTLs.users  |
-| AUTHENTICATION_CACHE_VALIDATION | config.authentication.cacheTTLs.validation  |
-| PROXY_USERNAME       | config.authentication.user          |
-| PROXY_PASSWORD       | config.authentication.password      |
-| PROXY_PASSWORD       | config.authentication.password      |
-| COMPONENT_NAME       | config.componentName                |
-| COMPONENT_PLUGIN     | config.middlewares and config.componentName if no COMPONENT_NAME provided     |
-| BODY_LIMIT           | config.bodyLimit                        |
+| Environment variable            | Configuration attribute                                                   |
+|:--------------------------------|:--------------------------------------------------------------------------|
+| PROXY_PORT                      | config.resource.proxy.port                                                |
+| ADMIN_PORT                      | config.resource.proxy.adminPort                                           |
+| TARGET_HOST                     | config.resource.original.host                                             |
+| TARGET_PORT                     | config.resource.original.port                                             |
+| LOG_LEVEL                       | config.logLevel                                                           |
+| ACCESS_DISABLE                  | config.access.disable                                                     |
+| ACCESS_HOST                     | config.access.host                                                        |
+| ACCESS_PORT                     | config.access.port                                                        |
+| ACCESS_PROTOCOL                 | config.access.protocol                                                    |
+| ACCESS_ACCOUNT                  | config.access.account                                                     |
+| ACCESS_ACCOUNTFILE              | config.access.accountFile                                                 |
+| ACCESS_ACCOUNTMODE              | config.access.accountMode                                                 |
+| AUTHENTICATION_HOST             | config.authentication.options.host                                        |
+| AUTHENTICATION_PORT             | config.authentication.options.port                                        |
+| AUTHENTICATION_PROTOCOL         | config.authentication.options.protocol                                    |
+| AUTHENTICATION_CACHE_PROJECTIDS | config.authentication.cacheTTLs.projectIds                                |
+| AUTHENTICATION_CACHE_ROLES      | config.authentication.cacheTTLs.roles                                     |
+| AUTHENTICATION_CACHE_USERS      | config.authentication.cacheTTLs.users                                     |
+| AUTHENTICATION_CACHE_VALIDATION | config.authentication.cacheTTLs.validation                                |
+| PROXY_USERNAME                  | config.authentication.user                                                |
+| PROXY_PASSWORD                  | config.authentication.password                                            |
+| PROXY_PASSWORD                  | config.authentication.password                                            |
+| COMPONENT_NAME                  | config.componentName                                                      |
+| COMPONENT_PLUGIN                | config.middlewares and config.componentName if no COMPONENT_NAME provided |
+| BODY_LIMIT                      | config.bodyLimit                                                          |
+| AUTHORIZE_BY_LOCAL_PDP          | config.localPDP                                                           |
 
 ### Component configuration
 A special environment variable, called `COMPONENT_PLUGIN` can be set with one of this values: `orion`, `perseo`, `keypass` and `rest`. This variable can be used to select what component plugin to load in order to determine the action of the incoming requests. This variable also rewrites `config.componentName` configuration paramenter.

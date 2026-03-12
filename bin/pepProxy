@@ -62,7 +62,8 @@ function loadConfiguration() {
         'COMPONENT_PLUGIN',
         'COMPONENT_NAME',
         'BODY_LIMIT',
-        'DISABLE_DOMAIN_MIDDLEWARE'
+        'DISABLE_DOMAIN_MIDDLEWARE',
+        'AUTHORIZE_BY_LOCAL_PDP'
     ];
 
     for (var i = 0; i < environmentValues.length; i++) {
@@ -151,6 +152,9 @@ function loadConfiguration() {
     }
     if (process.env.BODY_LIMIT) {
         config.bodyLimit = process.env.BODY_LIMIT;
+    }
+    if (process.env.AUTHORIZE_BY_LOCAL_PDP) {
+        config.localPDP = process.env.AUTHORIZE_BY_LOCAL_PDP == 'true';
     }
 }
 

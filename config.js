@@ -93,7 +93,7 @@ config.authentication = {
         protocol: 'http',
         host: 'localhost',
         port: 5000,
-        path: '/v3/role_assignments',
+        path: '/v3/role_assignments?include_names',
         authPath: '/v3/auth/tokens'
     }
 };
@@ -173,6 +173,11 @@ config.bypass = false;
  * ID of the admin user if it exists. Only effective if the "bypass" property is true.
  */
 config.bypassRoleId = '';
+
+/**
+ * Uses local PDP (policy decision point) for validate actions instead of remote PDP.
+ */
+config.localPDP = false;
 
 /**
  * Configures the maximum number of clients that can be simultaneously queued while waiting for the PEP to

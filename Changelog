@@ -1,3 +1,16 @@
+1.21.0 (February 25th, 2026)
+
+- Fix: check rol admin in service when local pdp
+
+1.20.0 (January 23rd, 2026)
+
+- Add: allow authorize using local PDP implementation (new config.localPDP / AUTHORIZE_BY_LOCAL_PDP setting) (#571)
+- Add: get roles from keystone and cache them using role names (#571)
+- Fix: rename access logger fields: Service -> srv and SubService -> subsrv (#568)
+- Fix: remove node cache legacy callbacks warning
+- Fix: fill from log field with real IP
+- Upgrade NodeJS version from 16-slim to 24-bullseye-slim in Dockerfile
+
 1.19.0 (January 27th, 2025)
 
 - Fix: init express trust proxy to proper fill origin field from accessLogger (#552)
