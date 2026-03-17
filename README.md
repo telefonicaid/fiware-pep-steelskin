@@ -443,6 +443,44 @@ In order to have the proxy running, there are several basic pieces of informatio
     accountMode: 'all'
 }
 ```
+
+
+* `config.componentName`: name of the component that will be used to compose the FRN that will identify the resource to be accessed. E.g.: `orion`.
+* `config.resourceNamePrefix`: string prefix that will be used to compose the FRN that will identify the resource to be accessed. E.g.: `fiware:`.
+* `config.bypass`: used to activate the administration bypass in the proxy. Valid values are `true` or `false`.
+* `config.bypassRoleId`: ID of the role that will be considered to have administrative rights over the proxy (so being transparently proxied without validation). Valid values are Role UUIDs. E.g.: `db50362d5f264c8292bebdb5c5783741`.
+* `config.dieOnRedirectError`: this flags changes the behavior of the PEP Proxy when an error is received when redirecting a request. If the flag is true, the PEP Proxy process is shut down immediately; if it is false, the behavior is the usual: generate a 501 Code error.
+* `config.bodyLimit`: Controls the maximum request body size allowed, in bytes. Default is 1 Mb
+* `config.localPDP`: Use local implementation for validate PDP (Policy Decision Point) or not. This validation is done by the logic in pdp.js file (out of scope of this documentation). Default is false
+
+### Authentication configuration
+* `config.authentication.checkHeaders`: when the proxy is working with the access control disabled (just user authentication), indicates whether the `fiware-service` and `fiware-servicepath` headers should be checked for existance and validity (checking: the headers exist, thy are not empty and the user is really part of the service and subservice mentioned in the header). This option is ignored when authorization is enabled, and considered to be `true` (as the headers constitute a mandatory part of the authorization process). Default value is `true`.
+* `config.authentication.module`: indicates what type of authentication server should be used: keystone or idm. The currently supported one (and default) is `keystone`.
+* `config.authentication.username`: username of the PEP proxy in the IDM. 
+* `config.authentication.password`: password of the PEP proxy in the IDM.
+* `config.authentication.domainName`: (only meaningful for Keystone) name of the administration domain the PEP proxy user belongs to.
+* `config.authentication.retries`: as the authentication is based in the use of tokens that can expire, the operations against Keystone are meant to retry with a fresh token. This configuration value indicates how many retries the PEP should perform in case the communication against Keystone fails. The value `0` means the default will be used (default value is 3). The value `-1` implies that it should be retried forever.
+* `cacheTTLs`: the values in this object correspond to the Time To Live of the values of the different caches the PEP uses to cache requests for information in Keystone. The value is expressed in seconds and `0` value implies unlimited.
+* `config.authentication.options`: address, port and other communication data needed to communicate with the Identity Manager. Apart from the host and port, default values should be used. 
+
+### Plugin configuration
+The `config.js` file contains configuration parameter that lets the deployer decide what plugin the proxy should use in order to extract the action type from the request attributes: the `middleware` parameter. This object has two attributes:
+* `require`: indicating the route from the project folder to the module that contains the middleware.
+* `functions`: an array of the middlewares to execute from the selected module.
+All the currently available plugins are in the folder `lib/plugins/`, and most of them implement a single middleware called `extractAction` (the name for Orion plugin is `extractCBAction`).
+The following example should work for any plugin following this patterns:
+```
+config.middlewares = {
+    require: 'lib/plugins/perseoPlugin',
+
+    functions: [
+        'extractAction'
+    ]
+};
+```
+The environment variables provide ways of configuring the plugin without taking care of this details.
+
+### Accounting Logger
 Accounting log is only activated when account flag is true, and the logs are produced in a fixed INFO level for accessLogger, redardless of the pep log level.
 Note that accounting log is not rotated, so you should make sure you configure your own rotation system.
 Accounting access log include data about:
@@ -512,41 +550,6 @@ When any of theses patterns matches in current access, message access is added w
 Right Attempt MATCHED HEADER fiware-service smartcity | ResponseStatus=200 | Token=gAAAAABnBPgPrgwpcAkbQOZIryu5ADUIScyorN3vbPYbTJxTE5AF3RO1y25Tf-sL3EKzvfr_1U3u8IL8ylB4e4B_vD5yZjc9rnrSIqoiC77B7uZ1O1xZCyukq_MkjRxJLqA9yQ5lQtAQCC6ig7Kn5uPhpPD-mhVb7kyQjUw1QjtCiyP7UKXZvKU | Origin=172.17.0.22 | UserId=753b954985bf460fabbd6953c71d50c7 | UserName=adm1 | ServiceId=9f710408f5944c3993db600810e97c83 | srv=smartcity | SubServiceId=/ | subsrv=/ | Action=read | Path=/v2/entities | Query={\"limit\":\"15\",\"offset\":\"0\",\"options\":\"count\"} | Body={} | Date=2024-10-08T09:25:30.441Z"
 ```
 Account log has three modes: `all`, `matched`, `wrong`. First one `all` includes right and wrong access regardles if matches or not. Second one `matched` includes all wrong and just rigth matches acess. And `wrong` mode only includes all wrong access, regardless is matches or not with patterns.
-
-* `config.componentName`: name of the component that will be used to compose the FRN that will identify the resource to be accessed. E.g.: `orion`.
-* `config.resourceNamePrefix`: string prefix that will be used to compose the FRN that will identify the resource to be accessed. E.g.: `fiware:`.
-* `config.bypass`: used to activate the administration bypass in the proxy. Valid values are `true` or `false`.
-* `config.bypassRoleId`: ID of the role that will be considered to have administrative rights over the proxy (so being transparently proxied without validation). Valid values are Role UUIDs. E.g.: `db50362d5f264c8292bebdb5c5783741`.
-* `config.dieOnRedirectError`: this flags changes the behavior of the PEP Proxy when an error is received when redirecting a request. If the flag is true, the PEP Proxy process is shut down immediately; if it is false, the behavior is the usual: generate a 501 Code error.
-* `config.bodyLimit`: Controls the maximum request body size allowed, in bytes. Default is 1 Mb
-* `config.localPDP`: Use local implementation for validate PDP (Policy Decision Point) or not. This validation is done by the logic in pdp.js file (out of scope of this documentation). Default is false
-
-### Authentication configuration
-* `config.authentication.checkHeaders`: when the proxy is working with the access control disabled (just user authentication), indicates whether the `fiware-service` and `fiware-servicepath` headers should be checked for existance and validity (checking: the headers exist, thy are not empty and the user is really part of the service and subservice mentioned in the header). This option is ignored when authorization is enabled, and considered to be `true` (as the headers constitute a mandatory part of the authorization process). Default value is `true`.
-* `config.authentication.module`: indicates what type of authentication server should be used: keystone or idm. The currently supported one (and default) is `keystone`.
-* `config.authentication.username`: username of the PEP proxy in the IDM. 
-* `config.authentication.password`: password of the PEP proxy in the IDM.
-* `config.authentication.domainName`: (only meaningful for Keystone) name of the administration domain the PEP proxy user belongs to.
-* `config.authentication.retries`: as the authentication is based in the use of tokens that can expire, the operations against Keystone are meant to retry with a fresh token. This configuration value indicates how many retries the PEP should perform in case the communication against Keystone fails. The value `0` means the default will be used (default value is 3). The value `-1` implies that it should be retried forever.
-* `cacheTTLs`: the values in this object correspond to the Time To Live of the values of the different caches the PEP uses to cache requests for information in Keystone. The value is expressed in seconds and `0` value implies unlimited.
-* `config.authentication.options`: address, port and other communication data needed to communicate with the Identity Manager. Apart from the host and port, default values should be used. 
-
-### Plugin configuration
-The `config.js` file contains configuration parameter that lets the deployer decide what plugin the proxy should use in order to extract the action type from the request attributes: the `middleware` parameter. This object has two attributes:
-* `require`: indicating the route from the project folder to the module that contains the middleware.
-* `functions`: an array of the middlewares to execute from the selected module.
-All the currently available plugins are in the folder `lib/plugins/`, and most of them implement a single middleware called `extractAction` (the name for Orion plugin is `extractCBAction`).
-The following example should work for any plugin following this patterns:
-```
-config.middlewares = {
-    require: 'lib/plugins/perseoPlugin',
-
-    functions: [
-        'extractAction'
-    ]
-};
-```
-The environment variables provide ways of configuring the plugin without taking care of this details.
 
 ### Configuration based on environment variables
 Some of the configuration values for the attributes above mentioned can be overriden with values in environment variables. The following table shows the environment variables and what attribute they map to.
