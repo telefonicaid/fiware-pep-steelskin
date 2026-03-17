@@ -16,6 +16,7 @@
 * [Usage](#usage)
 * [Administration](#administration)
 * [Configuration](#configuration)
+* [Accounting Logger](#accountinglogger)
 * [API With Access Control](#apiaccesscontrol)
 * [Rules to determine the Context Broker action from the request](#rules)
 * [Rules to determine the Perseo action from the request](#rulesPerseo)
@@ -480,7 +481,59 @@ config.middlewares = {
 ```
 The environment variables provide ways of configuring the plugin without taking care of this details.
 
-### Accounting Logger
+### Configuration based on environment variables
+Some of the configuration values for the attributes above mentioned can be overriden with values in environment variables. The following table shows the environment variables and what attribute they map to.
+
+| Environment variable            | Configuration attribute                                                   |
+|:--------------------------------|:--------------------------------------------------------------------------|
+| PROXY_PORT                      | config.resource.proxy.port                                                |
+| ADMIN_PORT                      | config.resource.proxy.adminPort                                           |
+| TARGET_HOST                     | config.resource.original.host                                             |
+| TARGET_PORT                     | config.resource.original.port                                             |
+| LOG_LEVEL                       | config.logLevel                                                           |
+| ACCESS_DISABLE                  | config.access.disable                                                     |
+| ACCESS_HOST                     | config.access.host                                                        |
+| ACCESS_PORT                     | config.access.port                                                        |
+| ACCESS_PROTOCOL                 | config.access.protocol                                                    |
+| ACCESS_ACCOUNT                  | config.access.account                                                     |
+| ACCESS_ACCOUNTFILE              | config.access.accountFile                                                 |
+| ACCESS_ACCOUNTMODE              | config.access.accountMode                                                 |
+| AUTHENTICATION_HOST             | config.authentication.options.host                                        |
+| AUTHENTICATION_PORT             | config.authentication.options.port                                        |
+| AUTHENTICATION_PROTOCOL         | config.authentication.options.protocol                                    |
+| AUTHENTICATION_CACHE_PROJECTIDS | config.authentication.cacheTTLs.projectIds                                |
+| AUTHENTICATION_CACHE_ROLES      | config.authentication.cacheTTLs.roles                                     |
+| AUTHENTICATION_CACHE_USERS      | config.authentication.cacheTTLs.users                                     |
+| AUTHENTICATION_CACHE_VALIDATION | config.authentication.cacheTTLs.validation                                |
+| PROXY_USERNAME                  | config.authentication.user                                                |
+| PROXY_PASSWORD                  | config.authentication.password                                            |
+| PROXY_PASSWORD                  | config.authentication.password                                            |
+| COMPONENT_NAME                  | config.componentName                                                      |
+| COMPONENT_PLUGIN                | config.middlewares and config.componentName if no COMPONENT_NAME provided |
+| BODY_LIMIT                      | config.bodyLimit                                                          |
+| AUTHORIZE_BY_LOCAL_PDP          | config.localPDP                                                           |
+
+### Component configuration
+A special environment variable, called `COMPONENT_PLUGIN` can be set with one of this values: `orion`, `perseo`, `keypass` and `rest`. This variable can be used to select what component plugin to load in order to determine the action of the incoming requests. This variable also rewrites `config.componentName` configuration paramenter.
+
+### SSL Configuration
+If SSL Termination is not available, the PEP Proxy can be configured to listen HTTPS instead of plain HTTP. To activate the SSL:
+
+* Create the appropiate public keys and certificates and store them in the PEP Proxy machine.
+* In the `config.js` file, change the `config.ssl.active` flag to true.
+* In the same ssl object in the configuration, fill the path to the key and cert files.
+
+### Multi-instance configuration
+PEP Proxy is able to start multiple instances by adding and configuring certain files in `/etc/pepProxy.d` and using `pepProxy` service script
+
+In order to start multiple instances of the proxy, just add one configuration file per instance in the `/etc/pepProxy.d` folder.
+
+In its starting sequence, the `pepProxy` service looks for files in  `/etc/pepProxy.d` that begins with `pepproxy_` prefix and has `.conf` extension and start (or stop or status or restat) one process for file found.
+
+It is important to change `PROXY_PORT` and `ADMIN_PORT` to one not used by other PEP intances/services. 
+
+
+## Accounting Logger
 Accounting log is only activated when account flag is true, and the logs are produced in a fixed INFO level for accessLogger, redardless of the pep log level.
 Note that accounting log is not rotated, so you should make sure you configure your own rotation system.
 Accounting access log include data about:
@@ -551,56 +604,6 @@ Right Attempt MATCHED HEADER fiware-service smartcity | ResponseStatus=200 | Tok
 ```
 Account log has three modes: `all`, `matched`, `wrong`. First one `all` includes right and wrong access regardles if matches or not. Second one `matched` includes all wrong and just rigth matches acess. And `wrong` mode only includes all wrong access, regardless is matches or not with patterns.
 
-### Configuration based on environment variables
-Some of the configuration values for the attributes above mentioned can be overriden with values in environment variables. The following table shows the environment variables and what attribute they map to.
-
-| Environment variable            | Configuration attribute                                                   |
-|:--------------------------------|:--------------------------------------------------------------------------|
-| PROXY_PORT                      | config.resource.proxy.port                                                |
-| ADMIN_PORT                      | config.resource.proxy.adminPort                                           |
-| TARGET_HOST                     | config.resource.original.host                                             |
-| TARGET_PORT                     | config.resource.original.port                                             |
-| LOG_LEVEL                       | config.logLevel                                                           |
-| ACCESS_DISABLE                  | config.access.disable                                                     |
-| ACCESS_HOST                     | config.access.host                                                        |
-| ACCESS_PORT                     | config.access.port                                                        |
-| ACCESS_PROTOCOL                 | config.access.protocol                                                    |
-| ACCESS_ACCOUNT                  | config.access.account                                                     |
-| ACCESS_ACCOUNTFILE              | config.access.accountFile                                                 |
-| ACCESS_ACCOUNTMODE              | config.access.accountMode                                                 |
-| AUTHENTICATION_HOST             | config.authentication.options.host                                        |
-| AUTHENTICATION_PORT             | config.authentication.options.port                                        |
-| AUTHENTICATION_PROTOCOL         | config.authentication.options.protocol                                    |
-| AUTHENTICATION_CACHE_PROJECTIDS | config.authentication.cacheTTLs.projectIds                                |
-| AUTHENTICATION_CACHE_ROLES      | config.authentication.cacheTTLs.roles                                     |
-| AUTHENTICATION_CACHE_USERS      | config.authentication.cacheTTLs.users                                     |
-| AUTHENTICATION_CACHE_VALIDATION | config.authentication.cacheTTLs.validation                                |
-| PROXY_USERNAME                  | config.authentication.user                                                |
-| PROXY_PASSWORD                  | config.authentication.password                                            |
-| PROXY_PASSWORD                  | config.authentication.password                                            |
-| COMPONENT_NAME                  | config.componentName                                                      |
-| COMPONENT_PLUGIN                | config.middlewares and config.componentName if no COMPONENT_NAME provided |
-| BODY_LIMIT                      | config.bodyLimit                                                          |
-| AUTHORIZE_BY_LOCAL_PDP          | config.localPDP                                                           |
-
-### Component configuration
-A special environment variable, called `COMPONENT_PLUGIN` can be set with one of this values: `orion`, `perseo`, `keypass` and `rest`. This variable can be used to select what component plugin to load in order to determine the action of the incoming requests. This variable also rewrites `config.componentName` configuration paramenter.
-
-### SSL Configuration
-If SSL Termination is not available, the PEP Proxy can be configured to listen HTTPS instead of plain HTTP. To activate the SSL:
-
-* Create the appropiate public keys and certificates and store them in the PEP Proxy machine.
-* In the `config.js` file, change the `config.ssl.active` flag to true.
-* In the same ssl object in the configuration, fill the path to the key and cert files.
-
-### Multi-instance configuration
-PEP Proxy is able to start multiple instances by adding and configuring certain files in `/etc/pepProxy.d` and using `pepProxy` service script
-
-In order to start multiple instances of the proxy, just add one configuration file per instance in the `/etc/pepProxy.d` folder.
-
-In its starting sequence, the `pepProxy` service looks for files in  `/etc/pepProxy.d` that begins with `pepproxy_` prefix and has `.conf` extension and start (or stop or status or restat) one process for file found.
-
-It is important to change `PROXY_PORT` and `ADMIN_PORT` to one not used by other PEP intances/services. 
 
 ## <a name="apiaccesscontrol"/> API With Access Control
 The validation of each request si done connecting with the Access Control component, which, using the information provided by the PEP Proxy, decides whether the user can execute the selected action in this organization or not. The following is a summary of this interaction with some examples.
