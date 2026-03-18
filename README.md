@@ -16,6 +16,7 @@
 * [Usage](#usage)
 * [Administration](#administration)
 * [Configuration](#configuration)
+* [Accounting Logger](#accountinglogger)
 * [API With Access Control](#apiaccesscontrol)
 * [Rules to determine the Context Broker action from the request](#rules)
 * [Rules to determine the Perseo action from the request](#rulesPerseo)
@@ -443,75 +444,7 @@ In order to have the proxy running, there are several basic pieces of informatio
     accountMode: 'all'
 }
 ```
-Accounting log is only activated when account flag is true, and the logs are produced in a fixed INFO level for accessLogger, redardless of the pep log level.
-Note that accounting log is not rotated, so you should make sure you configure your own rotation system.
-Accounting access log include data about:
-* Attempt was right or not
-* Token
-* Origin
-* UserId
-* UserName
-* ServiceId
-* srv
-* SubServiceId
-* subsrv
-* Action
-* Path
-* Body (Truncated to 100 chars when is valid access)
-* Date
-* Query
-Example of access log:
-```
-"Right Attempt | ResponseStatus=200 | Token=gAAAAABnBPgPrgwpcAkbQOZIryu5ADUIScyorN3vbPYbTJxTE5AF3RO1y25Tf-sL3EKzvfr_1U3u8IL8ylB4e4B_vD5yZjc9rnrSIqoiC77B7uZ1O1xZCyukq_MkjRxJLqA9yQ5lQtAQCC6ig7Kn5uPhpPD-mhVb7kyQjUw1QjtCiyP7UKXZvKU | Origin=172.17.0.22 | UserId=753b954985bf460fabbd6953c71d50c7 | UserName=adm1 | ServiceId=9f710408f5944c3993db600810e97c83 | srv=smartcity | SubServiceId=/ | subsrv=/ | Action=read | Path=/v2/entities | Query={\"limit\":\"15\",\"offset\":\"0\",\"options\":\"count\"} | Body={} | Date=2024-10-08T09:25:30.441Z"
-```
 
-Note that the above format is not the same than the regular PEP log (although it is also based in fields separated by `|`, the fields themselves are not the same).
-
-Additionally a file configAccessMatch could be provided to pep to check matches about some elements involved in current access, regardless is right or not right access. For example:
-* List for users involved
-* List of headers and values
-* List of subpaths in URL request
-* List of subqueries in query request
-* List of strings in body
-
-PEP reloads this file each time it changes without needing restarting PEP itself.
-
-This is an example of file `configAccessMatch.js` (full path `/opt/fiware-pep-steelskin/configAccessMatch.js` i.e. in a docker image):
-
-```
-// Activity related with a list of users
-configAccessMatch.users = [
-    'cracker1', 'cracker2',
-];
-
-// Activity related with request which the following headers
-configAccessMatch.headers = [
-    { "fiware-service": "smartcity" },
-    { "x-real-ip": "127.0.0.1" }
-];
-
-// Activity related with request including the following subpaths
-configAccessMatch.subpaths = [
-    '/v1',
-];
-
-// Activity related with request including the following subqueries
-configAccessMatch.subqueries = [
-    'flowControl', 'options',
-];
-
-// Activity related with request including the following strings in body
-configAccessMatch.body = [
-    'legacy',
-];
-```
-
-When any of theses patterns matches in current access, message access is added with `MATCHED <element> <value>` , where `<element>` would be: `USER`, `HEADER <header-name>`, `SUBPATH`, `SUBQUERY`, `BODY` and `<value>` the value which matches. For example:
-
-```
-Right Attempt MATCHED HEADER fiware-service smartcity | ResponseStatus=200 | Token=gAAAAABnBPgPrgwpcAkbQOZIryu5ADUIScyorN3vbPYbTJxTE5AF3RO1y25Tf-sL3EKzvfr_1U3u8IL8ylB4e4B_vD5yZjc9rnrSIqoiC77B7uZ1O1xZCyukq_MkjRxJLqA9yQ5lQtAQCC6ig7Kn5uPhpPD-mhVb7kyQjUw1QjtCiyP7UKXZvKU | Origin=172.17.0.22 | UserId=753b954985bf460fabbd6953c71d50c7 | UserName=adm1 | ServiceId=9f710408f5944c3993db600810e97c83 | srv=smartcity | SubServiceId=/ | subsrv=/ | Action=read | Path=/v2/entities | Query={\"limit\":\"15\",\"offset\":\"0\",\"options\":\"count\"} | Body={} | Date=2024-10-08T09:25:30.441Z"
-```
-Account log has three modes: `all`, `matched`, `wrong`. First one `all` includes right and wrong access regardles if matches or not. Second one `matched` includes all wrong and just rigth matches acess. And `wrong` mode only includes all wrong access, regardless is matches or not with patterns.
 
 * `config.componentName`: name of the component that will be used to compose the FRN that will identify the resource to be accessed. E.g.: `orion`.
 * `config.resourceNamePrefix`: string prefix that will be used to compose the FRN that will identify the resource to be accessed. E.g.: `fiware:`.
@@ -598,6 +531,79 @@ In order to start multiple instances of the proxy, just add one configuration fi
 In its starting sequence, the `pepProxy` service looks for files in  `/etc/pepProxy.d` that begins with `pepproxy_` prefix and has `.conf` extension and start (or stop or status or restat) one process for file found.
 
 It is important to change `PROXY_PORT` and `ADMIN_PORT` to one not used by other PEP intances/services. 
+
+
+## Accounting Logger
+Accounting log is only activated when account flag is true, and the logs are produced in a fixed INFO level for accessLogger, redardless of the pep log level.
+Note that accounting log is not rotated, so you should make sure you configure your own rotation system.
+Accounting access log include data about:
+* Attempt was right or not
+* Token
+* Origin
+* UserId
+* UserName
+* ServiceId
+* srv
+* SubServiceId
+* subsrv
+* Action
+* Path
+* Body (Truncated to 100 chars when is valid access)
+* Date
+* Query
+Example of access log:
+```
+"Right Attempt | ResponseStatus=200 | Token=gAAAAABnBPgPrgwpcAkbQOZIryu5ADUIScyorN3vbPYbTJxTE5AF3RO1y25Tf-sL3EKzvfr_1U3u8IL8ylB4e4B_vD5yZjc9rnrSIqoiC77B7uZ1O1xZCyukq_MkjRxJLqA9yQ5lQtAQCC6ig7Kn5uPhpPD-mhVb7kyQjUw1QjtCiyP7UKXZvKU | Origin=172.17.0.22 | UserId=753b954985bf460fabbd6953c71d50c7 | UserName=adm1 | ServiceId=9f710408f5944c3993db600810e97c83 | srv=smartcity | SubServiceId=/ | subsrv=/ | Action=read | Path=/v2/entities | Query={\"limit\":\"15\",\"offset\":\"0\",\"options\":\"count\"} | Body={} | Date=2024-10-08T09:25:30.441Z"
+```
+
+Note that the above format is not the same than the regular PEP log (although it is also based in fields separated by `|`, the fields themselves are not the same).
+
+Additionally a file configAccessMatch could be provided to pep to check matches about some elements involved in current access, regardless is right or not right access. For example:
+* List for users involved
+* List of headers and values
+* List of subpaths in URL request
+* List of subqueries in query request
+* List of strings in body
+
+PEP reloads this file each time it changes without needing restarting PEP itself.
+
+This is an example of file `configAccessMatch.js` (full path `/opt/fiware-pep-steelskin/configAccessMatch.js` i.e. in a docker image):
+
+```
+// Activity related with a list of users
+configAccessMatch.users = [
+    'cracker1', 'cracker2',
+];
+
+// Activity related with request which the following headers
+configAccessMatch.headers = [
+    { "fiware-service": "smartcity" },
+    { "x-real-ip": "127.0.0.1" }
+];
+
+// Activity related with request including the following subpaths
+configAccessMatch.subpaths = [
+    '/v1',
+];
+
+// Activity related with request including the following subqueries
+configAccessMatch.subqueries = [
+    'flowControl', 'options',
+];
+
+// Activity related with request including the following strings in body
+configAccessMatch.body = [
+    'legacy',
+];
+```
+
+When any of theses patterns matches in current access, message access is added with `MATCHED <element> <value>` , where `<element>` would be: `USER`, `HEADER <header-name>`, `SUBPATH`, `SUBQUERY`, `BODY` and `<value>` the value which matches. For example:
+
+```
+Right Attempt MATCHED HEADER fiware-service smartcity | ResponseStatus=200 | Token=gAAAAABnBPgPrgwpcAkbQOZIryu5ADUIScyorN3vbPYbTJxTE5AF3RO1y25Tf-sL3EKzvfr_1U3u8IL8ylB4e4B_vD5yZjc9rnrSIqoiC77B7uZ1O1xZCyukq_MkjRxJLqA9yQ5lQtAQCC6ig7Kn5uPhpPD-mhVb7kyQjUw1QjtCiyP7UKXZvKU | Origin=172.17.0.22 | UserId=753b954985bf460fabbd6953c71d50c7 | UserName=adm1 | ServiceId=9f710408f5944c3993db600810e97c83 | srv=smartcity | SubServiceId=/ | subsrv=/ | Action=read | Path=/v2/entities | Query={\"limit\":\"15\",\"offset\":\"0\",\"options\":\"count\"} | Body={} | Date=2024-10-08T09:25:30.441Z"
+```
+Account log has three modes: `all`, `matched`, `wrong`. First one `all` includes right and wrong access regardles if matches or not. Second one `matched` includes all wrong and just rigth matches acess. And `wrong` mode only includes all wrong access, regardless is matches or not with patterns.
+
 
 ## <a name="apiaccesscontrol"/> API With Access Control
 The validation of each request si done connecting with the Access Control component, which, using the information provided by the PEP Proxy, decides whether the user can execute the selected action in this organization or not. The following is a summary of this interaction with some examples.
