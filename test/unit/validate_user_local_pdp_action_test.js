@@ -161,9 +161,24 @@ describe('Local PDP validationRequest decision tree', function () {
         .catch(done);
     });
 
+    it('ServiceCustomer and ServiceAdminORION can DELETE in ORION', function (done) {
+        runValidation({
+            roles: [{ id: '1', name: 'x#ServiceAdminORION' },
+                    { id: '2', name: 'x#ServiceCustomer' }],
+            frn: 'fiware:orion:smartcity:/:::',
+            action: 'delete'
+        })
+        .then(function (decision) {
+            decision.should.equal('Permit');
+            done();
+        })
+        .catch(done);
+    });
+
     it('ServiceAdminORION cannot operate on PERSEO', function (done) {
         runValidation({
-            roles: [{ id: '1', name: 'x#ServiceAdminORION' }],
+            roles: [{ id: '1', name: 'x#ServiceAdminORION' },
+                    { id: '3', name: 'x#ServiceAdminSTH' } ],
             frn: 'fiware:perseo:smartcity:/:::',
             action: 'readRule'
         })
