@@ -1,1 +1,2 @@
 - Upgrade express from 4.21.2 to 4.22.1
+- Fix: local PDP evaluates all roles and grants access if any applicable role permits the action, not stop at first match (#582)
