@@ -133,6 +133,21 @@ describe('Local PDP validationRequest decision tree', function () {
         .catch(done);
     });
 
+    it('admin and ServiceCustomer without component can CREATE in ORION', function (done) {
+        runValidation({
+            roles: [{ id: '1', name: 'x#ServiceCustomer' },
+                    { id: '2', name: 'admin' }                    
+                   ],
+            frn: 'fiware:orion:smartcity:/:::',
+            action: 'create'
+        })
+        .then(function (decision) {
+            decision.should.equal('Permit');
+            done();
+        })
+        .catch(done);
+    });
+
     it('ServiceAdminORION can DELETE in ORION', function (done) {
         runValidation({
             roles: [{ id: '1', name: 'x#ServiceAdminORION' }],
