@@ -133,6 +133,21 @@ describe('Local PDP validationRequest decision tree', function () {
         .catch(done);
     });
 
+    it('admin and ServiceCustomer without component can CREATE in ORION', function (done) {
+        runValidation({
+            roles: [{ id: '1', name: 'x#ServiceCustomer' },
+                    { id: '2', name: 'admin' }                    
+                   ],
+            frn: 'fiware:orion:smartcity:/:::',
+            action: 'create'
+        })
+        .then(function (decision) {
+            decision.should.equal('Permit');
+            done();
+        })
+        .catch(done);
+    });
+
     it('ServiceAdminORION can DELETE in ORION', function (done) {
         runValidation({
             roles: [{ id: '1', name: 'x#ServiceAdminORION' }],
@@ -146,9 +161,24 @@ describe('Local PDP validationRequest decision tree', function () {
         .catch(done);
     });
 
+    it('ServiceCustomer and ServiceAdminORION can DELETE in ORION', function (done) {
+        runValidation({
+            roles: [{ id: '1', name: 'x#ServiceAdminORION' },
+                    { id: '2', name: 'x#ServiceCustomer' }],
+            frn: 'fiware:orion:smartcity:/:::',
+            action: 'delete'
+        })
+        .then(function (decision) {
+            decision.should.equal('Permit');
+            done();
+        })
+        .catch(done);
+    });
+
     it('ServiceAdminORION cannot operate on PERSEO', function (done) {
         runValidation({
-            roles: [{ id: '1', name: 'x#ServiceAdminORION' }],
+            roles: [{ id: '1', name: 'x#ServiceAdminORION' },
+                    { id: '3', name: 'x#ServiceAdminSTH' } ],
             frn: 'fiware:perseo:smartcity:/:::',
             action: 'readRule'
         })
@@ -161,7 +191,8 @@ describe('Local PDP validationRequest decision tree', function () {
 
     it('SubServiceCustomer can READ ORION at subservice level', function (done) {
         runValidation({
-            roles: [{ id: '1', name: 'x#SubServiceCustomer' }],
+            roles: [{ id: '4', name: 'x#SubServiceCustomerPERSEO' },
+                    { id: '1', name: 'x#SubServiceCustomer' }],
             frn: 'fiware:orion:smartcity:/tourism:::',
             action: 'read'
         })
