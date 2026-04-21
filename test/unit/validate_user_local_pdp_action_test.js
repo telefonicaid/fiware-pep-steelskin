@@ -191,7 +191,8 @@ describe('Local PDP validationRequest decision tree', function () {
 
     it('SubServiceCustomer can READ ORION at subservice level', function (done) {
         runValidation({
-            roles: [{ id: '1', name: 'x#SubServiceCustomer' }],
+            roles: [{ id: '4', name: 'x#SubServiceCustomerPERSEO' },
+                    { id: '1', name: 'x#SubServiceCustomer' }],
             frn: 'fiware:orion:smartcity:/tourism:::',
             action: 'read'
         })
