@@ -1,3 +1,8 @@
+1.22.0 (April 21st, 2026)
+
+- Fix: local PDP evaluates all roles and grants access if any applicable role permits the action, not stop at first match (#582)
+- Upgrade express from 4.21.2 to 4.22.1
+
 1.21.0 (February 25th, 2026)
 
 - Fix: check rol admin in service when local pdp
