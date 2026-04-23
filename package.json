@@ -35,7 +35,7 @@
     "node-cache": "5.1.2",
     "request": "2.88.2",
     "sax": "1.2.4",
-    "uuid": "8.3.2",
+    "uuid": "14.0.0",
     "winston": "2.4.6"
   },
   "devDependencies": {
