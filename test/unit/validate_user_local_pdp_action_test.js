@@ -313,4 +313,17 @@ describe('Local PDP validationRequest decision tree', function () {
         .catch(done);
     });
 
+    it('ServiceEditor without component cannot DELETE in ORION', function (done) {
+        runValidation({
+            roles: [{ id: '1', name: 'x#ServiceEditor' }],
+            frn: 'fiware:orion:smartcity:/:::',
+            action: 'delete'
+        })
+        .then(function (decision) {
+            decision.should.equal('Deny');
+            done();
+        })
+        .catch(done);
+    });
+
 });
