@@ -1,2 +1,3 @@
+- Add: ServiceEditor and SubServiceEditor roles as admin roles without delete
 - Upgrade uuid dep from 8.3.2 to 14.0.0 due to CWE-787 CWE-1285
 
