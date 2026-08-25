@@ -32,7 +32,7 @@ var serverMocks = require('../tools/serverMocks'),
     config = require('../../config'),
     utils = require('../tools/utils'),
     should = require('should'),
-    request = require('request');
+    request = require('@cypress/request');
 
 function mockIdm(req, res) {
     if (req.path === '/user') {
