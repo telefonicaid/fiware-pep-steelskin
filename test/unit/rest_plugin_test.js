@@ -30,7 +30,7 @@ var serverMocks = require('../tools/serverMocks'),
     utils = require('../tools/utils'),
     should = require('should'),
     async = require('async'),
-    request = require('request');
+    request = require('@cypress/request');
 
 describe('REST Plugin tests', function() {
     var proxy,
