@@ -1,3 +1,4 @@
 - Upgrade body-parser from 1.20.3 to 1.20.6 due to CVE-2026-12590
 - Upgrade uuid dep from 8.3.2 to 14.0.0 due to CWE-787 CWE-1285
 - Upgrade request 2.88.2 dependency to @cypress/request 4.0.1 due to CVE-2023-28155
+- Upgrade NodeJS version from 24-bullseye-slim to 24-bookworm-slim in Dockerfile
